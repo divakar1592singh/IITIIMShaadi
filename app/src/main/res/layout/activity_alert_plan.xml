@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.AlertPlanActivity"
+    android:layout_marginBottom="10dp">
+
+    <include layout="@layout/app_toolbar"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+       >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please "
+            android:textColor="@color/colorGrey"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/idtextUpgrade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="upgrade"
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="16sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" your account to "
+            android:textColor="@color/colorGrey"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/idTextFeature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="use this feature."
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="16sp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Our Plans"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+       android:layout_marginLeft="10dp"/>
+
+    <ScrollView
+        android:layout_marginTop="10dp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:scrollbars="horizontal|vertical">
+       <HorizontalScrollView
+           android:layout_marginTop="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:scrollbars="horizontal|vertical">
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal">
+               <TableLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   >
+
+                   <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Features"
+                            android:textColor="@color/colorMaroon"
+                            android:textSize="16dp"
+                            ></TextView>
+
+                       <TextView
+                           android:id="@+id/textView2"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:text="Free"
+                           android:textSize="16dp"
+                           android:textColor="@color/colorMaroon" ></TextView>
+
+                       <TextView
+                           android:id="@+id/textView3"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:text="Online Paid\n Services"
+                           android:textColor="@color/colorMaroon"
+                           android:textSize="16dp"
+                           android:padding="5dp"></TextView>
+
+                       <TextView
+                           android:id="@+id/textView4"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:text="Personalize Premium\n services"
+                           android:textSize="16dp"
+                           android:textColor="@color/colorMaroon"
+                           android:padding="5dp"></TextView>
+                   </TableRow>
+                   <TableRow
+                       android:background="@color/colorOffGrey"
+                       android:layout_marginTop="10dp">
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Responding to friend \nrequests/messages"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow>
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Browsing Profile"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Top 10 profile"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Unlimited"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Unlimited"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                   </TableRow>
+
+                   <TableRow android:background="@color/colorOffGrey">
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Sending friend \nrequests/messages"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:text="Unlimited"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:text="Unlimited"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                   </TableRow>
+
+                   <TableRow>
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="View mobile/E-mail of\n member who accepts\n friend request(My friend)"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow
+                       android:background="@color/colorOffGrey">
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Search Assistance"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow>
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Scheduling meetings\n and Follow Ups"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow
+                       android:background="@color/colorOffGrey">
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Search by profile ID"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow>
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Search using Height filter"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow
+                       android:background="@color/colorOffGrey">
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Blank search feature\n (any criteria-cast,\n vegiterian,specific location)"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+                   <TableRow>
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:gravity="center"
+                           android:padding="10dp"
+                           android:text="Search using Height filter"
+                           android:textColor="@color/colorGrey"
+                           android:textSize="12dp" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/cross" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                       <ImageView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:padding="10dp"
+                           android:src="@drawable/check" />
+                   </TableRow>
+
+
+
+               </TableLayout>
+           </LinearLayout>
+
+       </HorizontalScrollView>
+   </ScrollView>
+
+</LinearLayout>
+    <!--<ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="15"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Features"
+                            android:textColor="@color/colorMaroon"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Free"
+                            android:textColor="@color/colorMaroon"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Online Paid Services"
+                            android:textColor="@color/colorMaroon"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Personalize Premium services"
+                            android:textColor="@color/colorMaroon"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorOffGrey"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="15"
+                        >
+
+                        <TextView
+                            android:id="@+id/textView11"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Responding to friend requests/messages"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="14dp" />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorOffGrey"/>
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Free"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="14dp" />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorOffGrey"/>
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Online Paid Services"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="14dp" />
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorOffGrey"/>
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Personalize Premium services"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorOffGrey"/>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </ScrollView>-->
+

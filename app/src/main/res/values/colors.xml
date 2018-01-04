@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#b67721</color>
+
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorPink">#b67721</color>
+    <color name="colorYellow">#FFEB3B</color>
+    <color name="colorEditBox1">#f0f0f0</color>
+    <color name="colorEditBox"> #EEEDEE</color>
+
+    ##/// App Color
+    <color name="colorRed">#cc2424</color>
+    <color name="colorGreen">#00a651</color>
+    <color name="colorLightGray">#f5f5f6</color>
+
+    <color name="colorDarkYellow"> #b67721</color>
+    <color name="colorMaroon"> #7f171f</color>
+    <color name="colorLightMaroon"> #87455D</color>
+    <color name="colorGrey"> #666666</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorOffPink">#f09076</color>
+    <color name="colorOffGrey">#dfe8e5</color>
+    <color name="colorLightWhite">#ead5d4</color>
+    <color name="colorLightYellow">#ffab38</color>
+    <color name="colorLightYellowForSubs">#ffba00</color>
+    <color name="colorSkyBlue">#21a9e1</color>
+
+    <color name="colorLightBlack">#1a1a1a</color>
+</resources>

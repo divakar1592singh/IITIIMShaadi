@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin_small"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/subscription_bg_shape"
+        >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/subscriptin_bottom_stroke"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/subscriptin_bottom_stroke"
+                >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin_small"
+                android:paddingRight="@dimen/activity_horizontal_margin_small"
+                android:paddingBottom="@dimen/activity_horizontal_margin"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Current Subscription Plan"
+                    android:textSize="14sp"
+                    android:padding="4dp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_gravity="left"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_shape_send_contact"
+                    android:text="Subscriber viewer"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:padding="4dp"
+                    android:layout_gravity="right"
+                    />
+            </FrameLayout>
+            </LinearLayout>
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin_small"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin_small"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    >
+            <Button
+                android:id="@+id/idSubscriptionBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/button_upgrade_selector"
+                android:text="Upgrade Profile Subscription"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:textAllCaps="false"
+                android:padding="5dp"
+                android:layout_gravity="center"/>
+
+                </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/subscriptin_bottom_stroke"
+            android:paddingTop="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Renewed On"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="@dimen/activity_horizontal_margin_small"
+
+                    android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/idLastRenewTV"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="May 02, 2018"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:textSize="12sp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin_small"
+                    android:paddingRight="@dimen/activity_horizontal_margin_small"
+                    android:background="@drawable/button_shape_green"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next Renewal Date"
+                    android:textColor="@color/colorBlack"
+                    android:paddingLeft="@dimen/activity_horizontal_margin_small"
+                    android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/idNextRenewTV"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="May 02, 2018"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin_small"
+                    android:textSize="12sp"
+                    android:paddingLeft="@dimen/activity_horizontal_margin_small"
+                    android:paddingRight="@dimen/activity_horizontal_margin_small"
+                    android:background="@drawable/button_shape_red"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin_small">
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorOffGrey"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/idSubsTranDetail_RV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+</LinearLayout>
+</LinearLayout>

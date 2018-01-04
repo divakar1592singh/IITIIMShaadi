@@ -1,0 +1,202 @@
+<resources>
+    <string name="app_name">IITIIMShaadi</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="description">Once 60% profile gets completed and documents uploaded, we shall activate your subscription. This shall enable search partner feature.
+        Now, you can view matches relevant to your search criteria on age, caste, location, ctc etc. Of the total choices that system suggests, detailed profiles of top 10 members can be seen.
+        You shall also be able to see full profiles of all paid members who match your criteria. A snapshot of rest of the profiles shall also be visible. This will give you a fairly good idea if this website is likely to be useful to you.
+        Should you find the profiles of interest, You may choose premier membership or online paid membership in order to begin interaction with members of your preference.</string>
+
+    <string name="wallet_description">Details of users referred by you for which Rs. 500 per user were credited to your account.</string>
+
+    <string name="refer_friend_description">Each of your friend who signs up with your reference will receive ₹ 500 (USD 8) in their wallet being maintained by us.
+        For each person you refer and s/he signs up with us as subscriber viewer*, we\'ll credit ₹ 500 (USD 8) to your account. There's no limit to how much credit you can earn.
+        Credit can be used to avail any of our paid services, including premier services.</string>
+
+    <string name="refer_terms_conditions">*Subscriber Viewer: completes all membership requirements</string>
+
+    <string name="upload_description_1">We remain intrigued on how much a resume and a photo add up to offer a realistic picture of an individual. Very little, right?</string>
+
+    <string name="upload_description_2">How else to decipher someone?</string>
+
+    <string name="upload_description_3">Perhaps a video.</string>
+
+    <string name="upload_description_4">This feature is likely to complement the decision making process while assessing a profile. Whats’ more - your passions, interests and
+        hobbies can be tagged by you to make use of our pioneer IT leverage in the industry - tag based match making - where those results are
+        featured where more interests match.</string>
+
+    <string name="upload_description_5">The smart ones will know the difference videos can make. Video wale dhulania le jayenge!</string>
+    <string name="upload_description_6">How to Make Videos and Upload on Youtube</string>
+    <string name="upload_description_7">There are several videos available on youtube that guide on how to make videos as well as how to upload them on youtube. You may
+        avail this support as per your requirement. We are not looking for professional videos. May target to upload normal quality videos that
+        we keep making in our day to day life. May use the link,https://support.google.com/youtube/answer/57407?hl=en to figure
+        out uploading them on youtube.</string>
+    <string name="upload_description_8">Note: Kindly ensure that content of video is socially acceptable and is not vulgar. Management’s decision remains final on acceptance of
+        any uploaded video</string>
+
+    #####FAQ section ######
+    <string name="faq_header">We have penned down some of the common questions that we come across. </string>
+
+    <string name="faq_ques1">1. What is IITIIMShaadi.com?</string>
+    <string name="faq_ans1">IITIIMShaadi.com is a matrimonial portal, only for the alumni of Premier Indian and international educational institutions.</string>
+
+    <string name="faq_ques2">2. Can only alumni of IIT and IIM register?</string>
+    <string name="faq_ans2">Not really. We welcome profiles from various premier institutions in all disciplines, may it be Management, Engineering Social Work, Medicine, Finance, Law, Fashion Design, Theater, Media Communication and you name it.</string>
+
+    <string name="faq_ques3">3. How do I know if my institute is included in your list of premier institutions or not?</string>
+    <string name="faq_ans3a">a. Click on Register tab appearing on the home screen of the website.</string>
+    <string name="faq_ans3b">b. Click on either male or female.</string>
+    <string name="faq_ans3c">c. You shall get list of various disciplines (management, Engineering etc.) Choose the one applicable to you and see the list of shortlisted colleges identified for this purpose.</string>
+
+    <string name="faq_ques4">4. Is the list of colleges same for both males and females?</string>
+    <string name="faq_ans4">No, the list is marginally relaxed for females. Most premier colleges have more than double the number of females and sometimes male to female ratio at premier institutions is 5:1. For Females, we have also included a select list of graduation colleges on all India basis. (Note: See Others under Indian and city)</string>
+
+    <string name="faq_ques5">5. How do you make sure that only genuine members register on this website?</string>
+    <string name="faq_ans5">We obtain scanned copy of educational document (any document such as degree/diploma Certificate, I Card, web-link, final year mark sheet etc) at the time of registration. Submission of these documents is compulsory for any member before we activate his/her profile.</string>
+
+    <string name="faq_ques6">6. How do I access the database?</string>
+    <string name="faq_ans6">Once you are an activated member (profile is complete and certificates are verified), you have access to the member database. You can fill in your own criteria on age, education, religion, caste and get to see profiles that meet your criteria.</string>
+
+    <string name="faq_ques7">7. Is it free to see database or one has to necessarily pay some fee to access same?</string>
+    <string name="faq_ans7">There is no fee for browsing the database. However, if you wish to see detailed profiles of more than 10 members, you need to avail paid subscription. Also, if you wish to communicate with shortlisted profiles through private message or sending friend’s message, you need to be a paid member.</string>
+
+    <string name="faq_ques8">8. What if I am not a paid member and someone sends me a message or friend request. Can I reply to him/her without being a paid member?</string>
+    <string name="faq_ans8">Yes, all our members can reply to a message or friend request even if they are not paid members.</string>
+
+    <string name="faq_ques9">9. Will the chances of other members viewing my profile go up if I am a paid member vis a vis staying as a free member?</string>
+    <string name="faq_ans9">Yes, certainly. When any free member searches, s/he gets to see full profiles of all paid members as long as they fall within one’s search criteria. </string>
+
+    <string name="faq_ques10">10. How much is the fee to become a paid member?</string>
+    <string name="faq_ans10">We present following options</string>
+
+    <string name="faq_ques_india">Indian</string>
+    <string name="faq_ans_in_a">a. Rs. 5,000 + 18% GST = Rs. 5,900 (Validity:1 month from the date of payment)</string>
+    <string name="faq_ans_in_b">b. Rs. 10,000 + 18% GST = Rs. 11,800 (Validity:6 months from the date of payment)</string>
+    <string name="faq_ans_in_c">c. Rs. 15,000 + 18% GST = Rs. 17,700 (Validity:1 year from the date of payment)</string>
+    <string name="faq_ans_in_d">d. Rs. 25,000+ 18% GST = Rs. 29,550 (Validity:Lifetime Membership)</string>
+
+    <string name="faq_ques_inter">International</string>
+    <string name="faq_ans_int_a">a. USD 100 (Validity:1 month from the date of payment) </string>
+    <string name="faq_ans_int_b">b. USD 200 (Validity:6 months from the date of payment) </string>
+    <string name="faq_ans_int_c">c. USD 300 (Validity:1 year from the date of payment)</string>
+    <string name="faq_ans_int_d">d. USD 500 (Validity:Lifetime Membership) </string>
+
+    <string name="faq_ques11">11. I am looking for personalised support to search a match. Can you provide active support?</string>
+    <string name="faq_ans11">Yes, you are welcome to avail our premier services, http://iitiimshaadi.com/premier-services/. This is handled by directors themselves. For full information, please write to us on premier@iitiimshaadi.com or call the founder director, Taksh at +91-9811199800 </string>
+
+    <string name="faq_ques12">12. What if I am in final year of my education and I do not have certificates?</string>
+    <string name="faq_ans12">We are happy to accept scanned copy of your ID card/latest transcripts.</string>
+
+    <string name="faq_ques13">13. I face the problem of uploading certificates and photographs on IITIIMShaadi.com...</string>
+    <string name="faq_ans13">Kindly mail it to us at: documents@iitiimshaadi.com. We shall upload the photographs on your behalf and also verify the certificates.</string>
+
+    <string name="faq_ques14">14. Can my certificates be seen by others viewing my profile?</string>
+    <string name="faq_ans14">No, they are required only for our internal verification.</string>
+
+    <string name="faq_ques15">15. Do you also suggest some matches based on a member’s profile?</string>
+    <string name="faq_ans15">We advise you to fill up partner’s preference while filling up the form. IITIIM has developed software, called, \'Dhappa\'. This software pulls out from the database the profiles that match requirements indicated by you. We send you the details of maximum two matching profiles every Friday. This service is available on a free of cost basis.</string>
+
+    <string name="faq_ques16">16. What if I am not able to find my college?</string>
+    <string name="faq_ans16">No problem! You can mail us the details of both course and college at contact @iitiimshaadi.com. We shall review its ranking and confirm if we are in a position to include it in the list or not. </string>
+
+    <string name="faq_ques17">17. As a paid member can I get refund of fees for the unpaid period of my subscription term?</string>
+    <string name="faq_ans17">Regret, there is no provision for refund of fee.</string>
+
+    <string name="faq_ques18">18. How large is your database?</string>
+    <string name="faq_ans18">In all 30,000 plus individuals have registered their profiles. However, only 9000 have so far completed the eligibility requirement and they form database of activated members. As a result of promotion, database is growing up by 100 profiles every week. Being a niche site, we don’t ever expect a very large database. Our target is not to show you a large number of profiles. It is to show you extremely relevant ones.</string>
+
+    <string name="faq_ques19">19. I am a paid member. How to get contact numbers or email of other members?</string>
+    <string name="faq_ans19a">1. You could send a Friend’s request to indicate your interest. The moment your friend request is accepted, you shall be able to view contact number and mail ID. Same is not visible for members who do not accept friend request. This is in accordance with our Privacy Policy.</string>
+    <string name="faq_ans19b">2. Alternatively, you could evince your interest by writing a mail through the portal. You may like to mention your contact details in this mail.</string>
+    <string name="faq_ans19c">3. You have the facility to check if your mail has been read or not (you see double tick like we see in whatsapp messages)</string>
+
+    #### About Us
+    <string name="about_alma">Alma Mater Matters Pvt Ltd (IITIIMShaadi) – Exclusive Lounge to Explore Matrimonial Alliance Among Alumni of Premier Educational Institutions.</string>
+    <string name="about_founder">Founders</string>
+    <string name="about_founder1">Taksh Gupta – Management Graduate from SP Jain School of Global Management. Author of Love @ 365 kmph and Hiraeth: First Love First Contact</string>
+    <string name="about_founder2">Dr. Ajay Gupta – PhD from Delhi School of Economics and Post Graduate from IRMA.</string>
+    <string name="about_alumani">Alumni of Premier Education Institutions deservedly desire companionship of the ‘matching intellect’, with similar experiences and expectations. This portal addresses the tailor-made needs of this segment.</string>
+    <string name="about_regi">Registration Requirement</string>
+    <string name="about_regi1">Fundamentally we invite registration from alumni of top few Indian and Global Institutions irrespective of the field of study.</string>
+    <string name="about_regi2">We wish to cover Engineering, Management, Architecture, Medicine, Finance, Law, Fashion Design, Theater, Media Communication, Psychology, Sociology, Music, Dance , Culinary Arts, Historic Preservation, Animal Psychology and you name it. Senior Government Officers are also included. An indicative list of such institutions has been listed in the eligibility criteria. This list by no means is comprehensive and being updated on a periodic basis. Your suggestions in this regard are more than welcome.</string>
+
+    ### Success Stories####
+    <string name="story_1">Hello,\n I would like to deactivate my account since I have found my perfect match through iitiimshaadi.com.\n
+        Thanks for providing a great platfor40m to help me find us find each other.\n
+        Bride: Engineering Graduate from IIIT Hyderabad\n
+        Groom: Masters from Carnegie Mellon University\n
+        Mail Received on 1st March, 2017</string>
+    <string name="story_2">Dear Sir/Mam,\n
+        Thanks for your services. I have found my match through iitiimshaadi.com. Please delete my profile now. Please confirm once you delete the profile.\n
+        Thanks &amp; regards, XYZ</string>
+    <string name="story_3">Hi,\n
+        Thanks IITIIMShaadi.com for helping me finding right soul mate. It is really a good platform where you can get your partner as per your choice. Thanks Ajay and Swati for stepping down to my home and meeting us. It was a great meeting with you guys.\n
+        Thanks and Regards,XYZ</string>
+    <string name="story_4">Hi,\n
+        Please close my profile as I have found my life partner on your portal.
+        Thanks and Regards,XYZ
+
+        Bride: Engineering Graduate from DCE
+        Groom: Masters from BITS Pilani
+        Mail Received on 2nd April, 2016</string>
+    <string name="story_5">Hi Swati,\n
+        Thanks a lot for your wishes. Yes as a matter of fact, we found a match for her through iitiim website only.Its just that we wish not to publicize it on the website. Our experience with you guys has been awesome. Unlike other matrimonial websites, we were not over burdened by hundreds of profiles and hence it made our search very convenient after putting up the filters. Kudos to you and your team for the great work.\n
+        Mail from Bride\'s Father\n
+        Bride: Management Graduate from IIM Udaipur and Purdue University, USA\n
+        Groom: Management Graduate from ISB Hyderabad\n
+        Mail Received on 22nd January, 2016</string>
+    <string name="story_6">Hi Swati,\n
+        I have some good news! I found my life partner on iitiimshaadi.com \n
+        We want to thank you and your entire team for putting us in touch with each other. Kindly delete both of our profiles. Cheers\n
+        Bride: Management Graduate from Fore School of Management\n
+        Groom: Management Graduate from Rotman School of Management  University of Toronto\n
+        Mail received on 29th November, 2015 </string>
+    <string name="story_7">Hey,\n
+        I got my partner using your website. Now kindly delete my profile.
+        Thank you.
+
+        Bride: IIM Kozhikode
+        Groom: IIM Kolkata
+        Mail received on 9th November, 2015</string>
+    <string name="story_8">Hi Swati,\n
+        I have some good news! I don\'t know about other success stories of iitiimshaadi..but here is one! And it\'s my own :) I found my partner on your portal and we connected/met online in nov,14. I live in Nigeria and was struggling to find the right person for the past many years. But after we spoke and got to know each other I came over to India in March and got engaged! The wedding is planned for the 18th of June,15. We are both really excited and thank the iitiimshaadi team for putting us together! Hitching us essentially:) We don\'t feel that this is an arranged marriage..we found love online! All the very best to your team to put more hearts together! Cheers!
+        Bride: Management Graduate from IIM, Lucknow
+        Groom: Management Graduate from IIFT
+        Married on 18th June, 2015</string>
+    <string name="story_9">Hi,\n
+        Wish to take this opportunity to thank you. I met my soulmate through your site . Please delete my profile from your website.\n
+        Warm Regards \n
+        Bride: Qualified Company Secretary and Law Graduate from National Law School, Bangalore\n
+        Groom: Management Graduate from XLRI\n
+        Married on 5th June, 2015</string>
+    <string name="story_10">Hi team,\n
+        Could you please remove my profile from your site? I have found my match and have been happily married. Thanks, by the way I found my match on your site only, so would like to thank your team!\n
+        Management Graduate from IIM Kozhikode\n
+        Management Graduate from XLRI Jamshedpur and Engineering Graduate from NIT Allahabad\n
+        Mail Received on 25th July, 2016</string>
+
+
+    ### Intro slider #####
+    <string name="intro_1">Who Can Register ?\n\n
+        Alumni of top few Indian and Global Institutions
+        (Management, Engineering, Architecture, Medicine, Mass Communication, CA/CS/ICWA/CFA, Fashion Design &amp; many more)</string>
+    <string name="intro_2">Total numbers of members - 40,000\n\n
+        Active monthly database - 10,000\n\n
+        200 people found their match</string>
+    <string name="intro_3">How to Connect ?\n\n
+        Send Messages/Friend Request\n
+        View phone number\n
+        OR\n
+        Adopt personalised services</string>
+    ### Privacy Policy #####
+    <string name="privacy_1"></string>
+    <string name="privacy_note"><b>Note:</b> We may change this Privacy Policy from time to time based on your comments or as a result of a change of policy in our company. In case we do not receive any response, it will be assumed that you have understood the privacy policy and good with it. If you have any questions/concerns regarding our Privacy Statement, please write in to support@iitiimshaadi.com</string>
+    <string name="disclaimer">It may be noted that the website IITIIMShaadi.com, promoted by Alma Mater Matters Pvt Ltd is purely to facilitate matchmaking among better educated section of the society. We have attempted to take certain precautions to offer you meaningful database. However, the organization does not accept any legal responsibility or risk originating from wrong or inaccurate data presented by any of the member(s).</string>
+
+    <string name="error_string">Something went wrong from server</string>
+
+    <string name="Rs">\u20B9</string>
+
+</resources>

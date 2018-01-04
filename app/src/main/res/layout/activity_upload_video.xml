@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.UploadVideoActivity">
+
+    <include layout="@layout/app_toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/activity_horizontal_margin_small">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/subscription_bg_shape"
+            android:padding="@dimen/activity_horizontal_margin_small">
+
+        <TextView
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorMaroon"
+                android:text="Add Videos- Match Making though Video Tags"
+                android:textColor="@color/colorWhite"
+                android:gravity="center_horizontal"
+                android:textSize="14sp"/>
+
+         ### video upload description
+            <TextView
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_1"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_2"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_3"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_4"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_5"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorOffGrey"/>
+
+        #### Video url section
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Who Am I"
+                android:textColor="@color/colorGrey"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter your youtube video URL(maximum 1 minutes)"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <EditText
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Youtube Video URL"
+                android:theme="@style/TextLabel1"/>
+            <Button
+                android:id="@+id/videoUrlSubmitBtn"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_register_selector"
+                android:textColor="@color/colorMaroon"
+                android:text="Submit"
+                android:textSize="16sp"
+                android:textAllCaps="false"/>
+
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorOffGrey"/>
+
+         ### Hobbies section
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Hobbies (Maximum 5 hobbies)"
+                android:textColor="@color/colorGrey"
+                android:textSize="16sp"/>
+            <EditText
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:textColor="@color/colorBlack"
+                android:background="@drawable/edit_box_shape"/>
+            <Button
+                android:id="@+id/hobbiesSaveBtn"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_register_selector"
+                android:textColor="@color/colorMaroon"
+                android:text="Save"
+                android:textSize="16sp"
+                android:textAllCaps="false"/>
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorOffGrey"/>
+
+            #### Prefered partner Video url section
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Preferred Partner"
+                android:textColor="@color/colorGrey"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Enter your youtube video URL(maximum 1 minutes)"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <EditText
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Youtube Video URL"
+                android:theme="@style/TextLabel1"/>
+            <Button
+                android:id="@+id/preferedPartnerUrlSubmitBtn"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_register_selector"
+                android:textColor="@color/colorMaroon"
+                android:text="Submit"
+                android:textSize="16sp"
+                android:textAllCaps="false"/>
+
+            <View
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorOffGrey"/>
+
+            ### Description
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_6"
+                android:textColor="@color/colorGrey"
+                android:textSize="16sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_7"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_description_8"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

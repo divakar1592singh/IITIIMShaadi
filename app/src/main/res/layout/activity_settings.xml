@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.SettingsActivity">
+
+    <include layout="@layout/app_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+    #### General Settings
+            <RelativeLayout
+                android:background="@color/colorMaroon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp">
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="General Settings"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"/>
+                <ImageView
+                    android:id="@+id/generalSettingIV"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/arrow_down_white"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/generalSettingLL"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel1">
+
+                        <EditText
+                            android:id="@+id/accountEmailET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Account Email"
+                            android:singleLine="true"
+                            android:inputType="textEmailAddress"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel1">
+
+                        <EditText
+                            android:id="@+id/userNameET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Username"
+                            android:singleLine="true" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel1">
+
+                        <EditText
+                            android:id="@+id/nameET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Name"
+                            android:singleLine="true"
+                            android:inputType="textPersonName"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel1">
+
+                        <EditText
+                            android:id="@+id/passwordET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="New Password"
+                            android:singleLine="true"
+                            android:inputType="textPassword"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextLabel1">
+
+                        <EditText
+                            android:id="@+id/confirmPasswordET"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Confirm New Password"
+                            android:singleLine="true"
+                            android:inputType="textPassword"/>
+                    </android.support.design.widget.TextInputLayout>
+                    <Button
+                        android:id="@+id/generalSaveBtn"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_register_selector"
+                        android:textColor="@color/colorMaroon"
+                        android:text="Save Changes"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <!--<android.support.v7.widget.CardView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.CardView>-->
+
+            ####Notification Settings
+            <RelativeLayout
+                android:layout_marginTop="50dp"
+                android:background="@color/colorMaroon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp">
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notification Settings"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"/>
+                <ImageView
+                    android:id="@+id/notificationSttingIV"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/arrow_down_white"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/notificationSettingLL"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Messages"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorMaroon"/>
+
+                    <RelativeLayout
+                        android:id="@+id/idSendRL"
+                        android:layout_marginTop="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                        <TextView
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGrey"
+                            android:text="A member sends you a new message"
+                            android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/idMemberSendTV"
+                                android:layout_alignParentLeft="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlack"
+                                android:text="Select Status"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_alignParentRight="true"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/arrow_right"/>
+                    </RelativeLayout>
+                    <View
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDarkYellow"/>
+
+                    <RelativeLayout
+                        android:id="@+id/idAddsRL"
+                        android:layout_marginTop="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                        <TextView
+                            android:layout_alignParentLeft="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGrey"
+                            android:text="A member adds you as friend"
+                            android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/idMemberAddsTV"
+                                android:layout_alignParentLeft="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlack"
+                                android:text="Select Status"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+                        <ImageView
+                            android:layout_alignParentRight="true"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/arrow_right"/>
+                    </RelativeLayout>
+                    <View
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDarkYellow"/>
+                    <Button
+                        android:id="@+id/notificationSaveBtn"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_register_selector"
+                        android:textColor="@color/colorMaroon"
+                        android:text="Save Changes"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <!--<android.support.v7.widget.CardView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.CardView>-->
+
+            ### Deactive Account
+            <RelativeLayout
+                android:layout_marginTop="50dp"
+                android:background="@color/colorMaroon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="10dp">
+                <TextView
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deactivate Profile"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"/>
+                <ImageView
+                    android:id="@+id/deactiveAccountIV"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/arrow_down_white"/>
+            </RelativeLayout>
+
+            <!--RADIO BUTTON-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/deactiveAccountLL"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Why would you like to deactivate your profile?"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorMaroon"/>
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="I got married through IITIIMShaadi. Thank you team."
+                            android:textColor="@color/colorGrey"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="30dp"
+                            android:textSize="14sp"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="I got married through some other source"
+                            android:textColor="@color/colorGrey"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="30dp"
+                            android:textSize="14sp"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Wish to give a temporary break to search."
+                            android:textColor="@color/colorGrey"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="30dp"
+                            android:textSize="14sp"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="I don't like your quality of service/website."
+                            android:textColor="@color/colorGrey"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="30dp"
+                            android:textSize="14sp"/>
+                        <RadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="I don't find many relevant profile here."
+                            android:textColor="@color/colorGrey"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="30dp"
+                            android:textSize="14sp"/>
+
+                    </RadioGroup>
+
+                    <Button
+                        android:id="@+id/deactiveAccountSaveBtn"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_register_selector"
+                        android:textColor="@color/colorMaroon"
+                        android:text="Deactivate Profile"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        android:layout_marginBottom="10dp"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+           <!-- <android.support.v7.widget.CardView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.CardView>-->
+
+
+   ### main layout end inside srollview
+         </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

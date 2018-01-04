@@ -1,0 +1,73 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="TextLabel" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/colorMaroon</item>
+        <item name="android:textSize">16sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/colorDarkYellow</item>
+        <item name="colorControlNormal">@color/colorDarkYellow</item>
+        <item name="colorControlActivated">@color/colorDarkYellow</item>
+    </style>
+
+    <style name="TextLabel1" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/colorGrey</item>
+        <item name="android:textSize">16sp</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/colorDarkYellow</item>
+        <item name="colorControlNormal">@color/colorDarkYellow</item>
+        <item name="colorControlActivated">@color/colorDarkYellow</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorHeight">4dp</item>
+        <item name="tabIndicatorColor">@color/colorDarkYellow</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">@color/colorMaroon</item>
+        <item name="tabTextAppearance">@android:style/TextAppearance.Widget.TabWidget</item>
+        <item name="tabSelectedTextColor">@color/colorWhite</item>
+        <item name="tabTextColor">@color/colorLightWhite</item>
+    </style>
+
+    <style name="animation">
+        <item name="android:windowEnterAnimation">@anim/in_animation</item>
+        <item name="android:windowExitAnimation">@anim/out_animation</item>
+    </style>
+
+
+    <style name="BottomOptionsDialogTheme" parent="AppTheme">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item   >
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_gravity">right</item>
+
+        <!--<item name="colorPrimary">@color/orange_dark</item>
+        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorAccent">@color/gray_light</item>-->
+    </style>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Holo.Light" tools:ignore="NewApi">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+</resources>

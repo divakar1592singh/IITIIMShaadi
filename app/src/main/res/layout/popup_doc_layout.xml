@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorMaroon">
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Document"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"/>
+    </RelativeLayout>
+    <!--UPLOAD BIODATA-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_8_dp"
+        android:paddingTop="@dimen/size_4_dp"
+        android:paddingRight="@dimen/size_8_dp"
+        android:paddingBottom="@dimen/size_4_dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Upload Biodata"
+            android:textAllCaps="true"
+            android:textColor="@color/colorMaroon"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/button_login_selector">
+            <Button
+                android:id="@+id/idDocBtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse"
+                android:textSize="@dimen/size_12_dp"
+                android:layout_gravity="left"/>
+            <TextView
+                android:id="@+id/idDocTv1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No file selected"
+                android:gravity="right"
+                android:paddingRight="@dimen/size_4_dp"
+                android:layout_gravity="right|center_vertical"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--Upload Highest Education Certificate-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_8_dp"
+        android:paddingTop="@dimen/size_4_dp"
+        android:paddingRight="@dimen/size_8_dp"
+        android:paddingBottom="@dimen/size_4_dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textAllCaps="true"
+            android:text="Upload Highest Education Certificate"
+            android:textColor="@color/colorMaroon"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/button_login_selector">
+            <Button
+                android:id="@+id/idDocBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse"
+                android:layout_gravity="left"/>
+            <TextView
+                android:id="@+id/idDocTv2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No file selected"
+                android:gravity="right"
+                android:paddingRight="@dimen/size_4_dp"
+                android:layout_gravity="right|center_vertical"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--Upload Under Graduate Document-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_8_dp"
+        android:paddingTop="@dimen/size_4_dp"
+        android:paddingRight="@dimen/size_8_dp"
+        android:paddingBottom="@dimen/size_4_dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Upload Under Graduate Document"
+            android:textAllCaps="true"
+            android:textColor="@color/colorMaroon"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/button_login_selector">
+            <Button
+                android:id="@+id/idDocBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse"
+                android:layout_gravity="left"/>
+            <TextView
+                android:id="@+id/idDocTv3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No file selected "
+                android:gravity="right"
+                android:paddingRight="@dimen/size_4_dp"
+                android:layout_gravity="right|center_vertical"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--Upload Post Graduate Document-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_8_dp"
+        android:paddingTop="@dimen/size_4_dp"
+        android:paddingRight="@dimen/size_8_dp"
+        android:paddingBottom="@dimen/size_4_dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Upload Post Graduate Document"
+            android:textAllCaps="true"
+            android:textColor="@color/colorMaroon"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/button_login_selector">
+            <Button
+                android:id="@+id/idDocBtn4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse"
+                android:layout_gravity="left"/>
+            <TextView
+                android:id="@+id/idDocTv4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No file selected "
+                android:gravity="right"
+                android:paddingRight="@dimen/size_4_dp"
+                android:layout_gravity="right|center_vertical"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/confirmBtn"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:background="@drawable/border_maroon_selector"
+            android:text="Cancel"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorMaroon"/>
+
+        <Button
+            android:id="@+id/loginFPLBtn"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:background="@drawable/border_maroon_selector"
+            android:text="Submit"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorMaroon"/>
+    </RelativeLayout>
+</LinearLayout>

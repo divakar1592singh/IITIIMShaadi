@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:layout_marginTop="5dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:gravity="center">
+                <LinearLayout
+                    android:id="@+id/idViewProfileLayout"
+                    android:layout_weight=".7"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+                    <com.senzecit.iitiimshaadi.utils.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/profile_img1" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View Profile"
+                        android:textSize="13dp"
+                        android:paddingTop="4dp"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textColor="@color/colorMaroon"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="1.3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ashish kapoor"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"
+                        android:padding="7dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorEditBox"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="28 years/ 5 ft 10in (177cm)"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"
+                        android:padding="7dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorEditBox"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hindu/Khatri"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"
+                        android:padding="7dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorEditBox"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deloitte Consulting US India Pvt Ltd"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"
+                        android:padding="7dp"/>
+                    <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:background="@color/colorEditBox"/>-->
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:padding="7dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/idAcceptBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Accept"
+                    android:textSize="14dp"
+                    android:textAllCaps="false"
+                    />
+
+                <Button
+                    android:id="@+id/idCancelReqBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancel Request"
+                    android:textSize="14dp"
+                    android:textAllCaps="false"
+                    />
+
+                <Button
+                    android:id="@+id/idUnShortListedBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Unshortlist"
+                    android:textSize="14dp"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

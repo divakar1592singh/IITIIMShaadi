@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorDarkYellow"
+    android:id="@+id/toolbar">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_centerInParent="true"
+            android:id="@+id/backIV"
+            android:visibility="visible"
+            android:layout_alignParentLeft="true"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:src="@drawable/logo_main"/>
+        <ImageView
+            android:id="@+id/albumLogoIV"
+            android:visibility="gone"
+            android:layout_toLeftOf="@+id/toolbar_title"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/album"/>
+        <TextView
+            android:layout_centerInParent="true"
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            android:text="Premier Services" />
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.Toolbar>

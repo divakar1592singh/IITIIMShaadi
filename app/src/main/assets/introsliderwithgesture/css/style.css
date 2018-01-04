@@ -1,0 +1,249 @@
+body {
+  font-family: PT Sans,Helvetica,Arial,sans-serif;
+  -ms-scroll-chaining: none;
+  /* Prevents Metro from swiping to the next tab or app. */
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.tree-slider {
+  position: fixed;
+  top: 0;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.tree-slider #my-tree:checked ~ .slider {
+  -webkit-transform: translateX(0vw);
+          transform: translateX(0vw);
+}
+
+.tree-slider #my-tree:checked ~ nav label {
+  display: none;
+}
+
+.tree-slider #my-tree:checked ~ nav label.my-tree {
+  display: initial;
+}
+
+.tree-slider #my-tree:checked ~ nav .buttons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.tree-slider #my-tree:checked ~ nav .buttons label {
+  display: inline-block;
+}
+
+.tree-slider #my-tree:checked ~ nav .buttons label[for="my-tree"] {
+  cursor: default;
+  opacity: 1;
+}
+
+.tree-slider #profile:checked ~ .slider {
+  -webkit-transform: translateX(-100vw);
+          transform: translateX(-100vw);
+}
+
+.tree-slider #profile:checked ~ nav label {
+  display: none;
+}
+
+.tree-slider #profile:checked ~ nav label.profile {
+  display: initial;
+}
+
+.tree-slider #profile:checked ~ nav .buttons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.tree-slider #profile:checked ~ nav .buttons label {
+  display: inline-block;
+}
+
+.tree-slider #profile:checked ~ nav .buttons label[for="profile"] {
+  cursor: default;
+  opacity: 1;
+}
+
+.tree-slider #people-select:checked ~ .slider {
+  -webkit-transform: translateX(-200vw);
+          transform: translateX(-200vw);
+}
+
+.tree-slider #people-select:checked ~ nav label {
+  display: none;
+}
+
+.tree-slider #people-select:checked ~ nav label.people-select {
+  display: initial;
+}
+
+.tree-slider #people-select:checked ~ nav .buttons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.tree-slider #people-select:checked ~ nav .buttons label {
+  display: inline-block;
+}
+
+.tree-slider #people-select:checked ~ nav .buttons label[for="people-select"] {
+  cursor: default;
+  opacity: 1;
+}
+
+.tree-slider #leaves:checked ~ .slider {
+  -webkit-transform: translateX(-300vw);
+          transform: translateX(-300vw);
+}
+
+.tree-slider #leaves:checked ~ nav label {
+  display: none;
+}
+
+.tree-slider #leaves:checked ~ nav label.leaves {
+  display: initial;
+}
+
+.tree-slider #leaves:checked ~ nav .buttons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.tree-slider #leaves:checked ~ nav .buttons label {
+  display: inline-block;
+}
+
+.tree-slider #leaves:checked ~ nav .buttons label[for="leaves"] {
+  cursor: default;
+  opacity: 1;
+}
+
+input[type="radio"] {
+  position: fixed;
+  top: -9999px;
+}
+
+label {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+label:hover {
+  opacity: 0.75;
+}
+
+nav {
+  position: fixed;
+  width: 100vw;
+  left: 0;
+  bottom: 0;
+  height: 4em;
+  text-align: center;
+}
+
+nav .done {
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  -webkit-transition: text-shadow 0.3s ease, -webkit-transform 0.3s ease;
+  transition: text-shadow 0.3s ease, -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  transition: transform 0.3s ease, text-shadow 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+nav .done.highlight {
+  opacity: 1;
+  text-shadow: 0 0 1em;
+  -webkit-transform: scale(2);
+          transform: scale(2);
+}
+
+nav .buttons {
+  display: block;
+  margin: 0 auto;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  color: white;
+  bottom: 1.8em;
+}
+
+nav .buttons label {
+  font-size: 2em;
+  width: 9mm;
+}
+
+.slider {
+  width: 400vw;
+  position: fixed;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+  color: white;
+}
+
+.slide {
+  text-align: center;
+  float: left;
+  height: 100vh;
+  width: 100vw;
+}
+
+.slide img {
+  display: block;
+  max-height: 70%;
+  max-width: 100%;
+  margin: auto;
+}
+
+.slide h2 {
+  display: inline-block;
+  font-size: 5vh;
+  font-weight: normal;
+  text-align: left;
+  margin: 0 2em;
+}
+
+#my-tree-slide {
+  background-color: #00AFA9;
+}
+
+#profile-slide {
+  background-color: #F9D35B;
+}
+
+#people-select-slide {
+  background-color: #97A6F2;
+}
+
+#leaves-slide {
+  background-color: #FB939D;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/54046/leaves.png");
+}
+
+#leaves-slide h2 {
+  margin-top: 1em;
+  line-height: 100vh;
+  vertical-align: middle;
+}

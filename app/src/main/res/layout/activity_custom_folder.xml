@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.CustomFolderActivity">
+
+    <include layout="@layout/app_toolbar"/>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputLayout
+            android:layout_weight="1.2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/folderNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter the Folder Name"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"/>
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.8"
+            android:weightSum="0.8">
+        <ImageView
+            android:id="@+id/idAddFolder"
+            android:layout_weight=".233"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/add_folder"
+            android:background="@drawable/button_login_selector"
+            />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.05"/>
+            <ImageView
+                android:id="@+id/idEditFolder"
+                android:layout_weight=".233"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_edit"
+                android:background="@drawable/button_login_selector"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.05"/>
+            <ImageView
+                android:id="@+id/idDeleteFolder"
+                android:layout_weight=".233"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_delete"
+                android:background="@drawable/button_login_selector"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:layout_marginTop="0dp"
+        android:id="@+id/tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        app:tabGravity="fill"
+        android:theme="@style/Base.Widget.Design.TabLayout"
+        >
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

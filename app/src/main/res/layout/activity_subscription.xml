@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.SubscriptionActivity">
+
+    <include layout="@layout/app_toolbar"/>
+
+    <FrameLayout
+        android:id="@+id/main_subscription_FL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <!--<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorMaroon"
+                android:text="Select Indian or International Payment"
+                android:textColor="@color/colorWhite"
+                android:gravity="center_horizontal"
+                android:textSize="14sp"/>
+
+            <RadioGroup
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:layout_marginRight="70dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="International"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGrey"
+                    android:buttonTint="@color/colorDarkYellow"/>
+                <RadioButton
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indian"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGrey"
+                    android:buttonTint="@color/colorDarkYellow"/>
+
+            </RadioGroup>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/service"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select validity\nof paid service"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp"/>
+                    <View
+                        android:layout_toRightOf="@+id/service"
+                        android:layout_marginLeft="12dp"
+                        android:background="@color/colorGrey"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:id="@+id/indian"
+                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Indian"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp"/>
+                    <View
+                       android:layout_marginRight="9dp"
+                        android:layout_toLeftOf="@+id/international"
+                        android:background="@color/colorGrey"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"/>
+                    <TextView
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/international"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="International"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:id="@+id/serviceValidity"
+                        android:orientation="vertical"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <RadioGroup
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1 month\nsubscription"
+                                android:textColor="@color/colorGrey"
+                                android:textSize="12sp"
+                                android:buttonTint="@color/colorDarkYellow"/>
+                            <RadioButton
+                                android:layout_marginTop="15dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6 month\nsubscription"
+                                android:textColor="@color/colorGrey"
+                                android:textSize="12sp"
+                                android:buttonTint="@color/colorDarkYellow"/>
+                            <RadioButton
+                                android:layout_marginTop="15dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="12 month\nsubscription"
+                                android:textColor="@color/colorGrey"
+                                android:textSize="12sp"
+                                android:buttonTint="@color/colorDarkYellow"/>
+                            <RadioButton
+                                android:layout_marginTop="15dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lifetime\nsubscription"
+                                android:textColor="@color/colorGrey"
+                                android:textSize="12sp"
+                                android:buttonTint="@color/colorDarkYellow"/>
+                        </RadioGroup>
+
+                    </LinearLayout>
+                    &lt;!&ndash;<View
+                        android:layout_toRightOf="@+id/serviceValidity"
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/colorGrey"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"/>&ndash;&gt;
+                    <LinearLayout
+                        android:id="@+id/indianCurr"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_marginLeft="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rs.5,000+18%\nGST = Rs 5900"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rs.10,000+18%\nGST = Rs 11800"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rs.15,000+18%\nGST = Rs 17700"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rs.25,000+18%\nGST = Rs 29500"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+                    &lt;!&ndash;<View
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/indianCurr"
+                        android:background="@color/colorGrey"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"/>&ndash;&gt;
+                    <LinearLayout
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="20dp"
+                        android:id="@+id/internationalCurr"
+                        android:orientation="vertical"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 100"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:layout_marginTop="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 200"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:layout_marginTop="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 300"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:layout_marginTop="30dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 500"
+                            android:textColor="@color/colorGrey"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+           &lt;!&ndash; <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrey"/>&ndash;&gt;
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment Details"
+                android:textColor="@color/colorMaroon"
+                android:textSize="16sp"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <RelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sub-Total"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/subTotalAmount"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rs. 5900"
+                        android:textColor="@color/colorMaroon"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <TextView
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Amount"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/totalAmount"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rs. 5900"
+                        android:textColor="@color/colorMaroon"
+                        android:textSize="14sp"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <RadioGroup
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Online Payment/CreditCard/DebitCard/NetBanking"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGrey"
+                    android:buttonTint="@color/colorDarkYellow"/>
+                <RadioButton
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cheque/NEFT/RTGS/Bank-2-Bank Transfer"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGrey"
+                    android:buttonTint="@color/colorDarkYellow"/>
+            </RadioGroup>
+
+            <Button
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Pay Now"
+                android:background="@drawable/button_shape_register"
+                android:textSize="14sp"
+                android:textAllCaps="false"
+                android:textColor="@color/colorMaroon"/>
+
+        </LinearLayout>
+    </ScrollView>-->
+
+
+</LinearLayout>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.ProfileActivity">
+
+    <include
+        layout="@layout/app_toolbar"/>
+    <ScrollView
+        android:id="@+id/scrollViewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:id="@+id/frameProfileImg"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/profile_frame"/>
+                    <com.senzecit.iitiimshaadi.utils.CircleImageView
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:src="@drawable/profile_img"/>
+                </FrameLayout>
+
+            </RelativeLayout>
+            <ImageView
+                android:layout_marginTop="-50dp"
+                android:layout_marginLeft="40dp"
+                android:layout_gravity="center"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/camera"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\@Aasonia"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\@3344"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/myProfileBtn"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_shape_profile_select"
+                    android:text="About Me"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"/>
+                <Button
+                    android:id="@+id/partnerProfileBtn"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_shape_profile_unselect"
+                    android:text="Partner Preference"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.senzecit.iitiimshaadi.utils.NonScrollExpandableListView
+                    android:visibility="visible"
+                    android:id="@+id/expandableLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:groupIndicator="@null">
+                </com.senzecit.iitiimshaadi.utils.NonScrollExpandableListView>
+
+                <com.senzecit.iitiimshaadi.utils.NonScrollExpandableListView
+                    android:visibility="gone"
+                    android:id="@+id/expandablePartnerLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:groupIndicator="@null">
+                </com.senzecit.iitiimshaadi.utils.NonScrollExpandableListView>
+            </FrameLayout>
+
+
+            <Button
+                android:id="@+id/userRegisterBtn"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_submit_selector"
+                android:text="Submit"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="false"
+               />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

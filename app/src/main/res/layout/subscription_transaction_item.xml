@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="2dp">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin_small">
+
+    <!--#1-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serial No."
+            android:textColor="@color/colorBlack"
+            android:layout_gravity="left"/>
+        <TextView
+            android:id="@+id/idSerialNoTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IITIIM0011"
+            android:layout_gravity="right"/>
+
+    </FrameLayout>
+<!--#2-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Payment Mode"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/idPaymentModeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Check" />
+
+    </FrameLayout>
+<!--#3-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Transaction Id"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/idTransactionIdTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="55iitiim908" />
+
+    </FrameLayout>
+<!--#4-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Amount"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/idAmountTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="200" />
+
+    </FrameLayout>
+<!--#5-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Payment Date"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/idPaymentDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="01/02/2016" />
+
+    </FrameLayout>
+<!--#6-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Expiry Date"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/idExpiryDateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="03/05/2019" />
+
+    </FrameLayout>
+<!--#7-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Duration"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/idDurationTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="3 months" />
+
+    </FrameLayout>
+
+
+</LinearLayout>
+</android.support.v7.widget.CardView>

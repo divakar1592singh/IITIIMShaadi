@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.ContactUsActivity">
+
+    <include layout="@layout/app_toolbar"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/fullNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/emailET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/phoneET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Phone"
+                    android:singleLine="true"
+                    android:inputType="phone"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/subjectET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Subject"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Message"
+                android:textColor="@color/colorGrey"
+                android:textSize="16sp"/>
+            <EditText
+                android:id="@+id/messageET"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:textColor="@color/colorBlack"
+                android:background="@drawable/button_shape_login"/>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please enter verification code displayed below."
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp"/>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:theme="@style/TextLabel1">
+
+                    <EditText
+                        android:id="@+id/verifyCaptchaET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Verify Captcha"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/captchaBtn"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_shape_forgot"
+                        android:text="9IiTiIm"/>
+                    <ImageView
+                        android:id="@+id/refreshIV"
+                        android:layout_toRightOf="@+id/captchaBtn"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/refresh"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/sendBtn"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button_contact_selector"
+                android:text="Send"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textAllCaps="false"/>
+
+            <LinearLayout
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Toll Free:"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGrey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1800 12345 72"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(within India) (9 AM to 9 PM- 7 days a week)"
+                android:textSize="14sp"
+                android:textColor="@color/colorGrey"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="For any queries:"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlack"/>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="contact 011-42267454, 011-42267455"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlack"/>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SMS/WhatsApp us:"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorGrey"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+91-7042947312"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"/>
+            </LinearLayout>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please feel free to call us for any clarification. We promise that we will be nice to you on phone."
+                android:textSize="14sp"
+                android:textColor="@color/colorGrey"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You can also send an email at"
+                android:textSize="14sp"
+                android:textColor="@color/colorGrey"/>
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="info@iitiimshaadi.com"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin">
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context="com.senzecit.iitiimshaadi.MapsActivity" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

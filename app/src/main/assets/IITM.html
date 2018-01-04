@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+	<!-- Owl Stylesheets -->
+	<link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.carousel.min.css">
+	<link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.theme.default.min.css">
+	<!-- Owl javascript -->
+    <script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.min.js"></script>
+    <script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+	<script>
+		$(document).ready(function() {
+		  var owl = $('.owl-carousel');
+		  owl.owlCarousel({
+			margin: 0,
+			nav: true,
+			autoplay: true,
+			touchDrag  : false,
+     		mouseDrag  : false,
+			autoplayTimeout: 7000,
+			loop: true,
+			responsive: {
+			  0: {
+				items: 1
+			  },
+			  600: {
+				items: 1
+			  },
+			  1000: {
+				items: 1
+			  }
+			}
+		  })
+		});
+	  </script>
+	  <style type="text/css">
+	  	@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+	  	body {
+		    margin: 0;
+		    background: transparent;
+		    font-weight: 300;
+		}
+		.custom-slider {
+		    padding-top: 50px;
+		}
+	  	.custom-slider .owl-nav {
+	  		display: none;
+	  	}
+	  	.custom-slider .owl-stage-outer {
+		    padding: 0;
+		    border: 1px solid #b67721;
+		    border-left: 0;
+		    border-right: 0;
+		}
+		.custom-slider .owl-stage-outer p {
+		    margin: 0;
+		    word-break: break-word;
+		    padding: 20px 25px;
+		    font-weight: bold;
+		    color: #fff;
+		    text-align: center;
+		    font-family: Roboto;
+		    font-weight: 500;
+		}
+		.custom-slider .owl-stage-outer p b {
+		    font-weight: 400;
+		    font-size: 18px;
+		}
+		.custom-slider .owl-dots {
+		    margin-top: 50px;
+		}
+		.owl-theme .owl-dots .owl-dot span {
+		    background: #ffffff;
+		}
+		.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+		    background: #b67721;
+		}
+	  </style>
+</head>
+<body>
+	<div class="owl-carousel owl-theme custom-slider">
+		<div class="item">
+			<p><b>Who Can Register?</b><br><br> Alumni of top few Indian and Global Institutions (Management, Engineering, Architecture, Medicine, Mass Communication, CA/CS/ICWA/CFA, Fashion Design &amp; many more)</p>
+        </div>
+		<div class="item">
+			<p><b>Total numbers of members - 40,000</b><br><br><b>Active monthly database - 10,000</b><br><br><b>200 people found their match</b></p>
+		</div>
+		<div class="item">
+			<p>How to Connect ?<br> Send Messages/Friend Request<br> View phone number<br> <b>OR</b> <br> Adopt personalised services</p>
+		</div>
+	</div>
+
+</body>
+</html>
+

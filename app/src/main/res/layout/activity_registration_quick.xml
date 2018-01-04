@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.senzecit.iitiimshaadi.activity.RegistrationQuickActivity">
+
+    <include layout="@layout/app_toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check Eligibility"
+                android:textSize="16sp"
+                android:textColor="@color/colorGrey"/>
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:textSize="16sp"
+                android:textColor="@color/colorGrey"/>
+
+            <RelativeLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <FrameLayout
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:visibility="visible"
+                        android:id="@+id/boySelect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/boy_select"/>
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/boyUnSelect"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/boy_unselect"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_marginTop="19dp"
+                        android:layout_toRightOf="@+id/men"
+                        android:layout_width="110dp"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDarkYellow"/>
+                    <ImageView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/or"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/or"/>
+                    <View
+                        android:layout_marginTop="19dp"
+                        android:layout_toRightOf="@id/or"
+                        android:layout_width="110dp"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDarkYellow"/>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:visibility="visible"
+                        android:id="@+id/girlUnSelect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/girl_unselect"/>
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/girlSelect"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/girl_select"/>
+                </FrameLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/id_educationRL"
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorGrey"
+                        android:text="Education"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/educationTV"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="Select Education"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/arrow_right"/>
+            </RelativeLayout>
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDarkYellow"/>
+
+            <RelativeLayout
+                android:id="@+id/id_streamRL"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorGrey"
+                        android:text="Stream/Course"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/idStreamTV"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="Select Stream"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/arrow_right"/>
+            </RelativeLayout>
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDarkYellow"/>
+
+            <RelativeLayout
+                android:id="@+id/id_institutionRL"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorGrey"
+                        android:text="Institution"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/idInstitutionTV"
+                        android:layout_marginTop="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="Select Institution"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@mipmap/arrow_right"/>
+            </RelativeLayout>
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDarkYellow"/>
+
+            <Button
+                android:id="@+id/continueBtn"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_register_selector"
+                android:textColor="@color/colorMaroon"
+                android:text="Continue"
+                android:textSize="16sp"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Are you unable to find your educational institution ?"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"/>
+            <View
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrey"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please enter your details, and we will notify if and when we add your institution."
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/userNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Full Name"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/emailET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Email"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/mobileET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Mobile no."
+                    android:singleLine="true"
+                    android:inputType="number"/>
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextLabel1">
+
+                <EditText
+                    android:id="@+id/collegeNameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your College Name"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+            <Button
+                android:id="@+id/idSubmitFindEduBtn"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_submit_selector"
+                android:text="Submit"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/side_nav_bar"
+    android:orientation="vertical"
+    android:layout_gravity="right"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="2"
+        android:gravity="center_horizontal"
+        >
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="160dp"
+            android:src="@drawable/logo_main" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/idAboutNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="About Us"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idMyProfileNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="My Profile"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+        <TextView
+            android:id="@+id/idSearchPartnerNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Search Partner"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idfriendsNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Friends"
+            android:gravity="center"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idChatMessageNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Chat/message"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+
+        <TextView
+            android:id="@+id/idSubscriptionNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Subscription"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idPremierServiceNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Premier Services"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idCustomFolderNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Custom Folder"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idWalletNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Wallet"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/idUploadVideoNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Upload Video"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/idReferFriendNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Refer a Friend"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/idMediaCoverageNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Media Coverage"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+
+        <TextView
+            android:id="@+id/idSuccessStoryNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Success Stories"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idHowToNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="How to Navigate"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idPrivacyPolicyNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Privacy Policy"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idContactUsNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Contact Us"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idFAQNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="FAQs"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+        <TextView
+            android:id="@+id/idDisclaimerNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Disclaimer"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+        <TextView
+            android:id="@+id/idSettingNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Settings"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+        <TextView
+            android:id="@+id/idLogoutNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Logout"
+            android:textColor="@color/colorWhite" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/side_line" />
+
+    </LinearLayout>
+
+</LinearLayout>
