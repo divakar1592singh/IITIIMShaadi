@@ -19,18 +19,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.NewUserRegiaterActivity;
-import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
-import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;

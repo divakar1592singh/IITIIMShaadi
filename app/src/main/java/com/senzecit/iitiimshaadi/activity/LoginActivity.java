@@ -1,7 +1,6 @@
 package com.senzecit.iitiimshaadi.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,17 +15,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.signin.internal.SignInRequest;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api_integration.APIClient;
 import com.senzecit.iitiimshaadi.api_integration.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Toolbar mToolbar;
     TextView mTitle;
     String sdUsername = "";
+    AppPrefs prefs;
 
     /** Network*/
     APIInterface apiInterface;
@@ -51,11 +53,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        prefs = new AppPrefs(LoginActivity.this);
 
         init();
         mForgotPassword.setOnClickListener(this);
         mRegisterNew.setOnClickListener(this);
         mLogin.setOnClickListener(this);
+
+
     }
 
     private void init(){
@@ -81,13 +86,99 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                startActivity(new Intent(LoginActivity.this,RegistrationQuickActivity.class));
                 break;
             case R.id.loginBtn:
-                Navigator.getClassInstance().navigateToActivity(this, PaidSubscriberDashboardActivity.class);
+//                Navigator.getClassInstance().navigateToActivity(this, PaidSubscriberDashboardActivity.class);
 //                startActivity(new Intent(LoginActivity.this,PaidSubscriberDashboardActivity.class));
-//                checkUserValidation();
+                checkUserValidation();
                 break;
         }
     }
 
+
+    /** VALIDATION SECTION */
+    public void checkUserValidation(){
+
+        String sUsername = mUsername.getText().toString().trim();
+        String sPassword = mPassword.getText().toString().trim();
+
+        mPassword.getText().toString().trim();
+        if(!sUsername.isEmpty()){
+            if(!sPassword.isEmpty()){
+
+//                new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Login validation passed");
+                callWebServiceForSignin();
+            }else {
+                AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Password can't Empty");
+            }
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Username/Email can't Empty");
+        }
+
+
+    }
+
+    /** Check API Section */
+    public void callWebServiceForSignin(){
+
+        String sUsername = mUsername.getText().toString().trim();
+        String sPassword = mPassword.getText().toString().trim();
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.username = sUsername;
+        loginRequest.password = sPassword;
+
+        ProgressClass.getProgressInstance().showDialog(LoginActivity.this);
+        Call<LoginResponse> call = apiInterface.loginInUser(loginRequest);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+
+                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getResponseData() != null){
+                            Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
+                            ResponseData responseData = response.body().getResponseData();
+                            setPrefData(responseData);
+                        }
+                    }else {
+                        Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+    public void setPrefData(ResponseData response){
+        String token = response.getToken();
+        String userName = response.getUsername();
+        String typeOfUser = response.getTypeOfUser();
+        String profilePic = response.getProfileImage();
+
+        prefs.putString(Constants.LOGGED_TOKEN, token);
+        prefs.putString(Constants.LOGGED_USERNAME, userName);
+        prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
+        prefs.putString(Constants.LOGGED_USER_PIC, profilePic);
+
+        navigateUserToScreen(typeOfUser);
+    }
+
+    public void navigateUserToScreen(String typeOfUser){
+        if(typeOfUser.equalsIgnoreCase("paid_subscriber_viewer")){
+            Navigator.getClassInstance().navigateToActivity(LoginActivity.this, PaidSubscriberDashboardActivity.class);
+        }else if(typeOfUser.equalsIgnoreCase("subscriber")){
+            Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
+        }
+    }
+
+    /** Forgot Password*/
     private void alertDialog(){
 
         final Button mConfirm,mLogin;
@@ -128,106 +219,69 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 System.out.println("Email/Username is : "+sdUsername);
                 if(!sdUsername.isEmpty()){
                     if(isValidEmail(sdUsername)){
-                        new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Email validation succesfull");
+
+                        callWebServiceForForgotPassword(sdUsername);
+                        dialog.dismiss();
+//                        new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Email validation succesfull");
                     }else {
-                        new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Email not valid");
+                        AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Email not valid");
                     }
                 }else {
-                new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Email can't Empty");
-            }
+                    AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Email can't Empty");
+                }
             }
         });
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                checkUserValidation();
                 dialog.dismiss();
             }
         });
+
+
         dialog.setView(dialogView);
         dialog.show();
     }
 
-    /** VALIDATION SECTION */
-    public void checkUserValidation(){
-
-        String sUsername = mUsername.getText().toString().trim();
-        String sPassword = mPassword.getText().toString().trim();
-
-        mPassword.getText().toString().trim();
-        if(!sUsername.isEmpty()){
-            if(!sPassword.isEmpty()){
-
-                new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Login validation passed");
-            }else {
-                new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Password can't Empty");
-            }
-        }else {
-        new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Username/Email can't Empty");
-        }
-
-
-    }
-
-    /** Check API Section */
-    public void callWebServiceForSignin(){
-
-        String sUsername = mUsername.getText().toString().trim();
-        String sPassword = mPassword.getText().toString().trim();
-
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.username = sUsername;
-        loginRequest.password = sPassword;
-
-        Call<LoginResponse> call = apiInterface.loginInUser(loginRequest);
-        call.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.isSuccessful()) {
-                   /* if (response.body().getResponseCode() == 200) {
-
-                    Toast.makeText(RegistrationQuickActivity.this, "Comment sended succesfully", Toast.LENGTH_SHORT).show();
-
-                }*/
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-    }
     public void callWebServiceForForgotPassword(String username){
 
         ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
         forgotPasswordRequest.username = username;
 
+        ProgressClass.getProgressInstance().showDialog(LoginActivity.this);
         Call<ForgotPasswordResponse> call = apiInterface.forgotPasswordOfUser(forgotPasswordRequest);
         call.enqueue(new Callback<ForgotPasswordResponse>() {
             @Override
             public void onResponse(Call<ForgotPasswordResponse> call, Response<ForgotPasswordResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                   /* if (response.body().getResponseCode() == 200) {
+                    ForgotPasswordResponse forgotPasswordResponse = response.body();
+                    if(forgotPasswordResponse.getMessage().getSuccess() != null) {
+                        if (forgotPasswordResponse.getMessage().getSuccess().toString().equalsIgnoreCase("An email with new password is sent to your registered email.")) {
 
-                    Toast.makeText(RegistrationQuickActivity.this, "Comment sended succesfully", Toast.LENGTH_SHORT).show();
+                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                }*/
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
             }
             }
 
             @Override
             public void onFailure(Call<ForgotPasswordResponse> call, Throwable t) {
                 call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-
 
     /** Helping Method Section */
     public final static boolean isValidEmail(String target) {

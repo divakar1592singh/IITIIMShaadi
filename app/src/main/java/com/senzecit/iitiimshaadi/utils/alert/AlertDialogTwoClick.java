@@ -16,6 +16,22 @@ import com.senzecit.iitiimshaadi.R;
 
 public class AlertDialogTwoClick {
 
+    private static AlertDialogTwoClick alertClass = null;
+    private Dialog dialog;
+
+    private AlertDialogTwoClick()
+    {
+
+    }
+    public static AlertDialogTwoClick getInstance()
+    {
+        if(alertClass == null)
+        {
+            alertClass = new AlertDialogTwoClick();
+        }
+        return alertClass;
+    }
+
 
         public void showDialog(Activity activity, String title, String msg){
             final Dialog dialog = new Dialog(activity);

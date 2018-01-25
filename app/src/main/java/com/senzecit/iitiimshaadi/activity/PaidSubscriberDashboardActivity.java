@@ -98,13 +98,13 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
 //                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ProfileActivity.class));
 //                showToast("No interest received");
-                new AlertDialogSingleClick().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
+                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
                 break;
             }
             case R.id.idShowMessageTV: {
 //                //Toast.makeText(PaidSubscriberDashboardActivity.this,"Show Message", //Toast.LENGTH_SHORT).show();
 //                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
-                new AlertDialogSingleClick().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No message received");
+                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No message received");
                 break;
             }
             case R.id.idAlbum: {

@@ -81,7 +81,7 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
 //                // Check to see if there is a progress dialog
 //                if (progressDialog == null) {
 //                    // If no progress dialog, make one and set message
-//                    progressDialog = new ProgressDialog(IntroSliderWebActivity.this);
+//                    progressDialog = new ProgressClass(IntroSliderWebActivity.this);
 //                    progressDialog.setMessage("Loading please wait...");
 //                    progressDialog.show();
 //

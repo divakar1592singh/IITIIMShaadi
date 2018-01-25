@@ -36,7 +36,7 @@
             android:name=".activity.RegistrationQuickActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.NewUserRegiaterActivity"
+            android:name=".activity.NewUserRegisterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ProfileActivity"

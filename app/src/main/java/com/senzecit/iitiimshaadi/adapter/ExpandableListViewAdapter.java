@@ -27,9 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.NewUserRegiaterActivity;
-import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
-import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;

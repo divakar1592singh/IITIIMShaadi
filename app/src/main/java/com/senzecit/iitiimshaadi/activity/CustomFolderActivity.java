@@ -19,6 +19,7 @@ import com.senzecit.iitiimshaadi.fragment.InvitedFriendFragment;
 import com.senzecit.iitiimshaadi.fragment.MyFriendsFragment;
 import com.senzecit.iitiimshaadi.fragment.RequestedFriendFragment;
 import com.senzecit.iitiimshaadi.fragment.ShortlistedFriendFragment;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogTwoClick;
 
 import java.util.ArrayList;
@@ -92,28 +93,23 @@ public class CustomFolderActivity extends AppCompatActivity implements View.OnCl
             case R.id.idAddFolder:
                 if(mFolderNameET.getText().length()>0){
                     String renamedFolder = mFolderNameET.getText().toString();
-                AlertDialogTwoClick alertAdd = new AlertDialogTwoClick();
-                alertAdd.showDialog(CustomFolderActivity.this, "Add folder \'"+renamedFolder+"\'", "Functionality Work");
+                    AlertDialogSingleClick.getInstance().showDialog(CustomFolderActivity.this, "Add folder \'"+renamedFolder+"\'", "Functionality Work");
                 }else {
-                    AlertDialogTwoClick alertEdit = new AlertDialogTwoClick();
-                    alertEdit.showDialog(CustomFolderActivity.this, "Alert! Field Empty", "Functionality Work");
+                    AlertDialogSingleClick.getInstance().showDialog(CustomFolderActivity.this, "Alert! Field Empty", "Functionality Work");
                 }
                 break;
             case R.id.idEditFolder:
                 if(mFolderNameET.getText().length()>0){
                     String renamedFolder = mFolderNameET.getText().toString();
                     String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
-                    AlertDialogTwoClick alertEdit = new AlertDialogTwoClick();
-                    alertEdit.showDialog(CustomFolderActivity.this, "Rename \'"+currentFolder+"\' to \'"+renamedFolder+"\'", "Functionality Work");
+                    AlertDialogTwoClick.getInstance().showDialog(CustomFolderActivity.this, "Rename \'"+currentFolder+"\' to \'"+renamedFolder+"\'", "Functionality Work");
                 }else {
-                    AlertDialogTwoClick alertEdit = new AlertDialogTwoClick();
-                    alertEdit.showDialog(CustomFolderActivity.this, "Alert! Field Empty", "Functionality Work");
+                    AlertDialogTwoClick.getInstance().showDialog(CustomFolderActivity.this, "Alert! Field Empty", "Functionality Work");
                 }
                 break;
             case R.id.idDeleteFolder:
                 String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
-                AlertDialogTwoClick alertDelete = new AlertDialogTwoClick();
-                alertDelete.showDialog(CustomFolderActivity.this, "Delete \'"+currentFolder+"\'", "Functionality Work");
+                AlertDialogTwoClick.getInstance().showDialog(CustomFolderActivity.this, "Delete \'"+currentFolder+"\'", "Functionality Work");
 //                Toast.makeText(CustomFolderActivity.this, "Output : "+mViewPager.getCurrentItem(), Toast.LENGTH_LONG).show();
 //                Toast.makeText(CustomFolderActivity.this, "Output : "+mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText()
 //                        , Toast.LENGTH_LONG).show();

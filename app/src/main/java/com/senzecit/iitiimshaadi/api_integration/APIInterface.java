@@ -83,15 +83,15 @@ public interface APIInterface {
     Call<FindCollegeResponse> quickRegFindCollege(@Body QuickRegFindCollegeRequest quickRegFindCollegeRequest);
 
     /** NEW USER REGISTER */
-    @POST("/partition_url_here/")
+    @POST("api/user_registration.json")
     Call<NewRegistrationResponse> newUserRegistration(@Body NewRegistrationRequest newRegistrationRequest);
 
     /** Login */
-    @POST("/partition_url_here/")
+    @POST("api/login.json")
     Call<LoginResponse> loginInUser(@Body LoginRequest loginRequest);
 
     /** Forgot Password */
-    @POST("/partition_url_here/")
+    @POST("api/forgot_password.json")
     Call<ForgotPasswordResponse> forgotPasswordOfUser(@Body ForgotPasswordRequest forgotPasswordRequest);
 
 

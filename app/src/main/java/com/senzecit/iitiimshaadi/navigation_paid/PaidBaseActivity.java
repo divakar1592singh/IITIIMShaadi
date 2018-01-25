@@ -201,8 +201,7 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
                 break;
             case R.id.idNotification:
-                AlertDialogSingleClick alert = new AlertDialogSingleClick();
-                alert.showDialog(PaidBaseActivity.this, "Notification Alert", "There is no new notification");
+                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Notification Alert", "There is no new notification");
 
 
                 break;

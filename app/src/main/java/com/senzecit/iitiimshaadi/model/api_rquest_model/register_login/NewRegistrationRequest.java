@@ -9,10 +9,11 @@ public class NewRegistrationRequest {
     public String username ;
     public String email ;
     public String password ;
-    public String profileCreatedFor ;
-    public String fullName ;
+    public String profile_created_for ;
+    public String full_name ;
     public String gender ;
-    public String dateOfBirth ;
-    public String mobile ;
+    public String date_of_birth ;
+    public String mob_no ;
+
 
 }

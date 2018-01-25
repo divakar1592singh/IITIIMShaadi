@@ -26,8 +26,8 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-//                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

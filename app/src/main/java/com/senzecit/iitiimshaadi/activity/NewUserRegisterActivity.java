@@ -31,12 +31,15 @@ import com.senzecit.iitiimshaadi.api_integration.APIClient;
 import com.senzecit.iitiimshaadi.api_integration.APIInterface;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
+import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
 import com.senzecit.iitiimshaadi.model.commons.CountryCodeModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewUserRegiaterActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewUserRegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar mToolbar;
     TextView mTitle, mProfileCreatedForTV, mGenderTV, mDateOfBirthTV;
@@ -63,6 +66,7 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
     EditText mUserNameET, mEmailET, mFullNameET, mPasswordET, mRePasswordET, mMobileET, mVerifyCaptchaET;
     Spinner mCountryCodeSPN;
     int mDay, mMonth, mYear;
+    AppPrefs prefs;
 
     /** NETWORK */
     APIInterface apiInterface;
@@ -74,6 +78,8 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_new_user_regiater);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        prefs = new AppPrefs(NewUserRegisterActivity.this);
+
         init();
 
         mProfileCreatedRL.setOnClickListener(this) ;
@@ -128,9 +134,9 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
                 mTermUnCheck.setVisibility(View.INVISIBLE);
                 break;
             case R.id.userRegisterBtn:
-                Navigator.getClassInstance().navigateToActivity(this, SubscriberDashboardActivity.class);
-//                startActivity(new Intent(NewUserRegiaterActivity.this,SubscriberDashboardActivity.class));
-//                checkNewUserValidation();
+//                Navigator.getClassInstance().navigateToActivity(this, SubscriberDashboardActivity.class);
+//                startActivity(new Intent(NewUserRegisterActivity.this,SubscriberDashboardActivity.class));
+                checkNewUserValidation();
                 break;
             case R.id.idProfileCreatedFor:
                 showProfileCreatedFor();
@@ -229,7 +235,7 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
             }
         });
 
-        final CustomListAdapterDialog clad1 = new CustomListAdapterDialog(NewUserRegiaterActivity.this, models);
+        final CustomListAdapterDialog clad1 = new CustomListAdapterDialog(NewUserRegisterActivity.this, models);
         recyclerView.setAdapter(clad1);
 
         dialog.setContentView(view);
@@ -322,42 +328,43 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
                                             if(mTermCheck.getVisibility() == View.VISIBLE){
 
                                                 /** CALL API */
+                                                callWebServiceForNewRegistration();
 
-                                                new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "New User Validation Successfull");
+//                                                new AlertDialogSingleClick().showDialog(NewUserRegisterActivity.this, "Alert!", "New User Validation Successfull");
 
                                             }else {
-                                                new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Please accept Terms & Conditions");
+                                                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Please accept Terms & Conditions");
                                             }
                                         }else {
                                             mVerifyCaptchaET.requestFocus();
                                             mVerifyCaptchaET.setText("");
-                                            new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Captcha didn't match");
+                                            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Captcha didn't match");
                                         }
                                     }else {
                                         mMobileET.requestFocus();
-                                        new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Mobile no. not valid");
+                                        AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Mobile no. not valid");
                                     }
                                 }else {
-                                    new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Date of Birth not selected");
+                                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Date of Birth not selected");
                                 }
                             }else {
-                                new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Gender not selected");
+                                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Gender not selected");
                             }
                     }else {
                             mFullNameET.requestFocus();
-                    new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "FullName Can't Empty");
+                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "FullName Can't Empty");
                 }
                     }else {
-                    new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Profile Created For not selected");
+                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Profile Created For not selected");
                 }
                 }
             }else {
                 mEmailET.requestFocus();
-                new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Email not valid");
+                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Email not valid");
             }
         }else {
             mUserNameET.requestFocus();
-            new AlertDialogSingleClick().showDialog(NewUserRegiaterActivity.this, "Alert!", "Username Can't Empty");
+            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Username Can't Empty");
         }
 
     }
@@ -378,31 +385,61 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
         newRegistrationRequest.username = sUsername;
         newRegistrationRequest.email = sEmail;
         newRegistrationRequest.password = sPassword;
-        newRegistrationRequest.profileCreatedFor = sProfile;
-        newRegistrationRequest.fullName = sFullName;
+        newRegistrationRequest.profile_created_for = sProfile;
+        newRegistrationRequest.full_name = sFullName;
         newRegistrationRequest.gender = sGender;
-        newRegistrationRequest.dateOfBirth = sDateOfBirth;
-        newRegistrationRequest.mobile = sMobile;
+        newRegistrationRequest.date_of_birth = sDateOfBirth;
+        newRegistrationRequest.mob_no = sMobile;
 
+        ProgressClass.getProgressInstance().showDialog(NewUserRegisterActivity.this);
         Call<NewRegistrationResponse> call = apiInterface.newUserRegistration(newRegistrationRequest);
         call.enqueue(new Callback<NewRegistrationResponse>() {
             @Override
             public void onResponse(Call<NewRegistrationResponse> call, Response<NewRegistrationResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    /*if (response.body().getResponseCode() == 200) {
-                        Toast.makeText(this, "Succesfully", Toast.LENGTH_SHORT).show();
-                    }*/
+
+                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("User is registered successfully !")){
+                        if(response.body().getResponseData() != null){
+                            Toast.makeText(NewUserRegisterActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
+                            com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData responseData = response.body().getResponseData();
+
+                            setPrefData(responseData);
+                        }
+                    }else {
+                        Toast.makeText(NewUserRegisterActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 
             @Override
             public void onFailure(Call<NewRegistrationResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(NewUserRegiaterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewUserRegisterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    public void setPrefData(com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData response){
+        String token = response.getToken();
+        String userName = response.getUsername();
+        String typeOfUser = response.getTypeOfUser();
+        String email = response.getEmail();
+
+        prefs.putString(Constants.LOGGED_TOKEN, token);
+        prefs.putString(Constants.LOGGED_USERNAME, userName);
+        prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
+        prefs.putString(Constants.LOGGED_EMAIL, email);
+
+        navigateUserToScreen(typeOfUser);
+    }
+
+    public void navigateUserToScreen(String typeOfUser){
+        if(typeOfUser.equalsIgnoreCase("subscriber")){
+            Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
+        }
+    }
 
     /** Helping Method Section */
     public final static boolean isValidEmail(String target) {
@@ -421,24 +458,24 @@ public class NewUserRegiaterActivity extends AppCompatActivity implements View.O
         if(!password.isEmpty()){
             if(!confirmPassword.isEmpty()){
                 if(password.equals(confirmPassword)){
-//                    new AlertDialogSingleClick().showDialog(this, "Alert!", "Password Succesfull");
+//                    AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password Succesfull");
                 status = true;
                 }
                 else {
                     status = false;
                     mPasswordET.requestFocus();
-                    new AlertDialogSingleClick().showDialog(this, "Alert!", "Password didn't match");
+                    AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password didn't match");
                 }
             }else {
                 mRePasswordET.requestFocus();
                 status = false;
-                new AlertDialogSingleClick().showDialog(this, "Alert!", "Re-Type Password can't empty");
+                AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Re-Type Password can't empty");
             }
         }else {
             mPasswordET.setText("");
             mRePasswordET.setText("");
             status = false;
-            new AlertDialogSingleClick().showDialog(this, "Alert!", "Password can't empty");
+            AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password can't empty");
         }
 
         return status;

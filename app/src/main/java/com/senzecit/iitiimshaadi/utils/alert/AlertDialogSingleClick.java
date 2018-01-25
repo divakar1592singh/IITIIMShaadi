@@ -16,7 +16,23 @@ import com.senzecit.iitiimshaadi.R;
 
 public class AlertDialogSingleClick {
 
-        public void showDialog(Activity activity, String title, String msg){
+    private static AlertDialogSingleClick alertClass = null;
+    private Dialog dialog;
+
+    private AlertDialogSingleClick()
+    {
+
+    }
+    public static AlertDialogSingleClick getInstance()
+    {
+        if(alertClass == null)
+        {
+            alertClass = new AlertDialogSingleClick();
+        }
+        return alertClass;
+    }
+
+    public void showDialog(Activity activity, String title, String msg){
             final Dialog dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);

@@ -114,8 +114,8 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.continueBtn:
-                Navigator.getClassInstance().navigateToActivity(this, NewUserRegiaterActivity.class);
-//                startActivity(new Intent(this,NewUserRegiaterActivity.class));
+                Navigator.getClassInstance().navigateToActivity(this, NewUserRegisterActivity.class);
+//                startActivity(new Intent(this,NewUserRegisterActivity.class));
 //                checkEligibilityValidation();
                 break;
             case R.id.boyUnSelect:
@@ -260,10 +260,10 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         String sInstitution = mInstitutionTV.getText().toString().trim();
 
         if(!sEducation.startsWith("Select") && !sStream.startsWith("Select") && !sInstitution.startsWith("Select")){
-            new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "All selected");
-//            startActivity(new Intent(RegistrationQuickActivity.this,NewUserRegiaterActivity.class));
+            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "All selected");
+//            startActivity(new Intent(RegistrationQuickActivity.this,NewUserRegisterActivity.class));
         }else {
-            new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
+            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
         }
 
 
@@ -281,26 +281,26 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
                 if(isValidMobile(sMobile)){
                         if(!sCollege.isEmpty()){
 
-                            new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "Find College Validation Successfull");
+                            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Find College Validation Successfull");
 
                         }else {
                             mCollegeNameET.requestFocus();
-                            new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "College name can't empty");
+                            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "College name can't empty");
                         }
                     }else {
                         mMobileET.requestFocus();
-                        new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "Mobile no. not valid");
+                        AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Mobile no. not valid");
                     }
                 }else {
                     mEmailET.requestFocus();
-                    new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "Email not valid");
+                    AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Email not valid");
                 }
             }else {
                 mUserNameET.requestFocus();
-                new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "Username can't Empty");
+                AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Username can't Empty");
             }
     }else {
-        new AlertDialogSingleClick().showDialog(RegistrationQuickActivity.this, "Alert!", "Username can't Empty");
+        AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Username can't Empty");
     }
 
     }
