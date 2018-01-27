@@ -5,15 +5,18 @@
     android:layout_height="wrap_content"
     android:padding="20dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
         <LinearLayout
             android:layout_alignParentLeft="true"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9">
             <TextView
                 android:id="@+id/childItemTVheader"
                 android:layout_width="wrap_content"
@@ -32,12 +35,19 @@
                 android:textSize="14sp"/>
         </LinearLayout>
 
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            >
         <ImageView
             android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@mipmap/arrow_right"/>
-    </RelativeLayout>
+            android:src="@mipmap/arrow_right"
+            android:layout_gravity="center"/>
+        </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

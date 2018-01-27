@@ -24,18 +24,28 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api_integration.APIClient;
+import com.senzecit.iitiimshaadi.api_integration.APIInterface;
+import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
+import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ravi on 28/11/17.
@@ -795,7 +805,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
         showDialog(list, textView);
     }
-    public void showCountry(TextView textView){
+/*    public void showCountry(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("India");
         list.add("Russia");
@@ -804,7 +814,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         list.add("USA");
 
         showDialog(list, textView);
-    }
+    }*/
     //EDUCATION
     public void showEducation(TextView textView){
         List<String> list = new ArrayList<>();
@@ -854,6 +864,40 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     public void saveChangesOfCase_3(){
 
         String Choice_of_Groom;
+
+    }
+
+    private void showCountry(final TextView textView){
+
+        final List<String> countryList = new ArrayList<>();
+        countryList.clear();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CountryListResponse> call = apiInterface.countryList(Constants.Temp_Token);
+        call.enqueue(new Callback<CountryListResponse>() {
+            @Override
+            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
+                if (response.isSuccessful()) {
+
+                    List<AllCountry> rawCountryList = response.body().getAllCountries();
+                    for(int i = 0; i<rawCountryList.size(); i++){
+                        if(rawCountryList.get(i).getName() != null){
+                            countryList.add(rawCountryList.get(i).getName());
+                        }
+                    }
+
+                    showDialog(countryList, textView);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CountryListResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 

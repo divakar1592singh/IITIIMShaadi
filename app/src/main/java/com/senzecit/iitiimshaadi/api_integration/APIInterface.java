@@ -3,11 +3,14 @@ package com.senzecit.iitiimshaadi.api_integration;
 
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.FindCollegeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.QuickRegStreamResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.email_verification.EmailVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
@@ -15,10 +18,23 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegE
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegFindCollegeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegInstitutionRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegStreamRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.id_verification.IdVerificationRequest;
+import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
+import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
+import com.senzecit.iitiimshaadi.utils.Constants;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by ravi on 13/12/17.
@@ -79,7 +95,8 @@ public interface APIInterface {
     Call<QuickRegInstitutionResponse> fetchInstitutionData(@Body QuickRegInstitutionRequest quickRegInstitutionRequest);
     @POST("/partition_url_here/")
     Call<EligibilityResponse> quickRegisterUser(@Body QuickRegEligibilityRequest quickRegEligibilityRequest);
-    @POST("/partition_url_here/")
+
+    @POST("api/find_educational_institution.json")
     Call<FindCollegeResponse> quickRegFindCollege(@Body QuickRegFindCollegeRequest quickRegFindCollegeRequest);
 
     /** NEW USER REGISTER */
@@ -93,6 +110,38 @@ public interface APIInterface {
     /** Forgot Password */
     @POST("api/forgot_password.json")
     Call<ForgotPasswordResponse> forgotPasswordOfUser(@Body ForgotPasswordRequest forgotPasswordRequest);
+
+    /** Subscriber */
+    /* EMAIL VERIFICATION*/
+    @POST("api/email_verification.json")
+    Call<EmailVerificationResponse> emailVerification(@Body EmailVerificationRequest emailVerificationRequest);
+
+/*
+    @POST("api/email_verification.json")
+    Call<ForgotPasswordResponse> emailVerification(@Body ForgotPasswordRequest forgotPasswordRequest);
+
+    @POST("api/email_verification.json")
+    Call<ForgotPasswordResponse> emailVerification(@Body ForgotPasswordRequest forgotPasswordRequest);
+*/
+
+    @POST("api/id_upload.json")
+    Call<IdVerificationResponse> idVerificationss(@Body IdVerificationRequest idVerificationRequest);
+
+    @Multipart
+    @POST("api/id_upload.json")
+    Call<IdVerificationResponse> idVerification(@Part("token")String token, @Part MultipartBody.Part file, @Part("id_proof") RequestBody name);
+
+    @FormUrlEncoded
+    @POST("api/country.json")
+    Call<CountryListResponse> countryList(@Field("token")String token);
+
+    @FormUrlEncoded
+    @POST("api/state.json")
+    Call<StateListResponse> stateList(@Field("token")String token);
+
+    @FormUrlEncoded
+    @POST("api/my_profile.json")
+    Call<MyProfileResponse> myProfileData(@Field("token")String token);
 
 
 }

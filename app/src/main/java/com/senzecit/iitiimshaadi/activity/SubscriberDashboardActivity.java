@@ -22,8 +22,23 @@ import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberPartnerAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewPartnerAdapter;
+import com.senzecit.iitiimshaadi.api_integration.APIClient;
+import com.senzecit.iitiimshaadi.api_integration.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.email_verification.EmailVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.id_verification.IdVerificationRequest;
 import com.senzecit.iitiimshaadi.navigation_subscriber.BaseActivity;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -32,6 +47,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import in.gauriinfotech.commons.Commons;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SubscriberDashboardActivity extends BaseActivity {
 
@@ -51,11 +72,16 @@ public class SubscriberDashboardActivity extends BaseActivity {
     Button mDocBtn1, mDocBtn2, mDocBtn3, mDocBtn4 ;
     private static final int READ_FILE_REQUEST_CODE = 101;
     int btnChooserCount = 0;
+    /** Network*/
+    APIInterface apiInterface;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscriber_dashboard);
+
+        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 
         init();
         handleClick();
@@ -628,75 +654,133 @@ public class SubscriberDashboardActivity extends BaseActivity {
 //            uploadCvFile(file);
         }else if (btnChooserCount == 5){
             mBiodataTv.setText(getFileName(file.getPath()));
-//            uploadCvFile(file);
+            callWebServiceForIDUpload(file);
         }
 
-    }
-
-    public void uploadCvFile(final Uri selectedImageUri)throws URISyntaxException{
-
-        String fullPath = Commons.getPath(selectedImageUri, this);
-        File file = new File(fullPath);
-
-
-//        Call<MyProfileModel> callUpload = null;
-
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-//        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("cvFile", file.getName(), requestBody);
-//        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
-//
-////        ProgressClass.getProgressInstance().startProgress(MyProfileActivity.this);
-//        apiInterface = ApiClient.getClient(Consts.BASE_URL).create(ApiInterface.class);
-//        String user_id = new SharedPrefClass(MyProfileActivity.this).getLoginInfo();
-//        callUpload = apiInterface.uploadCVFile(fileToUpload, filename, user_id);
-//
-
-        /*callUpload.enqueue(new Callback<MyProfileModel>() {
-            @Override
-            public void onResponse(Call<MyProfileModel> call, Response<MyProfileModel> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful() && response.code() == 200) {
-//                    Toast.makeText(MyProfileActivity.this, "Success", Toast.LENGTH_LONG).show();
-//                    TastyToast.makeText(getApplicationContext(), "CV upload successful !", TastyToast.LENGTH_LONG,
-//                            TastyToast.SUCCESS);
-                    new SharedPrefClass(MyProfileActivity.this).setResumeUploaded("yes");
-                    tvResumeUploaded.setVisibility(View.VISIBLE);
-
-                    new SweetAlertDialog(MyProfileActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText("Great!")
-                            .setContentText("CV uploaded succesfully!")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-
-//
-                                }
-                            })
-                            .show();
-                } else {
-//                    Toast.makeText(MyProfileActivity.this, "Confusion", Toast.LENGTH_LONG).show();
-
-                    TastyToast.makeText(getApplicationContext(), "Something missing, Try again! ", TastyToast.LENGTH_LONG,
-                            TastyToast.INFO);
-                }
-            }
-            @Override
-            public void onFailure(Call<MyProfileModel> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-//                Toast.makeText(MyProfileActivity.this, "Failed", Toast.LENGTH_LONG).show();
-//                TastyToast.makeText(getApplicationContext(), "Something went wrong from server", TastyToast.LENGTH_LONG,
-//                        TastyToast.ERROR);
-                retryPermission(selectedImageUri);
-            }
-        });
-        */
     }
 
     private String getFileName(String filePath){
         return filePath.substring(filePath.lastIndexOf("/")+1);
     }
 
+    /** API INTEGRATION */
+
+    public void callWebServiceForEmailVerification(){
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+
+        EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
+        emailVerirequest.token = Constants.Temp_Token;
+        emailVerirequest.email = "senzec1@gmail.com";
+
+        Call<EmailVerificationResponse> call = apiInterface.emailVerification(emailVerirequest);
+        call.enqueue(new Callback<EmailVerificationResponse>() {
+            @Override
+            public void onResponse(Call<EmailVerificationResponse> call, Response<EmailVerificationResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+
+/*                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getResponseData() != null){
+                            Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
+                            ResponseData responseData = response.body().getResponseData();
+                            setPrefData(responseData);
+                        }
+                    }else {
+                        Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                    }*/
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EmailVerificationResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+    public void callWebServiceForIDVerification() {
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+
+      /*  IdVerificationRequest requestss = new IdVerificationRequest();
+        request.token = Constants.Temp_Token;
+        request.id_proof = "senzec1@gmail.com";
+
+
+        Call<EmailVerificationResponse> call = apiInterface.emailVerification(requestss);
+        call.enqueue(new Callback<EmailVerificationResponse>() {
+            @Override
+            public void onResponse(Call<EmailVerificationResponse> call, Response<EmailVerificationResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+
+*//*                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getResponseData() != null){
+                            Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
+                            ResponseData responseData = response.body().getResponseData();
+                            setPrefData(responseData);
+                        }
+                    }else {
+                        Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                    }*//*
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EmailVerificationResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });*/
+    }
+
+    /* File Upload */
+    public void callWebServiceForIDUpload(final File file)throws URISyntaxException{
+
+        /*String fullPath = Commons.getPath(selectedImageUri, this);
+        File file = new File(fullPath);*/
+
+
+        Call<IdVerificationResponse> callUpload = null;
+
+        IdVerificationRequest idVerificationRequest = new IdVerificationRequest();
+        idVerificationRequest.token = Constants.Temp_Token;
+
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
+//RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        callUpload = apiInterface.idVerification("4a691ee9d00bd9eea102f3912a6bf303", fileToUpload, filename);
+
+        callUpload.enqueue(new Callback<IdVerificationResponse>() {
+            @Override
+            public void onResponse(Call<IdVerificationResponse> call, Response<IdVerificationResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if(response.isSuccessful()){
+
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Success :" );
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Confuse");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<IdVerificationResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Oops");
+            }
+        });
+
+    }
 
 }

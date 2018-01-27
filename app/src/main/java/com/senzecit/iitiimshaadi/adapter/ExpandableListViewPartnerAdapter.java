@@ -24,18 +24,29 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api_integration.APIClient;
+import com.senzecit.iitiimshaadi.api_integration.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
+import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ravi on 28/11/17.
@@ -49,13 +60,15 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    MyProfileResponse myProfileResponse;
 
     public ExpandableListViewPartnerAdapter(Context context, List<String> listDataHeader,
-                                               HashMap<String, List<String>> listChildData) {
+                                               HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        this.myProfileResponse = myProfileResponse;
     }
 
     @Override
@@ -90,6 +103,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
+                        //SetData - PreferedPartnerMinAge
+                        editText.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
+
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -120,6 +136,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
                         editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
+                        //SetData - PreferedPartnerMaxAge
+                        editText1.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
+
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -147,6 +166,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
+
+                        //SetData - PreferedPartnerHeightMin
+                        txtListChild2.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMin());
 
                         TextView txtListChildHeader2 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -186,6 +208,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
+                        //SetData - PreferedPartnerHeightMax
+                        txtListChild3.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMax());
+
                         TextView txtListChildHeader3 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
@@ -223,6 +248,11 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         final TextView txtListChild4 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
+
+                        //SetData - PreferedPartnerMaritalStatus
+                        String marital1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerMaritalStatus().toString().replace("[", "");
+                        String maritalNet = marital1.replace("]", "");
+                        txtListChild4.setText(maritalNet);
 
                         TextView txtListChildHeader4 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -271,7 +301,6 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
                 break;
             case 1:
-                //Toast.makeText(_context, "1", //Toast.LENGTH_LONG).show();
                 switch (childPosition){
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -281,6 +310,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         final TextView txtListChild = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
+
+                        //SetData - PreferedPartnerReligion
+                        txtListChild.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerReligion());
 
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -320,6 +352,11 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
+                        //SetData - PreferedPartnerCaste
+                        String caste1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCaste().toString().replace("[", "");
+                        String caste = caste1.replace("]","");
+                        txtListChild1.setText(caste);
+
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
@@ -356,6 +393,11 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
+
+                        //SetData - PreferedPartnerCountry
+                        String country1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCountry().toString().replace("[", "");
+                        String country = country1.replace("]","");
+                        txtListChild2.setText(country);
 
                         TextView txtListChildHeader2 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -412,6 +454,11 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         final TextView txtListChild = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
+
+                        //SetData - PreferedPartnerEducation
+                        String education1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerEducation().toString().replace("[", "");
+                        String education = education1.replace("]","");
+                        txtListChild.setText(education);
 
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -473,6 +520,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+
+                        //SetData - ChoiceOfGroom
+                        editText.setText(myProfileResponse.getPartnerBasicData().getChoiceOfGroom());
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -796,7 +846,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
         showDialog(list, textView);
     }
-    public void showCountry(TextView textView){
+ /*   public void showCountry(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("India");
         list.add("Russia");
@@ -805,7 +855,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         list.add("USA");
 
         showDialog(list, textView);
-    }
+    }*/
     //EDUCATION
     public void showEducation(TextView textView){
         List<String> list = new ArrayList<>();
@@ -858,4 +908,37 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     }
 
+    private void showCountry(final TextView textView){
+
+        final List<String> countryList = new ArrayList<>();
+        countryList.clear();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CountryListResponse> call = apiInterface.countryList(Constants.Temp_Token);
+        call.enqueue(new Callback<CountryListResponse>() {
+            @Override
+            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
+                if (response.isSuccessful()) {
+
+                    List<AllCountry> rawCountryList = response.body().getAllCountries();
+                    for(int i = 0; i<rawCountryList.size(); i++){
+                        if(rawCountryList.get(i).getName() != null){
+                            countryList.add(rawCountryList.get(i).getName());
+                        }
+                    }
+
+                    showDialog(countryList, textView);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CountryListResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
 }

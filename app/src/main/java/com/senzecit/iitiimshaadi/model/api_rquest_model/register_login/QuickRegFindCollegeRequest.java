@@ -6,7 +6,7 @@ package com.senzecit.iitiimshaadi.model.api_rquest_model.register_login;
 
 public class QuickRegFindCollegeRequest {
 
-    public String username ;
+    public String name ;
     public String email ;
     public String mobile ;
     public String college ;

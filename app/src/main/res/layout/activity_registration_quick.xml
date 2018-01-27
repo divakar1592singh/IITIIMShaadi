@@ -268,6 +268,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Your Full Name"
+                    android:text="abc"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
@@ -281,6 +282,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Your Email"
+                    android:text="test5@gmail.com"
                     android:singleLine="true"
                     android:inputType="textEmailAddress"/>
             </android.support.design.widget.TextInputLayout>
@@ -295,6 +297,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Your Mobile no."
+                    android:text="9876543210"
                     android:singleLine="true"
                     android:inputType="number"/>
             </android.support.design.widget.TextInputLayout>
@@ -309,6 +312,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Your College Name"
+                    android:text="test"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
             <Button

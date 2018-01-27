@@ -15,6 +15,7 @@
             android:layout_gravity="center"
             android:textColor="@color/colorBlack"
             android:background="@drawable/edit_box_shape"
+            android:singleLine="false"
             android:inputType="textEmailAddress"/>
 
 </LinearLayout>
