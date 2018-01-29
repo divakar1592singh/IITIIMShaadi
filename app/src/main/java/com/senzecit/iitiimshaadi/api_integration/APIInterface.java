@@ -143,5 +143,9 @@ public interface APIInterface {
     @POST("api/my_profile.json")
     Call<MyProfileResponse> myProfileData(@Field("token")String token);
 
+    @FormUrlEncoded
+    @POST("api/other_profile.json")
+    Call<MyProfileResponse> otherProfileData(@Field("token")String token, @Field("user_id")String userId);
+
 
 }

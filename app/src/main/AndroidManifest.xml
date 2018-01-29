@@ -63,8 +63,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activity.UploadVideoActivity"
             android:screenOrientation="portrait" />
@@ -91,8 +91,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ContactUsActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".activity.PremierServicesActivity"
             android:screenOrientation="portrait" />
@@ -103,8 +103,9 @@
             android:name=".activity.ChatMessagesActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.IntroSliderActivity" />
-        <activity android:name=".activity.CustomFolderActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.CustomFolderActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity android:name=".customdialog.MainActivity" />
         <activity
             android:name=".activity.YoutubeActivity"
@@ -113,7 +114,6 @@
         <activity
             android:name=".activity.PrivacyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.OtherProfileActivity" />
         <activity
             android:name=".activity.DisclaimerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -126,7 +126,8 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".activity.IntroSliderWebActivity" />
-        <activity android:name=".activity.SubscriptionPlanActivity"></activity>
+        <activity android:name=".activity.SubscriptionPlanActivity" />
+        <activity android:name=".activity.OtherProfileActivity"></activity>
     </application>
 
 </manifest>

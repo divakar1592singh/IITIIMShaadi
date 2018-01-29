@@ -52,7 +52,7 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Aasonia"
+                android:text="\@Aasonia"
                 android:textColor="@color/colorGrey"
                 android:textSize="14sp"/>
             <TextView
@@ -63,7 +63,6 @@
                 android:text="\@3344"
                 android:textColor="@color/colorGrey"
                 android:textSize="14sp"/>
-
 
             <LinearLayout
                 android:layout_marginTop="20dp"
@@ -77,7 +76,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_shape_profile_select"
-                    android:text="My Profile"
+                    android:text="About Me"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"
                     android:textAllCaps="false"/>
@@ -92,7 +91,6 @@
                     android:textSize="16sp"
                     android:textAllCaps="false"/>
             </LinearLayout>
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -113,20 +111,6 @@
                     android:groupIndicator="@null">
                 </com.senzecit.iitiimshaadi.utils.NonScrollExpandableListView>
             </FrameLayout>
-
-
-            <Button
-                android:id="@+id/userRegisterBtn"
-                android:layout_marginTop="40dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_submit_selector"
-                android:text="Submit"
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:textAllCaps="false"
-                />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

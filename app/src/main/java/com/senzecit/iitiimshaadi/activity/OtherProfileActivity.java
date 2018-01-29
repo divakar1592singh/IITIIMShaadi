@@ -1,27 +1,32 @@
 package com.senzecit.iitiimshaadi.activity;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.ExpLvOtherProfileAdapter;
-import com.senzecit.iitiimshaadi.adapter.ExpLvOtherProfilePartnerAdapter;
-import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
-import com.senzecit.iitiimshaadi.adapter.ExpandableListViewPartnerAdapter;
+import com.senzecit.iitiimshaadi.adapter.OtherExpListAdapter;
+import com.senzecit.iitiimshaadi.adapter.OtherExpListPartnerAdapter;
+import com.senzecit.iitiimshaadi.api_integration.APIClient;
+import com.senzecit.iitiimshaadi.api_integration.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class OtherProfileActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,9 +35,9 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     TextView mTitle;
     ImageView mBack;
     Button mMyProfile,mPartnerProfile;
-    ExpLvOtherProfileAdapter listAdapter;
-    ExpLvOtherProfilePartnerAdapter partnerlistAdapter;
+    OtherExpListAdapter listAdapter;
     ExpandableListView expListView, expListViewPartner;
+    OtherExpListPartnerAdapter partnerlistAdapter;
     List<String> listDataHeader,listDataHeaderPartner;
     HashMap<String, List<String>> listDataChild,listDataChildPartner;
     ScrollView mScrollView;
@@ -54,13 +59,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mBack.setOnClickListener(this);
         mTitle.setOnClickListener(this);
 
-        prepareListData();
-        listAdapter = new ExpLvOtherProfileAdapter(this, listDataHeader, listDataChild);
-        expListView.setAdapter(listAdapter);
-
-        prepareListDataPartner();
-        partnerlistAdapter = new ExpLvOtherProfilePartnerAdapter(this, listDataHeaderPartner, listDataChildPartner);
-        expListViewPartner.setAdapter(partnerlistAdapter);
+        callWebServiceForOtherProfile();
 
     }
 
@@ -70,7 +69,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mTitle = (TextView) findViewById(R.id.toolbar_title);
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
-        mTitle.setText("Profile");
+        mTitle.setText("Other Profile");
         mMyProfile = (Button) findViewById(R.id.myProfileBtn);
         mPartnerProfile = (Button) findViewById(R.id.partnerProfileBtn);
         expListView = (ExpandableListView) findViewById(R.id.expandableLV);
@@ -100,7 +99,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                 mMyProfile.setBackground(getResources().getDrawable(R.drawable.button_shape_profile_unselect));
                 mMyProfile.setTextColor(getResources().getColor(R.color.colorGrey));
 
-
                 expListView.setVisibility(View.GONE);
                 expListViewPartner.setVisibility(View.VISIBLE);
                 break;
@@ -125,9 +123,8 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         listDataHeader.add("Family Details");
         listDataHeader.add("Education & Career");
         listDataHeader.add("About Me");
-        listDataHeader.add("Acquaintances");
+//        listDataHeader.add("Acquaintances");
 //        listDataHeader.add("Video");
-
 
         // Adding child data
         List<String> basicsLifestyle = new ArrayList<String>();
@@ -190,20 +187,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         List<String> aboutMe = new ArrayList<String>();
         aboutMe.add("Write something about you");
 
-        List<String> acquiantances = new ArrayList<String>();
-        acquiantances.add("1.Acquaintance Name");
-        acquiantances.add("1.Acquaintance Remark");
-        acquiantances.add("2.Acquaintance Name");
-        acquiantances.add("2.Acquaintance Remark");
-        acquiantances.add("3.Acquaintance Name");
-        acquiantances.add("3.Acquaintance Remark");
-        acquiantances.add("4.Acquaintance Name");
-        acquiantances.add("4.Acquaintance Remark");
-        acquiantances.add("5.Acquaintance Name");
-        acquiantances.add("5.Acquaintance Remark");
-
-//        List<String> video = new ArrayList<String>();
-//        video.add("My Video");
 
         listDataChild.put(listDataHeader.get(0), basicsLifestyle); // Header, Child data
         listDataChild.put(listDataHeader.get(1), religiousBackgroung);
@@ -211,8 +194,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         listDataChild.put(listDataHeader.get(3), familyDetails);
         listDataChild.put(listDataHeader.get(4), educationCareer);
         listDataChild.put(listDataHeader.get(5), aboutMe);
-        listDataChild.put(listDataHeader.get(6), acquiantances);
-//        listDataChild.put(listDataHeader.get(7), video);
 
     }
 
@@ -225,7 +206,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         listDataHeaderPartner.add("Religious and Country Preference");
         listDataHeaderPartner.add("Education & Career");
         listDataHeaderPartner.add("Groom");
-//        listDataHeaderPartner.add("Video");
 
         // Adding child data
         List<String> basicsLifestyle = new ArrayList<String>();
@@ -240,22 +220,56 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         religiousBackgroung.add("Preferred Caste");
         religiousBackgroung.add("Preferred Country");
 
-
         List<String> educationCareer = new ArrayList<String>();
         educationCareer.add("Preferred Education");
 
         List<String> aboutMe = new ArrayList<String>();
         aboutMe.add("Choice of Groom");
 
-//        List<String> video = new ArrayList<String>();
-//        video.add("Partner Preference Video");
-
         listDataChildPartner.put(listDataHeaderPartner.get(0), basicsLifestyle); // Header, Child data
         listDataChildPartner.put(listDataHeaderPartner.get(1), religiousBackgroung);
         listDataChildPartner.put(listDataHeaderPartner.get(2), educationCareer);
         listDataChildPartner.put(listDataHeaderPartner.get(3), aboutMe);
-//        listDataChildPartner.put(listDataHeaderPartner.get(4), video);
 
+    }
+
+    private void setMyProfile(MyProfileResponse myProfileResponse){
+
+        prepareListData();
+        listAdapter = new OtherExpListAdapter(this, listDataHeader, listDataChild, myProfileResponse);
+        expListView.setAdapter(listAdapter);
+
+        prepareListDataPartner();
+        partnerlistAdapter = new OtherExpListPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner, myProfileResponse);
+        expListViewPartner.setAdapter(partnerlistAdapter);
+
+    }
+
+    /** API - other profile */
+    private void callWebServiceForOtherProfile(){
+
+        ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<MyProfileResponse> call = apiInterface.otherProfileData(Constants.Token_Paid, "23593");
+        call.enqueue(new Callback<MyProfileResponse>() {
+            @Override
+            public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+
+                    if(response.body() != null){
+                        setMyProfile(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyProfileResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

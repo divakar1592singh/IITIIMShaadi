@@ -158,7 +158,12 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         void saveSearchPartner();
     }
 
+    /** API -  */
 
+
+
+
+    /** Dialog */
     public Vector<Dialog> dialogs = new Vector<Dialog>();
     private void showDialog(List<String> dataList, final TextView txtListChild) {
 
