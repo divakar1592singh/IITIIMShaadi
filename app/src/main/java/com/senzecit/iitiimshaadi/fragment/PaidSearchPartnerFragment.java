@@ -28,17 +28,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.SearchPartnerPaidActivity;
-import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
-import com.senzecit.iitiimshaadi.customdialog.Model;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
+import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ravi on 13/11/17.
@@ -170,7 +179,10 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 }
                 break;
             case R.id.searchPartnerBtn:
-                communicator.saveAndSearchPartner();
+//                communicator.saveAndSearchPaidPartnerByAdvance();
+//                callWebServiceForSubsAdvanceSearch();
+//                callWebServiceForSubsKeywordSearch();
+                callWebServiceForSubsIDSearch();
                 break;
 
             case R.id.idPartnerCurrentCountry:
@@ -209,9 +221,157 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    public interface PaidSearchPartnerFragmentCommunicator{
-        void saveAndSearchPartner();
+    /** API -  */
+
+    /** Search By ID */
+    public void callWebServiceForSubsIDSearch(){
+
+        String token = Constants.Token_Paid;
+        String searchID = mSearchByIdET.getText().toString() ;
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        Call<SubsAdvanceSearchResponse> call = apiInterface.idSearchPaid(token, searchID);
+        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+            @Override
+            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getQuery().size() > 0){
+                            List<Query> queryList = response.body().getQuery();
+
+                            communicator.saveAndSearchPaidPartnerByID(queryList, searchID);
+
+                        }
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
     }
+
+    /** Search By Keyword */
+    public void callWebServiceForSubsKeywordSearch(){
+
+        String token = Constants.Token_Paid;
+        String keyword = mRandomKeywordET.getText().toString() ;
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        Call<SubsAdvanceSearchResponse> call = apiInterface.keywordSearchPaid(token, keyword);
+        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+            @Override
+            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getQuery().size() > 0){
+                            List<Query> queryList = response.body().getQuery();
+//                            System.out.print(profileList);
+                            communicator.saveAndSearchPaidPartnerByKeyword(queryList, keyword);
+
+                        }
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+    /** Advance Search */
+    public void callWebServiceForSubsAdvanceSearch(){
+
+        List<String> profileList =new ArrayList<>();
+
+        String token = Constants.Token_Paid;
+        String minage = mAgeMinET.getText().toString() ;
+        String maxage = mAgeMaxET.getText().toString() ;
+        String country = mPartnerCurrentCountryTV.getText().toString() ;
+        String city = mPartnerCurrentCityIV.getText().toString() ;
+        String religion = mSelectReligionTV.getText().toString() ;
+        String caste = mSelectCastTV.getText().toString() ;
+        String mother_tounge = mSelectMotherToungeTV.getText().toString() ;
+        String marital_status = mMaritalStatusTV.getText().toString() ;
+        String course = mEducationOccupationTV.getText().toString() ;
+        String annual_income = mAnnualIncomeTV.getText().toString() ;
+
+
+        String sPartnerLoc = mPartnerPermanentLocarionTV.getText().toString() ;
+        String sMinHeight = mSelectHeightMinTV.getText().toString() ;
+        String sMaxHeight = mSelectHeightMaxTV.getText().toString() ;
+
+        profileList.add(minage);profileList.add(maxage);profileList.add(country);
+        profileList.add(city);profileList.add(religion);profileList.add(caste);
+        profileList.add(mother_tounge);profileList.add(marital_status);
+        profileList.add(course);profileList.add(annual_income);
+        profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);
+
+        PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
+        searchRequest.token = token;
+        searchRequest.minage = minage;
+        searchRequest.maxage = maxage;
+        searchRequest.country = country;
+        searchRequest.city = city;
+        searchRequest.religion = religion;
+        searchRequest.caste = caste;
+        searchRequest.mother_tounge = mother_tounge;
+        searchRequest.marital_status = marital_status;
+        searchRequest.course = course;
+        searchRequest.annual_income = annual_income;
+
+        searchRequest.min_height = sMinHeight;
+        searchRequest.max_height = sMaxHeight;
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
+        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+            @Override
+            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getQuery().size() > 0){
+                            List<Query> queryList = response.body().getQuery();
+                            System.out.print(profileList);
+                            communicator.saveAndSearchPaidPartnerByAdvance(queryList, profileList);
+
+                        }
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
 
 
     public Vector<Dialog> dialogs = new Vector<Dialog>();
@@ -480,7 +640,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         list.add("Loc-4");
         list.add("Loc-5");
 
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
     public void showHeight(TextView textView){
         List<String> list = new ArrayList<>();
@@ -518,4 +678,11 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         showDialog(list, textView);
     }
 
+
+    public interface PaidSearchPartnerFragmentCommunicator{
+        void saveAndSearchPaidPartnerByID(List<Query> queryList, String userid);
+        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);
+        void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList);
+
+    }
 }

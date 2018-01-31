@@ -39,8 +39,8 @@ public class ResultPaidSearchPartnerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         init();
 
-        PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(communicator);
-        mSearchResultRecyclerView.setAdapter(adapter);
+      /*  PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(communicator);
+        mSearchResultRecyclerView.setAdapter(adapter);*/
     }
     private void init(){
         mAgeMin = view.findViewById(R.id.minAgeTV);

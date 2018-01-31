@@ -24,16 +24,29 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
+import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ravi on 14/11/17.
@@ -122,7 +135,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 }
                 break;
             case R.id.searchPartnerBtn:
-                communicator.saveSearchPartner();
+                callWebServiceForSubsAdvanceSearch();
+
 //                Toast.makeText(getActivity(), "Functionality Part", Toast.LENGTH_SHORT).show();
                 break;
               case R.id.idPartnerCurrentCountry:
@@ -149,19 +163,80 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             case R.id.idPartnerAnnIncome:
                 showAnnualIncome(mAnnualIncomeTV);
                 break;
-
-
         }
     }
 
     public interface SearchPartnerFragmentCommunicator{
-        void saveSearchPartner();
+        void saveSearchPartner(List<Query> queryList, List<String> profileList);
     }
 
     /** API -  */
 
+    /** Check API Section */
+    public void callWebServiceForSubsAdvanceSearch(){
 
+        List<String> profileList =new ArrayList<>();
 
+        String token = Constants.Token_Paid;
+        String minage = mAgeMinET.getText().toString() ;
+        String maxage = mAgeMaxET.getText().toString() ;
+        String country = mPartnerCurrentCountryTV.getText().toString() ;
+        String city = mPartnerCurrentCityIV.getText().toString() ;
+        String religion = mSelectReligionTV.getText().toString() ;
+        String caste = mSelectCastTV.getText().toString() ;
+        String mother_tounge = mSelectMotherToungeTV.getText().toString() ;
+        String marital_status = mMaritalStatusTV.getText().toString() ;
+        String course = mEducationOccupationTV.getText().toString() ;
+        String annual_income = mAnnualIncomeTV.getText().toString() ;
+
+        profileList.add(minage);profileList.add(maxage);profileList.add(country);
+        profileList.add(city);profileList.add(religion);profileList.add(caste);
+        profileList.add(mother_tounge);profileList.add(marital_status);
+        profileList.add(course);profileList.add(annual_income);
+
+        SubsAdvanceSearchRequest searchRequest = new SubsAdvanceSearchRequest();
+        searchRequest.token = token;
+        searchRequest.minage = minage;
+        searchRequest.maxage = maxage;
+        searchRequest.country = country;
+        searchRequest.city = city;
+        searchRequest.religion = religion;
+        searchRequest.caste = caste;
+        searchRequest.mother_tounge = mother_tounge;
+        searchRequest.marital_status = marital_status;
+        searchRequest.course = course;
+        searchRequest.annual_income = annual_income;
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(searchRequest);
+        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+            @Override
+            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                        if(response.body().getQuery().size() > 0){
+                            List<Query> queryList = response.body().getQuery();
+                            System.out.print(profileList);
+                            communicator.saveSearchPartner(queryList, profileList);
+
+                        }
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
 
     /** Dialog */
     public Vector<Dialog> dialogs = new Vector<Dialog>();

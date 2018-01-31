@@ -1,6 +1,5 @@
 package com.senzecit.iitiimshaadi.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,10 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.FriendsActivity;
 import com.senzecit.iitiimshaadi.adapter.MyFriendsAdapter;
-
-import java.util.ArrayList;
 
 /**
  * Created by ravi on 15/11/17.

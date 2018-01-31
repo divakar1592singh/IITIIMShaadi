@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:weightSum="2"
     android:background="@drawable/introslider_bgimg"
-    tools:context="com.senzecit.iitiimshaadi.activity.IntroSliderActivity">
+    tools:context="com.senzecit.iitiimshaadi.viewController.IntroSliderActivity">
 
     <include layout="@layout/intro_slider_toolbar"/>
     <RelativeLayout

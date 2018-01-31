@@ -5,17 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.WalletActivity;
 import com.senzecit.iitiimshaadi.adapter.WalletTransactionAdapter;
 
 /**

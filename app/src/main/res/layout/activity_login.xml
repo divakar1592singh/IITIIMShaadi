@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.senzecit.iitiimshaadi.activity.LoginActivity"
+    tools:context="com.senzecit.iitiimshaadi.viewController.LoginActivity"
     android:orientation="vertical">
 
     <include layout="@layout/app_toolbar"/>

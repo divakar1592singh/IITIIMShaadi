@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMaroon"
-    tools:context="com.senzecit.iitiimshaadi.activity.PremierServicesActivity"
+    tools:context="com.senzecit.iitiimshaadi.viewController.PremierServicesActivity"
     >
 
     <include

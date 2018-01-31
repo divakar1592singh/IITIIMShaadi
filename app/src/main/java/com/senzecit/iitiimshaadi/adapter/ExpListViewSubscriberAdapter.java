@@ -2,7 +2,6 @@ package com.senzecit.iitiimshaadi.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,24 +27,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.LoginActivity;
-import com.senzecit.iitiimshaadi.activity.SubscriberDashboardActivity;
-import com.senzecit.iitiimshaadi.api_integration.APIClient;
-import com.senzecit.iitiimshaadi.api_integration.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;

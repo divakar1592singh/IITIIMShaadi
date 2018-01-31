@@ -12,8 +12,12 @@ import android.view.ViewGroup;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.RequestedFriendAdapter;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.viewController.CustomFolderActivity;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by ravi on 15/11/17.
@@ -23,15 +27,32 @@ public class RequestedFriendFragment extends Fragment {
     RecyclerView mRecyclerView;
     View view;
 
-    /*ArrayList<String> myFriendList;
+    List<String> myFriendList;
     RequestedFriendFragment.OnRequestedFriendListener listener;
+
+    private static final String ARG_SECTION_NUMBER = "section_number";
+
+    public RequestedFriendFragment() {
+    }
+
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static RequestedFriendFragment newInstance(String text) {
+        RequestedFriendFragment fragment = new RequestedFriendFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_SECTION_NUMBER, text);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         listener = (RequestedFriendFragment.OnRequestedFriendListener) activity;
-
-    }*/
+    }
 
     @Nullable
     @Override
@@ -40,28 +61,33 @@ public class RequestedFriendFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        myFriendList = new ArrayList<>();
-//        myFriendList.add("nsp");
-//        myFriendList.add("cp");
-//        myFriendList.add("mango");
-//        myFriendList.add("nsp");
-//        myFriendList.add("cp");
-//
-//        listener.onFragmentSetRequestedFriend(myFriendList);
-//
-//    }
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        myFriendList = new ArrayList<>();
+        myFriendList.add("nsp");
+        myFriendList.add("cp");
+        myFriendList.add("mango");
+        myFriendList.add("nsp");
+        myFriendList.add("cp");
+
+        listener.onFragmentSetRequestedFriend(myFriendList);
+
+
+//        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Dekh", getArguments().getString(ARG_SECTION_NUMBER));
+// AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Dekh", new CustomFolderActivity().getViewPagePosition());
+
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
 
-        RequestedFriendAdapter adapter = new RequestedFriendAdapter(getActivity());
-        mRecyclerView.setAdapter(adapter);
+       /* RequestedFriendAdapter adapter = new RequestedFriendAdapter(getActivity());
+        mRecyclerView.setAdapter(adapter);*/
     }
 
     private void init(){
@@ -70,8 +96,8 @@ public class RequestedFriendFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
-//    public interface OnRequestedFriendListener {
-//        public void onFragmentSetRequestedFriend(ArrayList<String> requestAL);
-//    }
+    public interface OnRequestedFriendListener {
+        void onFragmentSetRequestedFriend(List<String> requestAL);
+    }
 
 }

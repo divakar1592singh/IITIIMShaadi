@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".viewController.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,104 +30,107 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".viewController.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.RegistrationQuickActivity"
+            android:name=".viewController.RegistrationQuickActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.NewUserRegisterActivity"
+            android:name=".viewController.NewUserRegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ProfileActivity"
+            android:name=".viewController.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SearchPartnerPaidActivity"
+            android:name=".viewController.SearchPartnerPaidActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.WalletActivity"
+            android:name=".viewController.WalletActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PaidSubscriberDashboardActivity"
+            android:name=".viewController.PaidSubscriberDashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.SubscriberDashboardActivity"
+            android:name=".viewController.SubscriberDashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".navigation_paid.PaidBaseActivity"
+            android:name=".navigation.PaidBaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigation_subscriber.BaseActivity"
+            android:name=".navigation.BaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name=".viewController.SettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
-            android:name=".activity.UploadVideoActivity"
+            android:name=".viewController.UploadVideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SearchPartnerActivity"
+            android:name=".viewController.SearchPartnerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AlbumActivity"
+            android:name=".viewController.AlbumActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SubscriptionActivity"
+            android:name=".viewController.SubscriptionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.FriendsActivity"
+            android:name=".viewController.FriendsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.FAQActivity"
+            android:name=".viewController.FAQActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AboutUsActivity"
+            android:name=".viewController.AboutUsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MediaCoverageActivity"
+            android:name=".viewController.MediaCoverageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ContactUsActivity"
+            android:name=".viewController.ContactUsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
-            android:name=".activity.PremierServicesActivity"
+            android:name=".viewController.PremierServicesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SuccessStoriesActivity"
+            android:name=".viewController.SuccessStoriesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ChatMessagesActivity"
+            android:name=".viewController.ChatMessagesActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.IntroSliderActivity" />
+        <activity android:name=".viewController.IntroSliderActivity" />
         <activity
-            android:name=".activity.CustomFolderActivity"
+            android:name=".viewController.CustomFolderActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity android:name=".customdialog.MainActivity" />
         <activity
-            android:name=".activity.YoutubeActivity"
+            android:name=".viewController.YoutubeActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".activity.AlertPlanActivity" />
+        <activity android:name=".viewController.AlertPlanActivity" />
         <activity
-            android:name=".activity.PrivacyActivity"
+            android:name=".viewController.PrivacyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.DisclaimerActivity"
+            android:name=".viewController.DisclaimerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.HowToNavigatePageActivity"
+            android:name=".viewController.HowToNavigatePageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activity.IntroSliderWebActivity" />
-        <activity android:name=".activity.SubscriptionPlanActivity" />
-        <activity android:name=".activity.OtherProfileActivity"></activity>
+        <activity android:name=".viewController.IntroSliderWebActivity" />
+        <activity android:name=".viewController.SubscriptionPlanActivity" />
+        <activity android:name=".viewController.OtherProfileActivity" />
+        <activity android:name=".viewController.ResultSearchPartnerActivity" />
+        <activity android:name=".viewController.ResultPaidSearchPartnerActivity" />
+        <activity android:name=".viewController.CustomFoldersActivity"></activity>
     </application>
 
 </manifest>

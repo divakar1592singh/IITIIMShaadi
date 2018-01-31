@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.senzecit.iitiimshaadi.activity.AlertPlanActivity"
+    tools:context="com.senzecit.iitiimshaadi.viewController.AlertPlanActivity"
     android:layout_marginBottom="10dp">
 
     <include layout="@layout/app_toolbar"/>

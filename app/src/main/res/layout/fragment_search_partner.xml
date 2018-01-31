@@ -73,8 +73,9 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Minimum"
+                                        android:inputType="numberDecimal"
                                         android:singleLine="true"
-                                        android:inputType="textPassword"/>
+                                        android:text="26" />
                                 </android.support.design.widget.TextInputLayout>
                                 <android.support.design.widget.TextInputLayout
                                     android:layout_width="100dp"
@@ -87,8 +88,9 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Maximum"
+                                        android:inputType="numberDecimal"
                                         android:singleLine="true"
-                                        android:inputType="textPassword"/>
+                                        android:text="28" />
                                 </android.support.design.widget.TextInputLayout>
                             </RelativeLayout>
                         </LinearLayout>
@@ -122,7 +124,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="India"
+                                android:text="1151"
                                 android:textSize="14sp"/>
                         </LinearLayout>
 
@@ -246,7 +248,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Khatri"
+                                android:text="Aggarwal,Agrawal,Bania,Gupta,Kashyap"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -285,7 +287,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Hindi"
+                                android:text="Any,Telugu"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -362,7 +364,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Consultant"
+                                android:text="Management,Engineering/Architecture,Masters"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -401,7 +403,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="4-5 lac per annum"
+                                android:text="less than 10 LPA"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView

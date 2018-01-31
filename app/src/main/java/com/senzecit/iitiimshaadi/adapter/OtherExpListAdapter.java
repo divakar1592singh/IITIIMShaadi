@@ -1,53 +1,21 @@
 package com.senzecit.iitiimshaadi.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api_integration.APIClient;
-import com.senzecit.iitiimshaadi.api_integration.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
-import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
-import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
-import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutAdapter;
-import com.senzecit.iitiimshaadi.slider_dialog.with_selection.SliderDialogCheckboxLayoutModel;
-import com.senzecit.iitiimshaadi.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class OtherExpListAdapter extends BaseExpandableListAdapter {

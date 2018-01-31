@@ -68,6 +68,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
                 <TextView
+                    android:id="@+id/idDietTV"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -88,6 +89,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
                 <TextView
+                    android:id="@+id/idEmploymentTV"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -108,6 +110,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
                 <TextView
+                    android:id="@+id/idCompanyTV"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -128,6 +131,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
                 <TextView
+                    android:id="@+id/idHeightTV"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -148,6 +152,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
                 <TextView
+                    android:id="@+id/idReligionTV"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -168,6 +173,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
                 <TextView
+                    android:id="@+id/idEducationTV"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

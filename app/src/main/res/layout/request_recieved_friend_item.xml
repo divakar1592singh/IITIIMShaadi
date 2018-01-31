@@ -52,9 +52,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/idUserIDTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ashish kapoor"
+                        android:text="12345"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"
                         android:padding="7dp"/>
@@ -62,18 +63,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/colorEditBox"/>
+
                     <TextView
+                        android:id="@+id/idNameTV"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="28 years/ 5 ft 10in (177cm)"
+                        android:layout_height="36dp"
+                        android:padding="7dp"
+                        android:text="Name"
                         android:textColor="@color/colorGrey"
-                        android:textSize="14sp"
-                        android:padding="7dp"/>
+                        android:textSize="14sp" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/colorEditBox"/>
                     <TextView
+                        android:id="@+id/idReligionTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hindu/Khatri"
@@ -85,6 +89,19 @@
                         android:layout_height="1dp"
                         android:background="@color/colorEditBox"/>
                     <TextView
+                        android:id="@+id/idEducationTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Education"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"
+                        android:padding="7dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorEditBox"/>
+                    <TextView
+                        android:id="@+id/idJobInfoTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Deloitte Consulting US India Pvt Ltd"

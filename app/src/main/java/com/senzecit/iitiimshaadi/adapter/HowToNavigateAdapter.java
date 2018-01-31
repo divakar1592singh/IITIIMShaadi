@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.activity.YoutubeActivity;
+import com.senzecit.iitiimshaadi.viewController.YoutubeActivity;
 import com.senzecit.iitiimshaadi.model.how_to_navigates.VideoModel;
 
 import java.util.ArrayList;
