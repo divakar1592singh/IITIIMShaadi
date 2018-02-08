@@ -15,18 +15,36 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
+import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,24 +56,23 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     RelativeLayout mSendRL, mAddsRL;
     boolean generalSetting,notificationSetting,deactiveAccount = true;
     TextView mMemberSendTV, mMemberAddsTV;
+    EditText mNameET, mPwdET, mConfirmPwdET;
+    Button mGeneralSaveBtn;
+
+    /** Network*/
+    APIInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_settings);
+
+        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+
         init();
+        handleView();
 
-        mGeneralSettingIV.setOnClickListener(this);
-        mNotificationSettingIV.setOnClickListener(this);
-        mDeactiveAccountSettingIV.setOnClickListener(this);
-        mBack.setOnClickListener(this);
-
-        mSendRL.setOnClickListener(this);
-        mAddsRL.setOnClickListener(this);
-
-        mMemberSendTV.setOnClickListener(this);
-        mMemberAddsTV.setOnClickListener(this);
     }
 
     private void init(){
@@ -78,6 +95,27 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         mMemberSendTV = (TextView) findViewById(R.id.idMemberSendTV);
         mMemberAddsTV = (TextView) findViewById(R.id.idMemberAddsTV);
+
+        mNameET = (EditText)findViewById(R.id.nameET) ;
+        mPwdET = (EditText)findViewById(R.id.passwordET) ;
+        mConfirmPwdET = (EditText)findViewById(R.id.confirmPasswordET) ;
+        mGeneralSaveBtn = (Button)findViewById(R.id.generalSaveBtn);
+
+    }
+
+    public void handleView(){
+
+        mGeneralSettingIV.setOnClickListener(this);
+        mNotificationSettingIV.setOnClickListener(this);
+        mDeactiveAccountSettingIV.setOnClickListener(this);
+        mBack.setOnClickListener(this);
+
+        mSendRL.setOnClickListener(this);
+        mAddsRL.setOnClickListener(this);
+
+        mMemberSendTV.setOnClickListener(this);
+        mMemberAddsTV.setOnClickListener(this);
+        mGeneralSaveBtn.setOnClickListener(this);
     }
 
     @Override
@@ -119,6 +157,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.idAddsRL:
                 showBooleanData(mMemberAddsTV);
                 break;
+            case R.id.generalSaveBtn:
+                checkUserValidation();
+                break;
+
         }
     }
 
@@ -199,6 +241,96 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
+    /** Check Validation Section */
+    public void checkUserValidation(){
+
+        String sUsername = mNameET.getText().toString().trim();
+        String password = mPwdET.getText().toString().trim();
+        String confirmPassword = mConfirmPwdET.getText().toString().trim();
+
+        if(isValidPassword(password, confirmPassword) == true){
+
+          /** CALL API */
+            callWebServiceForGenSetting();
+            }else {
+                AlertDialogSingleClick.getInstance().showDialog(SettingsActivity.this, "Alert!", "Password didn't match!");
+            }
+
+    }
+
+    /** Check API Section */
+    public void callWebServiceForGenSetting(){
+
+        String sUsername = mNameET.getText().toString().trim();
+        String sPassword = mPwdET.getText().toString().trim();
+
+        GeneralSettingRequest request = new GeneralSettingRequest();
+        request.token = Constants.Temp_Token;
+        request.name = sUsername;
+        request.password = sPassword;
+
+        ProgressClass.getProgressInstance().showDialog(SettingsActivity.this);
+        Call<GeneralSettingResponse> call = apiInterface.changeGeneralSetting(request);
+        call.enqueue(new Callback<GeneralSettingResponse>() {
+            @Override
+            public void onResponse(Call<GeneralSettingResponse> call, Response<GeneralSettingResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    GeneralSettingResponse genSettingResponse = response.body();
+                    if(genSettingResponse.getMessage().getSuccess() != null) {
+                        if (genSettingResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(SettingsActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(SettingsActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(SettingsActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeneralSettingResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SettingsActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+    public boolean isValidPassword(String password, String confirmPassword){
+        boolean status = false;
+
+        if(!password.isEmpty()){
+            if(!confirmPassword.isEmpty()){
+                if(password.equals(confirmPassword)){
+//                    AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password Succesfull");
+                    status = true;
+                }
+                else {
+                    status = false;
+                    mPwdET.requestFocus();
+                    AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password didn't match");
+                }
+            }else {
+                mConfirmPwdET.requestFocus();
+                status = false;
+                AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Re-Type Password can't empty");
+            }
+        }else {
+            mPwdET.setText("");
+            mConfirmPwdET.setText("");
+            status = false;
+            AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password can't empty");
+        }
+
+        return status;
+    }
+
 
 
 }

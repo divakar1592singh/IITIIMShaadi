@@ -7,8 +7,8 @@ package com.senzecit.iitiimshaadi.utils;
 public interface Constants {
 
     String BASE_URL = "https://www.iitiimshaadi.com/";
-    String Temp_Token = "c7b4b98aa847a0f096469a49511019a4";
-    String Token_Paid = "42a6259d9ae09e7fde77c74bbf2a9a48";
+    String Temp_Token = "416565ba68c2ff2f7e1176bc7ee8ddec";
+    String Token_Paid = "87784c05e8e381ae7e4ed3540700c4b2";
 
     //LOGIN
     String LOGGED_TOKEN = "token";

@@ -14,9 +14,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +59,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     ImageView mAddFolderIV, mEditFolderIV, mDeleteFolderIV;
     EditText mFolderNameET;
     RecyclerView mRecyclerView;
+    Spinner mFolderSpnr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +93,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        mFolderSpnr = (Spinner)findViewById(R.id.folderNameSPNR);
+
     }
 
     private void addTab(String title) {
@@ -101,7 +111,6 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-//                Toast.makeText(CustomFoldersActivity.this, "Selected:"+tab.getText(), Toast.LENGTH_LONG).show();
                 callWebServiceForCurrentCustomFolder(tab.getText().toString());
             }
 
@@ -117,6 +126,59 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 callWebServiceForCurrentCustomFolder(tab.getText().toString());
             }
         });
+
+        //        SPINNER
+        List<String> list = new ArrayList<>();
+        list.add("Folder-1");
+        list.add("Folder-2");
+        list.add("Folder-3");
+        list.add("Folder-4");
+
+        ArrayAdapter<String> arrayAdapter1=new ArrayAdapter<String>(this, R.layout.spnr_layout, list);
+        arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFolderSpnr.setAdapter(arrayAdapter1);
+        mFolderSpnr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selected = mFolderSpnr.getSelectedItem().toString();
+                Toast.makeText(CustomFoldersActivity.this, selected, Toast.LENGTH_SHORT).show();
+                /*if(selected.equalsIgnoreCase("Delivered")){
+                    holder.mCommentLayout.setVisibility(View.GONE);
+                }else {
+                    holder.mCommentLayout.setVisibility(View.VISIBLE);
+                }*/
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mFolderNameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(s.toString())){
+                    mFolderSpnr.setVisibility(View.VISIBLE);
+                }else {
+                    mFolderSpnr.setVisibility(View.GONE);
+
+
+                }
+            }
+        });
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegInstitutionRequest;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, CustomFoldersActivity.class);
+                Intent intent = new Intent(SplashActivity.this, RegistrationQuickActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

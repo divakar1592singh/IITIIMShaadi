@@ -29,6 +29,14 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religious_country.PtrReligionCountryResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
@@ -37,6 +45,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -805,16 +814,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
         showDialog(list, textView);
     }
-/*    public void showCountry(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("India");
-        list.add("Russia");
-        list.add("China");
-        list.add("America");
-        list.add("USA");
 
-        showDialog(list, textView);
-    }*/
     //EDUCATION
     public void showEducation(TextView textView){
         List<String> list = new ArrayList<>();
@@ -842,28 +842,154 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     public void saveChangesOfCase_0(){
 
-        String Minimum_Age;
-        String Maximum_Age;
-        String Min_Height;
-        String Max_Height;
-        String Marital_Status;
+        String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
+        String Maximum_Age = ExpPartnerProfileModel.getInstance().getMaximum_Age();
+        String Min_Height = ExpPartnerProfileModel.getInstance().getMin_Height();
+        String Max_Height = ExpPartnerProfileModel.getInstance().getMax_Height();
+        String Marital_Status = ExpPartnerProfileModel.getInstance().getMarital_Status();
+
+
+
+        ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
+        request.token = Constants.Temp_Token;
+        request.prefered_partner_min_age = Minimum_Age;
+        request.prefered_partner_max_age = Maximum_Age;
+        request.prefered_partner_height = Min_Height;
+        request.prefered_partner_height_max = Max_Height;
+        request.prefered_partner_marital_status = Marital_Status;
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<ParnerBasicProfileResponse> call = apiInterface.sendPartnerBasicProfile(request);
+        call.enqueue(new Callback<ParnerBasicProfileResponse>() {
+            @Override
+            public void onResponse(Call<ParnerBasicProfileResponse> call, Response<ParnerBasicProfileResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    ParnerBasicProfileResponse ptBasicProfileResponse = response.body();
+                /*    if(ptBasicProfileResponse.getMessage().getSuccess() != null) {
+                        if (ptBasicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }*/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParnerBasicProfileResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
 
     }
     public void saveChangesOfCase_1(){
 
-        String Preferred_Religion;
-        String Preferred_Caste;
-        String Preferred_Country;
+        String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
+        String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
+        String Preferred_Country = ExpPartnerProfileModel.getInstance().getPreferred_Country();
+
+        PtrReligionCountryRequest request = new PtrReligionCountryRequest();
+        request.token = Constants.Temp_Token;
+        request.prefered_partner_religion = Preferred_Religion;
+        request.prefered_partner_caste = Preferred_Caste;
+        request.prefered_partner_country = Preferred_Country;
+
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<PtrReligionCountryResponse> call = apiInterface.sendPartnerReligionCountry(request);
+        call.enqueue(new Callback<PtrReligionCountryResponse>() {
+            @Override
+            public void onResponse(Call<PtrReligionCountryResponse> call, Response<PtrReligionCountryResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    PtrReligionCountryResponse ptReligionResponse = response.body();
+                    if(ptReligionResponse.getMessage().getSuccess() != null) {
+                        if (ptReligionResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PtrReligionCountryResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
     }
     public void saveChangesOfCase_2(){
 
-        String Preferred_Education;
+        String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
+
+
+        PtrEduCareerRequest request = new PtrEduCareerRequest();
+        request.token = Constants.Temp_Token;
+        request.prefered_partner_education = Preferred_Education;
+
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<PtrEduCareerResponse> call = apiInterface.sendPartnerEduCareer(request);
+        call.enqueue(new Callback<PtrEduCareerResponse>() {
+            @Override
+            public void onResponse(Call<PtrEduCareerResponse> call, Response<PtrEduCareerResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    PtrEduCareerResponse ptrEduResponse = response.body();
+                    if(ptrEduResponse.getMessage().getSuccess() != null) {
+                        if (ptrEduResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PtrEduCareerResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
     public void saveChangesOfCase_3(){
 
-        String Choice_of_Groom;
+        String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
+
 
     }
 

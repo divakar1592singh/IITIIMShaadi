@@ -2,6 +2,7 @@ package com.senzecit.iitiimshaadi.utils.alert;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 import android.widget.ImageView;
@@ -46,7 +47,23 @@ public class ProgressClass {
             dialog.show();
         }
 
-        public void stopProgress(){
+    public void showDialogContext(Context activity){
+        dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.layout_progress_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        ImageView progressImage = (ImageView) dialog.findViewById(R.id.idPregress);
+        Glide.with(activity)
+                .load(R.drawable.gif_progress1)
+                .into(progressImage);
+
+        dialog.show();
+    }
+
+
+    public void stopProgress(){
             dialog.dismiss();
         }
 

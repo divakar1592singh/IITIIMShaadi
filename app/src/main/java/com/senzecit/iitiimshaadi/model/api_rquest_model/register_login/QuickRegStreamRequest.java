@@ -6,7 +6,7 @@ package com.senzecit.iitiimshaadi.model.api_rquest_model.register_login;
 
 public class QuickRegStreamRequest {
 
-    public String gender;
-    public String education;
+    public int gender;
+    public int courseId;
 
 }

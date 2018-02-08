@@ -750,7 +750,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        callUpload = apiInterface.idVerification("4a691ee9d00bd9eea102f3912a6bf303", fileToUpload, filename);
+        callUpload = apiInterface.idVerification(Constants.Temp_Token, fileToUpload, filename);
 
         callUpload.enqueue(new Callback<IdVerificationResponse>() {
             @Override
@@ -758,7 +758,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
                 ProgressClass.getProgressInstance().stopProgress();
                 if(response.isSuccessful()){
 
-                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Success :" );
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Response :"+response.body().getMessage().getSuccess() );
                 }else {
                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Confuse");
                 }

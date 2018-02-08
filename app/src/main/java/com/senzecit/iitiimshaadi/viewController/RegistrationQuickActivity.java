@@ -35,6 +35,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_str
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegEligibilityRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegFindCollegeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegStreamRequest;
+import com.senzecit.iitiimshaadi.model.commons.CourseModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -60,6 +61,8 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     EditText mUserNameET, mEmailET, mMobileET, mCollegeNameET;
     //Network
     APIInterface apiInterface;
+
+    List<Integer> idList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,26 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         mMobileET = (EditText) findViewById(R.id.mobileET);
         mCollegeNameET = (EditText) findViewById(R.id.collegeNameET);
         mSubmitFindEduBtn = (Button)findViewById(R.id.idSubmitFindEduBtn);
+
+
+        idList = new ArrayList<>();
+        idList.add(16);
+        idList.add(15);
+        idList.add(13);
+        idList.add(1);
+        idList.add(2);
+        idList.add(3);
+        idList.add(4);
+        idList.add(5);
+        idList.add(6);
+        idList.add(7);
+        idList.add(8);
+        idList.add(9);
+        idList.add(10);
+        idList.add(11);
+        idList.add(12);
+
+        checkEligibilityValidation();
 
     }
 
@@ -221,13 +244,15 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     }
 
     /** Handle view to Set and Get*/
-    public String getGender(){
+    public int getGender(){
         if(mBoySelect.getVisibility() == View.VISIBLE){
             Toast.makeText(this, "Male", Toast.LENGTH_LONG).show();
+            return 1;
         }else if(mGirlSelect.getVisibility() == View.VISIBLE){
             Toast.makeText(this, "Female", Toast.LENGTH_LONG).show();
+            return 2;
         }
-        return  null;
+        return  0;
     }
     public void showEducation(){
         List<String> educationList = new ArrayList<>();
@@ -236,11 +261,23 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         showDialog(educationList, mEducationTV);
     }
     public void showStream(){
+
         List<String> streamList = new ArrayList<>();
-        streamList.add("BBA");
-        streamList.add("BCA");
-        streamList.add("MBA");
-        streamList.add("MCA");
+        streamList.add("Actuary");
+        streamList.add("Hotel Management");
+        streamList.add("Management");
+        streamList.add("Engineering/Architecture");
+        streamList.add("Medical");
+        streamList.add("CA/CS/ICWA/CFA");
+        streamList.add("Law");
+        streamList.add("Design/Fashion Design");
+        streamList.add("Government Officer");
+        streamList.add("Social Work (Masters)");
+        streamList.add("Media Communication (Masters)");
+        streamList.add("Performing and Fine Arts");
+        streamList.add("Masters");
+        streamList.add("Research (Ph.D/FPM)");
+        streamList.add("Others");
 
         showDialog(streamList, mStreamTV);
     }
@@ -261,8 +298,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         String sInstitution = mInstitutionTV.getText().toString().trim();
 
         if(!sEducation.startsWith("Select") && !sStream.startsWith("Select") && !sInstitution.startsWith("Select")){
-            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "All selected");
-//            startActivity(new Intent(RegistrationQuickActivity.this,NewUserRegisterActivity.class));
+            callWebServiceForStream();
         }else {
             AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
         }
@@ -311,9 +347,11 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
 
         String sEducation = mEducationTV.getText().toString().trim();
 
+        int courseId = idList.indexOf(sEducation);
+
         QuickRegStreamRequest quickRegStreamRequest = new QuickRegStreamRequest();
         quickRegStreamRequest.gender = getGender();
-        quickRegStreamRequest.education = sEducation;
+        quickRegStreamRequest.courseId = courseId;
 
         Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);
         call.enqueue(new Callback<QuickRegStreamResponse>() {
@@ -336,7 +374,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         });
 
     }
-    public void callWebServiceForInstitution() {
+  /*  public void callWebServiceForInstitution() {
 
         String sEducation = mEducationTV.getText().toString().trim();
         String sStream = mStreamTV.getText().toString().trim();
@@ -351,9 +389,9 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
            @Override
            public void onResponse(Call<QuickRegInstitutionResponse> call, Response<QuickRegInstitutionResponse> response) {
                if (response.isSuccessful()) {
-                   /*if (response.body().getResponseCode() == 200) {
+                   *//*if (response.body().getResponseCode() == 200) {
                        Toast.makeText(this, "Succesfully", Toast.LENGTH_SHORT).show();
-                   }*/
+                   }*//*
                }
            }
 
@@ -363,7 +401,8 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
                Toast.makeText(RegistrationQuickActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
            }
        });
-    }
+    }*/
+/*
     public void callWebServiceForQuickRegister() {
 
         String sEducation = mEducationTV.getText().toString().trim();
@@ -381,11 +420,13 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
             @Override
             public void onResponse(Call<EligibilityResponse> call, Response<EligibilityResponse> response) {
                 if (response.isSuccessful()) {
-                   /* if (response.body().getResponseCode() == 200) {
+                   */
+/* if (response.body().getResponseCode() == 200) {
 
                         Toast.makeText(RegistrationQuickActivity.this, "Comment sended succesfully", Toast.LENGTH_SHORT).show();
 
-                    }*/
+                    }*//*
+
                 }
             }
 
@@ -397,6 +438,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         });
 
     }
+*/
 
     public void callWebServiceForFindCollege() {
 

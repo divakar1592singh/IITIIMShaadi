@@ -2,16 +2,30 @@ package com.senzecit.iitiimshaadi.api;
 
 
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.PartnerBasicData;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.QuickRegStreamResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_career.EducationCareerResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.email_verification.EmailVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religious_country.PtrReligionCountryResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.religious_background.ReligiousBackgroundResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.SubsRetrieveResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
@@ -21,8 +35,16 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegI
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegStreamRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.family_detail.FamilyDetailRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.id_verification.IdVerificationRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.profile.BasicProfileRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
@@ -36,6 +58,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by ravi on 13/12/17.
@@ -130,7 +153,7 @@ public interface APIInterface {
 
     @Multipart
     @POST("api/id_upload.json")
-    Call<IdVerificationResponse> idVerification(@Part("token")String token, @Part MultipartBody.Part file, @Part("id_proof") RequestBody name);
+    Call<IdVerificationResponse> idVerification(@Query("token") String token, @Part MultipartBody.Part file, @Part("id_proof") RequestBody id_proof);
 
     @FormUrlEncoded
     @POST("api/country.json")
@@ -170,6 +193,49 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("api/custom_folder.json")
     Call<FolderListModelResponse> customFolderList(@Field("token")String token);
+
+    /**Subscriber Dashboard*/
+    /*1*/
+    @POST("api/basic_lifestyle.json")
+    Call<BasicProfileResponse> sendBasicProfile(@Body BasicProfileRequest request);
+    /*2*/
+    @POST("api/religious_background.json")
+    Call<ReligiousBackgroundResponse> sendReligiousBackground(@Body ReligiousBackgroundRequest request);
+    /*3*/
+    @POST("api/contact_details.json")
+    Call<ContactDetailsResponse> sendContactDetails(@Body ContactDetailsRequest request);
+    /*4*/
+    @POST("api/family_details.json")
+    Call<FamilyDetailResponse> sendFamilyDetails(@Body FamilyDetailRequest request);
+    /*5*/
+    @POST("api/education_career.json")
+    Call<EducationCareerResponse> sendEducationCareer(@Body EducationCareerRequest request);
+    /*6*/
+    @POST("api/about_me.json")
+    Call<AboutMeResponse> sendAboutMe(@Body AboutMeRequest request);
+    /**Partner*/
+    /*7*/
+    @POST("api/partner_education_career.json")
+    Call<ParnerBasicProfileResponse> sendPartnerBasicProfile(@Body ParnerBasicProfileRequest request);
+    /*8*/
+    @POST("api/partner_religion_country.json")
+    Call<PtrReligionCountryResponse> sendPartnerReligionCountry(@Body PtrReligionCountryRequest request);
+    /*9*/
+    @POST("api/partner_education_career.json")
+    Call<PtrEduCareerResponse> sendPartnerEduCareer(@Body PtrEduCareerRequest request);
+    /*10*/
+    @POST("api/choiceof_partner.json")
+    Call<PtrEduCareerResponse> sendPartnerGroom(@Body PtrEduCareerRequest request);
+
+    /** General Setting */
+    @POST("api/general_settings.json")
+    Call<GeneralSettingResponse> changeGeneralSetting(@Body GeneralSettingRequest request);
+    /** Subscription */
+    @FormUrlEncoded
+    @POST("api/subscription.json")
+    Call<SubsRetrieveResponse> retrieveSubscription(@Field("token")String token);
+
+
 
 
 }
