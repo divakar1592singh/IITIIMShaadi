@@ -39,6 +39,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -2443,11 +2444,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     private void showCountry(final TextView textView){
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(Constants.Temp_Token);
+        Call<CountryListResponse> call = apiInterface.countryList(token);
         call.enqueue(new Callback<CountryListResponse>() {
             @Override
             public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
@@ -2479,9 +2483,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         final List<String> stateList = new ArrayList<>();
         stateList.clear();
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<StateListResponse> call = apiInterface.stateList(Constants.Temp_Token);
+        Call<StateListResponse> call = apiInterface.stateList(token);
         call.enqueue(new Callback<StateListResponse>() {
             @Override
             public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {

@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
 import com.senzecit.iitiimshaadi.model.commons.CountryCodeModel;
+import com.senzecit.iitiimshaadi.utils.CaptchaClass;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -80,15 +82,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         prefs = new AppPrefs(NewUserRegisterActivity.this);
 
         init();
+        handleview();
 
-        mProfileCreatedRL.setOnClickListener(this) ;
-        mGenderRL.setOnClickListener(this);
-        mDOBRL.setOnClickListener(this) ;
-
-        mTermCheck.setOnClickListener(this);
-        mTermUnCheck.setOnClickListener(this);
-        mUserRegister.setOnClickListener(this);
-        showCountryCode();
     }
 
     private void init(){
@@ -121,6 +116,22 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     }
 
+    public void handleview(){
+
+        mProfileCreatedRL.setOnClickListener(this) ;
+        mGenderRL.setOnClickListener(this);
+        mDOBRL.setOnClickListener(this) ;
+
+        mTermCheck.setOnClickListener(this);
+        mTermUnCheck.setOnClickListener(this);
+        mUserRegister.setOnClickListener(this);
+        mRefreshIV.setOnClickListener(this);
+
+        showCountryCode();
+        showCaptcha();
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -148,9 +159,20 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.idRefreshIV:
                 Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
+                showCaptcha();
                 break;
 
         }
+    }
+
+    public void showCaptcha(){
+
+        CaptchaClass captcha = new CaptchaClass();
+        String str = captcha.generateCaptcha();
+        System.out.println(str);
+
+        mCaptchaBtn.setText(str);
+
     }
 
     public void showProfileCreatedFor(){
@@ -431,6 +453,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
         prefs.putString(Constants.LOGGED_EMAIL, email);
 
+        prefs.getString(Constants.LOGGED_TOKEN);
+
         navigateUserToScreen(typeOfUser);
     }
 
@@ -494,5 +518,6 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         }
         return json;
     }
+
 
 }

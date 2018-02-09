@@ -6,8 +6,11 @@ package com.senzecit.iitiimshaadi.utils;
 
 public interface Constants {
 
+    int splshTime = 100;
     String BASE_URL = "https://www.iitiimshaadi.com/";
-    String Temp_Token = "416565ba68c2ff2f7e1176bc7ee8ddec";
+    String IMAGE_BASE_URL = "https://iitiimshaadi.com/img/";
+
+    String Temp_Token = "24d5b020b37ac63d408c987c4a54c225";
     String Token_Paid = "87784c05e8e381ae7e4ed3540700c4b2";
 
     //LOGIN

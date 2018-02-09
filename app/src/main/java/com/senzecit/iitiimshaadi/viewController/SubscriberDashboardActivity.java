@@ -31,6 +31,7 @@ import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -658,6 +659,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
     /** API INTEGRATION */
 
     public void callWebServiceForEmailVerification(){
+
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
 

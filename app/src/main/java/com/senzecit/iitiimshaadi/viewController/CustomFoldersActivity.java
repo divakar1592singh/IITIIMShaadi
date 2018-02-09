@@ -1,6 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 
+import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,8 +34,14 @@ import com.senzecit.iitiimshaadi.adapter.RequestedFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.fragment.RequestedFriendFragment;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.custom_folder.RenameFolderRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
+import com.senzecit.iitiimshaadi.model.commons.FolderMetaDataModel;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
@@ -60,12 +68,18 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     EditText mFolderNameET;
     RecyclerView mRecyclerView;
     Spinner mFolderSpnr;
+    APIInterface apiInterface;
+
+    List<FolderMetaDataModel> metaDataList;
+    FolderMetaDataModel folderMetaDataModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_custom_folders);
+
+        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 
         init();
         handle();
@@ -100,6 +114,9 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     private void addTab(String title) {
         mTabLayout.addTab(mTabLayout.newTab().setText(title));
     }
+    private void removeTab() {
+        mTabLayout.removeAllTabs();
+    }
 
     private void handle(){
         mBack.setOnClickListener(this);
@@ -127,36 +144,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        //        SPINNER
-        List<String> list = new ArrayList<>();
-        list.add("Folder-1");
-        list.add("Folder-2");
-        list.add("Folder-3");
-        list.add("Folder-4");
-
-        ArrayAdapter<String> arrayAdapter1=new ArrayAdapter<String>(this, R.layout.spnr_layout, list);
-        arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mFolderSpnr.setAdapter(arrayAdapter1);
-        mFolderSpnr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                String selected = mFolderSpnr.getSelectedItem().toString();
-                Toast.makeText(CustomFoldersActivity.this, selected, Toast.LENGTH_SHORT).show();
-                /*if(selected.equalsIgnoreCase("Delivered")){
-                    holder.mCommentLayout.setVisibility(View.GONE);
-                }else {
-                    holder.mCommentLayout.setVisibility(View.VISIBLE);
-                }*/
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        mFolderNameET.addTextChangedListener(new TextWatcher() {
+ /*       mFolderNameET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -177,7 +165,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
                 }
             }
-        });
+        });*/
 
     }
 
@@ -188,25 +176,28 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 CustomFoldersActivity.this.finish();
                 break;
             case R.id.idAddFolder:
-                if(mFolderNameET.getText().length()>0){
+                checkAddValid();
+               /* if(mFolderNameET.getText().length()>0){
                     String renamedFolder = mFolderNameET.getText().toString();
                     AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Add folder \'"+renamedFolder+"\'", "Functionality Work");
                 }else {
                     AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Alert! Field Empty", "Functionality Work");
-                }
+                }*/
                 break;
             case R.id.idEditFolder:
-                if(mFolderNameET.getText().length()>0){
+                checkRenameValid();
+               /* if(mFolderNameET.getText().length()>0){
                     String renamedFolder = mFolderNameET.getText().toString();
                     String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
                     AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename \'"+currentFolder+"\' to \'"+renamedFolder+"\'", "Functionality Work");
                 }else {
                     AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Alert! Field Empty", "Functionality Work");
-                }
+                }*/
                 break;
             case R.id.idDeleteFolder:
-                String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
-                AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Delete \'"+currentFolder+"\'", "Functionality Work");
+                checkDeleteAlert();
+//                String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
+//                AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Delete \'"+currentFolder+"\'", "Functionality Work");
 //                Toast.makeText(CustomFoldersActivity.this, "Output : "+mViewPager.getCurrentItem(), Toast.LENGTH_LONG).show();
 //                Toast.makeText(CustomFoldersActivity.this, "Output : "+mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText()
 //                        , Toast.LENGTH_LONG).show();
@@ -219,21 +210,23 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     /** Folder Title */
     public void callWebServiceForCustomFolder(){
 
-        String token = Constants.Token_Paid;
+        String token = Constants.Temp_Token;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
         call.enqueue(new Callback<FolderListModelResponse>() {
             @Override
             public void onResponse(Call<FolderListModelResponse> call, Response<FolderListModelResponse> response) {
+                List<MyMeta> myMetaList = null;
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
 
-                        List<MyMeta> myMetaList = response.body().getMyMetas();
+                        removeTab();
+                        myMetaList = response.body().getMyMetas();
 
                         setTitle(myMetaList);
+                        setDropDown(myMetaList);
 
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Search Partner", "Opps");
@@ -255,7 +248,6 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
         String token = Constants.Token_Paid;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
         call.enqueue(new Callback<FolderListModelResponse>() {
@@ -289,6 +281,45 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             addTab(myMetaList.get(i).getMetaValue());
         }
     }
+    public void setDropDown(List<MyMeta> myMetaList){
+
+        metaDataList =  new ArrayList<>();
+        //        SPINNER
+        List<String> list = new ArrayList<>();
+/*        list.add("Folder-1");
+        list.add("Folder-2");
+        list.add("Folder-3");
+        list.add("Folder-4");*/
+        for(int i = 0; i < myMetaList.size(); i++){
+            list.add(myMetaList.get(i).getMetaValue());
+            folderMetaDataModel = new FolderMetaDataModel(myMetaList.get(i).getId(), myMetaList.get(i).getMetaValue());
+            metaDataList.add(folderMetaDataModel);
+        }
+
+        ArrayAdapter<String> arrayAdapter1=new ArrayAdapter<String>(this, R.layout.spnr_layout, list);
+        arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFolderSpnr.setAdapter(arrayAdapter1);
+        mFolderSpnr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selected = mFolderSpnr.getSelectedItem().toString();
+                Toast.makeText(CustomFoldersActivity.this, selected, Toast.LENGTH_SHORT).show();
+                /*if(selected.equalsIgnoreCase("Delivered")){
+                    holder.mCommentLayout.setVisibility(View.GONE);
+                }else {
+                    holder.mCommentLayout.setVisibility(View.VISIBLE);
+                }*/
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
+
     public void setUserList(List<UserDetail> userList){
         RequestedFriendAdapter adapter = new RequestedFriendAdapter(this, userList);
         mRecyclerView.setAdapter(adapter);
@@ -308,6 +339,203 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     }
 
     /** Folder Operation - Add, Rename, Remove */
+
+    public void checkAddValid(){
+        String newFolderName = mFolderNameET.getText().toString().trim();
+
+        if(TextUtils.isEmpty(newFolderName)){
+            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Folder Empty", "Enter folder name.");
+        }else{
+            new AlertDialog.Builder(CustomFoldersActivity.this)
+                    .setTitle("Add Folder Alert")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            callWebServiceForAdd();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+
+
+        }
+    }
+
+    public void checkRenameValid(){
+        String newFolderName = mFolderNameET.getText().toString().trim();
+        String sFolderName = mFolderSpnr.getSelectedItem().toString();
+
+        if(TextUtils.isEmpty(newFolderName)){
+            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Folder Empty", "Enter folder name.");
+        }else{
+            new AlertDialog.Builder(CustomFoldersActivity.this)
+                    .setTitle("Rename Alert")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            callWebServiceForRename();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+
+
+        }
+    }
+
+    public void checkDeleteAlert(){
+
+            new AlertDialog.Builder(CustomFoldersActivity.this)
+                    .setTitle("Delete Alert")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            callWebServiceForDelete();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+
+    }
+
+
+    public void callWebServiceForAdd(){
+
+        String token = Constants.Temp_Token;
+        String sFolderName = mFolderNameET.getText().toString().trim();
+
+        ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
+        Call<AddFolderResponse> call = apiInterface.addFolder(token, sFolderName);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse addResponse = response.body();
+                    if(addResponse.getMessage().getSuccess() != null) {
+                        if (addResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            callWebServiceForCustomFolder();
+//                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
+
+                        } else {
+                            Toast.makeText(CustomFoldersActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(CustomFoldersActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(CustomFoldersActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+    public void callWebServiceForRename(){
+
+        String sFolderName = mFolderNameET.getText().toString().trim();
+        int positin = mFolderSpnr.getSelectedItemPosition();
+        int metaId = metaDataList.get(positin).getMetaId();
+
+        RenameFolderRequest request = new RenameFolderRequest();
+        request.token = Constants.Temp_Token;
+        request.meta_id = metaId;
+        request.name = sFolderName;
+
+        ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
+        Call<RenameFolderResponse> call = apiInterface.renameFolder(request);
+        call.enqueue(new Callback<RenameFolderResponse>() {
+            @Override
+            public void onResponse(Call<RenameFolderResponse> call, Response<RenameFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    RenameFolderResponse renameResponse = response.body();
+                    if(renameResponse.getMessage().getSuccess() != null) {
+                        if (renameResponse.getMessage().getSuccess().toString().equalsIgnoreCase("Folder is renamed")) {
+
+                            callWebServiceForCustomFolder();
+//                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
+//                            Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(CustomFoldersActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(CustomFoldersActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RenameFolderResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(CustomFoldersActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+    public void callWebServiceForDelete(){
+
+        String token = Constants.Temp_Token;
+        int positin = mFolderSpnr.getSelectedItemPosition();
+        int folder_id = metaDataList.get(positin).getMetaId();
+
+
+        ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
+        Call<AddFolderResponse> call = apiInterface.deleteFolder(token, folder_id);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse addResponse = response.body();
+                    if(addResponse.getMessage().getSuccess() != null) {
+                        if (addResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            callWebServiceForCustomFolder();
+//                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
+
+                        } else {
+                            Toast.makeText(CustomFoldersActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(CustomFoldersActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(CustomFoldersActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
 
 
 }

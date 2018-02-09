@@ -46,6 +46,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -842,16 +843,18 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     public void saveChangesOfCase_0(){
 
+
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
         String Maximum_Age = ExpPartnerProfileModel.getInstance().getMaximum_Age();
         String Min_Height = ExpPartnerProfileModel.getInstance().getMin_Height();
         String Max_Height = ExpPartnerProfileModel.getInstance().getMax_Height();
         String Marital_Status = ExpPartnerProfileModel.getInstance().getMarital_Status();
 
-
-
         ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.prefered_partner_min_age = Minimum_Age;
         request.prefered_partner_max_age = Maximum_Age;
         request.prefered_partner_height = Min_Height;
@@ -896,12 +899,15 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
     public void saveChangesOfCase_1(){
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
         String Preferred_Country = ExpPartnerProfileModel.getInstance().getPreferred_Country();
 
         PtrReligionCountryRequest request = new PtrReligionCountryRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.prefered_partner_religion = Preferred_Religion;
         request.prefered_partner_caste = Preferred_Caste;
         request.prefered_partner_country = Preferred_Country;
@@ -944,11 +950,13 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
     public void saveChangesOfCase_2(){
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
 
-
         PtrEduCareerRequest request = new PtrEduCareerRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.prefered_partner_education = Preferred_Education;
 
 
@@ -988,6 +996,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
     public void saveChangesOfCase_3(){
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
 
 
@@ -995,11 +1006,14 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     private void showCountry(final TextView textView){
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(Constants.Temp_Token);
+        Call<CountryListResponse> call = apiInterface.countryList(token);
         call.enqueue(new Callback<CountryListResponse>() {
             @Override
             public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {

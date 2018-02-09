@@ -39,6 +39,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ import retrofit2.Response;
 
 public class SearchPartnerFragment extends Fragment implements View.OnClickListener {
     View view;
+    AppPrefs prefs;
     ImageView mAdvanceSearchIV;
     LinearLayout mlinearLayoutAdvanceSearch;
     boolean advanceSearch = true;
@@ -68,6 +70,13 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     public void setSearchPartnerFragmentCommunicator(SearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        prefs = new AppPrefs(context);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -177,7 +186,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         List<String> profileList =new ArrayList<>();
 
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
         String country = mPartnerCurrentCountryTV.getText().toString() ;

@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,28 @@ import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.AlbumAdapter;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
+import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
+import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
+import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+
+import java.io.File;
+import java.util.List;
+
+import in.gauriinfotech.commons.Commons;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AlbumActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar mToolbar;
@@ -24,17 +47,19 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     GridView mGridView;
     LinearLayout mAddBtnLL,mAddImage;
     FrameLayout mNoImageFoundFL,mImageFoundFL;
+    APIInterface apiInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_album);
+
+        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+
         init();
-        mBack.setOnClickListener(this);
-        AlbumAdapter albumAdapter = new AlbumAdapter(this);
-        mGridView.setAdapter(albumAdapter);
-        mAddBtnLL.setOnClickListener(this);
-        mAddImage.setOnClickListener(this);
+        handleView();
+
     }
 
     private void init(){
@@ -51,6 +76,16 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         mAddImage = (LinearLayout) findViewById(R.id.idAddImgLL);
         mNoImageFoundFL = (FrameLayout) findViewById(R.id.idAlbumNoImageFL);
         mImageFoundFL = (FrameLayout) findViewById(R.id.idAlbumImageFoundFL);
+    }
+
+    public void handleView(){
+
+        mBack.setOnClickListener(this);
+
+        mAddBtnLL.setOnClickListener(this);
+        mAddImage.setOnClickListener(this);
+
+        callWebServiceForAllAlbum();
     }
 
     @Override
@@ -71,6 +106,59 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    public void showAlbumImage(List<Album> albumList){
+
+        AlbumAdapter albumAdapter = new AlbumAdapter(this, albumList);
+        mGridView.setAdapter(albumAdapter);
+
+    }
+
+    /** API */
+    /** Folder Title */
+    public void callWebServiceForAllAlbum(){
+
+        String token = Constants.Token_Paid;
+
+        ProgressClass.getProgressInstance().showDialog(this);
+        Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
+        call.enqueue(new Callback<AllAlbumResponse>() {
+            @Override
+            public void onResponse(Call<AllAlbumResponse> call, Response<AllAlbumResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AllAlbumResponse albumResponse = response.body();
+                    if(albumResponse.getMessage().getSuccess() != null) {
+                        if (albumResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            mNoImageFoundFL.setVisibility(View.GONE);
+                            mImageFoundFL.setVisibility(View.VISIBLE);
+
+                            List<Album> albumList = albumResponse.getAlbums();
+                            showAlbumImage(albumList);
+
+                        } else {
+                            Toast.makeText(AlbumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllAlbumResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+
+
+
 
     public void showToast(String msg){
 
@@ -95,4 +183,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         super.onStop();
         AlbumActivity.this.finish();
     }
+
+
+
 }

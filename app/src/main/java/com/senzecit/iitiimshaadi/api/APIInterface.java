@@ -1,6 +1,9 @@
 package com.senzecit.iitiimshaadi.api;
 
 
+import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
@@ -25,6 +28,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religio
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.religious_background.ReligiousBackgroundResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.SubsRetrieveResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.custom_folder.RenameFolderRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
@@ -58,6 +62,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -113,7 +118,7 @@ public interface APIInterface {
 
 */
     /** QUICK REGISTER */
-    @POST("/partition_url_here/")
+    @POST("api/checkEligibilty.json")
     Call<QuickRegStreamResponse> fetchStreamData(@Body QuickRegStreamRequest quickRegStreamRequest);
     @POST("/partition_url_here/")
     Call<QuickRegInstitutionResponse> fetchInstitutionData(@Body QuickRegInstitutionRequest quickRegInstitutionRequest);
@@ -193,6 +198,17 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("api/custom_folder.json")
     Call<FolderListModelResponse> customFolderList(@Field("token")String token);
+    /*Add*/
+    @FormUrlEncoded
+    @POST("api/add_folder.json")
+    Call<AddFolderResponse> addFolder(@Field("token")String token, @Field("name")String name);
+    /*Rename*/
+    @POST("api/rename_folder.json")
+    Call<RenameFolderResponse> renameFolder(@Body RenameFolderRequest request);
+    /*Delete*/
+    @FormUrlEncoded
+    @POST("api/delete_folder.json")
+    Call<AddFolderResponse> deleteFolder(@Field("token")String token, @Field("folder_id")Integer folder_id);
 
     /**Subscriber Dashboard*/
     /*1*/
@@ -235,6 +251,15 @@ public interface APIInterface {
     @POST("api/subscription.json")
     Call<SubsRetrieveResponse> retrieveSubscription(@Field("token")String token);
 
+    /** Album */
+    @FormUrlEncoded
+    @POST("api/albums.json")
+    Call<AllAlbumResponse> allAlbumist(@Field("token")String token);
+
+
+    @Multipart
+    @POST("api/profile_image_upload.json")
+    Call<AddFolderResponse> uploadImageFile(@Part MultipartBody.Part file, @Part("file[]") RequestBody name, @Path("user_id") String user_id);
 
 
 

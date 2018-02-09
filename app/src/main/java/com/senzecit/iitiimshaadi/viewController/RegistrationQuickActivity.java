@@ -8,7 +8,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -27,9 +29,11 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
+import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.College;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegInstitutionRequest;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.QuickRegStreamResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegEligibilityRequest;
@@ -62,6 +66,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     //Network
     APIInterface apiInterface;
 
+    List<String> streamList;
     List<Integer> idList;
 
     @Override
@@ -73,16 +78,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 
         init();
-        mbuttonContinue.setOnClickListener(this);
-        mBoySelect.setOnClickListener(this);
-        mBoyUnSelect.setOnClickListener(this);
-        mGirlSelect.setOnClickListener(this);
-        mGirlUnSelect.setOnClickListener(this);
-
-        mEducationRL.setOnClickListener(this);
-        mStreamRL.setOnClickListener(this);
-        mInstitutionRL.setOnClickListener(this);
-        mSubmitFindEduBtn.setOnClickListener(this);
+        handleView();
 
     }
 
@@ -113,6 +109,23 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         mSubmitFindEduBtn = (Button)findViewById(R.id.idSubmitFindEduBtn);
 
 
+    }
+
+    public void handleView(){
+
+
+        mbuttonContinue.setOnClickListener(this);
+        mBoySelect.setOnClickListener(this);
+        mBoyUnSelect.setOnClickListener(this);
+        mGirlSelect.setOnClickListener(this);
+        mGirlUnSelect.setOnClickListener(this);
+
+        mEducationRL.setOnClickListener(this);
+        mStreamRL.setOnClickListener(this);
+        mInstitutionRL.setOnClickListener(this);
+        mSubmitFindEduBtn.setOnClickListener(this);
+
+
         idList = new ArrayList<>();
         idList.add(16);
         idList.add(15);
@@ -130,17 +143,15 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         idList.add(11);
         idList.add(12);
 
-        checkEligibilityValidation();
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.continueBtn:
-                Navigator.getClassInstance().navigateToActivity(this, NewUserRegisterActivity.class);
 //                startActivity(new Intent(this,NewUserRegisterActivity.class));
 //                checkEligibilityValidation();
+                checkEligibilityValidation();
                 break;
             case R.id.boyUnSelect:
                 mBoySelect.setVisibility(View.VISIBLE);
@@ -163,7 +174,8 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
                 showStream();
                 break;
             case R.id.id_institutionRL:
-                showCountry();
+//                showInstution();
+                checkCourseValidation();
                 break;
             case R.id.idSubmitFindEduBtn:
 //                Toast.makeText(this,"Submit", Toast.LENGTH_SHORT).show();
@@ -187,7 +199,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         }else {
             for (int i = 0; i < 20; i++) {
                 Model model = new Model();
-                model.setName("senzecit " + i);
+                model.setName("Select " + i);
                 models.add(model);
             }
         }
@@ -246,10 +258,10 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     /** Handle view to Set and Get*/
     public int getGender(){
         if(mBoySelect.getVisibility() == View.VISIBLE){
-            Toast.makeText(this, "Male", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Male", Toast.LENGTH_SHORT).show();
             return 1;
         }else if(mGirlSelect.getVisibility() == View.VISIBLE){
-            Toast.makeText(this, "Female", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Female", Toast.LENGTH_SHORT).show();
             return 2;
         }
         return  0;
@@ -262,7 +274,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     }
     public void showStream(){
 
-        List<String> streamList = new ArrayList<>();
+        streamList = new ArrayList<>();
         streamList.add("Actuary");
         streamList.add("Hotel Management");
         streamList.add("Management");
@@ -281,30 +293,49 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
 
         showDialog(streamList, mStreamTV);
     }
-    public void showCountry(){
+    public void showInstution(List<College> collegeList){
         List<String> countryList = new ArrayList<>();
+/*
         countryList.add("India");
         countryList.add("Russia");
         countryList.add("America");
         countryList.add("China");
+*/
+
+        for (int i = 0; i < collegeList.size(); i++ ){
+            countryList.add(collegeList.get(i).getCollege());
+        }
         showDialog(countryList, mInstitutionTV);
     }
 
     /** Check Validation Section */
-    public void checkEligibilityValidation(){
+    public void checkCourseValidation(){
+
+        String sEducation = mEducationTV.getText().toString().trim();
+        String sStream = mStreamTV.getText().toString().trim();
+        String sInstitution = mInstitutionTV.getText().toString().trim();
+
+        if(!sEducation.startsWith("Select") && !sStream.startsWith("Select")){
+            callWebServiceForStream();
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
+        }
+
+    }
+        public void checkEligibilityValidation(){
 
         String sEducation = mEducationTV.getText().toString().trim();
         String sStream = mStreamTV.getText().toString().trim();
         String sInstitution = mInstitutionTV.getText().toString().trim();
 
         if(!sEducation.startsWith("Select") && !sStream.startsWith("Select") && !sInstitution.startsWith("Select")){
-            callWebServiceForStream();
+            Navigator.getClassInstance().navigateToActivity(this, NewUserRegisterActivity.class);
         }else {
             AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
         }
 
-
     }
+
     public void checkFindEduValidation(){
 
         String sUsername = mUserNameET.getText().toString().trim();
@@ -345,30 +376,46 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     /** Check API Section */
     public void callWebServiceForStream() {
 
-        String sEducation = mEducationTV.getText().toString().trim();
+        String sStream = mStreamTV.getText().toString().trim();
 
-        int courseId = idList.indexOf(sEducation);
+        int courseIndex = streamList.indexOf(sStream);
+
+        int courseId = idList.get(courseIndex);
 
         QuickRegStreamRequest quickRegStreamRequest = new QuickRegStreamRequest();
+//        quickRegStreamRequest.gender = 1;
+//        quickRegStreamRequest.courseId = 1;
         quickRegStreamRequest.gender = getGender();
         quickRegStreamRequest.courseId = courseId;
 
+        ProgressClass.getProgressInstance().showDialog(RegistrationQuickActivity.this);
         Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);
         call.enqueue(new Callback<QuickRegStreamResponse>() {
             @Override
             public void onResponse(Call<QuickRegStreamResponse> call, Response<QuickRegStreamResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                   /* if (response.body().getResponseCode() == 200) {
+                    QuickRegStreamResponse courseResponse = response.body();
+                    if(courseResponse.getMessage().getSuccess() != null) {
+                        if (courseResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            Toast.makeText(RegistrationQuickActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(RegistrationQuickActivity.this, "Comment sended succesfully", Toast.LENGTH_SHORT).show();
+                            List<College> collegeList = courseResponse.getCollege();
+                            showInstution(collegeList);
 
-                }*/
-            }
+                        } else {
+                            Toast.makeText(RegistrationQuickActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(RegistrationQuickActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<QuickRegStreamResponse> call, Throwable t) {
             call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
             Toast.makeText(RegistrationQuickActivity.this, "Failed", Toast.LENGTH_SHORT).show();
         }
         });
@@ -491,6 +538,8 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
     private boolean isValidMobile(String phone) {
         return android.util.Patterns.PHONE.matcher(phone).matches();
     }
+
+
 
 
 }

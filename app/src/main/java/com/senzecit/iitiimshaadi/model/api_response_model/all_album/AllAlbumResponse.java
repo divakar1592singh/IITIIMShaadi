@@ -1,22 +1,21 @@
-package com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream;
+package com.senzecit.iitiimshaadi.model.api_response_model.all_album;
 
 /**
- * Created by senzec on 1/1/18.
+ * Created by senzec on 9/2/18.
  */
-
 
         import java.util.List;
         import com.google.gson.annotations.Expose;
         import com.google.gson.annotations.SerializedName;
 
-public class QuickRegStreamResponse {
+public class AllAlbumResponse {
 
     @SerializedName("message")
     @Expose
     private Message message;
-    @SerializedName("college")
+    @SerializedName("albums")
     @Expose
-    private List<College> college = null;
+    private List<Album> albums = null;
 
     public Message getMessage() {
         return message;
@@ -26,12 +25,12 @@ public class QuickRegStreamResponse {
         this.message = message;
     }
 
-    public List<College> getCollege() {
-        return college;
+    public List<Album> getAlbums() {
+        return albums;
     }
 
-    public void setCollege(List<College> college) {
-        this.college = college;
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 
 }

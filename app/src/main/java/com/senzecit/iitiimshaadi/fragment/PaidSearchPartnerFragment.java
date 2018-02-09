@@ -40,6 +40,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,7 @@ import retrofit2.Response;
 
 public class PaidSearchPartnerFragment extends Fragment implements View.OnClickListener {
     View view;
+    AppPrefs prefs;
     ImageView mSearchByIdIV,mSerchByKeywordIV,mAdvanceSearchIV;
     FrameLayout mframeLayoutSearchById,mframeLayoutSearchByKeyword;
     LinearLayout mlinearLayoutAdvanceSearch;
@@ -74,6 +76,14 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     public void setPaidSearchPartnerFragmentCommunicator(PaidSearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        prefs = new AppPrefs(context);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -226,7 +236,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     /** Search By ID */
     public void callWebServiceForSubsIDSearch(){
 
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String searchID = mSearchByIdET.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -263,7 +273,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     /** Search By Keyword */
     public void callWebServiceForSubsKeywordSearch(){
 
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String keyword = mRandomKeywordET.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -302,7 +312,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         List<String> profileList =new ArrayList<>();
 
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
         String country = mPartnerCurrentCountryTV.getText().toString() ;

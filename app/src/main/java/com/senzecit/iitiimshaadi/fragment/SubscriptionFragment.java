@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralS
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.LinearLayoutManagerWithSmoothScroller;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 
 import java.util.ArrayList;
@@ -44,10 +46,18 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager layoutManager;
     TextView mLastRenewTV, mNextRenewTV;
+    AppPrefs prefs;
 
     public void setSubscriptionFragmentCommunicator(SubscriptionFragmentCommunicator communicator){
         this.communicator = communicator;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        prefs = new AppPrefs(context);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,8 +107,9 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     /** Check API Section */
     public void callWebServiceForGenSetting(){
 
+//        String token = Constants.Token_Paid;
+        String token =  prefs.getString(Constants.LOGGED_TOKEN);;
 
-        String token = Constants.Token_Paid;
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 

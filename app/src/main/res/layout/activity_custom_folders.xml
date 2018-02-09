@@ -10,7 +10,25 @@
     <include layout="@layout/app_toolbar"/>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp"
+        android:orientation="vertical">
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/TextLabel">
+
+        <EditText
+            android:id="@+id/folderNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Folder Name"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:weightSum="2"
@@ -27,10 +45,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.60"
-            android:theme="@style/TextLabel">
+            android:theme="@style/TextLabel"
+            android:visibility="gone">
 
             <EditText
-                android:id="@+id/folderNameET"
+                android:id="@+id/folderNameET1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Folder Name"
@@ -38,11 +57,23 @@
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Select Folder"/>
             <Spinner
                 android:id="@+id/folderNameSPNR"
-                android:layout_width="120dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 ></Spinner>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -86,6 +117,8 @@
                 />
 
         </LinearLayout>
+    </LinearLayout>
+
     </LinearLayout>
 
     <android.support.design.widget.TabLayout

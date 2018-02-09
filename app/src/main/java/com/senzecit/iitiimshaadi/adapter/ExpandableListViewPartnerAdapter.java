@@ -38,6 +38,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,8 +55,8 @@ import retrofit2.Response;
 
 public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter {
 
-
     private Context _context;
+    AppPrefs prefs;
     LayoutInflater layoutInflater;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
@@ -69,6 +70,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.myProfileResponse = myProfileResponse;
+
     }
 
     @Override
@@ -910,11 +912,12 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     private void showCountry(final TextView textView){
 
+        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(Constants.Temp_Token);
+        Call<CountryListResponse> call = apiInterface.countryList(token);
         call.enqueue(new Callback<CountryListResponse>() {
             @Override
             public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {

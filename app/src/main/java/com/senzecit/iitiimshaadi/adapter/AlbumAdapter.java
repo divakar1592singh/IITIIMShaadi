@@ -7,26 +7,34 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
+import com.senzecit.iitiimshaadi.utils.Constants;
+
+import java.util.List;
 
 /**
  * Created by ravi on 22/11/17.
  */
 
 public class AlbumAdapter extends BaseAdapter {
+
     Context context;
+    List<Album> albumList ;
     String[] listItem;
 
     int[] imageItem = {R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2,
             R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2,
             R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2};
 
-    public AlbumAdapter(Context context){
+    public AlbumAdapter(Context context, List<Album> albumList){
         this.context = context;
+        this.albumList = albumList;
     }
     @Override
     public int getCount() {
-        return imageItem.length;
+        return albumList.size();
     }
 
     @Override
@@ -51,7 +59,14 @@ public class AlbumAdapter extends BaseAdapter {
         }else{
             holder = (Holder) view.getTag();
         }
-        holder.imageView.setImageResource(imageItem[i]);
+//        holder.imageView.setImageResource(imageItem[i]);
+
+        try {
+            Glide.with(context).load(Constants.IMAGE_BASE_URL+albumList.get(i).getPicOrgUrl()).error(R.drawable.ic_not_available).into(holder.imageView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return view;
     }
 

@@ -54,6 +54,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.LoginActivity;
 
 import java.util.ArrayList;
@@ -2218,6 +2219,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     public void saveChangesOfCase_0(){
 
 //        ExpListViewSubscriberAdapter.this.notifyDataSetChanged();
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String name = ExpOwnProfileModel.getInstance().getName();
        String Profile = ExpOwnProfileModel.getInstance().getProfile();
@@ -2233,7 +2236,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         Toast.makeText(_context, "Output : "+Interests, Toast.LENGTH_LONG).show();
 
         BasicProfileRequest request = new BasicProfileRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.name = name;
         request.health = "";
         request.height = Height;
@@ -2279,6 +2282,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 }
     public void saveChangesOfCase_1(){
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
        String Religion = ExpOwnProfileModel.getInstance().getReligion();
        String Caste = ExpOwnProfileModel.getInstance().getCaste();
        String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
@@ -2287,7 +2293,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
 
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.religion = Religion;
         request.caste= Caste;
         request.mother_tongue = Mother_Tongue;
@@ -2343,9 +2349,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Alternate_Number, Toast.LENGTH_LONG).show();
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ContactDetailsRequest request = new ContactDetailsRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.mobile_no = Phone_Number;
         request.alternate_no = Alternate_Number;
         request.permanent_address= Permanent_Address;
@@ -2405,9 +2413,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Father_Name, Toast.LENGTH_LONG).show();
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         FamilyDetailRequest request = new FamilyDetailRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.father_name = Father_Name;
         request.father_occupation = Father_Occupation;
         request.mother_name= Mother_Name;
@@ -2468,9 +2478,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Schooling, Toast.LENGTH_LONG).show();
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         EducationCareerRequest request = new EducationCareerRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.schooling = Schooling;
         request.schooling_year = Schooling_Year;
         request.graduation = Graduation;
@@ -2525,10 +2537,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+About_you, Toast.LENGTH_LONG).show();
 
-
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         AboutMeRequest request = new AboutMeRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.about_me = About_you;
 
 
@@ -2572,8 +2585,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(Constants.Temp_Token);
+        Call<CountryListResponse> call = apiInterface.countryList(token);
         call.enqueue(new Callback<CountryListResponse>() {
             @Override
             public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
@@ -2606,8 +2622,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         final List<String> stateList = new ArrayList<>();
         stateList.clear();
 
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<StateListResponse> call = apiInterface.stateList(Constants.Temp_Token);
+        Call<StateListResponse> call = apiInterface.stateList(token);
         call.enqueue(new Callback<StateListResponse>() {
             @Override
             public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {

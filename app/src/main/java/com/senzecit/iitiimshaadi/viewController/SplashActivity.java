@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, RegistrationQuickActivity.class);
+                Intent intent = new Intent(SplashActivity.this, NewUserRegisterActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

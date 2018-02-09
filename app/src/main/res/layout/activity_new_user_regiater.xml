@@ -300,7 +300,8 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/button_shape_forgot"
                         android:text="7IItIim"
-                        android:textAllCaps="false"/>
+                        android:textAllCaps="false"
+                        />
                     <ImageView
                         android:id="@+id/idRefreshIV"
                         android:layout_toRightOf="@+id/captchaBtn"
