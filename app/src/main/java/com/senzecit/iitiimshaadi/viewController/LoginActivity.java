@@ -81,8 +81,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 alertDialog();
                 break;
             case R.id.registerTV:
-                Navigator.getClassInstance().navigateToActivity(this, RegistrationQuickActivity.class);
-//                startActivity(new Intent(LoginActivity.this,RegistrationQuickActivity.class));
+                Navigator.getClassInstance().navigateToActivity(this, QuickRegistrationActivity.class);
+//                startActivity(new Intent(LoginActivity.this,QuickRegistrationActivity.class));
                 break;
             case R.id.loginBtn:
 //                Navigator.getClassInstance().navigateToActivity(this, PaidSubscriberDashboardActivity.class);
@@ -158,11 +158,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void setPrefData(ResponseData response){
         String token = response.getToken();
         String userName = response.getUsername();
+        String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
         String profilePic = response.getProfileImage();
 
         prefs.putString(Constants.LOGGED_TOKEN, token);
         prefs.putString(Constants.LOGGED_USERNAME, userName);
+        prefs.putString(Constants.LOGGED_USERID, userId);
         prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
         prefs.putString(Constants.LOGGED_USER_PIC, profilePic);
 
@@ -172,6 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void navigateUserToScreen(String typeOfUser){
         if(typeOfUser.equalsIgnoreCase("paid_subscriber_viewer")){
             Navigator.getClassInstance().navigateToActivity(LoginActivity.this, PaidSubscriberDashboardActivity.class);
+        }else if(typeOfUser.equalsIgnoreCase("subscriber_viewer")){
+            Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
         }else if(typeOfUser.equalsIgnoreCase("subscriber")){
             Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
         }

@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -17,16 +19,22 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.AllInvitedFriend;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.InvitedFriendResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.email_verification.EmailVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.id_verification.IdVerificationRequest;
 import com.senzecit.iitiimshaadi.navigation.BaseActivity;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -67,6 +75,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
     int btnChooserCount = 0;
     /** Network*/
     APIInterface apiInterface;
+    AppPrefs prefs;
 
 
     @Override
@@ -75,6 +84,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
         setContentView(R.layout.activity_subscriber_dashboard);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        prefs = AppController.getInstance().getPrefs();
 
         init();
         handleClick();
@@ -118,6 +128,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
 
         mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
         mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
+        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
         mProfilepercTV = (TextView)findViewById(R.id.idProfilePercTV);
 
         mAlbumIV = (ImageView)findViewById(R.id.idAlbum);
@@ -131,6 +142,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
         expListViewPartner = (ExpandableListView) findViewById(R.id.partnerPrefExpLV);
     }
     public void handleClick() {
+
         mProfileCIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,6 +187,27 @@ public class SubscriberDashboardActivity extends BaseActivity {
                 alertDialogIDProof();
             }
         });
+
+//     Set Data
+        setProfileData();
+
+
+        callWebServiceForSubscribeDashboard();
+    }
+
+    public  void  setProfileData(){
+
+        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
+        String userId = prefs.getString(Constants.LOGGED_USERID);
+        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+
+        if(!TextUtils.isEmpty(profileUri)){
+            Glide.with(SubscriberDashboardActivity.this).load(profileUri).into(mProfileCIV);
+        }
+
+        mUsrNameTV.setText(new StringBuilder("@").append(userName));
+        mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
     }
 
     private void prepareListData() {
@@ -188,7 +221,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
         listDataHeader.add("Family Details");
         listDataHeader.add("Education & Career");
         listDataHeader.add("About Me");
-        listDataHeader.add("Acquaintances");
+//        listDataHeader.add("Acquaintances");
 //        listDataHeader.add("Video");
 
         // Adding child data
@@ -259,6 +292,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
         aboutMe.add("Write something about you");
         aboutMe.add("Save Changes");
 
+/*
         List<String> acquiantances = new ArrayList<String>();
         acquiantances.add("1.Acquaintance Name");
         acquiantances.add("1.Acquaintance Remark");
@@ -271,6 +305,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
         acquiantances.add("5.Acquaintance Name");
         acquiantances.add("5.Acquaintance Remark");
         acquiantances.add("Save Changes");
+*/
 
 //        List<String> video = new ArrayList<String>();
 //        video.add("My Video");
@@ -281,7 +316,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
         listDataChild.put(listDataHeader.get(3), familyDetails);
         listDataChild.put(listDataHeader.get(4), educationCareer);
         listDataChild.put(listDataHeader.get(5), aboutMe);
-        listDataChild.put(listDataHeader.get(6), acquiantances);
+//        listDataChild.put(listDataHeader.get(6), acquiantances);
 //        listDataChild.put(listDataHeader.get(7), video);
     }
 
@@ -368,8 +403,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
 
     }
 
-    private void setListViewHeight(ExpandableListView listView,
-                                   int group) {
+    private void setListViewHeight(ExpandableListView listView,int group) {
         ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
@@ -431,38 +465,47 @@ public class SubscriberDashboardActivity extends BaseActivity {
     }
     private void alertDialogMobile(){
 
-        final Button mConfirm,mLogin;
+        final Button mConfirm,mResend;
+        final ImageView mCloseIV;
+        final EditText mOtpET;
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
         final AlertDialog dialog = dialogBuilder.create();
         View dialogView = inflater.inflate(R.layout.popup_mobile_layout,null);
 
+        mOtpET = dialogView.findViewById(R.id.idOtpTV);
         mConfirm = dialogView.findViewById(R.id.confirmBtn);
-        mLogin = dialogView.findViewById(R.id.loginFPLBtn);
-
-       /* mConfirm.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
-        mConfirm.setTextColor(getResources().getColor(R.color.colorWhite));*/
+        mResend = dialogView.findViewById(R.id.resendFPLBtn);
+        mCloseIV = dialogView.findViewById(R.id.idCloseIV);
 
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*mConfirm.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
-                mConfirm.setTextColor(getResources().getColor(R.color.colorWhite));*/
-                dialog.dismiss();
+
+                String otp = mOtpET.getText().toString().trim();
+                if (TextUtils.isEmpty(otp)){
+                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP", "OTP is empty");
+                }else {
+                    callWebServiceForOTPVerification(otp);
+                }
+
             }
         });
 
-        mLogin.setOnClickListener(new View.OnClickListener() {
+        mResend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*mLogin.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
-                mLogin.setTextColor(getResources().getColor(R.color.colorWhite));*/
-                dialog.dismiss();
-
+                callWebServiceForResendOTP();
             }
         });
 
+        mCloseIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         dialog.setView(dialogView);
         dialog.show();
     }
@@ -656,7 +699,56 @@ public class SubscriberDashboardActivity extends BaseActivity {
         return filePath.substring(filePath.lastIndexOf("/")+1);
     }
 
+    public void setSubsDashboardData(SubscriberMainResponse mainResponse){
+
+
+
+        mProfilepercTV.setText(new StringBuilder(String.valueOf(mainResponse.getBasicData().getProfileComplition())).append("%")); ;
+        mUsrNameTV.setText(new StringBuilder("@").append(mainResponse.getBasicData().getName()));
+    }
     /** API INTEGRATION */
+
+    /* Subscriber Dashboard*/
+    public void callWebServiceForSubscribeDashboard(){
+
+//        String token = Constants.Temp_Token;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
+        call.enqueue(new Callback<SubscriberMainResponse>() {
+            @Override
+            public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    SubscriberMainResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+
+                            SubscriberMainResponse mainResponse = response.body();
+                            setSubsDashboardData(mainResponse);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", "Confuse");
+                        }
+                    }else {
+                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
 
     public void callWebServiceForEmailVerification(){
 
@@ -695,42 +787,84 @@ public class SubscriberDashboardActivity extends BaseActivity {
             }
         });
     }
-    public void callWebServiceForIDVerification() {
+
+    /** MOBILE */
+    public void callWebServiceForResendOTP(){
+
+//        String token = Constants.Own_Token;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-
-      /*  IdVerificationRequest requestss = new IdVerificationRequest();
-        request.token = Constants.Temp_Token;
-        request.id_proof = "senzec1@gmail.com";
-
-
-        Call<EmailVerificationResponse> call = apiInterface.emailVerification(requestss);
-        call.enqueue(new Callback<EmailVerificationResponse>() {
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.resendOTP(token);
+        call.enqueue(new Callback<AddFolderResponse>() {
             @Override
-            public void onResponse(Call<EmailVerificationResponse> call, Response<EmailVerificationResponse> response) {
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
+                String msg1 = "We have sent you a new OTP. In case, you don\\u2019t receive it, please send \\u0022Verify\\u0022 message to our mobile number 07042947312.";
                 if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
-*//*                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getResponseData() != null){
-                            Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
-                            ResponseData responseData = response.body().getResponseData();
-                            setPrefData(responseData);
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", msg1);
                         }
                     }else {
-                        Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
-                    }*//*
-
+                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<EmailVerificationResponse> call, Throwable t) {
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
                 Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
-        });*/
+        });
+    }
+
+    public void callWebServiceForOTPVerification(String otp){
+
+//        String token = Constants.Own_Token;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.verifiyOTP(token, otp);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
+
+                            AlertDialogSingleClick.getInstance().closeDialog();
+                            // Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+
+                        } else {
+                            Toast.makeText(SubscriberDashboardActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
     }
 
     /* File Upload */

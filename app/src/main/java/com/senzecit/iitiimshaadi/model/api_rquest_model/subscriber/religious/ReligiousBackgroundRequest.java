@@ -9,6 +9,6 @@ public class ReligiousBackgroundRequest {
     public String token;
     public String religion;
     public String caste;
-    public String  mother_tongue;
+    public String  mother_tounge;
 
 }

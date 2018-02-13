@@ -16,6 +16,13 @@
             android:text="Mobile Number Verification"
             android:textSize="16sp"
             android:textColor="@color/colorWhite"/>
+        <ImageView
+            android:id="@+id/idCloseIV"
+            android:layout_width="36dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_clear_white"
+            android:layout_alignParentRight="true"
+            />
     </RelativeLayout>
 
     <!--<LinearLayout
@@ -48,7 +55,7 @@
         android:padding="20dp">
 
         <EditText
-            android:id="@+id/userNameET"
+            android:id="@+id/idOtpTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter OTP"
@@ -74,15 +81,15 @@
             android:textColor="@color/colorMaroon"/>
 
         <Button
-            android:id="@+id/loginFPLBtn"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"
+            android:id="@+id/resendFPLBtn"
             android:layout_width="110dp"
             android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
             android:background="@drawable/border_maroon_selector"
             android:text="Resend OTP"
-            android:textSize="16sp"
             android:textAllCaps="false"
-            android:textColor="@color/colorMaroon"/>
+            android:textColor="@color/colorMaroon"
+            android:textSize="16sp" />
     </RelativeLayout>
 </LinearLayout>

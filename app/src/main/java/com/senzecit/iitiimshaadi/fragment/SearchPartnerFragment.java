@@ -186,6 +186,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         List<String> profileList =new ArrayList<>();
 
+        profileList.clear();
+
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -229,12 +231,10 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             List<Query> queryList = response.body().getQuery();
                             System.out.print(profileList);
                             communicator.saveSearchPartner(queryList, profileList);
-
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
                     }
-
                 }
             }
 

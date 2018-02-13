@@ -78,6 +78,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
+
     public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
                                         HashMap<String, List<String>> listChildData) {
         this._context = context;
@@ -168,7 +169,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     case 2:
                         LayoutInflater infalInflater2 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater2.inflate(R.layout.list_item, null);
+                        convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
@@ -243,7 +244,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     case 4:
                         LayoutInflater infalInflater4 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater4.inflate(R.layout.list_item, null);
+                        convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
                         final TextView txtListChild4 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
@@ -1685,7 +1686,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 //                        textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
-                        editText.setText("Say Something...");
+                        editText.setHint("Say Something...");
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText.addTextChangedListener(new TextWatcher() {
@@ -2296,7 +2297,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         request.token = token;
         request.religion = Religion;
         request.caste= Caste;
-        request.mother_tongue = Mother_Tongue;
+        request.mother_tounge = Mother_Tongue;
 
 
         ProgressClass.getProgressInstance().showDialogContext(_context);

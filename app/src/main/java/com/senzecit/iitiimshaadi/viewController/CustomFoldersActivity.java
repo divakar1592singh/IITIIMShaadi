@@ -3,12 +3,6 @@ package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,39 +10,32 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.RequestedFriendAdapter;
+import com.senzecit.iitiimshaadi.adapter.CustomFolderAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.fragment.RequestedFriendFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.custom_folder.RenameFolderRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
 import com.senzecit.iitiimshaadi.model.commons.FolderMetaDataModel;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.AlertDialogTwoClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +56,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     RecyclerView mRecyclerView;
     Spinner mFolderSpnr;
     APIInterface apiInterface;
+    AppPrefs prefs;
 
     List<FolderMetaDataModel> metaDataList;
     FolderMetaDataModel folderMetaDataModel;
@@ -80,6 +68,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_custom_folders);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        prefs = AppController.getInstance().getPrefs();
 
         init();
         handle();
@@ -210,7 +199,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     /** Folder Title */
     public void callWebServiceForCustomFolder(){
 
-        String token = Constants.Temp_Token;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
@@ -321,7 +311,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     }
 
     public void setUserList(List<UserDetail> userList){
-        RequestedFriendAdapter adapter = new RequestedFriendAdapter(this, userList);
+        CustomFolderAdapter adapter = new CustomFolderAdapter(this, userList);
         mRecyclerView.setAdapter(adapter);
 
     }
@@ -419,7 +409,9 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void callWebServiceForAdd(){
 
-        String token = Constants.Temp_Token;
+//        String token = Constants.Temp_Token;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String sFolderName = mFolderNameET.getText().toString().trim();
 
         ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
@@ -456,12 +448,14 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void callWebServiceForRename(){
 
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String sFolderName = mFolderNameET.getText().toString().trim();
         int positin = mFolderSpnr.getSelectedItemPosition();
         int metaId = metaDataList.get(positin).getMetaId();
 
         RenameFolderRequest request = new RenameFolderRequest();
-        request.token = Constants.Temp_Token;
+        request.token = token;
         request.meta_id = metaId;
         request.name = sFolderName;
 
@@ -500,7 +494,9 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void callWebServiceForDelete(){
 
-        String token = Constants.Temp_Token;
+//        String token = Constants.Temp_Token;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         int positin = mFolderSpnr.getSelectedItemPosition();
         int folder_id = metaDataList.get(positin).getMetaId();
 

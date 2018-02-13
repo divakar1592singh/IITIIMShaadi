@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -418,19 +419,25 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             @Override
             public void onResponse(Call<NewRegistrationResponse> call, Response<NewRegistrationResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
 
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("User is registered successfully !")){
-                        if(response.body().getResponseData() != null){
-                            Toast.makeText(NewUserRegisterActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
-                            com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData responseData = response.body().getResponseData();
+                try {
+                    if (response.isSuccessful()) {
 
-                            setPrefData(responseData);
+                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("User is registered successfully !")) {
+                            if (response.body().getResponseData() != null) {
+                                Toast.makeText(NewUserRegisterActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
+                                com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData responseData = response.body().getResponseData();
+
+                                setPrefData(responseData);
+                            }
+                        } else {
+                            Toast.makeText(NewUserRegisterActivity.this, "Check Username/Email", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(NewUserRegisterActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
-                    }
 
+                    }
+                }catch (NullPointerException npe){
+                    Log.e("TAG", "#Error : "+npe, npe);
+                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong!");
                 }
             }
 
@@ -445,11 +452,13 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     public void setPrefData(com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData response){
         String token = response.getToken();
         String userName = response.getUsername();
+        String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
         String email = response.getEmail();
 
         prefs.putString(Constants.LOGGED_TOKEN, token);
         prefs.putString(Constants.LOGGED_USERNAME, userName);
+        prefs.putString(Constants.LOGGED_USERID, userId);
         prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
         prefs.putString(Constants.LOGGED_EMAIL, email);
 
@@ -459,9 +468,9 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     }
 
     public void navigateUserToScreen(String typeOfUser){
-        if(typeOfUser.equalsIgnoreCase("subscriber")){
+//        if(typeOfUser.equalsIgnoreCase("subscriber")){
             Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
-        }
+//        }
     }
 
     /** Helping Method Section */

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.senzecit.iitiimshaadi.viewController.CustomFolderActivity">
+    tools:context="com.senzecit.iitiimshaadi.viewController.CustomFolderTempActivity">
 
     <include layout="@layout/app_toolbar"/>
 

@@ -2,6 +2,7 @@ package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 
 public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
@@ -25,11 +30,14 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     TextView mUsrNameTV, mUsrIdTV, mProfilePercTV, mMyProfileTV, mProfileShowTV, mShowMessageTV;
     TextView mFriendsTV, mSearchPartnerTV, mPremServicesTV, mChatMessageTV, mSubscriptionTV, mCustomFolderTV, mWalletTV, mUploadVideoTV, mReferFrndTV;
     TextView mInterestReceivedTV, mChatReceivedTV;
+    AppPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paid_subscriber_dashboard);
+
+        prefs = AppController.getInstance().getPrefs();
 
         initView();
         handleClick();
@@ -77,8 +85,25 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         mWalletTV.setOnClickListener(this);
         mUploadVideoTV.setOnClickListener(this);
         mReferFrndTV.setOnClickListener(this);
+
+        setProfileData();
     }
 
+
+    public  void  setProfileData(){
+
+        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
+        String userId = prefs.getString(Constants.LOGGED_USERID);
+        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+
+        if(!TextUtils.isEmpty(profileUri)){
+            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).into(mProfileCIV);
+        }
+
+        mUsrNameTV.setText(new StringBuilder("@").append(userName));
+        mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
+    }
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -119,7 +144,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idSearchPartnerTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Search Partner", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,SearchPartnerPaidActivity.class));
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ResultPaidSearchPartnerActivity.class));
                 break;
             }
             case R.id.idPremServicesTV: {
@@ -139,7 +164,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idCustFolderTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Custom Folder", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,CustomFolderActivity.class));
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,CustomFolderTempActivity.class));
                 break;
             }
             case R.id.idWalletTV: {

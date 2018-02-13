@@ -177,7 +177,7 @@ public class IntroSliderActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(IntroSliderActivity.this,LoginActivity.class));
                 break;
             case R.id.idRegisterBtn:
-                startActivity(new Intent(IntroSliderActivity.this,RegistrationQuickActivity.class));
+                startActivity(new Intent(IntroSliderActivity.this,QuickRegistrationActivity.class));
                 break;
         }
     }

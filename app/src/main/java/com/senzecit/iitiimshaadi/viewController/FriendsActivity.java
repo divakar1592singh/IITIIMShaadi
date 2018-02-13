@@ -21,7 +21,9 @@ import com.senzecit.iitiimshaadi.fragment.ShortlistedFriendFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsActivity extends AppCompatActivity implements View.OnClickListener{
+public class FriendsActivity extends AppCompatActivity implements View.OnClickListener, MyFriendsFragment.OnMyFriendListener,
+InvitedFriendFragment.OnInvitedFriendListener, ShortlistedFriendFragment.OnShortlistedFriendListener,
+RequestedFriendFragment.OnRequestedFriendListener{
 
     Toolbar mToolbar;
     TextView mTitle;
@@ -57,10 +59,10 @@ public class FriendsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MyFriendsFragment(), "My Friends (3)");
-        adapter.addFragment(new InvitedFriendFragment(), "Invited Friends (3)");
-        adapter.addFragment(new RequestedFriendFragment(), "Requests Received (3)");
-        adapter.addFragment(new ShortlistedFriendFragment(), "Shortlisted (5)");
+        adapter.addFragment(new MyFriendsFragment(), "My Friends (0)");
+        adapter.addFragment(new InvitedFriendFragment(), "Invited Friends (0)");
+        adapter.addFragment(new RequestedFriendFragment(), "Requests Received (0)");
+        adapter.addFragment(new ShortlistedFriendFragment(), "Shortlisted (0)");
         viewPager.setAdapter(adapter);
 
     }
@@ -74,18 +76,28 @@ public class FriendsActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-   /* @Override
-    public void onFragmentSetSetMyFriend(ArrayList<String> students) {
-        arrListData = students;
-        mTabLayout.getTabAt(0).setText("My Friends ("+arrListData.size()+")");
+    @Override
+    public void onFragmentSetSetMyFriend(int size) {
+//        mTabLayout.getTabAt(0).setText("My Friends ("+size+")");
+        mTabLayout.getTabAt(0).setText(new StringBuffer("My Friends (").append(size).append(")"));
+
     }
 
     @Override
-    public void onFragmentSetInvitedFriend(ArrayList<String> ar) {
-        arrListData = ar;
-        mTabLayout.getTabAt(1).setText("Invited Friends ("+arrListData.size()+")");
+    public void onFragmentSetInvitedFriend(int size) {
+//        mTabLayout.getTabAt(1).setText("Invited Friends ("+size+")");
+        mTabLayout.getTabAt(1).setText(new StringBuffer("Invited Friends (").append(size).append(")"));
+    }
+    @Override
+    public void onFragmentSetRequestedFriend(int size) {
+        mTabLayout.getTabAt(2).setText(new StringBuffer("Request Received (").append(size).append(")"));
     }
 
+    @Override
+    public void onFragmentSetShortlistedFriend(int size) {
+        mTabLayout.getTabAt(3).setText(new StringBuffer("Shortlisted Friends (").append(size).append(")"));
+    }
+/*
     @Override
     public void onFragmentSetRequestedFriend(ArrayList<String> requestAL) {
         arrListData = requestAL;

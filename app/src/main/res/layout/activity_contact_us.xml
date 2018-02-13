@@ -127,6 +127,7 @@
                         android:id="@+id/captchaBtn"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
+                        android:textAllCaps="false"
                         android:background="@drawable/button_shape_forgot"
                         android:text="9IiTiIm"/>
                     <ImageView

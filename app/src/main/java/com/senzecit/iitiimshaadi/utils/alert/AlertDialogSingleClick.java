@@ -33,7 +33,7 @@ public class AlertDialogSingleClick {
     }
 
     public void showDialog(Activity activity, String title, String msg){
-            final Dialog dialog = new Dialog(activity);
+            dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.alert_dialog_single_click);
@@ -64,4 +64,9 @@ public class AlertDialogSingleClick {
 
             dialog.show();
         }
+
+    public void closeDialog(){
+        dialog.dismiss();
+    }
+
     }

@@ -30,6 +30,18 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_career.EducationCareerResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.religious_background.ReligiousBackgroundResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.family_detail.FamilyDetailRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.profile.BasicProfileRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
@@ -39,6 +51,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
@@ -2325,27 +2338,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         showDialog(list, textView);
     }
 
-    //CONTACT US
-/*    public void showCountry(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("India");
-        list.add("Russia");
-        list.add("China");
-        list.add("America");
-        list.add("USA");
-
-        showDialog(list, textView);
-    }
-    public void showState(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("State-1");
-        list.add("State-2");
-        list.add("State-3");
-        list.add("State-4");
-        list.add("State-5");
-
-        showDialog(list, textView);
-    }*/
     //EDUCATION & CARREER
     public void showAnnualIncome(TextView textView){
         List<String> list = new ArrayList<>();
@@ -2365,8 +2357,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     public void saveChangesOfCase_0(){
 
-//        ExpListViewSubscriberAdapter.this.notifyDataSetChanged();
-
         String name = ExpOwnProfileModel.getInstance().getName();
         String Profile = ExpOwnProfileModel.getInstance().getProfile();
         String Age = ExpOwnProfileModel.getInstance().getAge();
@@ -2379,6 +2369,52 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
 
         Toast.makeText(_context, "Output : "+Interests, Toast.LENGTH_LONG).show();
+        String token  = Constants.Temp_Token;
+
+        BasicProfileRequest request = new BasicProfileRequest();
+        request.token = token;
+        request.name = name;
+        request.health = "";
+        request.height = Height;
+        request.diet = Diet;
+        request.marital_status = Marital_Status;
+        request.drink = Drink;
+        request.smoke = Smoke;
+        request.interest = Interests;
+
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<BasicProfileResponse> call = apiInterface.sendBasicProfile(request);
+        call.enqueue(new Callback<BasicProfileResponse>() {
+            @Override
+            public void onResponse(Call<BasicProfileResponse> call, Response<BasicProfileResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    BasicProfileResponse basicProfileResponse = response.body();
+                    if(basicProfileResponse.getMessage().getSuccess() != null) {
+                        if (basicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicProfileResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     public void saveChangesOfCase_1(){
 
@@ -2387,6 +2423,47 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
 
         Toast.makeText(_context, "Output : "+Religion, Toast.LENGTH_LONG).show();
+        String token = Constants.Temp_Token;
+
+        ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
+        request.token = token;
+        request.religion = Religion;
+        request.caste= Caste;
+        request.mother_tounge = Mother_Tongue;
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<ReligiousBackgroundResponse> call = apiInterface.sendReligiousBackground(request);
+        call.enqueue(new Callback<ReligiousBackgroundResponse>() {
+            @Override
+            public void onResponse(Call<ReligiousBackgroundResponse> call, Response<ReligiousBackgroundResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    ReligiousBackgroundResponse religiousResponse = response.body();
+                    if(religiousResponse.getMessage().getSuccess() != null) {
+                        if (religiousResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReligiousBackgroundResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
     public void saveChangesOfCase_2(){
 
@@ -2404,6 +2481,60 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Zip_Code_Cur = ExpOwnProfileModel.getInstance().getZip_Code_Cur();
 
         Toast.makeText(_context, "Output : "+Alternate_Number, Toast.LENGTH_LONG).show();
+
+
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        ContactDetailsRequest request = new ContactDetailsRequest();
+        request.token = token;
+        request.mobile_no = Phone_Number;
+        request.alternate_no = Alternate_Number;
+        request.permanent_address= Permanent_Address;
+        request.permanent_country= Permanent_Country;
+        request.permanent_state = Permanent_State;
+        request.permanent_city = Permanent_City;
+        request.permanent_zipcode = Zip_Code_Perm;
+        request.current_address = Current_Address;
+        request.current_country = Current_Country;
+        request.current_state = Current_State;
+        request.current_city = Current_City;
+        request.current_zipcode = Zip_Code_Cur;
+
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<ContactDetailsResponse> call = apiInterface.sendContactDetails(request);
+        call.enqueue(new Callback<ContactDetailsResponse>() {
+            @Override
+            public void onResponse(Call<ContactDetailsResponse> call, Response<ContactDetailsResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    ContactDetailsResponse contactResponse = response.body();
+                    if(contactResponse.getMessage().getSuccess() != null) {
+                        if (contactResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ContactDetailsResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
     public void saveChangesOfCase_3(){
 
@@ -2415,6 +2546,52 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Details_Brothers = ExpOwnProfileModel.getInstance().getDetails_Brothers();
 
         Toast.makeText(_context, "Output : "+Father_Name, Toast.LENGTH_LONG).show();
+
+
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        FamilyDetailRequest request = new FamilyDetailRequest();
+        request.token = token;
+        request.father_name = Father_Name;
+        request.father_occupation = Father_Occupation;
+        request.mother_name= Mother_Name;
+        request.mother_occupation = Mother_Occupation;
+        request.brother_detail = Details_Brothers;
+        request.sister_detail = Details_Sisters;
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<FamilyDetailResponse> call = apiInterface.sendFamilyDetails(request);
+        call.enqueue(new Callback<FamilyDetailResponse>() {
+            @Override
+            public void onResponse(Call<FamilyDetailResponse> call, Response<FamilyDetailResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    FamilyDetailResponse familyResponse = response.body();
+                    if(familyResponse.getMessage().getSuccess() != null) {
+                        if (familyResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FamilyDetailResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     public void saveChangesOfCase_4(){
 
@@ -2434,12 +2611,109 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String LinkdIn_Url = ExpOwnProfileModel.getInstance().getLinkdIn_Url();
 
         Toast.makeText(_context, "Output : "+Schooling, Toast.LENGTH_LONG).show();
+
+
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        EducationCareerRequest request = new EducationCareerRequest();
+        request.token = token;
+        request.schooling = Schooling;
+        request.schooling_year = Schooling_Year;
+        request.graduation = Graduation;
+        request.graduation_year = Graduation_Year;
+        request.graduation_college = Graduation_College;
+        request.post_graduation = Post_Graduation;
+        request.post_graduation_year = Post_Graduation_Year;
+        request.post_graduation_college = Post_Graduation_College;
+        request.highest_education = Highest_Education;
+        request.working_as = Working_As;
+        request.job_location = Work_Location;
+        request.name_of_company = Working_With;
+        request.annual_income = Annual_Income;
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<EducationCareerResponse> call = apiInterface.sendEducationCareer(request);
+        call.enqueue(new Callback<EducationCareerResponse>() {
+            @Override
+            public void onResponse(Call<EducationCareerResponse> call, Response<EducationCareerResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    EducationCareerResponse educationResponse = response.body();
+                    if(educationResponse.getMessage().getSuccess() != null) {
+                        if (educationResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EducationCareerResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
     public void saveChangesOfCase_5(){
 
         String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
 
         Toast.makeText(_context, "Output : "+About_you, Toast.LENGTH_LONG).show();
+
+
+        AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        AboutMeRequest request = new AboutMeRequest();
+        request.token = token;
+        request.about_me = About_you;
+
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<AboutMeResponse> call = apiInterface.sendAboutMe(request);
+        call.enqueue(new Callback<AboutMeResponse>() {
+            @Override
+            public void onResponse(Call<AboutMeResponse> call, Response<AboutMeResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AboutMeResponse aboutMeResponse = response.body();
+                    if(aboutMeResponse.getMessage().getSuccess() != null) {
+                        if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AboutMeResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private void showCountry(final TextView textView){

@@ -3,6 +3,7 @@ package com.senzecit.iitiimshaadi.viewController;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,13 +13,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +48,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     ScrollView mScrollView;
     boolean userProfile = true;
     boolean partnerPrefrence =true;
+    AppPrefs prefs;
+
+    CircleImageView mProfileCIV;
+    TextView mUsrNameTV, mUsrIdTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_profile);
+
+        prefs = AppController.getInstance().getPrefs();
 
         init();
         mScrollView.smoothScrollTo(0,0);
@@ -59,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mBack.setOnClickListener(this);
         mTitle.setOnClickListener(this);
 
-        /*prepareListData();
+     /*   prepareListData();
         listAdapter = new ExpandableListViewAdapter(this, listDataHeader, listDataChild);
         expListView.setAdapter(listAdapter);
 
@@ -67,6 +79,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         partnerlistAdapter = new ExpandableListViewPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner);
         expListViewPartner.setAdapter(partnerlistAdapter);*/
 
+        setProfileData();
         showMyProfile();
 
     }
@@ -78,12 +91,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Profile");
+
+        mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
+        mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
+        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
+
         mMyProfile = (Button) findViewById(R.id.myProfileBtn);
         mPartnerProfile = (Button) findViewById(R.id.partnerProfileBtn);
         expListView = (ExpandableListView) findViewById(R.id.expandableLV);
         expListViewPartner = (ExpandableListView) findViewById(R.id.expandablePartnerLV);
 
         mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
+    }
+
+
+    public  void  setProfileData(){
+
+        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
+        String userId = prefs.getString(Constants.LOGGED_USERID);
+        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+
+        if(!TextUtils.isEmpty(profileUri)){
+            Glide.with(ProfileActivity.this).load(profileUri).into(mProfileCIV);
+        }
+
+        mUsrNameTV.setText(new StringBuilder("@").append(userName));
+        mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
     }
 
     @Override
@@ -202,20 +236,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         aboutMe.add("Write something about you");
         aboutMe.add("Save Changes");
 
-/*        List<String> acquiantances = new ArrayList<String>();
-        acquiantances.add("1.Acquaintance Name");
-        acquiantances.add("1.Acquaintance Remark");
-        acquiantances.add("2.Acquaintance Name");
-        acquiantances.add("2.Acquaintance Remark");
-        acquiantances.add("3.Acquaintance Name");
-        acquiantances.add("3.Acquaintance Remark");
-        acquiantances.add("4.Acquaintance Name");
-        acquiantances.add("4.Acquaintance Remark");
-        acquiantances.add("5.Acquaintance Name");
-        acquiantances.add("5.Acquaintance Remark");*/
 
-//        List<String> video = new ArrayList<String>();
-//        video.add("My Video");
 
         listDataChild.put(listDataHeader.get(0), basicsLifestyle); // Header, Child data
         listDataChild.put(listDataHeader.get(1), religiousBackgroung);

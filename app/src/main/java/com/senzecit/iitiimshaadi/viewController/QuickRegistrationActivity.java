@@ -8,9 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -29,17 +27,11 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
-import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.College;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegInstitutionRequest;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.QuickRegStreamResponse;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegEligibilityRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegFindCollegeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegStreamRequest;
-import com.senzecit.iitiimshaadi.model.commons.CourseModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -54,7 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class RegistrationQuickActivity extends AppCompatActivity implements View.OnClickListener {
+public class QuickRegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
     Toolbar mToolbar;
     TextView mTitle;
@@ -224,7 +216,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
             }
         });
 
-        final CustomListAdapterDialog clad1 = new CustomListAdapterDialog(RegistrationQuickActivity.this, models);
+        final CustomListAdapterDialog clad1 = new CustomListAdapterDialog(QuickRegistrationActivity.this, models);
         recyclerView.setAdapter(clad1);
 
         dialog.setContentView(view);
@@ -318,7 +310,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         if(!sEducation.startsWith("Select") && !sStream.startsWith("Select")){
             callWebServiceForStream();
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
+            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Education/Stream/Institution are not selected");
         }
 
     }
@@ -331,7 +323,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         if(!sEducation.startsWith("Select") && !sStream.startsWith("Select") && !sInstitution.startsWith("Select")){
             Navigator.getClassInstance().navigateToActivity(this, NewUserRegisterActivity.class);
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Education/Stream/Institution are not selected");
+            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Education/Stream/Institution are not selected");
         }
 
     }
@@ -349,26 +341,26 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
                 if(isValidMobile(sMobile)){
                         if(!sCollege.isEmpty()){
 
-//                            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Find College Validation Successfull");
+//                            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Find College Validation Successfull");
                             callWebServiceForFindCollege();
                         }else {
                             mCollegeNameET.requestFocus();
-                            AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "College name can't empty");
+                            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "College name can't empty");
                         }
                     }else {
                         mMobileET.requestFocus();
-                        AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Mobile no. not valid");
+                        AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Mobile no. not valid");
                     }
                 }else {
                     mEmailET.requestFocus();
-                    AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Email not valid");
+                    AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Email not valid");
                 }
             }else {
                 mUserNameET.requestFocus();
-                AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Username can't Empty");
+                AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Username can't Empty");
             }
     }else {
-        AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Alert!", "Username can't Empty");
+        AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Username can't Empty");
     }
 
     }
@@ -388,7 +380,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         quickRegStreamRequest.gender = getGender();
         quickRegStreamRequest.courseId = courseId;
 
-        ProgressClass.getProgressInstance().showDialog(RegistrationQuickActivity.this);
+        ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
         Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);
         call.enqueue(new Callback<QuickRegStreamResponse>() {
             @Override
@@ -398,16 +390,16 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
                     QuickRegStreamResponse courseResponse = response.body();
                     if(courseResponse.getMessage().getSuccess() != null) {
                         if (courseResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(RegistrationQuickActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuickRegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                             List<College> collegeList = courseResponse.getCollege();
                             showInstution(collegeList);
 
                         } else {
-                            Toast.makeText(RegistrationQuickActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(QuickRegistrationActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        Toast.makeText(RegistrationQuickActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuickRegistrationActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -416,76 +408,11 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
             public void onFailure(Call<QuickRegStreamResponse> call, Throwable t) {
             call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-            Toast.makeText(RegistrationQuickActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(QuickRegistrationActivity.this, "Failed", Toast.LENGTH_SHORT).show();
         }
         });
 
     }
-  /*  public void callWebServiceForInstitution() {
-
-        String sEducation = mEducationTV.getText().toString().trim();
-        String sStream = mStreamTV.getText().toString().trim();
-
-        QuickRegInstitutionRequest quickRegInstitutionRequest = new QuickRegInstitutionRequest();
-        quickRegInstitutionRequest.gender = getGender();
-        quickRegInstitutionRequest.education = sEducation;
-        quickRegInstitutionRequest.stream = sStream;
-
-        Call<QuickRegInstitutionResponse> call = apiInterface.fetchInstitutionData(quickRegInstitutionRequest);
-       call.enqueue(new Callback<QuickRegInstitutionResponse>() {
-           @Override
-           public void onResponse(Call<QuickRegInstitutionResponse> call, Response<QuickRegInstitutionResponse> response) {
-               if (response.isSuccessful()) {
-                   *//*if (response.body().getResponseCode() == 200) {
-                       Toast.makeText(this, "Succesfully", Toast.LENGTH_SHORT).show();
-                   }*//*
-               }
-           }
-
-           @Override
-           public void onFailure(Call<QuickRegInstitutionResponse> call, Throwable t) {
-               call.cancel();
-               Toast.makeText(RegistrationQuickActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-           }
-       });
-    }*/
-/*
-    public void callWebServiceForQuickRegister() {
-
-        String sEducation = mEducationTV.getText().toString().trim();
-        String sStream = mStreamTV.getText().toString().trim();
-        String sInstitution = mInstitutionTV.getText().toString().trim();
-
-        QuickRegEligibilityRequest quickRegEligibilityRequest = new QuickRegEligibilityRequest();
-        quickRegEligibilityRequest.gender = getGender();
-        quickRegEligibilityRequest.education = sEducation;
-        quickRegEligibilityRequest.stream = sStream;
-        quickRegEligibilityRequest.institution = sInstitution;
-
-        Call<EligibilityResponse> call = apiInterface.quickRegisterUser(quickRegEligibilityRequest);
-        call.enqueue(new Callback<EligibilityResponse>() {
-            @Override
-            public void onResponse(Call<EligibilityResponse> call, Response<EligibilityResponse> response) {
-                if (response.isSuccessful()) {
-                   */
-/* if (response.body().getResponseCode() == 200) {
-
-                        Toast.makeText(RegistrationQuickActivity.this, "Comment sended succesfully", Toast.LENGTH_SHORT).show();
-
-                    }*//*
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EligibilityResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(RegistrationQuickActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-*/
 
     public void callWebServiceForFindCollege() {
 
@@ -500,7 +427,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
         quickRegFindCollegeRequest.mobile = sMobile;
         quickRegFindCollegeRequest.college = sCollege;
 
-        ProgressClass.getProgressInstance().showDialog(RegistrationQuickActivity.this);
+        ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
         Call<FindCollegeResponse> call = apiInterface.quickRegFindCollege(quickRegFindCollegeRequest);
         call.enqueue(new Callback<FindCollegeResponse>() {
             @Override
@@ -510,7 +437,7 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
                    /* if (response.body().getResponseCode() == 200) {
                         Toast.makeText(this, "Succesfully", Toast.LENGTH_SHORT).show();
                     }*/
-                    AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Find College", "Success");
+                    AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Find College", "Success");
 
                 }
             }
@@ -518,9 +445,9 @@ public class RegistrationQuickActivity extends AppCompatActivity implements View
             @Override
             public void onFailure(Call<FindCollegeResponse> call, Throwable t) {
                 call.cancel();
-                AlertDialogSingleClick.getInstance().showDialog(RegistrationQuickActivity.this, "Find College", "Oops");
+                AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Find College", "Oops");
                 ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(RegistrationQuickActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuickRegistrationActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
             }
         });
 

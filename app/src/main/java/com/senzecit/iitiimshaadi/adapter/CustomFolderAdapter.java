@@ -21,11 +21,11 @@ import java.util.List;
  * Created by ravi on 15/11/17.
  */
 
-public class RequestedFriendAdapter extends RecyclerView.Adapter<RequestedFriendAdapter.MyViewHolder>{
+public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapter.MyViewHolder>{
 
     Context mContext;
     List<UserDetail> userList;
-    public RequestedFriendAdapter(Context mContext, List<UserDetail> userList){
+    public CustomFolderAdapter(Context mContext, List<UserDetail> userList){
         this.mContext = mContext;
         this.userList = userList;
     }
@@ -52,7 +52,7 @@ public class RequestedFriendAdapter extends RecyclerView.Adapter<RequestedFriend
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.request_recieved_friend_item,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_folder_adapter_layout,parent,false);
         return new MyViewHolder(itemView);
     }
 

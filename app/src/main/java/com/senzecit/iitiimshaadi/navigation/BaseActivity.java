@@ -21,7 +21,8 @@ import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
 import com.senzecit.iitiimshaadi.viewController.AlertPlanActivity;
 import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
-import com.senzecit.iitiimshaadi.viewController.CustomFolderActivity;
+import com.senzecit.iitiimshaadi.viewController.CustomFolderTempActivity;
+import com.senzecit.iitiimshaadi.viewController.CustomFoldersActivity;
 import com.senzecit.iitiimshaadi.viewController.DisclaimerActivity;
 import com.senzecit.iitiimshaadi.viewController.FAQActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
@@ -30,6 +31,7 @@ import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
 import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
+import com.senzecit.iitiimshaadi.viewController.ResultSearchPartnerActivity;
 import com.senzecit.iitiimshaadi.viewController.SearchPartnerActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionActivity;
@@ -164,7 +166,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.idSearchPartnerNav: {
                 // Toast.makeText(getApplicationContext(), "Search Partner", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,SearchPartnerActivity.class));
+                startActivity(new Intent(BaseActivity.this,ResultSearchPartnerActivity.class));
                 break;
             }
             case R.id.idfriendsNav: {
@@ -259,7 +261,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.idCustomFolderNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,CustomFolderActivity.class));
+                startActivity(new Intent(BaseActivity.this,CustomFoldersActivity.class));
                 break;
             }
             case R.id.idChat:

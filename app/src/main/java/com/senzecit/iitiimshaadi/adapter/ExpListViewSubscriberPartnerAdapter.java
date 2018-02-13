@@ -30,10 +30,12 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religious_country.PtrReligionCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
@@ -446,12 +448,10 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         txtListChild.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                             }
 
                             @Override
                             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                             }
 
                             @Override
@@ -474,21 +474,15 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                             }
                         });
                         break;
-
                 }
                 break;
             case 3:
 
                 switch (childPosition){
                     case 0:
-                        //Toast.makeText(_context, "3", //Toast.LENGTH_LONG).show();
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_thirdtype, null);
-
-//                        EditText textInputLayout = (EditText) convertView.findViewById(R.id.idTextInputLayout);
-//                        textInputLayout.setHint(childText);
-
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
@@ -496,18 +490,13 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                             }
-
                             @Override
                             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                             }
-
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpPartnerProfileModel.getInstance().setChoice_of_Groom(editable.toString());
-
                             }
                         });
 
@@ -525,7 +514,6 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                             }
                         });
                         break;
-
                 }
                 break;
         }
@@ -843,7 +831,6 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     public void saveChangesOfCase_0(){
 
-
         AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
@@ -869,9 +856,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
             public void onResponse(Call<ParnerBasicProfileResponse> call, Response<ParnerBasicProfileResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    ParnerBasicProfileResponse ptBasicProfileResponse = response.body();
-                /*    if(ptBasicProfileResponse.getMessage().getSuccess() != null) {
-                        if (ptBasicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                    ParnerBasicProfileResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
                             Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
@@ -881,7 +868,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         }
                     }else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }*/
+                    }
                 }
             }
 
@@ -893,14 +880,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
             }
         });
 
-
-
-
     }
     public void saveChangesOfCase_1(){
 
         AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Temp_Token;
 
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
@@ -998,8 +982,47 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
         AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = "362a95acb22b4e842880ef5e78ee223e";
 
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
+
+        ChoiceOfGroomRequest request = new ChoiceOfGroomRequest();
+        request.token = token;
+        request.choice_of_partner = Choice_of_Groom;
+
+
+        ProgressClass.getProgressInstance().showDialogContext(_context);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<ChoiceOfGroomResponse> call = apiInterface.sendPartnerGroom(request);
+        call.enqueue(new Callback<ChoiceOfGroomResponse>() {
+            @Override
+            public void onResponse(Call<ChoiceOfGroomResponse> call, Response<ChoiceOfGroomResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    ChoiceOfGroomResponse aboutMeResponse = response.body();
+                    if(aboutMeResponse.getMessage().getSuccess() != null) {
+                        if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChoiceOfGroomResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
 
     }

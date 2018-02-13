@@ -19,6 +19,7 @@
     <uses-feature android:name="android.hardware.camera" />
 
     <application
+        android:name=".utils.AppController"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
@@ -38,7 +39,7 @@
             android:name=".viewController.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".viewController.RegistrationQuickActivity"
+            android:name=".viewController.QuickRegistrationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.NewUserRegisterActivity"
@@ -109,7 +110,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".viewController.IntroSliderActivity" />
         <activity
-            android:name=".viewController.CustomFolderActivity"
+            android:name=".viewController.CustomFolderTempActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity android:name=".customdialog.MainActivity" />
         <activity

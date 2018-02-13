@@ -1,14 +1,16 @@
 package com.senzecit.iitiimshaadi.api;
 
-
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.InvitedFriendResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.RequestedFriendResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.ShortlistedFriendResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.PartnerBasicData;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
@@ -21,7 +23,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_det
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_career.EducationCareerResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.email_verification.EmailVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religious_country.PtrReligionCountryResponse;
@@ -30,6 +34,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.custom_folder.RenameFolderRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
@@ -49,6 +54,7 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
+import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
@@ -153,8 +159,6 @@ public interface APIInterface {
     Call<ForgotPasswordResponse> emailVerification(@Body ForgotPasswordRequest forgotPasswordRequest);
 */
 
-    @POST("api/id_upload.json")
-    Call<IdVerificationResponse> idVerificationss(@Body IdVerificationRequest idVerificationRequest);
 
     @Multipart
     @POST("api/id_upload.json")
@@ -211,6 +215,19 @@ public interface APIInterface {
     Call<AddFolderResponse> deleteFolder(@Field("token")String token, @Field("folder_id")Integer folder_id);
 
     /**Subscriber Dashboard*/
+    /* Subscriber Dashboard */
+    @FormUrlEncoded
+    @POST("api/subscriber_dashboard.json")
+    Call<SubscriberMainResponse> subscribeDashoard(@Field("token")String token);
+    /* Resend OTP */
+    @FormUrlEncoded
+    @POST("api/send_otp_again.json")
+    Call<AddFolderResponse> resendOTP(@Field("token")String token);
+    /* OTP Verification */
+    @FormUrlEncoded
+    @POST("api/otp_verification.json")
+    Call<AddFolderResponse> verifiyOTP(@Field("token")String token, @Field("otp")String otp);
+
     /*1*/
     @POST("api/basic_lifestyle.json")
     Call<BasicProfileResponse> sendBasicProfile(@Body BasicProfileRequest request);
@@ -241,7 +258,7 @@ public interface APIInterface {
     Call<PtrEduCareerResponse> sendPartnerEduCareer(@Body PtrEduCareerRequest request);
     /*10*/
     @POST("api/choiceof_partner.json")
-    Call<PtrEduCareerResponse> sendPartnerGroom(@Body PtrEduCareerRequest request);
+    Call<ChoiceOfGroomResponse> sendPartnerGroom(@Body ChoiceOfGroomRequest request);
 
     /** General Setting */
     @POST("api/general_settings.json")
@@ -256,11 +273,31 @@ public interface APIInterface {
     @POST("api/albums.json")
     Call<AllAlbumResponse> allAlbumist(@Field("token")String token);
 
-
     @Multipart
     @POST("api/profile_image_upload.json")
     Call<AddFolderResponse> uploadImageFile(@Part MultipartBody.Part file, @Part("file[]") RequestBody name, @Path("user_id") String user_id);
 
+    /** Friend */
+    /*My Friends*/
+    @FormUrlEncoded
+    @POST("api/my_friends.json")
+    Call<MyFriendsResponse> myFriends(@Field("token")String token);
+    /*Invited Friends*/
+    @FormUrlEncoded
+    @POST("api/invited_friends.json")
+    Call<InvitedFriendResponse> invitedFriends(@Field("token")String token);
+    /*Requested Friends*/
+    @FormUrlEncoded
+    @POST("api/request_received.json")
+    Call<RequestedFriendResponse> requestedFriends(@Field("token")String token);
+    /*Shortlisted Friends*/
+    @FormUrlEncoded
+    @POST("api/shortlisted.json")
+    Call<ShortlistedFriendResponse> shortlistedFriends(@Field("token")String token);
+
+    /** NEW USER REGISTER */
+    @POST("api/contact_us.json")
+    Call<AddFolderResponse> contactUs(@Body ContactUsRequest request);
 
 
 }

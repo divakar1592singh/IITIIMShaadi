@@ -90,8 +90,8 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
 //                startActivity(new Intent(IntroSliderWebActivity.this, LoginActivity.class));
                 break;
             case R.id.idRegisterBtn:
-                Navigator.getClassInstance().navigateToActivity(this, RegistrationQuickActivity.class);
-//                startActivity(new Intent(IntroSliderWebActivity.this, RegistrationQuickActivity.class));
+                Navigator.getClassInstance().navigateToActivity(this, QuickRegistrationActivity.class);
+//                startActivity(new Intent(IntroSliderWebActivity.this, QuickRegistrationActivity.class));
                 break;
         }
     }

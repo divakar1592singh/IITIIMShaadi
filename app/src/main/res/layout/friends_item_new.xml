@@ -27,6 +27,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center">
                     <com.senzecit.iitiimshaadi.utils.CircleImageView
+                        android:id="@+id/idProfileCIV"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/profile_img1" />
@@ -39,9 +40,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/idUserIDTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3356"
+                        android:text="UserID"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"
                         android:padding="7dp"/>
@@ -50,9 +52,10 @@
                         android:layout_height="1dp"
                         android:background="@color/colorEditBox"/>
                     <TextView
+                        android:id="@+id/idUserNameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="28 years/ 5 ft 10in (177cm)"
+                        android:text="UserName"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"
                         android:padding="7dp"/>
@@ -61,9 +64,10 @@
                         android:layout_height="1dp"
                         android:background="@color/colorEditBox"/>
                     <TextView
+                        android:id="@+id/idReligionTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hindu/Khatri"
+                        android:text="Religion"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"
                         android:padding="7dp"/>
@@ -72,9 +76,22 @@
                         android:layout_height="1dp"
                         android:background="@color/colorEditBox"/>
                     <TextView
+                        android:id="@+id/idEducationTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Deloitte Consulting US India Pvt Ltd"
+                        android:text="Highest Education"
+                        android:textColor="@color/colorGrey"
+                        android:textSize="14sp"
+                        android:padding="7dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorEditBox"/>
+                    <TextView
+                        android:id="@+id/idJobTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Job Location"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"
                         android:padding="7dp"/>
