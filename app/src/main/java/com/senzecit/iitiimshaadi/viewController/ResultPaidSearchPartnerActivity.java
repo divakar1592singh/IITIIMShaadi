@@ -114,7 +114,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void saveAndSearchPaidPartnerByID(List<Query> queryList, String userid) {
+    public void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid) {
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
@@ -123,7 +123,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword) {
+    public void saveAndSearchPaidPartnerByKeyword(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String keyword) {
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
@@ -132,7 +132,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList) {
+    public void saveAndSearchPaidPartnerByAdvance(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<String> profileList) {
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
@@ -153,7 +153,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         mIncome.setText(profileList.get(9));
 //        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
     }
-    private void setPaidMatchedList(List<Query> queryList){
+    private void setPaidMatchedList(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
 
         PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList);
         mSearchResultRecyclerView.setAdapter(adapter);

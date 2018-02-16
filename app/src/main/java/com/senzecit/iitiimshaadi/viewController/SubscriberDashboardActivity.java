@@ -28,14 +28,10 @@ import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.AllInvitedFriend;
-import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.InvitedFriendResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.email_verification.EmailVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.id_verification.IdVerificationRequest;
-import com.senzecit.iitiimshaadi.navigation.BaseActivity;
+import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
@@ -59,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubscriberDashboardActivity extends BaseActivity {
+public class SubscriberDashboardActivity extends BaseNavActivity {
 
     private static final String TAG = SubscriptionActivity.class.getSimpleName();
 

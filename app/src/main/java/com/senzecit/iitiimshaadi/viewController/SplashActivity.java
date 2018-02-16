@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -35,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
 
-                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SettingsActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

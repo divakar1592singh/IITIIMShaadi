@@ -324,14 +324,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <RadioButton
+                            android:id="@+id/idRB1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="I got married through IITIIMShaadi. Thank you team."
                             android:textColor="@color/colorGrey"
                             android:layout_marginLeft="5dp"
                             android:layout_marginTop="30dp"
+                            android:checked="true"
                             android:textSize="14sp"/>
                         <RadioButton
+                            android:id="@+id/idRB2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="I got married through some other source"
@@ -340,6 +343,7 @@
                             android:layout_marginTop="30dp"
                             android:textSize="14sp"/>
                         <RadioButton
+                            android:id="@+id/idRB3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Wish to give a temporary break to search."
@@ -348,6 +352,7 @@
                             android:layout_marginTop="30dp"
                             android:textSize="14sp"/>
                         <RadioButton
+                            android:id="@+id/idRB4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="I don't like your quality of service/website."
@@ -356,6 +361,7 @@
                             android:layout_marginTop="30dp"
                             android:textSize="14sp"/>
                         <RadioButton
+                            android:id="@+id/idRB5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="I don't find many relevant profile here."

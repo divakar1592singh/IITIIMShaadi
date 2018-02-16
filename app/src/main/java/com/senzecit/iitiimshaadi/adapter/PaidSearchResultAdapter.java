@@ -20,6 +20,7 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.fragment.ResultPaidSearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.UserDetail;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
@@ -49,8 +50,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
     boolean detail,partnerPref,album;
 
     Context mContext;
-    List<Query> queryList;
-    public PaidSearchResultAdapter(Context mContext, List<Query> queryList){
+    List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList;
+    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
         this.mContext = mContext;
         this.queryList = queryList;
     }
@@ -89,20 +90,22 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        holder.mNameTxt.setText(queryList.get(position).getName());
-        holder.mDietTxt.setText(queryList.get(position).getDiet());
-        holder.mAgeTxt.setText(queryList.get(position).getBirthDate());
-        holder.mEmploymentTxt.setText(queryList.get(position).getWorkingAs());
-        holder.mCompanyTxt.setText(queryList.get(position).getNameOfCompany());
-        holder.mHeightTxt.setText(queryList.get(position).getHeight());
-        holder.mReligiontxt.setText(queryList.get(position).getReligion());
-        holder.mEducationTxt.setText(queryList.get(position).getHighestEducation() );
+        UserDetail userDetail = queryList.get(position).getUserDetail();
+
+        holder.mNameTxt.setText(userDetail.getName());
+        holder.mDietTxt.setText(userDetail.getDiet());
+        holder.mAgeTxt.setText(userDetail.getBirthDate());
+        holder.mEmploymentTxt.setText(userDetail.getWorkingAs());
+        holder.mCompanyTxt.setText(userDetail.getNameOfCompany());
+        holder.mHeightTxt.setText(userDetail.getHeight());
+        holder.mReligiontxt.setText(userDetail.getReligion());
+        holder.mEducationTxt.setText(userDetail.getHighestEducation() );
 
         holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String userId = String.valueOf(queryList.get(position).getUserId());
+                String userId = String.valueOf(userDetail.getUserId());
                 callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
 
             }
@@ -112,7 +115,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
             @Override
             public void onClick(View v) {
 
-                String userId = String.valueOf(queryList.get(position).getUserId());
+                String userId = String.valueOf(userDetail.getUserId());
                 callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
 
             }

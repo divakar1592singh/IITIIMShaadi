@@ -11,8 +11,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.Crashlytics;
+import com.senzecit.iitiimshaadi.payment.AppEnvironment;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
+import io.fabric.sdk.android.Fabric;
 import java.net.URISyntaxException;
 
 /**
@@ -27,14 +30,28 @@ public class AppController extends Application {
     private static AppController sInstance;
     private AppPrefs prefs;
 
+    AppEnvironment appEnvironment;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         // initialize the singleton
         sInstance = this;
         prefs = new AppPrefs(this);
 
+        appEnvironment = AppEnvironment.SANDBOX;
     }
+
+
+    public AppEnvironment getAppEnvironment() {
+        return appEnvironment;
+    }
+
+    public void setAppEnvironment(AppEnvironment appEnvironment) {
+        this.appEnvironment = appEnvironment;
+    }
+
 
     @Override
     protected void attachBaseContext(Context base) {

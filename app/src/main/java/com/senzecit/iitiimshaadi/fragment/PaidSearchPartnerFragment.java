@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
@@ -236,21 +236,23 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     /** Search By ID */
     public void callWebServiceForSubsIDSearch(){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
+
 //        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String searchID = mSearchByIdET.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(getActivity());
-        Call<SubsAdvanceSearchResponse> call = apiInterface.idSearchPaid(token, searchID);
-        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+        Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid1(token, searchID);
+        call.enqueue(new Callback<PaidSubscriberResponse>() {
             @Override
-            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+            public void onResponse(Call<PaidSubscriberResponse> call, Response<PaidSubscriberResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
                         if(response.body().getQuery().size() > 0){
-                            List<Query> queryList = response.body().getQuery();
+                            List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList = response.body().getQuery();
 
                             communicator.saveAndSearchPaidPartnerByID(queryList, searchID);
 
@@ -263,7 +265,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
 
             @Override
-            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+            public void onFailure(Call<PaidSubscriberResponse> call, Throwable t) {
                 call.cancel();
                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
@@ -272,7 +274,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     }
 
     /** Search By Keyword */
-    public void callWebServiceForSubsKeywordSearch(){
+   /* public void callWebServiceForSubsKeywordSearch(){
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String keyword = mRandomKeywordET.getText().toString() ;
@@ -307,9 +309,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
     }
-
+*/
     /** Advance Search */
-    public void callWebServiceForSubsAdvanceSearch(){
+ /*   public void callWebServiceForSubsAdvanceSearch(){
 
         List<String> profileList =new ArrayList<>();
 
@@ -382,7 +384,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
     }
-
+*/
 
 
     public Vector<Dialog> dialogs = new Vector<Dialog>();
@@ -691,9 +693,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
 
     public interface PaidSearchPartnerFragmentCommunicator{
-        void saveAndSearchPaidPartnerByID(List<Query> queryList, String userid);
-        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);
-        void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList);
+        void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid);
+        void saveAndSearchPaidPartnerByKeyword(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String keyword);
+        void saveAndSearchPaidPartnerByAdvance(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<String> profileList);
 
     }
 }

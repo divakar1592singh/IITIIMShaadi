@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
@@ -57,7 +59,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     boolean generalSetting,notificationSetting,deactiveAccount = true;
     TextView mMemberSendTV, mMemberAddsTV;
     EditText mNameET, mPwdET, mConfirmPwdET;
-    Button mGeneralSaveBtn;
+    Button mGeneralSaveBtn, mDeactivateSaveBtn ;
+
+    RadioButton mRB1, mRB2, mRB3, mRB4, mRB5 ;
 
     /** Network*/
     APIInterface apiInterface;
@@ -101,6 +105,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mConfirmPwdET = (EditText)findViewById(R.id.confirmPasswordET) ;
         mGeneralSaveBtn = (Button)findViewById(R.id.generalSaveBtn);
 
+        mRB1 = (RadioButton)findViewById(R.id.idRB1);
+        mRB2 = (RadioButton)findViewById(R.id.idRB2);
+        mRB3 = (RadioButton)findViewById(R.id.idRB3);
+        mRB4 = (RadioButton)findViewById(R.id.idRB4);
+        mRB5 = (RadioButton)findViewById(R.id.idRB5);
+        mDeactivateSaveBtn = (Button)findViewById(R.id.deactiveAccountSaveBtn);
+
     }
 
     public void handleView(){
@@ -116,6 +127,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mMemberSendTV.setOnClickListener(this);
         mMemberAddsTV.setOnClickListener(this);
         mGeneralSaveBtn.setOnClickListener(this);
+
+        mDeactivateSaveBtn.setOnClickListener(this);
     }
 
     @Override
@@ -158,6 +171,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 showBooleanData(mMemberAddsTV);
                 break;
             case R.id.generalSaveBtn:
+                checkUserValidation();
+                break;
+            case R.id.deactiveAccountSaveBtn:
                 checkUserValidation();
                 break;
 
@@ -332,5 +348,66 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+    /** DEACTIVATE ACCOUNT */
+/*
+
+    public void callWebServiceForDeactivate(){
+
+        String token = "1984afa022ab472e8438f115d0c5ee1b";
+
+
+        ProgressClass.getProgressInstance().showDialog(SettingsActivity.this);
+        Call<AddFolderResponse> call = apiInterface.deactivateAccount();
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            Toast.makeText(SettingsActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(SettingsActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(SettingsActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SettingsActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+*/
+
+    public String getCheckedReason(){
+        if(mRB1.isChecked() == true){
+
+            return null;
+        }else if(mRB2.isChecked() == true){
+
+            return null;
+        }else if(mRB3.isChecked() == true){
+
+            return null;
+        }else if(mRB4.isChecked() == true){
+
+            return null;
+        }else if(mRB5.isChecked() == true){
+
+            return null;
+        }else {
+            return  null;
+        }
+    }
 
 }

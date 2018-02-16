@@ -21,7 +21,6 @@ import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
 import com.senzecit.iitiimshaadi.viewController.AlertPlanActivity;
 import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
-import com.senzecit.iitiimshaadi.viewController.CustomFolderTempActivity;
 import com.senzecit.iitiimshaadi.viewController.CustomFoldersActivity;
 import com.senzecit.iitiimshaadi.viewController.DisclaimerActivity;
 import com.senzecit.iitiimshaadi.viewController.FAQActivity;
@@ -32,14 +31,13 @@ import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 import com.senzecit.iitiimshaadi.viewController.ResultSearchPartnerActivity;
-import com.senzecit.iitiimshaadi.viewController.SearchPartnerActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionActivity;
 import com.senzecit.iitiimshaadi.viewController.SuccessStoriesActivity;
 import com.senzecit.iitiimshaadi.viewController.UploadVideoActivity;
 import com.senzecit.iitiimshaadi.viewController.WalletActivity;
 
-public class BaseActivity extends AppCompatActivity implements View.OnClickListener{
+public class BaseNavActivity extends AppCompatActivity implements View.OnClickListener{
 
     DrawerLayout drawer;
     FrameLayout frameLayout;
@@ -114,26 +112,26 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         TextView mMyProfile = (TextView)headerview.findViewById(R.id.idMyProfileNav);
         TextView mCustomFolder = (TextView)headerview.findViewById(R.id.idCustomFolderNav);
 
-        mSearchPartnerBtn.setOnClickListener(BaseActivity.this);
-        mFriendsBtn.setOnClickListener(BaseActivity.this);
-        mChatMessageBtn.setOnClickListener(BaseActivity.this);
-        mSubscriptionBtn.setOnClickListener(BaseActivity.this);
+        mSearchPartnerBtn.setOnClickListener(BaseNavActivity.this);
+        mFriendsBtn.setOnClickListener(BaseNavActivity.this);
+        mChatMessageBtn.setOnClickListener(BaseNavActivity.this);
+        mSubscriptionBtn.setOnClickListener(BaseNavActivity.this);
 
-        mPremierServiceBtn.setOnClickListener(BaseActivity.this);
-        mAboutBtn.setOnClickListener(BaseActivity.this);
-        mMediaCovBtn.setOnClickListener(BaseActivity.this);
-        mSuccessStoryBtn.setOnClickListener(BaseActivity.this);
-        mHowToNavBtn.setOnClickListener(BaseActivity.this);
-        mPrivacyPolicyBtn.setOnClickListener(BaseActivity.this);
-        mContactUsBtn.setOnClickListener(BaseActivity.this);
-        mFaqBtn.setOnClickListener(BaseActivity.this);
-        mDisclaimerBtn.setOnClickListener(BaseActivity.this);
-        mSettings.setOnClickListener(BaseActivity.this);
-        mMyProfile.setOnClickListener(BaseActivity.this);
-        mCustomFolder.setOnClickListener(BaseActivity.this);
-        mWallet.setOnClickListener(BaseActivity.this);
-        mReferFriend.setOnClickListener(BaseActivity.this);
-        mUploadVideo.setOnClickListener(BaseActivity.this);
+        mPremierServiceBtn.setOnClickListener(BaseNavActivity.this);
+        mAboutBtn.setOnClickListener(BaseNavActivity.this);
+        mMediaCovBtn.setOnClickListener(BaseNavActivity.this);
+        mSuccessStoryBtn.setOnClickListener(BaseNavActivity.this);
+        mHowToNavBtn.setOnClickListener(BaseNavActivity.this);
+        mPrivacyPolicyBtn.setOnClickListener(BaseNavActivity.this);
+        mContactUsBtn.setOnClickListener(BaseNavActivity.this);
+        mFaqBtn.setOnClickListener(BaseNavActivity.this);
+        mDisclaimerBtn.setOnClickListener(BaseNavActivity.this);
+        mSettings.setOnClickListener(BaseNavActivity.this);
+        mMyProfile.setOnClickListener(BaseNavActivity.this);
+        mCustomFolder.setOnClickListener(BaseNavActivity.this);
+        mWallet.setOnClickListener(BaseNavActivity.this);
+        mReferFriend.setOnClickListener(BaseNavActivity.this);
+        mUploadVideo.setOnClickListener(BaseNavActivity.this);
 
         // SET DEFAULT COLOR
         /*homeBtn.setTextColor(Color.parseColor("#000000"));
@@ -166,106 +164,106 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.idSearchPartnerNav: {
                 // Toast.makeText(getApplicationContext(), "Search Partner", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,ResultSearchPartnerActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,ResultSearchPartnerActivity.class));
                 break;
             }
             case R.id.idfriendsNav: {
                 // Toast.makeText(getApplicationContext(), "Friends Navigation", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,FriendsActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,FriendsActivity.class));
                 break;
             }
             case R.id.idChatMessageNav: {
                 // Toast.makeText(getApplicationContext(), "Upload your document", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this, ChatMessagesActivity.class));
-//                startActivity(new Intent(BaseActivity.this,ChatMessagesActivity.class));
+                startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
+//                startActivity(new Intent(BaseNavActivity.this,ChatMessagesActivity.class));
                 break;
             }
             case R.id.idSubscriptionNav: {
                 // Toast.makeText(getApplicationContext(), "Subscription", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,SubscriptionActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,SubscriptionActivity.class));
                 break;
             }
             case R.id.idPremierServiceNav: {
                 // Toast.makeText(getApplicationContext(), "Premier Services", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,PremierServicesActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,PremierServicesActivity.class));
                 break;
             }
             case R.id.idAboutNav: {
                 // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,AboutUsActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,AboutUsActivity.class));
                 break;
             }
             case R.id.idMediaCoverageNav: {
                 // Toast.makeText(getApplicationContext(), "Media Coverage", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,MediaCoverageActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,MediaCoverageActivity.class));
                 break;
             }
             case R.id.idSuccessStoryNav: {
                 // Toast.makeText(getApplicationContext(), "Success Story", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,SuccessStoriesActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,SuccessStoriesActivity.class));
                 break;
             }
             case R.id.idHowToNav: {
                 // Toast.makeText(getApplicationContext(), "How To Navigate", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this, HowToNavigatePageActivity.class));
+                startActivity(new Intent(BaseNavActivity.this, HowToNavigatePageActivity.class));
                 break;
             }
             case R.id.idPrivacyPolicyNav: {
                 // Toast.makeText(getApplicationContext(), "Privacy Policy", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this, PrivacyActivity.class));
+                startActivity(new Intent(BaseNavActivity.this, PrivacyActivity.class));
                 break;
             }
             case R.id.idContactUsNav: {
                 // Toast.makeText(getApplicationContext(), "Contact Us", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,ContactUsActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,ContactUsActivity.class));
                 break;
             }
             case R.id.idFAQNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,FAQActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,FAQActivity.class));
                 break;
             }
             case R.id.idDisclaimerNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,DisclaimerActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,DisclaimerActivity.class));
                 break;
             }
             case R.id.idWalletNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(BaseActivity.this,WalletActivity.class);
+                Intent intent = new Intent(BaseNavActivity.this,WalletActivity.class);
                 intent.putExtra("type","wallet");
                 startActivity(intent);
                 break;
             }
             case R.id.idReferFriendNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(BaseActivity.this,WalletActivity.class);
+                Intent intent = new Intent(BaseNavActivity.this,WalletActivity.class);
                 intent.putExtra("type","referFriend");
                 startActivity(intent);
                 break;
             }
             case R.id.idUploadVideoNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,UploadVideoActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,UploadVideoActivity.class));
                 break;
             }
             case R.id.idSettingNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,SettingsActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,SettingsActivity.class));
                 break;
             }
             case R.id.idMyProfileNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,ProfileActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,ProfileActivity.class));
                 break;
             }
             case R.id.idCustomFolderNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseActivity.this,CustomFoldersActivity.class));
+                startActivity(new Intent(BaseNavActivity.this,CustomFoldersActivity.class));
                 break;
             }
             case R.id.idChat:
-                startActivity(new Intent(BaseActivity.this, AlertPlanActivity.class));
+                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
                 break;
 
         }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.senzecit.iitiimshaadi">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +13,6 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -27,7 +27,8 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
         <activity android:name=".viewController.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,7 +66,7 @@
             android:name=".navigation.PaidBaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navigation.BaseActivity"
+            android:name=".navigation.BaseNavActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.SettingsActivity"
@@ -136,7 +137,14 @@
         <activity android:name=".viewController.OtherProfileActivity" />
         <activity android:name=".viewController.ResultSearchPartnerActivity" />
         <activity android:name=".viewController.ResultPaidSearchPartnerActivity" />
-        <activity android:name=".viewController.CustomFoldersActivity"></activity>
+        <activity android:name=".viewController.CustomFoldersActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="af92b2690420eb183b525f6419537aa3e49e0e3f" />
+
+        <activity android:name=".payment.MakePaymentActivity"
+            android:theme="@style/AppThemePay"></activity>
     </application>
 
 </manifest>

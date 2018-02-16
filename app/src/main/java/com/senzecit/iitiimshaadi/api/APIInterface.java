@@ -12,6 +12,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.Genera
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
@@ -215,6 +216,11 @@ public interface APIInterface {
     @POST("api/search_by_id.json")
     Call<SubsAdvanceSearchResponse> idSearchPaid(@Field("token")String token, @Field("user_id")String userId);
 
+    /** ID Search - Paid Subs */
+    @FormUrlEncoded
+    @POST("api/search_by_id.json")
+    Call<PaidSubscriberResponse> idSearchPaid1(@Field("token")String token, @Field("user_id")String userId);
+
     /** Keyword Search - Paid Subs */
     @FormUrlEncoded
     @POST("api/search_by_keyword.json")
@@ -289,6 +295,10 @@ public interface APIInterface {
     /** General Setting */
     @POST("api/general_settings.json")
     Call<GeneralSettingResponse> changeGeneralSetting(@Body GeneralSettingRequest request);
+    /** Deactivate Account */
+    @POST("api/deactivate_profile.json")
+    Call<AddFolderResponse> deactivateAccount(@Field("token")String token, @Field("deactivation_reason")String deactivation_reason);
+
     /** Subscription */
     @FormUrlEncoded
     @POST("api/subscription.json")
