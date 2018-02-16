@@ -149,7 +149,7 @@ public interface APIInterface {
     /** Subscriber */
     /* EMAIL VERIFICATION*/
     @POST("api/email_verification.json")
-    Call<EmailVerificationResponse> emailVerification(@Body EmailVerificationRequest emailVerificationRequest);
+    Call<AddFolderResponse> emailVerification(@Body EmailVerificationRequest emailVerificationRequest);
 
 /*
     @POST("api/email_verification.json")
@@ -158,12 +158,30 @@ public interface APIInterface {
     @POST("api/email_verification.json")
     Call<ForgotPasswordResponse> emailVerification(@Body ForgotPasswordRequest forgotPasswordRequest);
 */
-
-
+    /** File Upload*/
+    /*ID*/
     @Multipart
     @POST("api/id_upload.json")
-    Call<IdVerificationResponse> idVerification(@Query("token") String token, @Part MultipartBody.Part file, @Part("id_proof") RequestBody id_proof);
+    Call<IdVerificationResponse> idVerification(@Part MultipartBody.Part file, @Part("id_proof") RequestBody id_proof, @Query("token") String token);
 
+    /* BioData */
+    @Multipart
+    @POST("api/upload_document.json")
+    Call<IdVerificationResponse> biodataUpload(@Part MultipartBody.Part file, @Part("bioData") RequestBody requestBody, @Query("token") String token);
+    /*Highest Education*/
+    @Multipart
+    @POST("api/upload_document.json")
+    Call<IdVerificationResponse> highestEduUpload(@Part MultipartBody.Part file, @Part("higher_document") RequestBody requestBody, @Query("token") String token);
+    /* Under Graduate */
+    @Multipart
+    @POST("api/upload_document.json")
+    Call<IdVerificationResponse> underGradCertUpload(@Part MultipartBody.Part file, @Part("under_graduate") RequestBody requestBody, @Query("token") String token);
+    /* Post Graduate */
+    @Multipart
+    @POST("api/upload_document.json")
+    Call<IdVerificationResponse> postGradCertUpload(@Part MultipartBody.Part file, @Part("post_graduate") RequestBody requestBody, @Query("token") String token);
+
+//    ================
     @FormUrlEncoded
     @POST("api/country.json")
     Call<CountryListResponse> countryList(@Field("token")String token);
@@ -183,6 +201,14 @@ public interface APIInterface {
     /** Advance Search - Subs */
     @POST("api/advance_search.json")
     Call<SubsAdvanceSearchResponse> advanceSearch(@Body SubsAdvanceSearchRequest advanceSearchRequest);
+
+    /*Move To*/
+    @FormUrlEncoded
+    @POST("api/add_in_group.json")
+    Call<AddFolderResponse> serviceMoveTo(@Field("token")String token, @Field("friend_id")String friend_id, @Field("folder_id")String folder_id);
+
+
+
 
     /** ID Search - Paid Subs */
     @FormUrlEncoded
@@ -248,7 +274,7 @@ public interface APIInterface {
     Call<AboutMeResponse> sendAboutMe(@Body AboutMeRequest request);
     /**Partner*/
     /*7*/
-    @POST("api/partner_education_career.json")
+    @POST("api/partner_basic_lifestyle.json")
     Call<ParnerBasicProfileResponse> sendPartnerBasicProfile(@Body ParnerBasicProfileRequest request);
     /*8*/
     @POST("api/partner_religion_country.json")
@@ -294,6 +320,30 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("api/shortlisted.json")
     Call<ShortlistedFriendResponse> shortlistedFriends(@Field("token")String token);
+
+    /*Add Friend*/
+    @FormUrlEncoded
+    @POST("api/add_friend.json")
+    Call<AddFolderResponse> serviceAddAsFriend(@Field("token")String token, @Field("friend_user")String friend_user);
+    /*Remove Friend*/
+    @FormUrlEncoded
+    @POST("api/remove_friend.json")
+    Call<AddFolderResponse> serviceRemoveFriend(@Field("token")String token, @Field("friend_user")String friend_user);
+    /*Cancel Friend*/
+    @FormUrlEncoded
+    @POST("api/cancel_friend_request.json")
+    Call<AddFolderResponse> serviceCancelFriend(@Field("token")String token, @Field("friend_user")String friend_user);
+    /*Shortlist Friend*/
+    @FormUrlEncoded
+    @POST("api/shortlisted_friend.json")
+    Call<AddFolderResponse> serviceShortlistFriend(@Field("token")String token, @Field("friend_user")String friend_user);
+    /*UnShortlist Friend*/
+    @FormUrlEncoded
+    @POST("api/unshortlisted_friend.json")
+    Call<AddFolderResponse> serviceUnShortlistFriend(@Field("token")String token, @Field("friend_user")String friend_user);
+
+
+
 
     /** NEW USER REGISTER */
     @POST("api/contact_us.json")

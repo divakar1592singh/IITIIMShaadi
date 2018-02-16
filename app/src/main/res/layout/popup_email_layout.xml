@@ -51,31 +51,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
-
-        <Button
-            android:id="@+id/confirmBtn"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentLeft="true"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:background="@drawable/button_login_selector"
-            android:text="Cancel"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:visibility="invisible"
-            android:textColor="@color/colorDarkYellow"/>
+        android:padding="20dp"
+        >
 
         <Button
             android:id="@+id/idCloseBtn"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_centerHorizontal="true"
             android:layout_width="110dp"
             android:layout_height="40dp"
-            android:background="@drawable/button_login_selector"
-            android:text="Close"
+            android:background="@drawable/border_maroon_selector"
+            android:text="Resend"
             android:textSize="16sp"
             android:textAllCaps="false"
-            android:textColor="@color/colorDarkYellow"/>
+            android:textColor="@color/colorMaroon"/>
     </RelativeLayout>
 </LinearLayout>

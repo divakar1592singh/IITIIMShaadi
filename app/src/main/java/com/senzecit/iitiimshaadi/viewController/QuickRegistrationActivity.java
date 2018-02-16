@@ -314,7 +314,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         }
 
     }
-        public void checkEligibilityValidation(){
+    public void checkEligibilityValidation(){
 
         String sEducation = mEducationTV.getText().toString().trim();
         String sStream = mStreamTV.getText().toString().trim();

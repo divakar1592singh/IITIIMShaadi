@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
@@ -21,8 +23,12 @@ import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.Invite
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
+import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +69,9 @@ public class InvitedFriendFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        init();
 
+        init();
+        handleView();
 
     }
 
@@ -74,14 +81,70 @@ public class InvitedFriendFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
     }
 
+    public void handleView(){
 
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), mRecyclerView,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+
+                        TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
+                        String userID = tvUserID.getText().toString();
+
+                        Button mCancelReqBtn = view.findViewById(R.id.idCancelReqBtn);
+                        mCancelReqBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "Cancel Friend : "+userID, Toast.LENGTH_SHORT).show();
+                                listener.onFragmentCancelReq(UserDefinedKeyword.CANCEL.toString(), userID);
+
+                            }
+                        });
+
+                        Button mShortlistBtn = view.findViewById(R.id.idShortlistBtn);
+                        mShortlistBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast.makeText(getContext(), "Shortlist Friend : "+userID, Toast.LENGTH_SHORT).show();
+                                listener.onFragmentShortListFriend(UserDefinedKeyword.SHORTLIST.toString(), userID);
+
+                            }
+                        });
+
+                        Button mViewProfileBtn = view.findViewById(R.id.idViewProfileBtn);
+                        mViewProfileBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
+                                Navigator.getClassInstance().navigateToActivityWithData(getActivity(), OtherProfileActivity.class, userID, 0);
+                            }
+                        });
+
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                        //Initialize
+
+//                        ImageView mSelectedIV = (ImageView)view.findViewById(R.id.idSelectionIV) ;
+
+//                        resetData(mSelectedIV);
+//                        Glide.with(getActivity()).load(R.drawable.ic_done).error(R.drawable.ic_transparent).into(mSelectedIV);
+
+                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        );
+
+    }
     /** API */
     public void callWebServiceForInvitedFriend(){
 
-//        String token = Constants.Token_Paid;
+        String token = Constants.Token_Paid;
 
-        AppPrefs prefs = new AppPrefs(getActivity());
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+ /*       AppPrefs prefs = new AppPrefs(getActivity());
+        String token = prefs.getString(Constants.LOGGED_TOKEN);*/
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -130,7 +193,9 @@ public class InvitedFriendFragment extends Fragment {
 
 
     public interface OnInvitedFriendListener {
-        public void onFragmentSetInvitedFriend(int size);
+        void onFragmentSetInvitedFriend(int size);
+        void onFragmentCancelReq(String typeOf, String otherUserId);
+        void onFragmentShortListFriend(String typeOf, String otherUserId);
     }
 
 }

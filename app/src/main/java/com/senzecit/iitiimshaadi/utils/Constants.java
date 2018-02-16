@@ -13,7 +13,7 @@ public interface Constants {
 
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";
-    String Temp_Token = "24d5b020b37ac63d408c987c4a54c225";
+    String Temp_Token = "7944714cc2f61c924e34df54ad9518a2";
     String Token_Paid = "87784c05e8e381ae7e4ed3540700c4b2";
 
     //LOGIN

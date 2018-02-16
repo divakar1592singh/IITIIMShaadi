@@ -108,6 +108,7 @@
                 android:weightSum="3">
 
                 <Button
+                    android:id="@+id/idCancelReqBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -115,6 +116,7 @@
                     android:textAllCaps="false"
                     android:textSize="14dp" />
                 <Button
+                    android:id="@+id/idShortlistBtn"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -122,6 +124,7 @@
                     android:textSize="14dp"
                     android:textAllCaps="false"/>
                 <Button
+                    android:id="@+id/idViewProfileBtn"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

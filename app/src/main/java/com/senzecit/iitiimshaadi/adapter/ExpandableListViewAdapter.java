@@ -2383,7 +2383,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.interest = Interests;
 
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<BasicProfileResponse> call = apiInterface.sendBasicProfile(request);
         call.enqueue(new Callback<BasicProfileResponse>() {
@@ -2431,7 +2431,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.caste= Caste;
         request.mother_tounge = Mother_Tongue;
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<ReligiousBackgroundResponse> call = apiInterface.sendReligiousBackground(request);
         call.enqueue(new Callback<ReligiousBackgroundResponse>() {
@@ -2502,7 +2502,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.current_zipcode = Zip_Code_Cur;
 
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<ContactDetailsResponse> call = apiInterface.sendContactDetails(request);
         call.enqueue(new Callback<ContactDetailsResponse>() {
@@ -2560,7 +2560,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.brother_detail = Details_Brothers;
         request.sister_detail = Details_Sisters;
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<FamilyDetailResponse> call = apiInterface.sendFamilyDetails(request);
         call.enqueue(new Callback<FamilyDetailResponse>() {
@@ -2632,7 +2632,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<EducationCareerResponse> call = apiInterface.sendEducationCareer(request);
         call.enqueue(new Callback<EducationCareerResponse>() {
@@ -2681,7 +2681,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.about_me = About_you;
 
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<AboutMeResponse> call = apiInterface.sendAboutMe(request);
         call.enqueue(new Callback<AboutMeResponse>() {

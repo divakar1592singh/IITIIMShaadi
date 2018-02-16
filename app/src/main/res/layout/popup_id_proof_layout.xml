@@ -62,28 +62,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="20dp"
+        >
 
         <Button
             android:id="@+id/idCancelBtn"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:layout_centerHorizontal="true"
             android:layout_width="110dp"
             android:layout_height="40dp"
             android:background="@drawable/border_maroon_selector"
             android:text="Cancel"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:textColor="@color/colorMaroon"/>
-
-        <Button
-            android:id="@+id/idSubmitBtn"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:background="@drawable/border_maroon_selector"
-            android:text="Submit"
             android:textSize="16sp"
             android:textAllCaps="false"
             android:textColor="@color/colorMaroon"/>

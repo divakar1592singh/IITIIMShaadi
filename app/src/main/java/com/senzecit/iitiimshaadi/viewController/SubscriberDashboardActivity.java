@@ -1,9 +1,11 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +39,7 @@ import com.senzecit.iitiimshaadi.navigation.BaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -46,6 +49,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
@@ -76,6 +80,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
     /** Network*/
     APIInterface apiInterface;
     AppPrefs prefs;
+    String typeOf;
 
 
     @Override
@@ -451,11 +456,12 @@ public class SubscriberDashboardActivity extends BaseActivity {
         mMessage = dialogView.findViewById(R.id.tvEmail);
         mCloseBtn = dialogView.findViewById(R.id.idCloseBtn);
 
-        mMessage.setText("Verfication email sended. Check your mail and follow instruction");
+        mMessage.setText("Press 'Resend' to send verificatin mail");
 
         mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                callWebServiceForEmailVerification();
                 dialog.dismiss();
             }
         });
@@ -512,7 +518,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
     private void alertDialogDocuments(){
 
 
-        Button mConfirm,mLogin ;
+        Button mClose ;
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
@@ -530,15 +536,13 @@ public class SubscriberDashboardActivity extends BaseActivity {
         mDocBtn4 = dialogView.findViewById(R.id.idDocBtn4);
 
 
-        mConfirm = dialogView.findViewById(R.id.confirmBtn);
-        mLogin = dialogView.findViewById(R.id.loginFPLBtn);
+        mClose = dialogView.findViewById(R.id.confirmBtn);
 
-       /* mConfirm.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
-        mConfirm.setTextColor(getResources().getColor(R.color.colorWhite));*/
         mDocBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 btnChooserCount = 1;
+                typeOf = UserDefinedKeyword.bioData.toString();
                 showStorage();
             }
         });
@@ -546,6 +550,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 btnChooserCount = 2;
+                typeOf = UserDefinedKeyword.higher_document.toString();
                 showStorage();
             }
         });
@@ -553,6 +558,7 @@ public class SubscriberDashboardActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 btnChooserCount = 3;
+                typeOf = UserDefinedKeyword.under_graduate.toString();
                 showStorage();
             }
         });
@@ -560,11 +566,12 @@ public class SubscriberDashboardActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 btnChooserCount = 4;
+                typeOf = UserDefinedKeyword.post_graduate.toString();
                 showStorage();
             }
         });
 
-        mConfirm.setOnClickListener(new View.OnClickListener() {
+        mClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /*mConfirm.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
@@ -573,22 +580,13 @@ public class SubscriberDashboardActivity extends BaseActivity {
             }
         });
 
-        mLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*mLogin.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
-                mLogin.setTextColor(getResources().getColor(R.color.colorWhite));*/
-                dialog.dismiss();
-
-            }
-        });
 
         dialog.setView(dialogView);
         dialog.show();
     }
     private void alertDialogIDProof(){
 
-        final Button mBrowse, mCancel, mSubmt;
+        final Button mBrowse, mCancel;
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
@@ -598,15 +596,13 @@ public class SubscriberDashboardActivity extends BaseActivity {
         mBiodataTv= dialogView.findViewById(R.id.tvIDProof);
         mBrowse = dialogView.findViewById(R.id.idBiodataUpload);
         mCancel = dialogView.findViewById(R.id.idCancelBtn);
-        mSubmt = dialogView.findViewById(R.id.idSubmitBtn);
 
-       /* mConfirm.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
-        mConfirm.setTextColor(getResources().getColor(R.color.colorWhite));*/
         mBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showStorage();
                 btnChooserCount = 5;
+                typeOf = UserDefinedKeyword.id_proof.toString();
+                showStorage();
             }
         });
 
@@ -617,14 +613,6 @@ public class SubscriberDashboardActivity extends BaseActivity {
             }
         });
 
-        mSubmt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                dialog.dismiss();
-
-            }
-        });
 
         dialog.setView(dialogView);
         dialog.show();
@@ -674,25 +662,43 @@ public class SubscriberDashboardActivity extends BaseActivity {
         File file = new File(fullPath);
         if (btnChooserCount == 1){
             tvDoc1.setText(getFileName(file.getPath()));
-            mDocBtn1.setText("Upload Now");
-//            uploadCvFile(file);
+            showUploadAlert("Biodata", file);
         }else if (btnChooserCount == 2){
             tvDoc2.setText(getFileName(file.getPath()));
-            mDocBtn2.setText("Upload Now");
-//            uploadCvFile(file);
+            showUploadAlert("Higher Ed.",file);
         }else if (btnChooserCount == 3){
             tvDoc3.setText(getFileName(file.getPath()));
-            mDocBtn3.setText("Upload Now");
-//            uploadCvFile(file);
+            showUploadAlert("Under Grad.", file);
         }else if (btnChooserCount == 4){
             tvDoc4.setText(getFileName(file.getPath()));
-            mDocBtn4.setText("Upload Now");
-//            uploadCvFile(file);
+            showUploadAlert("Post Grad.",file);
         }else if (btnChooserCount == 5){
             mBiodataTv.setText(getFileName(file.getPath()));
-            callWebServiceForIDUpload(file);
+            showUploadAlert("ID", file);
         }
+    }
 
+    public void showUploadAlert(String title, File filePath){
+        new AlertDialog.Builder(SubscriberDashboardActivity.this)
+                .setTitle(title+" Upload")
+                .setMessage("are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            callWebServiceForFileUpload(filePath);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
     }
 
     private String getFileName(String filePath){
@@ -706,6 +712,17 @@ public class SubscriberDashboardActivity extends BaseActivity {
         mProfilepercTV.setText(new StringBuilder(String.valueOf(mainResponse.getBasicData().getProfileComplition())).append("%")); ;
         mUsrNameTV.setText(new StringBuilder("@").append(mainResponse.getBasicData().getName()));
     }
+
+    public void manageGraduationData(){
+
+        PriorityQueue<String> queue = new PriorityQueue<>();
+        queue.add("Storage/emulated/0/folderName/FileName.ext");
+        queue.add("Storage/emulated/0/folderName/FileName.ext");
+        queue.add("Storage/emulated/0/folderName/FileName.ext");
+        queue.add("Storage/emulated/0/folderName/FileName.ext");
+
+    }
+
     /** API INTEGRATION */
 
     /* Subscriber Dashboard*/
@@ -752,35 +769,33 @@ public class SubscriberDashboardActivity extends BaseActivity {
 
     public void callWebServiceForEmailVerification(){
 
-
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
 
         EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
         emailVerirequest.token = Constants.Temp_Token;
-        emailVerirequest.email = "senzec1@gmail.com";
+        emailVerirequest.email = "praveen@senzecit.com";
 
-        Call<EmailVerificationResponse> call = apiInterface.emailVerification(emailVerirequest);
-        call.enqueue(new Callback<EmailVerificationResponse>() {
+        Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
+        call.enqueue(new Callback<AddFolderResponse>() {
             @Override
-            public void onResponse(Call<EmailVerificationResponse> call, Response<EmailVerificationResponse> response) {
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
 
-/*                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getResponseData() != null){
-                            Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
-                            ResponseData responseData = response.body().getResponseData();
-                            setPrefData(responseData);
+                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
                         }
-                    }else {
-                        Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
-                    }*/
-
+                    }
+                }catch (NullPointerException npe){
+                    Log.e(TAG, "#Error : "+npe, npe);
+                    showSnackBar();
                 }
             }
 
             @Override
-            public void onFailure(Call<EmailVerificationResponse> call, Throwable t) {
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
                 Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
@@ -868,34 +883,32 @@ public class SubscriberDashboardActivity extends BaseActivity {
     }
 
     /* File Upload */
-    public void callWebServiceForIDUpload(final File file)throws URISyntaxException{
+    public void callWebServiceForFileUpload(final File file)throws URISyntaxException {
 
-        /*String fullPath = Commons.getPath(selectedImageUri, this);
-        File file = new File(fullPath);*/
-
+        System.out.print(file);
 
         Call<IdVerificationResponse> callUpload = null;
 
-        IdVerificationRequest idVerificationRequest = new IdVerificationRequest();
-        idVerificationRequest.token = Constants.Temp_Token;
+        String token = Constants.Temp_Token;
+        Toast.makeText(SubscriberDashboardActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData(typeOf, file.getName(), requestBody);
+//      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
-//RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        callUpload = apiInterface.idVerification(Constants.Temp_Token, fileToUpload, filename);
+        callUpload = callManipulationMethod(fileToUpload, filename, token);
 
         callUpload.enqueue(new Callback<IdVerificationResponse>() {
             @Override
             public void onResponse(Call<IdVerificationResponse> call, Response<IdVerificationResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
 
-                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Response :"+response.body().getMessage().getSuccess() );
-                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Response :" + response.body().getMessage().getSuccess());
+                } else {
                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Confuse");
                 }
 
@@ -909,6 +922,41 @@ public class SubscriberDashboardActivity extends BaseActivity {
             }
         });
 
+    }
+
+        public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
+        {
+
+            if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
+                return apiInterface.idVerification(fileToUpload, filename, token);
+            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.bioData.toString())){
+                return apiInterface.biodataUpload(fileToUpload, filename, token);
+            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.higher_document.toString())){
+                return apiInterface.highestEduUpload(fileToUpload, filename, token);
+            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.under_graduate.toString())){
+                return apiInterface.underGradCertUpload(fileToUpload, filename, token);
+            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.post_graduate.toString())){
+                return apiInterface.postGradCertUpload(fileToUpload, filename, token);
+            }else {
+                Toast.makeText(SubscriberDashboardActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+
+        }
+
+//        EXTRA
+
+    public void showSnackBar(){
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
+                .setAction("CLOSE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
     }
 
 }

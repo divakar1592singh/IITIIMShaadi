@@ -47,7 +47,7 @@ public class ProgressClass {
             dialog.show();
         }
 
-    public void showDialogContext(Context activity){
+    public void showDialog(Context activity){
         dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);

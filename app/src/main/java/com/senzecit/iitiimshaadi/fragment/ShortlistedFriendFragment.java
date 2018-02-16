@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
@@ -21,8 +23,12 @@ import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyF
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.ShortlistedFriendResponse;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
+import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 
 import java.util.List;
 
@@ -58,7 +64,9 @@ public class ShortlistedFriendFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         init();
+        handleView();
 
     }
 
@@ -75,12 +83,73 @@ public class ShortlistedFriendFragment extends Fragment {
     }
 
 
+    public void handleView(){
+
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), mRecyclerView,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+
+                        TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
+                        String userID = tvUserID.getText().toString();
+//                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
+
+                        Button btnAddFriend = (Button) view.findViewById(R.id.idAddFriendBtn);
+                        btnAddFriend.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+                                listener.onFragmentAddFriend(UserDefinedKeyword.ADD.toString(), userID);
+
+                            }
+                        });
+
+                        Button btnUnShortList = (Button) view.findViewById(R.id.idUnShortlistBtn);
+                        btnUnShortList.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+                                listener.onFragmentUnShortListFriend(UserDefinedKeyword.UNSHORTLIST.toString(), userID);
+                            }
+                        });
+
+                        Button btnViewProfile = (Button) view.findViewById(R.id.idViewProfileBtn);
+                        btnViewProfile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
+                                Navigator.getClassInstance().navigateToActivityWithData(getActivity(), OtherProfileActivity.class, userID, 0);
+                            }
+                        });
+
+
+
+
+
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                        //Initialize
+
+//                        ImageView mSelectedIV = (ImageView)view.findViewById(R.id.idSelectionIV) ;
+
+//                        resetData(mSelectedIV);
+//                        Glide.with(getActivity()).load(R.drawable.ic_done).error(R.drawable.ic_transparent).into(mSelectedIV);
+
+                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
+                    }
+                })
+        );
+
+    }
+
     /** API */
     public void callWebServiceForMyFriend(){
 
-//        String token = Constants.Token_Paid;
-        AppPrefs prefs = new AppPrefs(getActivity());
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
+/*        AppPrefs prefs = new AppPrefs(getActivity());
+        String token = prefs.getString(Constants.LOGGED_TOKEN);*/
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -127,6 +196,9 @@ public class ShortlistedFriendFragment extends Fragment {
 
     public interface OnShortlistedFriendListener {
         void onFragmentSetShortlistedFriend(int size);
+        void onFragmentAddFriend(String typeOf, String otherUserId);
+        void onFragmentUnShortListFriend(String typeOf, String otherUserId);
+
     }
 
 

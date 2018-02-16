@@ -6,11 +6,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.UserDetail;
+import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
 
 import java.util.List;
 
@@ -31,7 +33,10 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
 
 
     class MyViewHolder extends RecyclerView.ViewHolder{
+
         TextView mUserIdTV, mUserNameTv, mReligionTv, mEducationTV, mJobLocTv;
+        Button mAddFriendBtn, mUnShortlistFriendBtn;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -41,7 +46,12 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
             mEducationTV = itemView.findViewById(R.id.idEducationTV);
             mJobLocTv = itemView.findViewById(R.id.idJobTv);
 
+            mAddFriendBtn = itemView.findViewById(R.id.idAddFriendBtn);
+            mUnShortlistFriendBtn = itemView.findViewById(R.id.idUnShortlistBtn);
+
+            itemView.clearFocus();
         }
+
     }
 
 
@@ -62,6 +72,12 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
         holder.mEducationTV.setText(setCollege(userDetail));
         holder.mJobLocTv.setText(userDetail.getNameOfCompany());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

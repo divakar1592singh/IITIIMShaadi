@@ -848,7 +848,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_height_max = Max_Height;
         request.prefered_partner_marital_status = Marital_Status;
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<ParnerBasicProfileResponse> call = apiInterface.sendPartnerBasicProfile(request);
         call.enqueue(new Callback<ParnerBasicProfileResponse>() {
@@ -897,7 +897,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_country = Preferred_Country;
 
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PtrReligionCountryResponse> call = apiInterface.sendPartnerReligionCountry(request);
         call.enqueue(new Callback<PtrReligionCountryResponse>() {
@@ -944,7 +944,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_education = Preferred_Education;
 
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PtrEduCareerResponse> call = apiInterface.sendPartnerEduCareer(request);
         call.enqueue(new Callback<PtrEduCareerResponse>() {
@@ -991,7 +991,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.choice_of_partner = Choice_of_Groom;
 
 
-        ProgressClass.getProgressInstance().showDialogContext(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<ChoiceOfGroomResponse> call = apiInterface.sendPartnerGroom(request);
         call.enqueue(new Callback<ChoiceOfGroomResponse>() {

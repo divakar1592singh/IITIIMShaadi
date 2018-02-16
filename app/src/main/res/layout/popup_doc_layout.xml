@@ -16,6 +16,7 @@
             android:text="Upload Document"
             android:textSize="16sp"
             android:textColor="@color/colorWhite"/>
+
     </RelativeLayout>
     <!--UPLOAD BIODATA-->
     <LinearLayout
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/size_8_dp"
-        android:paddingTop="@dimen/size_4_dp"
+        android:paddingTop="@dimen/size_16_dp"
         android:paddingRight="@dimen/size_8_dp"
         android:paddingBottom="@dimen/size_4_dp"
         >
@@ -184,28 +185,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp"
-        android:visibility="gone">
+        android:visibility="visible"
+        >
 
         <Button
             android:id="@+id/confirmBtn"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentLeft="true"
+            android:layout_marginRight="8dp"
+            android:layout_centerHorizontal="true"
             android:layout_width="110dp"
             android:layout_height="40dp"
             android:background="@drawable/border_maroon_selector"
-            android:text="Cancel"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:textColor="@color/colorMaroon"/>
-
-        <Button
-            android:id="@+id/loginFPLBtn"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:background="@drawable/border_maroon_selector"
-            android:text="Submit"
+            android:text="Close"
             android:textSize="16sp"
             android:textAllCaps="false"
             android:textColor="@color/colorMaroon"/>

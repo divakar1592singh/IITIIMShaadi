@@ -1,6 +1,7 @@
 package com.senzecit.iitiimshaadi.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -31,6 +32,12 @@ public class Navigator {
         Intent intent = new Intent(activity, toClass);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public void navigateToActivity(Context activity, Class<?> toClass) {
+        Intent intent = new Intent(activity, toClass);
+        activity.startActivity(intent);
+//        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     public void navigateToActivityWithData(Activity activity, Class<?> toClass, String data, int num) {

@@ -7,6 +7,12 @@ package com.senzecit.iitiimshaadi.utils;
 public enum UserDefinedKeyword {
 
     //LOGIN
-    LOGGED_TOKEN, LOGGED_USERNAME, LOGGED_USER_TYPE, LOGGED_USER_PIC, LOGGED_EMAIL;
+    LOGGED_TOKEN, LOGGED_USERNAME, LOGGED_USER_TYPE, LOGGED_USER_PIC, LOGGED_EMAIL, O_USERID,
+
+    ADD, REMOVE, CANCEL, SHORTLIST, UNSHORTLIST, MOVETO,
+
+    id_proof, bioData, higher_document, under_graduate, post_graduate;
+
+
 
     }

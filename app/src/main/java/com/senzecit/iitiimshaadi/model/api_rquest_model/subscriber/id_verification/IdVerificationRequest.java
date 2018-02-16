@@ -7,6 +7,5 @@ package com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.id_verificat
 public class IdVerificationRequest {
 
     public String token;
-    public String id_proof;
 
 }

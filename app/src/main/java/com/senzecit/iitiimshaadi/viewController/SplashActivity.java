@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
 
-                Intent intent = new Intent(SplashActivity.this, NewUserRegisterActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
