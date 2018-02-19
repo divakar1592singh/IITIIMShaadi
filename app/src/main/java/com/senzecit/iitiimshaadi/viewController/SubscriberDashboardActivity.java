@@ -762,14 +762,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         });
     }
 
-
     public void callWebServiceForEmailVerification(){
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
 
         EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
         emailVerirequest.token = Constants.Temp_Token;
-        emailVerirequest.email = "praveen@senzecit.com";
+        emailVerirequest.email = prefs.getString(Constants.LOGGED_EMAIL);;
 
         Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
         call.enqueue(new Callback<AddFolderResponse>() {

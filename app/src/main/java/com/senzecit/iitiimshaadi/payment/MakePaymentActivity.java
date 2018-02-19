@@ -38,6 +38,7 @@ import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -494,11 +495,11 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
                 .setUdf3(udf3)
                 .setUdf4(udf4)
                 .setUdf5(udf5)
-                .setUdf6(udf6)
+        /*        .setUdf6(udf6)
                 .setUdf7(udf7)
                 .setUdf8(udf8)
                 .setUdf9(udf9)
-                .setUdf10(udf10)
+                .setUdf10(udf10)*/
                 .setIsDebug(appEnvironment.debug())
                 .setKey(appEnvironment.merchant_Key())
                 .setMerchantId(appEnvironment.merchant_ID());
@@ -541,6 +542,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
 
         StringBuilder stringBuilder = new StringBuilder();
         HashMap<String, String> params = paymentParam.getParams();
+
         stringBuilder.append(params.get(PayUmoneyConstants.KEY) + "|");
         stringBuilder.append(params.get(PayUmoneyConstants.TXNID) + "|");
         stringBuilder.append(params.get(PayUmoneyConstants.AMOUNT) + "|");
@@ -570,11 +572,13 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
     public void generateHashFromServer(PayUmoneySdkInitializer.PaymentParam paymentParam) {
         //nextButton.setEnabled(false); // lets not allow the user to click the button again and again.
 
+        String token = "d50a3aa1bcdd0613ff80d5d0a1613adc";
         HashMap<String, String> params = paymentParam.getParams();
 
         // lets create the post params
         StringBuffer postParamsBuffer = new StringBuffer();
         postParamsBuffer.append(concatParams(PayUmoneyConstants.KEY, params.get(PayUmoneyConstants.KEY)));
+        postParamsBuffer.append(concatParams("token", token));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.AMOUNT, params.get(PayUmoneyConstants.AMOUNT)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.TXNID, params.get(PayUmoneyConstants.TXNID)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.EMAIL, params.get(PayUmoneyConstants.EMAIL)));
@@ -618,7 +622,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             String merchantHash = "";
             try {
                 //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
-                URL url = new URL("https://payu.herokuapp.com/get_hash");
+                URL url = new URL(Constants.BASE_URL+"api/generate_payment_hash.json");
 //                URL url = new URL("https://payu.herokuapp.com/get_hash");
 
                 String postParam = postParams[0];
@@ -649,7 +653,8 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
                          * This hash is mandatory and needs to be generated from merchant's server side
                          *
                          */
-                        case "payment_hash":
+//                        case "payment_hash":
+                        case "hash":
                             merchantHash = response.getString(key);
                             break;
                         default:

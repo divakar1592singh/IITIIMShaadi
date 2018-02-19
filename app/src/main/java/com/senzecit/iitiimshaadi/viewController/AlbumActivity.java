@@ -1,17 +1,27 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,17 +32,15 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
-import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
-import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 
-import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -41,6 +49,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AlbumActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = AlbumActivity.class.getSimpleName();
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack,mAlbumLogo;
@@ -48,6 +58,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     LinearLayout mAddBtnLL,mAddImage;
     FrameLayout mNoImageFoundFL,mImageFoundFL;
     APIInterface apiInterface;
+
+    /*Profile Image*/
+    private static final int READ_FILE_REQUEST_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +115,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             case R.id.idAddImgLL:
 //                mNoImageFoundFL.setVisibility(View.GONE);
 //                mImageFoundFL.setVisibility(View.VISIBLE);
-                showToast("Functionality Development Part");
+//                showToast("Functionality Development Part");
+//                showMediaChooser(view);
+                showStorage();
                 break;
         }
     }
@@ -115,7 +130,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /** API */
-    /** Folder Title */
+    /** Album List */
     public void callWebServiceForAllAlbum(){
 
         String token = Constants.Token_Paid;
@@ -157,9 +172,120 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    /** Image Upload */
+
+    public void showMediaChooser(View view){
+        PopupMenu popupMenu = new PopupMenu(AlbumActivity.this, view);
+        popupMenu.inflate(R.menu.menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.camera:
+//                        Toast.makeText(AlbumActivity.this, "Menu : Camera", Toast.LENGTH_SHORT).show();
+//                        ClickImageFromCamera() ;
+                        break;
+                    case R.id.storage:
+//                        Toast.makeText(AlbumActivity.this, "Menu : Storage", Toast.LENGTH_SHORT).show();
+//                        GetImageFromGallery();
+                        showStorage();
+                        break;
+
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+
+
+    //    FILE
+    private  void showStorage()
+    {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent = Intent.createChooser(intent, "Choose a file");
+        startActivityForResult(intent, READ_FILE_REQUEST_CODE);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+
+            if(requestCode == READ_FILE_REQUEST_CODE){
+                Uri uri = null;
+                if (data != null) {
+                    uri = data.getData();
+
+                    Log.i(TAG, "Uri: " + uri.toString());
+                    try {
+//                        uploadCvFile(uri);
+                        show(uri);
+
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else if (resultCode == RESULT_CANCELED) {
+                    // user cancelled recording
+                    Toast.makeText(getApplicationContext(),"User cancelled selection", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                }
+            }
+        }
+    }
 
 
 
+    public void show(Uri uri) throws URISyntaxException{
+        File filpath = new File(uri.getPath());
+        Toast.makeText(AlbumActivity.this, "Called:"+filpath.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void callWebServiceForFileUpload(final File file)throws URISyntaxException {
+
+        System.out.print(file);
+
+        String token = Constants.Temp_Token;
+//        Toast.makeText(AlbumActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
+
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
+//      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
+
+        ProgressClass.getProgressInstance().showDialog(AlbumActivity.this);
+        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> callUpload = apiInterface.imageUpload(fileToUpload, filename, token);
+
+        callUpload.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+
+                    AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "ID", "Response :" + response.body().getMessage().getSuccess());
+                } else {
+                    AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "ID", "Confuse");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "ID", "Oops");
+            }
+        });
+
+    }
+
+    /*EXTRA*/
     public void showToast(String msg){
 
         LayoutInflater inflater = getLayoutInflater();
@@ -184,6 +310,23 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         AlbumActivity.this.finish();
     }
 
+//
+    //Image Crop Code End Here
 
+/*    public void EnableRuntimePermission(){
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(AlbumActivity.this,
+                Manifest.permission.CAMERA))
+        {
+
+            Toast.makeText(AlbumActivity.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
+
+        } else {
+
+            ActivityCompat.requestPermissions(AlbumActivity.this,new String[]{
+                    Manifest.permission.CAMERA}, RequestPermissionCode);
+
+        }
+    }*/
 
 }

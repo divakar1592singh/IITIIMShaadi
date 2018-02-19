@@ -162,6 +162,11 @@ public interface APIInterface {
     /** File Upload*/
     /*ID*/
     @Multipart
+    @POST("api/profile_image_upload.json")
+    Call<AddFolderResponse> imageUpload(@Part MultipartBody.Part file, @Part("file[]") RequestBody id_proof, @Query("token") String token);
+
+    /*ID*/
+    @Multipart
     @POST("api/id_upload.json")
     Call<IdVerificationResponse> idVerification(@Part MultipartBody.Part file, @Part("id_proof") RequestBody id_proof, @Query("token") String token);
 
@@ -296,6 +301,7 @@ public interface APIInterface {
     @POST("api/general_settings.json")
     Call<GeneralSettingResponse> changeGeneralSetting(@Body GeneralSettingRequest request);
     /** Deactivate Account */
+    @FormUrlEncoded
     @POST("api/deactivate_profile.json")
     Call<AddFolderResponse> deactivateAccount(@Field("token")String token, @Field("deactivation_reason")String deactivation_reason);
 
@@ -312,6 +318,20 @@ public interface APIInterface {
     @Multipart
     @POST("api/profile_image_upload.json")
     Call<AddFolderResponse> uploadImageFile(@Part MultipartBody.Part file, @Part("file[]") RequestBody name, @Path("user_id") String user_id);
+
+    /** Setting Album */
+    @FormUrlEncoded
+    @POST("api/change_permission.json")
+    Call<AddFolderResponse> settingAlbum(@Field("token")String token, @Field("album_id")String album_id, @Field("privacy")String privacy);
+    /** Delete Album */
+    @FormUrlEncoded
+    @POST("api/delete_album.json")
+    Call<AddFolderResponse> deleteAlbum(@Field("token")String token, @Field("album_id")String album_id);
+    /** Set Profile Album */
+    @FormUrlEncoded
+    @POST("api/set_profile_picture.json")
+    Call<AddFolderResponse> setProfileAlbum(@Field("token")String token, @Field("profile")String profile);
+
 
     /** Friend */
     /*My Friends*/

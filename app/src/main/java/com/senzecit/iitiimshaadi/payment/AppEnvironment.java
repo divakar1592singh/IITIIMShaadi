@@ -40,7 +40,7 @@ public enum AppEnvironment {
     PRODUCTION {
         @Override
         public String merchant_Key() {
-            return "cA22SFFD";
+            return "YhZXAj";
 //            return "O15vkB";
         }
 
@@ -61,7 +61,7 @@ public enum AppEnvironment {
 
         @Override
         public String salt() {
-            return "qi1nH3DsQl";
+            return "shUO0FaL";
         }
 
         @Override

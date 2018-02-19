@@ -2,6 +2,8 @@ package com.senzecit.iitiimshaadi.viewController;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +38,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -61,8 +66,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     EditText mNameET, mPwdET, mConfirmPwdET;
     Button mGeneralSaveBtn, mDeactivateSaveBtn ;
 
-    RadioButton mRB1, mRB2, mRB3, mRB4, mRB5 ;
-
+    RadioGroup mDeactivateRG;
+    AppPrefs prefs;
     /** Network*/
     APIInterface apiInterface;
 
@@ -73,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_settings);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-
+        prefs = AppController.getInstance().getPrefs();
         init();
         handleView();
 
@@ -105,11 +110,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mConfirmPwdET = (EditText)findViewById(R.id.confirmPasswordET) ;
         mGeneralSaveBtn = (Button)findViewById(R.id.generalSaveBtn);
 
-        mRB1 = (RadioButton)findViewById(R.id.idRB1);
-        mRB2 = (RadioButton)findViewById(R.id.idRB2);
-        mRB3 = (RadioButton)findViewById(R.id.idRB3);
-        mRB4 = (RadioButton)findViewById(R.id.idRB4);
-        mRB5 = (RadioButton)findViewById(R.id.idRB5);
+        mDeactivateRG = (RadioGroup)findViewById(R.id.idDeactivateRG);
         mDeactivateSaveBtn = (Button)findViewById(R.id.deactiveAccountSaveBtn);
 
     }
@@ -157,6 +158,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     mDeactiveAccountLL.setVisibility(View.GONE);
                     deactiveAccount = false;
                 }else{
+
                     mDeactiveAccountLL.setVisibility(View.VISIBLE);
                     deactiveAccount = true;
                 }
@@ -174,7 +176,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 checkUserValidation();
                 break;
             case R.id.deactiveAccountSaveBtn:
-                checkUserValidation();
+                findDeactivateReason();
                 break;
 
         }
@@ -349,15 +351,40 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
 
     /** DEACTIVATE ACCOUNT */
-/*
 
-    public void callWebServiceForDeactivate(){
+    public void findDeactivateReason(){
+
+        new AlertDialog.Builder(SettingsActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Account Deactivation!")
+                .setMessage("are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+        int id = mDeactivateRG.getCheckedRadioButtonId();
+        RadioButton rb1 = (RadioButton)findViewById(id);
+        String reason = rb1.getText().toString();
+        Toast.makeText(SettingsActivity.this, "Success : "+reason, Toast.LENGTH_SHORT).show();
+        callWebServiceForDeactivate(reason);
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+    public void callWebServiceForDeactivate(String reason){
 
         String token = "1984afa022ab472e8438f115d0c5ee1b";
 
 
         ProgressClass.getProgressInstance().showDialog(SettingsActivity.this);
-        Call<AddFolderResponse> call = apiInterface.deactivateAccount();
+        Call<AddFolderResponse> call = apiInterface.deactivateAccount(token, reason);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
             public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
@@ -367,8 +394,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(SettingsActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            logout();
+
 
                         } else {
                             Toast.makeText(SettingsActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
@@ -387,27 +414,30 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
-*/
 
-    public String getCheckedReason(){
-        if(mRB1.isChecked() == true){
+    public void logout(){
 
-            return null;
-        }else if(mRB2.isChecked() == true){
+        new AlertDialog.Builder(SettingsActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Info")
+                .setMessage("Account Deactivated Successfully!")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-            return null;
-        }else if(mRB3.isChecked() == true){
+                        prefs.remove(Constants.LOGGED_TOKEN);
+                        prefs.remove(Constants.LOGGED_USERNAME);
+                        prefs.remove(Constants.LOGGED_USERID);
+                        prefs.remove(Constants.LOGGED_USER_TYPE);
+                        prefs.remove(Constants.LOGGED_EMAIL);
 
-            return null;
-        }else if(mRB4.isChecked() == true){
+                        Navigator.getClassInstance().navigateToActivity(SettingsActivity.this, SplashActivity.class);
 
-            return null;
-        }else if(mRB5.isChecked() == true){
+                    }
+                })
+                .show();
 
-            return null;
-        }else {
-            return  null;
-        }
+
     }
 
 }
