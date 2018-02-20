@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
@@ -37,12 +36,12 @@ import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_c
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.religious_background.ReligiousBackgroundResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.family_detail.FamilyDetailRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.profile.BasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
+import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
@@ -52,10 +51,8 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -770,7 +767,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild4,100,50);
-                                showState(txtListChild4);
+//                                showState(txtListChild4);
+                                showPermanentState(txtListChild4);
                             }
                         });
 
@@ -934,7 +932,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild9,100,50);
-                                showState(txtListChild9);
+//                                showState(txtListChild9);
+                                showCurrentState(txtListChild9);
                             }
                         });
 
@@ -2180,7 +2179,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showCaste(TextView textView){
+ /*   public void showCaste(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Caste1");
         list.add("Caste2");
@@ -2188,7 +2187,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         list.add("Caste4");
 
         showDialog(list, textView);
-    }
+    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -2545,7 +2544,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         request.token = token;
         request.about_me = About_you;
 
-
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<AboutMeResponse> call = apiInterface.sendAboutMe(request);
@@ -2578,7 +2576,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
             }
         });
 
-
     }
 
     private void showCountry(final TextView textView){
@@ -2586,8 +2583,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        AppPrefs prefs = new AppPrefs(_context);
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
@@ -2604,7 +2602,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     }
 
                     showDialog(countryList, textView);
-
                 }
             }
 
@@ -2614,45 +2611,92 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
-    public void showState(final TextView textView){
+    public void showPermanentState(final TextView textView){
 
-        final List<String> stateList = new ArrayList<>();
-        stateList.clear();
-
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
+        String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<StateListResponse> call = apiInterface.stateList(token);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        Call<StateListResponse> call = apiInterface.stateList(token, country);
         call.enqueue(new Callback<StateListResponse>() {
             @Override
             public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
-                    List<Object> rawStateList = response.body().getAllStates();
-                    for(int i = 0; i<rawStateList.size(); i++){
-                       /* if(rawCountryList.get(i).getName() != null){
-                            countryList.add(rawCountryList.get(i).getName());
-                        }*/
-                    }
-
+                    List<String> stateList = response.body().getAllStates();
                     showDialog(stateList, textView);
-
                 }
             }
 
             @Override
             public void onFailure(Call<StateListResponse> call, Throwable t) {
                 call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void showCurrentState(final TextView textView){
+
+        String token = Constants.Token_Paid;
+        String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<StateListResponse> call = apiInterface.stateList(token, Country);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        call.enqueue(new Callback<StateListResponse>() {
+            @Override
+            public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+
+                    List<String> stateList = response.body().getAllStates();
+                    showDialog(stateList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StateListResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
 
+    }
+
+    public void showCaste(final TextView textView){
+
+        String token = Constants.Token_Paid;
+        String religion = ExpOwnProfileModel.getInstance().getReligion();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        call.enqueue(new Callback<CasteAccReligionResponse>() {
+            @Override
+            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<String> casteList = response.body().getAllCastes();
+
+                    showDialog(casteList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

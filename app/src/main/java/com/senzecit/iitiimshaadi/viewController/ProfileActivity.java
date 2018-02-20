@@ -104,7 +104,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
     }
 
-
     public  void  setProfileData(){
 
         String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);

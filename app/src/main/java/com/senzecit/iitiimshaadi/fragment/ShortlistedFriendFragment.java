@@ -22,6 +22,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.All
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.ShortlistedFriendResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
@@ -43,6 +44,7 @@ import retrofit2.Response;
 public class ShortlistedFriendFragment extends Fragment {
     RecyclerView mRecyclerView;
     View view;
+    AppPrefs prefs;
 
     OnShortlistedFriendListener listener;
 
@@ -58,6 +60,7 @@ public class ShortlistedFriendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_shortlisted_friend,container,false);
+        prefs = AppController.getInstance().getPrefs();
         return view;
     }
 
@@ -117,8 +120,11 @@ public class ShortlistedFriendFragment extends Fragment {
                         btnViewProfile.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
-                                Navigator.getClassInstance().navigateToActivityWithData(getActivity(), OtherProfileActivity.class, userID, 0);
+                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(Constants.OTHER_USERID, userID);
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
                             }
                         });
 

@@ -65,6 +65,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
         holder.mEducationTV.setText(setCollege(userDetail));
         holder.mJobLocTv.setText(userDetail.getNameOfCompany());
 
+
     }
 
     @Override

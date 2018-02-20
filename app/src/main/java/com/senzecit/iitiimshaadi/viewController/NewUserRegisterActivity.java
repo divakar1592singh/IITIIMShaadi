@@ -51,6 +51,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
@@ -199,22 +202,22 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     public void showDateOfBirth(){
 
-       Calendar cal1 = Calendar.getInstance();
-       mYear = cal1.get(Calendar.YEAR);
-       mMonth = cal1.get(Calendar.MONTH);
-       mDay = cal1.get(Calendar.DAY_OF_MONTH);
+        Calendar cal1 = Calendar.getInstance();
+        mYear = cal1.get(Calendar.YEAR);
+        mMonth = cal1.get(Calendar.MONTH);
+        mDay = cal1.get(Calendar.DAY_OF_MONTH);
 
-       DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-           @Override
-           public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-               System.out.println(year);
-               mDateOfBirthTV.setText(day+"/"+month+"/"+year);
-           }
-       }, mYear, mMonth, mDay);
-       datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                System.out.println(year);
+                mDateOfBirthTV.setText(day+"/"+(month+1)+"/"+year);
+            }
+        }, mYear, mMonth, mDay);
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
         datePickerDialog.updateDate(mYear, mMonth, mDay);
-       datePickerDialog.show();
+        datePickerDialog.show();
 
     }
 
@@ -245,7 +248,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
-//		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//    final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -283,7 +286,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                 textView.setText(models.get(positionInList).getName());
                 dialog.dismiss();
 
-//				showDialog(130,50);
+//          showDialog(130,50);
             }
         });
     }
@@ -291,6 +294,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     /** Handle view to Set and Get*/
     public void showCountryCode(){
 
+        int position = 0;
         List<CountryCodeModel> countryCodeList = new ArrayList<>();
 
         try {
@@ -302,6 +306,10 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                 String dial_code = jsonObject2.getString("dial_code");
                 String code = jsonObject2.getString("code");
 
+                if(dial_code.equalsIgnoreCase("+91")){
+                    position = i;
+                }
+
                 CountryCodeModel countryCodeModel = new CountryCodeModel(name, dial_code, code);
                 countryCodeList.add(countryCodeModel);
 
@@ -309,10 +317,25 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
 //            CountrySpinnerAdapter countrySpinnerAdapter = new CountrySpinnerAdapter(this, R.layout.layout_country_code, countryCodeList);
 //            mCountryCodeSPN.setAdapter(countrySpinnerAdapter);
+            Collections.sort(countryCodeList, new Comparator<CountryCodeModel>() {
+                @Override
+                public int compare(CountryCodeModel lhs, CountryCodeModel rhs) {
+                    return lhs.getDial_code().compareTo(rhs.getDial_code());
+                }
+            });
 
             CustomArrayAdapter myAdapter = new CustomArrayAdapter(this, R.layout.layout_country_code, countryCodeList);
             myAdapter.setDropDownViewResource(R.layout.layout_country_code);
             mCountryCodeSPN.setAdapter(myAdapter);
+
+            for(int j = 0; j<countryCodeList.size(); j++){
+
+                if(countryCodeList.get(j).getDial_code().equalsIgnoreCase("+91")){
+                    position = j;
+                }
+            }
+            mCountryCodeSPN.setSelection(position);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -372,13 +395,13 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                             }else {
                                 AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Gender not selected");
                             }
-                    }else {
+                        }else {
                             mFullNameET.requestFocus();
-                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "FullName Can't Empty");
-                }
+                            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "FullName Can't Empty");
+                        }
                     }else {
-                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Profile Created For not selected");
-                }
+                        AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Profile Created For not selected");
+                    }
                 }
             }else {
                 mEmailET.requestFocus();
@@ -469,7 +492,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     public void navigateUserToScreen(String typeOfUser){
 //        if(typeOfUser.equalsIgnoreCase("subscriber")){
-            Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
+        Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
 //        }
     }
 
@@ -491,7 +514,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             if(!confirmPassword.isEmpty()){
                 if(password.equals(confirmPassword)){
 //                    AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password Succesfull");
-                status = true;
+                    status = true;
                 }
                 else {
                     status = false;
@@ -530,3 +553,4 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
 
 }
+

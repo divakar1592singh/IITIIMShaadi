@@ -53,7 +53,6 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
         init();
 
-
     }
 
     private void init(){

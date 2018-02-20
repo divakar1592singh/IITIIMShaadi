@@ -1,4 +1,4 @@
-package com.senzecit.iitiimshaadi.model.common.state;
+package com.senzecit.iitiimshaadi.model.common.caste;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -4,10 +4,9 @@ package com.senzecit.iitiimshaadi.model.common.country;
  * Created by senzec on 27/1/18.
  */
 
-
- import java.util.List;
- import com.google.gson.annotations.Expose;
- import com.google.gson.annotations.SerializedName;
+        import java.util.List;
+        import com.google.gson.annotations.Expose;
+        import com.google.gson.annotations.SerializedName;
 
 public class CountryListResponse {
 

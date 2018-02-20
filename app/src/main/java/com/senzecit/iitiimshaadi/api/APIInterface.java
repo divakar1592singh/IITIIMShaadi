@@ -1,6 +1,7 @@
 package com.senzecit.iitiimshaadi.api;
 
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
@@ -12,6 +13,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.Genera
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
@@ -55,6 +57,7 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
+import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
@@ -187,22 +190,32 @@ public interface APIInterface {
     @POST("api/upload_document.json")
     Call<IdVerificationResponse> postGradCertUpload(@Part MultipartBody.Part file, @Part("post_graduate") RequestBody requestBody, @Query("token") String token);
 
-//    ================
+//    ========COMMON========
     @FormUrlEncoded
     @POST("api/country.json")
     Call<CountryListResponse> countryList(@Field("token")String token);
 
     @FormUrlEncoded
-    @POST("api/state.json")
-    Call<StateListResponse> stateList(@Field("token")String token);
+    @POST("api/states_acc_country.json")
+    Call<StateListResponse> stateList(@Field("token")String token, @Field("country")String country );
 
+    @FormUrlEncoded
+    @POST("api/cities.json")
+    Call<CitiesAccCountryResponse> cityList(@Field("country_id")String country_id);
+
+    @FormUrlEncoded
+    @POST("api/caste.json")
+    Call<CasteAccReligionResponse> casteList(@Field("token")String token, @Field("religion")String religion );
+
+//========================
+    /** Own Profile */
     @FormUrlEncoded
     @POST("api/my_profile.json")
     Call<MyProfileResponse> myProfileData(@Field("token")String token);
 
     @FormUrlEncoded
     @POST("api/other_profile.json")
-    Call<MyProfileResponse> otherProfileData(@Field("token")String token, @Field("user_id")String userId);
+    Call<OtherProfileResponse> otherProfileData(@Field("token")String token, @Field("other_user")String other_user);
 
     /** Advance Search - Subs */
     @POST("api/advance_search.json")

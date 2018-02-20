@@ -3,6 +3,7 @@ package com.senzecit.iitiimshaadi.viewController;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,14 +13,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.OtherExpListAdapter;
 import com.senzecit.iitiimshaadi.adapter.OtherExpListPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +49,20 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     ScrollView mScrollView;
     boolean userProfile = true;
     boolean partnerPrefrence =true;
+    AppPrefs prefs;
+
+
+    CircleImageView mProfileCIV;
+    TextView mUsrNameTV, mUsrIdTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_other_profile);
+
+        prefs = AppController.getInstance().getPrefs();
+
 
         init();
         mScrollView.smoothScrollTo(0,0);
@@ -59,8 +74,15 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mBack.setOnClickListener(this);
         mTitle.setOnClickListener(this);
 
-        callWebServiceForOtherProfile();
+        String userId = prefs.getString(Constants.OTHER_USERID);
+        callWebServiceForOtherProfile(userId);
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void init(){
@@ -70,12 +92,39 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Other Profile");
+
+        mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
+        mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
+        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
+
         mMyProfile = (Button) findViewById(R.id.myProfileBtn);
         mPartnerProfile = (Button) findViewById(R.id.partnerProfileBtn);
         expListView = (ExpandableListView) findViewById(R.id.expandableLV);
         expListViewPartner = (ExpandableListView) findViewById(R.id.expandablePartnerLV);
 
         mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
+    }
+
+
+
+    public void setProfileData(OtherProfileResponse profileResponse){
+/*
+        String img = "https://images.vexels.com/media/users/3/147102/isolated/preview/082213cb0f9eabb7e6715f59ef7d322a-instagram-profile-icon-by-vexels.png";
+        prefs.putString(Constants.LOGGED_USER_PIC, img);
+        prefs.putString(Constants.LOGGED_USERID, "d5J89I");
+        prefs.putString(Constants.LOGGED_USERNAME, "Amit");*/
+
+        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
+        String userId = profileResponse.getBasicData().getName();
+        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+
+        if(!TextUtils.isEmpty(profileUri)){
+            Glide.with(OtherProfileActivity.this).load(profileUri).into(mProfileCIV);
+        }
+
+        mUsrNameTV.setText(new StringBuilder("@").append(userName));
+        mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
     }
 
     @Override
@@ -87,7 +136,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
                 mPartnerProfile.setBackground(getResources().getDrawable(R.drawable.button_shape_profile_unselect));
                 mPartnerProfile.setTextColor(getResources().getColor(R.color.colorGrey));
-
 
                 expListView.setVisibility(View.VISIBLE);
                 expListViewPartner.setVisibility(View.GONE);
@@ -233,38 +281,39 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void setMyProfile(MyProfileResponse myProfileResponse){
+    private void setMyProfile(OtherProfileResponse profileResponse){
 
         prepareListData();
-        listAdapter = new OtherExpListAdapter(this, listDataHeader, listDataChild, myProfileResponse);
+        listAdapter = new OtherExpListAdapter(this, listDataHeader, listDataChild, profileResponse);
         expListView.setAdapter(listAdapter);
 
         prepareListDataPartner();
-        partnerlistAdapter = new OtherExpListPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner, myProfileResponse);
+        partnerlistAdapter = new OtherExpListPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner, profileResponse);
         expListViewPartner.setAdapter(partnerlistAdapter);
 
     }
 
     /** API - other profile */
-    private void callWebServiceForOtherProfile(){
+    private void callWebServiceForOtherProfile(String userId){
 
         ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<MyProfileResponse> call = apiInterface.otherProfileData(Constants.Token_Paid, "23593");
-        call.enqueue(new Callback<MyProfileResponse>() {
+        Call<OtherProfileResponse> call = apiInterface.otherProfileData(Constants.Token_Paid, userId);
+        call.enqueue(new Callback<OtherProfileResponse>() {
             @Override
-            public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {
+            public void onResponse(Call<OtherProfileResponse> call, Response<OtherProfileResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
                     if(response.body() != null){
+                        setProfileData(response.body());
                         setMyProfile(response.body());
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<MyProfileResponse> call, Throwable t) {
+            public void onFailure(Call<OtherProfileResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();

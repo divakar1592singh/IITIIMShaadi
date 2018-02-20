@@ -38,8 +38,10 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomReque
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
+import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
@@ -848,7 +850,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
         showDialog(list, textView);
     }
-    public void showCaste(TextView textView){
+/*    public void showCaste(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Caste1");
         list.add("Caste2");
@@ -856,7 +858,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         list.add("Caste4");
 
         showDialog(list, textView);
-    }
+    }*/
 
     //EDUCATION
     public void showEducation(TextView textView){
@@ -1079,7 +1081,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     private void showCountry(final TextView textView){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
+
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
@@ -1108,8 +1112,36 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
+
+    public void showCaste(final TextView textView){
+
+        String token = Constants.Token_Paid;
+        String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, preferred_Religion);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        call.enqueue(new Callback<CasteAccReligionResponse>() {
+            @Override
+            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<String> casteList = response.body().getAllCastes();
+
+                    showDialog(casteList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }

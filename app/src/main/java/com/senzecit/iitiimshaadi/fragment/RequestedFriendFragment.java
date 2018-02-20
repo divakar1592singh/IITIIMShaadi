@@ -24,6 +24,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.All
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.AllRequestFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.RequestedFriendResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
@@ -45,6 +46,7 @@ import retrofit2.Response;
 public class RequestedFriendFragment extends Fragment {
     RecyclerView mRecyclerView;
     View view;
+    AppPrefs prefs;
 
     OnRequestedFriendListener listener;
 
@@ -60,6 +62,7 @@ public class RequestedFriendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_requested_friend,container,false);
+        prefs = AppController.getInstance().getPrefs();
         return view;
     }
     @Override

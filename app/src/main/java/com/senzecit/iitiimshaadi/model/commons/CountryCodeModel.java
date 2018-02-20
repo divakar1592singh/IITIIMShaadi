@@ -17,7 +17,7 @@ public class CountryCodeModel {
     }
 
     public String getDial_code() {
-        return dial_code;
+        return dial_code.replaceAll("\\s", "");
     }
 
     public String getCode() {

@@ -4,23 +4,23 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by senzec on 27/1/18.
+ * Created by senzec on 20/2/18.
  */
 public class AllCountry {
 
-    @SerializedName("id")
+    @SerializedName("old_value")
     @Expose
-    private Integer id;
+    private String oldValue;
     @SerializedName("name")
     @Expose
     private String name;
 
-    public Integer getId() {
-        return id;
+    public String getOldValue() {
+        return oldValue;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setOldValue(String oldValue) {
+        this.oldValue = oldValue;
     }
 
     public String getName() {

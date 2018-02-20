@@ -29,18 +29,18 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religious_country.PtrReligionCountryResponse;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
+import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
@@ -794,15 +794,6 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
         showDialog(list, textView);
     }
-    public void showCaste(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Caste1");
-        list.add("Caste2");
-        list.add("Caste3");
-        list.add("Caste4");
-
-        showDialog(list, textView);
-    }
 
     //EDUCATION
     public void showEducation(TextView textView){
@@ -1029,8 +1020,10 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     private void showCountry(final TextView textView){
 
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        AppPrefs prefs = new AppPrefs(_context);
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        String token = Constants.Token_Paid;
 
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
@@ -1062,6 +1055,35 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         });
 
 
+    }
+
+
+    public void showCaste(final TextView textView){
+
+        String token = Constants.Token_Paid;
+        String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, preferred_Religion);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        call.enqueue(new Callback<CasteAccReligionResponse>() {
+            @Override
+            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<String> casteList = response.body().getAllCastes();
+
+                    showDialog(casteList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

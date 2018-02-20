@@ -29,9 +29,15 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
+import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
+import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
+import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
@@ -60,6 +66,10 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     LinearLayout mlinearLayoutAdvanceSearch;
     boolean advanceSearch = true;
     Button mSearchPartner;
+
+    CountryModel countryResponse;
+    List<CountryModel> countryListWithId;
+
     SearchPartnerFragmentCommunicator communicator;
     RelativeLayout mPartnerCurrentCountry,mPartnerCurrentCity,mPartnerReligion,mPartnerCaste,mPartnerMotherTongue,mPartnerMaritalStatus,mPartnerEduOccup,mPartnerAnnIncome;
     LayoutInflater mDialogInflator;
@@ -408,7 +418,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    public void showCountry(TextView textView){
+    /*public void showCountry(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("India");
         list.add("Russia");
@@ -417,8 +427,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         list.add("USA");
 
         showDialog(list, textView);
-    }
-    public void showCity(TextView textView){
+    }*/
+/*    public void showCity(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("City-1");
         list.add("City-2");
@@ -427,7 +437,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         list.add("City-5");
 
         showDialog(list, textView);
-    }
+    }*/
     public void showReligion(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Hindu");
@@ -442,7 +452,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         showDialog(list, textView);
     }
-    public void showCaste(TextView textView){
+    /*public void showCaste(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Caste1");
         list.add("Caste2");
@@ -450,7 +460,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         list.add("Caste4");
 
         showDialog(list, textView);
-    }
+    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -505,5 +515,119 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         showDialog(list, textView);
     }
+
+    private void showCountry(final TextView textView){
+
+        countryListWithId = new ArrayList<>();
+        List<String> countryList = new ArrayList<>();
+        countryList.clear();
+
+//        AppPrefs prefs = AppController.getInstance().getPrefs();
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CountryListResponse> call = apiInterface.countryList(token);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        call.enqueue(new Callback<CountryListResponse>() {
+            @Override
+            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<AllCountry> rawCountryList = response.body().getAllCountries();
+                    for(int i = 0; i<rawCountryList.size(); i++){
+                        if(rawCountryList.get(i).getName() != null){
+                            countryList.add(rawCountryList.get(i).getName());
+                            countryResponse = new CountryModel(String.valueOf(rawCountryList.get(i).getOldValue()), rawCountryList.get(i).getName());
+                            countryListWithId.add(countryResponse);
+                        }
+                    }
+                    showDialog(countryList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CountryListResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void showCity(final TextView textView){
+
+        final List<String> cityList = new ArrayList<>();
+        cityList.clear();
+        String countryId = null;
+
+        String country = mPartnerCurrentCountryTV.getText().toString() ;
+        for(int i = 0; i < countryListWithId.size(); i++){
+            if(countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)){
+                countryId = countryListWithId.get(i).getCountryId();
+            }
+        }
+        System.out.println(countryId);
+
+//        String countryId = "1151";
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        call.enqueue(new Callback<CitiesAccCountryResponse>() {
+            @Override
+            public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<AllCity> rawCityList = response.body().getAllCities();
+                    for(int i = 0; i<rawCityList.size(); i++){
+                        if(rawCityList.get(i).getName() != null){
+                            cityList.add(rawCityList.get(i).getName());
+                        }
+                    }
+
+                    showDialog(cityList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void showCaste(final TextView textView){
+
+        String token = Constants.Token_Paid;
+        String caste = mSelectReligionTV.getText().toString() ;
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, caste);
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        call.enqueue(new Callback<CasteAccReligionResponse>() {
+            @Override
+            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<String> casteList = response.body().getAllCastes();
+
+                    showDialog(casteList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
 
 }

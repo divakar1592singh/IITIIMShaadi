@@ -19,6 +19,7 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
@@ -43,18 +44,19 @@ public class MyFriendsFragment extends Fragment {
     View view;
     ArrayList<String> myFriendList;
     OnMyFriendListener  listener;
+    AppPrefs prefs;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
          listener = (OnMyFriendListener) activity;
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_my_friends,container,false);
+        prefs = AppController.getInstance().getPrefs();
         return view;
     }
 
@@ -127,7 +129,10 @@ public class MyFriendsFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
-                                Navigator.getClassInstance().navigateToActivityWithData(getActivity(), OtherProfileActivity.class, userID, 0);
+                                if(userID.length()> 0){
+                                    prefs.putString(Constants.OTHER_USERID, userID);
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
                             }
                         });
 

@@ -42,6 +42,7 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_car
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.family_detail.FamilyDetailRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.profile.BasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
+import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
 import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
@@ -557,11 +558,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             @Override
                             public void afterTextChanged(Editable editable) {
-                                ExpOwnProfileModel.getInstance().setInterests(editable.toString());
+                                ExpOwnProfileModel.getInstance().setReligion(txtListChild1.getText().toString());
                             }
                         });
-
-                        ExpOwnProfileModel.getInstance().setReligion(txtListChild1.getText().toString());
 
                         break;
                     case 1:
@@ -824,7 +823,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild4,100,50);
-                                showState(txtListChild4);
+                                showPermanentState(txtListChild4);
                             }
                         });
 
@@ -1003,7 +1002,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild9,100,50);
-                                showState(txtListChild9);
+                                showCurrentState(txtListChild9);
                             }
                         });
 
@@ -2053,7 +2052,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-
     public Vector<Dialog> dialogs = new Vector<Dialog>();
     private void showDialog(List<String> dataList, final TextView txtListChild) {
 
@@ -2318,7 +2316,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showCaste(TextView textView){
+   /* public void showCaste(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Caste1");
         list.add("Caste2");
@@ -2326,7 +2324,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         list.add("Caste4");
 
         showDialog(list, textView);
-    }
+    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -2718,8 +2716,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     private void showCountry(final TextView textView){
 
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        /*AppPrefs prefs = new AppPrefs(_context);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);*/
+        String token = Constants.Token_Paid;
 
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
@@ -2753,26 +2752,28 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     }
 
-    public void showState(final TextView textView){
+    public void showPermanentState(final TextView textView){
 
-        final List<String> stateList = new ArrayList<>();
-        stateList.clear();
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        /*final List<String> stateList = new ArrayList<>();
+        stateList.clear();*/
+//        AppPrefs prefs = new AppPrefs(_context);
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
+        String Permanent_Country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<StateListResponse> call = apiInterface.stateList(token);
+        Call<StateListResponse> call = apiInterface.stateList(token, Permanent_Country);
         call.enqueue(new Callback<StateListResponse>() {
             @Override
             public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
                 if (response.isSuccessful()) {
 
-                    List<Object> rawStateList = response.body().getAllStates();
-                    for(int i = 0; i<rawStateList.size(); i++){
-                       /* if(rawCountryList.get(i).getName() != null){
+                    List<String> stateList = response.body().getAllStates();
+                   /* for(int i = 0; i<rawStateList.size(); i++){
+                       *//* if(rawCountryList.get(i).getName() != null){
                             countryList.add(rawCountryList.get(i).getName());
-                        }*/
-                    }
+                        }*//*
+                    }*/
 
                     showDialog(stateList, textView);
 
@@ -2788,4 +2789,67 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
 
     }
+
+    public void showCurrentState(final TextView textView){
+
+     /*   final List<String> stateList = new ArrayList<>();
+        stateList.clear();*/
+//        AppPrefs prefs = new AppPrefs(_context);
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        String token = Constants.Token_Paid;
+        String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<StateListResponse> call = apiInterface.stateList(token, Country);
+        call.enqueue(new Callback<StateListResponse>() {
+            @Override
+            public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                if (response.isSuccessful()) {
+
+                    List<String> stateList = response.body().getAllStates();
+
+                    showDialog(stateList, textView);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StateListResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    public void showCaste(final TextView textView){
+
+        String token = Constants.Token_Paid;
+        String religion = ExpOwnProfileModel.getInstance().getReligion();
+
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        call.enqueue(new Callback<CasteAccReligionResponse>() {
+            @Override
+            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                if (response.isSuccessful()) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    List<String> casteList = response.body().getAllCastes();
+
+                    showDialog(casteList, textView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

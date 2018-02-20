@@ -10,6 +10,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
+
 import java.util.HashMap;
 import java.util.List;
 /**
@@ -24,10 +26,10 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
-    MyProfileResponse myProfileResponse;
+    OtherProfileResponse myProfileResponse;
 
     public OtherExpListPartnerAdapter(Context context, List<String> listDataHeader,
-                                      HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
+                                      HashMap<String, List<String>> listChildData, OtherProfileResponse myProfileResponse) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
