@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/idprogress"
                         android:layout_centerHorizontal="true"
-                        android:text="\@bhar"
+                        android:text="\@---"
                         android:textColor="@color/colorWhite"
                         />
                     <TextView
@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/idUserNameTV"
                         android:layout_centerHorizontal="true"
-                        android:text="\@30067"
+                        android:text="\@---"
                         android:textColor="@color/colorWhite"/>
 
                    <!-- <TextView
@@ -105,7 +105,7 @@
                     android:id="@+id/idProfilePercTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="60%"
+                    android:text="00%"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"

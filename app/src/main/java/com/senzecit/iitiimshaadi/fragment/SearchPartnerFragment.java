@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -198,7 +199,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         profileList.clear();
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = Constants.Token_Paid;
+
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
         String country = mPartnerCurrentCountryTV.getText().toString() ;
@@ -557,50 +560,56 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
     public void showCity(final TextView textView){
 
-        final List<String> cityList = new ArrayList<>();
-        cityList.clear();
-        String countryId = null;
+        try {
+            final List<String> cityList = new ArrayList<>();
+            cityList.clear();
+            String countryId = null;
 
-        String country = mPartnerCurrentCountryTV.getText().toString() ;
-        for(int i = 0; i < countryListWithId.size(); i++){
-            if(countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)){
-                countryId = countryListWithId.get(i).getCountryId();
-            }
-        }
-        System.out.println(countryId);
-
-//        String countryId = "1151";
-
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        call.enqueue(new Callback<CitiesAccCountryResponse>() {
-            @Override
-            public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<AllCity> rawCityList = response.body().getAllCities();
-                    for(int i = 0; i<rawCityList.size(); i++){
-                        if(rawCityList.get(i).getName() != null){
-                            cityList.add(rawCityList.get(i).getName());
-                        }
-                    }
-
-                    showDialog(cityList, textView);
+            String country = mPartnerCurrentCountryTV.getText().toString();
+            for (int i = 0; i < countryListWithId.size(); i++) {
+                if (countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)) {
+                    countryId = countryListWithId.get(i).getCountryId();
                 }
             }
+            System.out.println(countryId);
 
-            @Override
-            public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
+            ProgressClass.getProgressInstance().showDialog(getActivity());
+            call.enqueue(new Callback<CitiesAccCountryResponse>() {
+                @Override
+                public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
+                    if (response.isSuccessful()) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        List<AllCity> rawCityList = response.body().getAllCities();
+                        for (int i = 0; i < rawCityList.size(); i++) {
+                            if (rawCityList.get(i).getName() != null) {
+                                cityList.add(rawCityList.get(i).getName());
+                            }
+                        }
+
+                        showDialog(cityList, textView);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }catch (NullPointerException npe){
+            Log.e("SearchPartnerFragment", " #Error : "+npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Check Country selected!");
+        }
+
     }
 
     public void showCaste(final TextView textView){
 
+        try{
         String token = Constants.Token_Paid;
         String caste = mSelectReligionTV.getText().toString() ;
 
@@ -625,6 +634,13 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+    }catch (NullPointerException npe){
+        Log.e("SearchPartnerFragment", " #Error : "+npe, npe);
+        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Check Country selected!");
+    }
+
     }
 
 

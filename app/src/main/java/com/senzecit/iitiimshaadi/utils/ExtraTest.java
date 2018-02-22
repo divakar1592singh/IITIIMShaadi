@@ -15,7 +15,10 @@ import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -175,6 +178,27 @@ public class ExtraTest {
 
 
     }*/
+
+//Date
+/*
+    public static String getDate(String _Date){
+
+//        String _Date = "2010-09-29 08:45:22";
+//        String _Date = "2018-05-02T00:00:00+0000";
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        }
+        catch(ParseException pe) {
+
+            return "Date";
+        }
+
+    }*/
+
 
 
 

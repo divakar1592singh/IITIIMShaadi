@@ -5,9 +5,9 @@ package com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber;
  */
 
 
-  import java.util.List;
-  import com.google.gson.annotations.Expose;
-  import com.google.gson.annotations.SerializedName;
+ import java.util.List;
+ import com.google.gson.annotations.Expose;
+ import com.google.gson.annotations.SerializedName;
 
 public class PaidSubscriberResponse {
 

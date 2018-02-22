@@ -133,29 +133,6 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             }
         });
 
- /*       mFolderNameET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (TextUtils.isEmpty(s.toString())){
-                    mFolderSpnr.setVisibility(View.VISIBLE);
-                }else {
-                    mFolderSpnr.setVisibility(View.GONE);
-
-
-                }
-            }
-        });*/
-
     }
 
     @Override
@@ -166,30 +143,14 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.idAddFolder:
                 checkAddValid();
-               /* if(mFolderNameET.getText().length()>0){
-                    String renamedFolder = mFolderNameET.getText().toString();
-                    AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Add folder \'"+renamedFolder+"\'", "Functionality Work");
-                }else {
-                    AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Alert! Field Empty", "Functionality Work");
-                }*/
+
                 break;
             case R.id.idEditFolder:
                 checkRenameValid();
-               /* if(mFolderNameET.getText().length()>0){
-                    String renamedFolder = mFolderNameET.getText().toString();
-                    String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
-                    AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename \'"+currentFolder+"\' to \'"+renamedFolder+"\'", "Functionality Work");
-                }else {
-                    AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Alert! Field Empty", "Functionality Work");
-                }*/
+
                 break;
             case R.id.idDeleteFolder:
                 checkDeleteAlert();
-//                String currentFolder = mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText().toString();
-//                AlertDialogTwoClick.getInstance().showDialog(CustomFoldersActivity.this, "Delete \'"+currentFolder+"\'", "Functionality Work");
-//                Toast.makeText(CustomFoldersActivity.this, "Output : "+mViewPager.getCurrentItem(), Toast.LENGTH_LONG).show();
-//                Toast.makeText(CustomFoldersActivity.this, "Output : "+mTabLayout.getTabAt(mTabLayout.getSelectedTabPosition()).getText()
-//                        , Toast.LENGTH_LONG).show();
 
                 break;
         }
@@ -276,10 +237,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         metaDataList =  new ArrayList<>();
         //        SPINNER
         List<String> list = new ArrayList<>();
-/*        list.add("Folder-1");
-        list.add("Folder-2");
-        list.add("Folder-3");
-        list.add("Folder-4");*/
+
         for(int i = 0; i < myMetaList.size(); i++){
             list.add(myMetaList.get(i).getMetaValue());
             folderMetaDataModel = new FolderMetaDataModel(myMetaList.get(i).getId(), myMetaList.get(i).getMetaValue());
@@ -405,7 +363,6 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                     .show();
 
     }
-
 
     public void callWebServiceForAdd(){
 

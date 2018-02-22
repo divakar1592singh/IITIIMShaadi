@@ -4,6 +4,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResp
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.InvitedFriendResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
@@ -14,6 +15,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
@@ -269,6 +271,11 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("api/subscriber_dashboard.json")
     Call<SubscriberMainResponse> subscribeDashoard(@Field("token")String token);
+    /* Subscriber Dashboard */
+    @FormUrlEncoded
+    @POST("api/paid_subscriber.json")
+    Call<PaidDashboardResponse> subscribeDashoardPaid(@Field("token")String token);
+
     /* Resend OTP */
     @FormUrlEncoded
     @POST("api/send_otp_again.json")
@@ -391,6 +398,12 @@ public interface APIInterface {
     /** NEW USER REGISTER */
     @POST("api/contact_us.json")
     Call<AddFolderResponse> contactUs(@Body ContactUsRequest request);
+
+    /** Date To AGe*/
+
+    @FormUrlEncoded
+    @POST("api/date_to_age.json")
+    Call<DateToAgeResponse> dateToAge(@Field("birth_date")String birth_date);
 
 
 }

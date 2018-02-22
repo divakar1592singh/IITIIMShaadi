@@ -1,14 +1,15 @@
-package com.senzecit.iitiimshaadi.model.api_response_model.my_profile;
+package com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard;
 
 /**
- * Created by senzec on 27/1/18.
+ * Created by senzec on 21/2/18.
  */
 
 
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
+ import java.util.List;
+ import com.google.gson.annotations.Expose;
+ import com.google.gson.annotations.SerializedName;
 
-public class MyProfileResponse {
+public class PaidDashboardResponse {
 
     @SerializedName("message")
     @Expose
@@ -19,9 +20,9 @@ public class MyProfileResponse {
     @SerializedName("partnerBasicData")
     @Expose
     private PartnerBasicData partnerBasicData;
-    @SerializedName("emailData")
+    @SerializedName("allInterestReceived")
     @Expose
-    private EmailData emailData;
+    private List<AllInterestReceived> allInterestReceived = null;
 
     public Message getMessage() {
         return message;
@@ -47,12 +48,12 @@ public class MyProfileResponse {
         this.partnerBasicData = partnerBasicData;
     }
 
-    public EmailData getEmailData() {
-        return emailData;
+    public List<AllInterestReceived> getAllInterestReceived() {
+        return allInterestReceived;
     }
 
-    public void setEmailData(EmailData emailData) {
-        this.emailData = emailData;
+    public void setAllInterestReceived(List<AllInterestReceived> allInterestReceived) {
+        this.allInterestReceived = allInterestReceived;
     }
 
 }

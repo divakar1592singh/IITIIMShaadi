@@ -3,16 +3,26 @@ package com.senzecit.iitiimshaadi.model.api_response_model.other_profile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
- * Created by senzec on 20/2/18.
+ * Created by senzec on 22/2/18.
  */
 public class BasicData {
 
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("user_id")
+    @Expose
+    private Integer userId;
+    @SerializedName("profile_image")
+    @Expose
+    private String profileImage;
+    @SerializedName("birth_date")
+    @Expose
+    private String birthDate;
+    @SerializedName("profile_created_for")
+    @Expose
+    private String profileCreatedFor;
     @SerializedName("health_issue")
     @Expose
     private String healthIssue;
@@ -33,7 +43,7 @@ public class BasicData {
     private String smoke;
     @SerializedName("interest")
     @Expose
-    private List<String> interest = null;
+    private Object interest;
     @SerializedName("religion")
     @Expose
     private String religion;
@@ -151,6 +161,38 @@ public class BasicData {
         this.name = name;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getProfileCreatedFor() {
+        return profileCreatedFor;
+    }
+
+    public void setProfileCreatedFor(String profileCreatedFor) {
+        this.profileCreatedFor = profileCreatedFor;
+    }
+
     public String getHealthIssue() {
         return healthIssue;
     }
@@ -199,11 +241,11 @@ public class BasicData {
         this.smoke = smoke;
     }
 
-    public List<String> getInterest() {
+    public Object getInterest() {
         return interest;
     }
 
-    public void setInterest(List<String> interest) {
+    public void setInterest(Object interest) {
         this.interest = interest;
     }
 

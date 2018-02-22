@@ -1,4 +1,4 @@
-package com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber;
+package com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,21 +6,21 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by senzec on 21/2/18.
  */
-public class Query {
+public class AllInterestReceived {
 
-    @SerializedName("username")
+    @SerializedName("id")
     @Expose
-    private String username;
+    private Integer id;
     @SerializedName("user_detail")
     @Expose
     private UserDetail userDetail;
 
-    public String getUsername() {
-        return username;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public UserDetail getUserDetail() {

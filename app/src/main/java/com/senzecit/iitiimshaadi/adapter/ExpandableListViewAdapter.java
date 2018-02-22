@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
@@ -52,10 +55,14 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -147,9 +154,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - Diet
-//                        txtListChildHeader.setText(myProfileResponse.getBasicData().getDiet());
-                        txtListChild.setText("Test");
-
+                        txtListChild.setText(myProfileResponse.getBasicData().getProfileCreatedFor());
 
                         txtListChild.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -184,7 +189,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                         //SetData - Age
 //                        txtListChildHeader.setText(myProfileResponse.getBasicData().getDiet());
-                        txtListChild2.setText("Test");
+//                        txtListChild2.setText(formattedDate());3
+                        formattedDate(txtListChild2, myProfileResponse.getBasicData().getBirthDate());
                        /* convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -266,6 +272,13 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                         //SetData - DOB
                         txtListChild4.setText("Test");
+                        //SetData - DOB
+                        if(myProfileResponse.getBasicData().getBirthDate() != null){
+
+                            String dateOfBirth = myProfileResponse.getBasicData().getBirthDate();
+                            txtListChild4.setText(getDate(dateOfBirth));
+                        }
+
 
                         /*convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -2316,15 +2329,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-   /* public void showCaste(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Caste1");
-        list.add("Caste2");
-        list.add("Caste3");
-        list.add("Caste4");
 
-        showDialog(list, textView);
-    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -2725,11 +2730,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
+        ProgressClass.getProgressInstance().showDialog(_context);
         call.enqueue(new Callback<CountryListResponse>() {
             @Override
             public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
                 if (response.isSuccessful()) {
-
+                    ProgressClass.getProgressInstance().stopProgress();
                     List<AllCountry> rawCountryList = response.body().getAllCountries();
                     for(int i = 0; i<rawCountryList.size(); i++){
                         if(rawCountryList.get(i).getName() != null){
@@ -2745,6 +2751,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             @Override
             public void onFailure(Call<CountryListResponse> call, Throwable t) {
                 call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -2761,32 +2768,40 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String token = Constants.Token_Paid;
         String Permanent_Country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<StateListResponse> call = apiInterface.stateList(token, Permanent_Country);
-        call.enqueue(new Callback<StateListResponse>() {
-            @Override
-            public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
-                if (response.isSuccessful()) {
+        if(Permanent_Country.length() > 0) {
 
-                    List<String> stateList = response.body().getAllStates();
-                   /* for(int i = 0; i<rawStateList.size(); i++){
-                       *//* if(rawCountryList.get(i).getName() != null){
-                            countryList.add(rawCountryList.get(i).getName());
-                        }*//*
-                    }*/
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<StateListResponse> call = apiInterface.stateList(token, Permanent_Country);
+            call.enqueue(new Callback<StateListResponse>() {
+                @Override
+                public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                    if (response.isSuccessful()) {
 
-                    showDialog(stateList, textView);
+                        try{
+                            List<String> stateList = response.body().getAllStates();
+                            if(stateList != null){
+                        showDialog(stateList, textView);
+                            }else {
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Country selected!");
+                            }
+                        }catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Country selected!");
+                        }
 
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<StateListResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<StateListResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Permanent country not selected!");
+        }
 
     }
 
@@ -2800,6 +2815,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String token = Constants.Token_Paid;
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
+        try
+        {
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<StateListResponse> call = apiInterface.stateList(token, Country);
         call.enqueue(new Callback<StateListResponse>() {
@@ -2807,9 +2824,17 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
                 if (response.isSuccessful()) {
 
+                    try{
                     List<String> stateList = response.body().getAllStates();
-
-                    showDialog(stateList, textView);
+                    if(stateList != null){
+                        showDialog(stateList, textView);
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Country selected!");
+                    }
+                    }catch (NullPointerException npe) {
+                        Log.e("TAG", "#Error : " + npe, npe);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Country selected!");
+                    }
 
                 }
             }
@@ -2822,6 +2847,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         });
 
 
+    }catch (NullPointerException npe){
+            Log.e("TAG", "#Error : "+npe, npe);
+        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Current country not selected!");
+    }
+
     }
 
     public void showCaste(final TextView textView){
@@ -2829,27 +2859,104 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String token = Constants.Token_Paid;
         String religion = ExpOwnProfileModel.getInstance().getReligion();
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
-        ProgressClass.getProgressInstance().showDialog(_context);
-        call.enqueue(new Callback<CasteAccReligionResponse>() {
-            @Override
-            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<String> casteList = response.body().getAllCastes();
+        try{
 
-                    showDialog(casteList, textView);
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
+            ProgressClass.getProgressInstance().showDialog(_context);
+            call.enqueue(new Callback<CasteAccReligionResponse>() {
+                @Override
+                public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                    if (response.isSuccessful()) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        List<String> casteList = response.body().getAllCastes();
+                        try {
+                         if(casteList != null){
+                             showDialog(casteList, textView);
+                         }else {
+                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Religion selected!");
+                         }
+                        }catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Religion selected!");
+                        }
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }catch (NullPointerException npe){
+            Log.e("TAG", "#Error : "+npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Religion not seletced");
+        }
+    }
+
+
+    public void formattedDate(TextView tv, String _date) {
+
+//        String _date = "1988-08-28";
+
+        try {
+
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
+//            ProgressClass.getProgressInstance().showDialog(mContext);
+            call.enqueue(new Callback<DateToAgeResponse>() {
+                @Override
+                public void onResponse(Call<DateToAgeResponse> call, Response<DateToAgeResponse> response) {
+                    if (response.isSuccessful()) {
+//                        ProgressClass.getProgressInstance().stopProgress();
+                        Message message = response.body().getMessage();
+                        try {
+                            if (message != null) {
+                                tv.setText(response.body().getAge());
+                            } else {
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Religion selected!");
+                            }
+                        } catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Date Format not correct");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DateToAgeResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (NullPointerException npe) {
+            Log.e("TAG", "#Error : " + npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Religion not seletced");
+        }
+
+    }
+
+    public static String getDate(String _Date){
+
+//        String _Date = "2010-09-29 08:45:22";
+//        String _Date = "2018-05-02T00:00:00+0000";
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        }
+        catch(ParseException pe) {
+
+            return "Date";
+        }
+
     }
 
 }

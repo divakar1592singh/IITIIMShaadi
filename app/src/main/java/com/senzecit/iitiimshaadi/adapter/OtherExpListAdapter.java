@@ -4,19 +4,35 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class OtherExpListAdapter extends BaseExpandableListAdapter {
@@ -87,7 +103,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
-                        txtListChild1.setText("Test");
+                        txtListChild1.setText(myProfileResponse.getBasicData().getProfileCreatedFor());
 
                         break;
                     case 2:
@@ -105,8 +121,8 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
 
                         //SetData - Age
 //                        txtListChildHeader.setText(myProfileResponse.getBasicData().getDiet());
-                        txtListChild2.setText("Test");
-
+//                        txtListChild2.setText("Test");jtyj
+                        formattedDate(txtListChild2, myProfileResponse.getBasicData().getBirthDate());
 
                         break;
                     case 3:
@@ -140,7 +156,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         txtListChildHeader4.setText(childText);
 
                         //SetData - DOB
-                        txtListChild4.setText("Test");
+                        if(myProfileResponse.getBasicData().getBirthDate() != null){
+
+                            String dateOfBirth = myProfileResponse.getBasicData().getBirthDate();
+                            txtListChild4.setText(getDate(dateOfBirth));
+                        }
 
                         break;
                     case 5:
@@ -227,13 +247,15 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         txtListChild9.setText(childText);
 
                         //SetData - Interest
-                        String interest1 = myProfileResponse.getBasicData().getInterest().toString().replace("[", "");
-                        String interestNet = interest1.replace("]", "");
-                        txtListChild9.setText(interestNet);
+                        if(myProfileResponse.getBasicData().getInterest() != null) {
+                            String interest1 = myProfileResponse.getBasicData().getInterest().toString().replace("[", "");
+                            String interestNet = interest1.replace("]", "");
+                            txtListChild9.setText(interestNet);
 
-                        TextView txtListChildHeader9 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader9.setText(childText);
+                            TextView txtListChildHeader9 = (TextView) convertView
+                                    .findViewById(R.id.childItemTVheader);
+                            txtListChildHeader9.setText(childText);
+                        }
 
                         break;
 
@@ -1055,6 +1077,66 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void formattedDate(TextView tv, String _date) {
+
+//        String _date = "1988-08-28";
+
+        try {
+
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
+//            ProgressClass.getProgressInstance().showDialog(mContext);
+            call.enqueue(new Callback<DateToAgeResponse>() {
+                @Override
+                public void onResponse(Call<DateToAgeResponse> call, Response<DateToAgeResponse> response) {
+                    if (response.isSuccessful()) {
+//                        ProgressClass.getProgressInstance().stopProgress();
+                        Message message = response.body().getMessage();
+                        try {
+                            if (message != null) {
+                                tv.setText(response.body().getAge());
+                            } else {
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Religion selected!");
+                            }
+                        } catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Date Format not correct");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DateToAgeResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (NullPointerException npe) {
+            Log.e("TAG", "#Error : " + npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Religion not seletced");
+        }
+    }
+
+    public static String getDate(String _Date){
+
+//        String _Date = "2010-09-29 08:45:22";
+//        String _Date = "2018-05-02T00:00:00+0000";
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        }
+        catch(ParseException pe) {
+
+            return "Date";
+        }
+
     }
 
 }

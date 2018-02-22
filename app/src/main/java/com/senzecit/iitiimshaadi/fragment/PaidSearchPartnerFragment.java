@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -23,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
@@ -202,7 +206,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 //                communicator.saveAndSearchPaidPartnerByAdvance();
 //                callWebServiceForSubsAdvanceSearch();
 //                callWebServiceForSubsKeywordSearch();
-                callWebServiceForSubsIDSearch();
+//                callWebServiceForSubsIDSearch();
+                showPartnerSelection(view);
                 break;
 
             case R.id.idPartnerCurrentCountry:
@@ -241,8 +246,53 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         }
     }
 
-    /** API -  */
+    public void showPartnerSelection(View view1){
+        PopupMenu popupMenu = new PopupMenu(getActivity(), view1);
+        popupMenu.inflate(R.menu.menu_partner);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
 
+                switch (item.getItemId()){
+
+                    case R.id.idSearchById:
+                        checkValidation(1);
+                        break;
+                    case R.id.idSearchByKeyword:
+                        checkValidation(2);
+                        break;
+                    case R.id.idAdvanceSearch:
+                        checkValidation(3);
+                        break;
+
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+    public void checkValidation(int point){
+
+        String searchById = mSearchByIdET.getText().toString() ;
+        String searchByKeyword = mRandomKeywordET.getText().toString() ;
+
+        if(point == 1){
+            if(!TextUtils.isEmpty(searchById)){
+                callWebServiceForSubsIDSearch();
+            }else {
+                AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Search By Id can't Empty");
+            }
+        }else if(point == 2){
+            if(!TextUtils.isEmpty(searchByKeyword)){
+                callWebServiceForSubsKeywordSearch();
+            }else {
+                AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Search By Keyword can't Empty");
+            }
+        }else if(point == 3){
+            callWebServiceForSubsAdvanceSearch();
+        }
+    }
+    /** API -  */
     /** Search By ID */
     public void callWebServiceForSubsIDSearch(){
 
@@ -284,9 +334,10 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     }
 
     /** Search By Keyword */
-   /* public void callWebServiceForSubsKeywordSearch(){
+    public void callWebServiceForSubsKeywordSearch(){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
+        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String keyword = mRandomKeywordET.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -319,13 +370,14 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
     }
-*/
     /** Advance Search */
- /*   public void callWebServiceForSubsAdvanceSearch(){
+    public void callWebServiceForSubsAdvanceSearch(){
 
         List<String> profileList =new ArrayList<>();
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
+        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";;
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
         String country = mPartnerCurrentCountryTV.getText().toString() ;
@@ -394,7 +446,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
     }
-*/
 
 
     public Vector<Dialog> dialogs = new Vector<Dialog>();
@@ -557,26 +608,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         }
     }
 
-  /*  public void showCountry(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("India");
-        list.add("Russia");
-        list.add("China");
-        list.add("America");
-        list.add("USA");
 
-        showDialog(list, textView);
-    }
-    public void showCity(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("City-1");
-        list.add("City-2");
-        list.add("City-3");
-        list.add("City-4");
-        list.add("City-5");
-
-        showDialog(list, textView);
-    }*/
     public void showReligion(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Hindu");
@@ -591,15 +623,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         showDialog(list, textView);
     }
-    /*public void showCaste(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Caste1");
-        list.add("Caste2");
-        list.add("Caste3");
-        list.add("Caste4");
 
-        showDialog(list, textView);
-    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -655,16 +679,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         showDialog(list, textView);
     }
 
-    /*public void showLocation(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Loc-1");
-        list.add("Loc-2");
-        list.add("Loc-3");
-        list.add("Loc-4");
-        list.add("Loc-5");
-
-        showSelectableDialog(list, textView);
-    }*/
     public void showHeight(TextView textView){
         List<String> list = new ArrayList<>();
 
@@ -858,8 +872,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
     public interface PaidSearchPartnerFragmentCommunicator{
         void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid);
-        void saveAndSearchPaidPartnerByKeyword(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String keyword);
-        void saveAndSearchPaidPartnerByAdvance(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<String> profileList);
+        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);
+        void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList);
 
     }
 

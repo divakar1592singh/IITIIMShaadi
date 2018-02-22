@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
+import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 
 import java.util.List;
@@ -25,6 +30,8 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
 
     Context mContext;
     List<UserDetail> userList;
+    AppPrefs prefs;
+
     public CustomFolderAdapter(Context mContext, List<UserDetail> userList){
         this.mContext = mContext;
         this.userList = userList;
@@ -59,6 +66,7 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
+        prefs = AppController.getInstance().getPrefs();
         try {
             holder.mUserIDTV.setText(String.valueOf(userList.get(position).getUserId()));
             holder.mNameTV.setText(userList.get(position).getName());
@@ -72,7 +80,12 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
         holder.mViewProfileLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, ProfileActivity.class));
+                String userID = "";
+                userID = String.valueOf(userList.get(position).getUserId());
+                if (userID.length() > 0) {
+                    prefs.putString(Constants.OTHER_USERID, userID);
+                    Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
+                }
             }
         });
     }

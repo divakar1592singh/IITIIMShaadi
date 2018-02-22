@@ -28,7 +28,10 @@ import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -148,16 +151,32 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
 
     public void setSubsToRecyclerView(List<AllSubscription> allSubsList){
 
-        List<String> list = new ArrayList<>();
-        list.add("abc");
-        list.add("abc");
-        list.add("abc");
-        list.add("abc");
-        list.add("abc");
-
+        setData(allSubsList);
         mUpgradeSubscription.setOnClickListener(this);
         SubscriptionTransactionAdapter adapter = new SubscriptionTransactionAdapter(getActivity(), allSubsList);
         mRecyclerView.setAdapter(adapter);
+
+    }
+
+    public void setData(List<AllSubscription> allSubsList){
+
+        mLastRenewTV.setText(getDate(allSubsList.get(0).getPaymentDate()));
+        mNextRenewTV.setText(getDate(allSubsList.get(0).getExpDate()));
+    }
+
+
+    public static String getDate(String _Date){
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        }
+        catch(ParseException pe) {
+
+            return "Date";
+        }
 
     }
 

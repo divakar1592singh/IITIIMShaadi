@@ -108,15 +108,10 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
 
     public void setProfileData(OtherProfileResponse profileResponse){
-/*
-        String img = "https://images.vexels.com/media/users/3/147102/isolated/preview/082213cb0f9eabb7e6715f59ef7d322a-instagram-profile-icon-by-vexels.png";
-        prefs.putString(Constants.LOGGED_USER_PIC, img);
-        prefs.putString(Constants.LOGGED_USERID, "d5J89I");
-        prefs.putString(Constants.LOGGED_USERNAME, "Amit");*/
 
-        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
-        String userId = profileResponse.getBasicData().getName();
-        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+        String userId = String.valueOf(profileResponse.getBasicData().getUserId());
+        String profileUri = Constants.IMAGE_AVATAR_URL+userId+profileResponse.getBasicData().getProfileImage();
+        String userName = profileResponse.getBasicData().getName();
 
         if(!TextUtils.isEmpty(profileUri)){
             Glide.with(OtherProfileActivity.this).load(profileUri).into(mProfileCIV);
@@ -294,8 +289,9 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     }
 
     /** API - other profile */
-    private void callWebServiceForOtherProfile(String userId){
+    private void callWebServiceForOtherProfile(String userId1){
 
+        String userId = "30413";
         ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<OtherProfileResponse> call = apiInterface.otherProfileData(Constants.Token_Paid, userId);

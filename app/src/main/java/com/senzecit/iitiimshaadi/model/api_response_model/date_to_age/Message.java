@@ -1,10 +1,10 @@
-package com.senzecit.iitiimshaadi.model.api_response_model.my_profile;
+package com.senzecit.iitiimshaadi.model.api_response_model.date_to_age;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by senzec on 22/2/18.
+ * Created by senzec on 21/2/18.
  */
 public class Message {
 

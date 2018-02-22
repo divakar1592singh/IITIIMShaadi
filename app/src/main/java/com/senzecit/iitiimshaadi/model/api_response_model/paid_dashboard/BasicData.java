@@ -1,4 +1,4 @@
-package com.senzecit.iitiimshaadi.model.api_response_model.my_profile;
+package com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,19 +6,13 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by senzec on 22/2/18.
+ * Created by senzec on 21/2/18.
  */
 public class BasicData {
 
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("birth_date")
-    @Expose
-    private String birthDate;
-    @SerializedName("profile_created_for")
-    @Expose
-    private String profileCreatedFor;
     @SerializedName("health_issue")
     @Expose
     private String healthIssue;
@@ -158,22 +152,6 @@ public class BasicData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getProfileCreatedFor() {
-        return profileCreatedFor;
-    }
-
-    public void setProfileCreatedFor(String profileCreatedFor) {
-        this.profileCreatedFor = profileCreatedFor;
     }
 
     public String getHealthIssue() {

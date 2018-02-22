@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,11 +74,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     Button mDocBtn1, mDocBtn2, mDocBtn3, mDocBtn4 ;
     private static final int READ_FILE_REQUEST_CODE = 101;
     int btnChooserCount = 0;
+//    ProgressBar mProgress;
     /** Network*/
     APIInterface apiInterface;
     AppPrefs prefs;
     String typeOf;
-
+    ProgressBar mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
         mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
         mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
+        mProgress = (ProgressBar)findViewById(R.id.idprogress);
         mProfilepercTV = (TextView)findViewById(R.id.idProfilePercTV);
 
         mAlbumIV = (ImageView)findViewById(R.id.idAlbum);
@@ -621,7 +624,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         intent.setType("*/*");
         intent = Intent.createChooser(intent, "Choose a file");
         startActivityForResult(intent, READ_FILE_REQUEST_CODE);
-
     }
 
     @Override
@@ -703,8 +705,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     public void setSubsDashboardData(SubscriberMainResponse mainResponse){
 
-
-
+        mProgress.setProgress(mainResponse.getBasicData().getProfileComplition());
         mProfilepercTV.setText(new StringBuilder(String.valueOf(mainResponse.getBasicData().getProfileComplition())).append("%")); ;
         mUsrNameTV.setText(new StringBuilder("@").append(mainResponse.getBasicData().getName()));
     }
@@ -919,7 +920,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     }
 
-        public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
+    public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
         {
 
             if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){

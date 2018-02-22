@@ -9,12 +9,12 @@ public interface Constants {
     int splshTime = 100;
     String BASE_URL = "https://www.iitiimshaadi.com/";
     String IMAGE_BASE_URL = "https://iitiimshaadi.com/img/";
-    String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/";
+    String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/uploads/avatars/";
 
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";
-    String Temp_Token = "7944714cc2f61c924e34df54ad9518a2";
-    String Token_Paid = "87784c05e8e381ae7e4ed3540700c4b2";
+    String Temp_Token = "85cf4ac699215d12fe4e47bf0f4caa6f";
+    String Token_Paid = "c6125f0173eb2ae3ddc3b48370e977b9";
 
     //LOGIN
     String LOGGED_TOKEN = "token";

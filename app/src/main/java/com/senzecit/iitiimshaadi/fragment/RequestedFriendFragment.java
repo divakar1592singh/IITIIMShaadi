@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,21 @@ public class RequestedFriendFragment extends Fragment {
                         TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
                         String userID = tvUserID.getText().toString();
 //                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
+
+                        LinearLayout layout = (LinearLayout) view.findViewById(R.id.idProfileLayout);
+                        layout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                listener.onFragmentAddFriend(UserDefinedKeyword.ADD.toString(), userID);
+
+                                if(userID.length()> 0){
+                                    prefs.putString(Constants.OTHER_USERID, userID);
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
+                            }
+                        });
+
 
                         Button btnAddFriend = (Button) view.findViewById(R.id.idAddFriendBtn);
                         btnAddFriend.setOnClickListener(new View.OnClickListener() {

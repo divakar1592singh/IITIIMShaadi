@@ -8,18 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
@@ -31,6 +42,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     TextView mFriendsTV, mSearchPartnerTV, mPremServicesTV, mChatMessageTV, mSubscriptionTV, mCustomFolderTV, mWalletTV, mUploadVideoTV, mReferFrndTV;
     TextView mInterestReceivedTV, mChatReceivedTV;
     AppPrefs prefs;
+    ProgressBar mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +53,12 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
         initView();
         handleClick();
+        callWebServiceForSubscribeDashboard();
     }
 
     public void initView(){
+
+        mProgress = (ProgressBar)findViewById(R.id.idprogress);
         mProfileCIV = (CircleImageView)findViewById(R.id.idProfileCIV);
         mUsrNameTV = (TextView) findViewById(R.id.idUserNameTV);
         mUsrIdTV = (TextView) findViewById(R.id.idUserId);
@@ -87,6 +102,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         mReferFrndTV.setOnClickListener(this);
 
         setProfileData();
+
     }
 
 
@@ -187,6 +203,55 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
 
         }
+    }
+
+    /** API INTEGRATION */
+
+    /* Subscriber Dashboard*/
+    public void callWebServiceForSubscribeDashboard(){
+
+        String token = Constants.Token_Paid;
+//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        Call<PaidDashboardResponse> call = apiInterface.subscribeDashoardPaid(token);
+        call.enqueue(new Callback<PaidDashboardResponse>() {
+            @Override
+            public void onResponse(Call<PaidDashboardResponse> call, Response<PaidDashboardResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    PaidDashboardResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            Toast.makeText(PaidSubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                            setPaidSubs(serverResponse);
+
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "OTP Alert", "Confuse");
+                        }
+                    }else {
+                        Toast.makeText(PaidSubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PaidDashboardResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(PaidSubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+
+    public void setPaidSubs(PaidDashboardResponse serverResponse){
+
+        mProfilePercTV.setText(new StringBuilder(String.valueOf(serverResponse.getBasicData().getProfileComplition())).append("%"));
+
+        mProgress.setProgress(serverResponse.getBasicData().getProfileComplition());
     }
 
     public void showToast(String msg){

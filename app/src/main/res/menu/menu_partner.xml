@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/idSearchById"
+        android:title="Search By ID"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/idSearchByKeyword"
+        android:title="Search By Keyword"
+        app:showAsAction="always"
+        />
+    <item
+        android:id="@+id/idAdvanceSearch"
+        android:title="Advance Search"
+        app:showAsAction="always"
+        />
+
+
+</menu>

@@ -1,12 +1,12 @@
-package com.senzecit.iitiimshaadi.model.api_response_model.general_setting;
+package com.senzecit.iitiimshaadi.model.api_response_model.my_profile;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by senzec on 21/2/18.
+ * Created by senzec on 22/2/18.
  */
-public class AllSettings {
+public class EmailData {
 
     @SerializedName("id")
     @Expose

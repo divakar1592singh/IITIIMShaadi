@@ -115,29 +115,29 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     @Override
     public void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid) {
 
-        mContainerFragLayout.setVisibility(View.GONE);
-        mContainerResLayout.setVisibility(View.VISIBLE);
+        mContainerFragLayout.setVisibility(View.VISIBLE);
+        mContainerResLayout.setVisibility(View.GONE);
 
         setPaidMatchedList(queryList);
     }
 
     @Override
-    public void saveAndSearchPaidPartnerByKeyword(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String keyword) {
+    public void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword) {
 
-        mContainerFragLayout.setVisibility(View.GONE);
-        mContainerResLayout.setVisibility(View.VISIBLE);
+        mContainerFragLayout.setVisibility(View.VISIBLE);
+        mContainerResLayout.setVisibility(View.GONE);
 
-        setPaidMatchedList(queryList);
+        setPaidMatchedListByKeyword(queryList);
     }
 
     @Override
-    public void saveAndSearchPaidPartnerByAdvance(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<String> profileList) {
+    public void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList) {
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
 
         setPaidSearchedData(profileList);
-        setPaidMatchedList(queryList);
+        setPaidMatchedListByKeyword(queryList);
 
     }
 
@@ -154,9 +154,15 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     }
     private void setPaidMatchedList(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
 
-        PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList);
+        PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList, null);
         mSearchResultRecyclerView.setAdapter(adapter);
 
+
+    }
+ private void setPaidMatchedListByKeyword(List<Query> queryList){
+
+        PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, null, queryList);
+        mSearchResultRecyclerView.setAdapter(adapter);
 
     }
 

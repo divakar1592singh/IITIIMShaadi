@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.AllSubscription;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,8 +57,8 @@ public class SubscriptionTransactionAdapter extends RecyclerView.Adapter<Subscri
         holder.mPaymentModeTV.setText(allSubsList.get(position).getPaymentMode());
         holder.mTransactionIdTV.setText(String.valueOf(allSubsList.get(position).getTransactionId()));
         holder.mAmountTV.setText(allSubsList.get(position).getAmount());
-        holder.mPaymentDateTV.setText(allSubsList.get(position).getPaymentDate());
-        holder.mExpiryDateTV.setText(allSubsList.get(position).getExpDate());
+        holder.mPaymentDateTV.setText(getDate(allSubsList.get(position).getPaymentDate()));
+        holder.mExpiryDateTV.setText(getDate(allSubsList.get(position).getExpDate()));
         holder.mDurationTV.setText("Test");
 
     }
@@ -65,4 +68,21 @@ public class SubscriptionTransactionAdapter extends RecyclerView.Adapter<Subscri
         return allSubsList.size();
     }
 
+    public static String getDate(String _Date){
+
+//        String _Date = "2010-09-29 08:45:22";
+//        String _Date = "2018-05-02T00:00:00+0000";
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        }
+        catch(ParseException pe) {
+
+            return "Date";
+        }
+
+    }
 }

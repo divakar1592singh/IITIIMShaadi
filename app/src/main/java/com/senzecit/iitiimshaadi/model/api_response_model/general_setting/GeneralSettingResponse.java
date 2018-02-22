@@ -1,12 +1,11 @@
 package com.senzecit.iitiimshaadi.model.api_response_model.general_setting;
 
 /**
- * Created by senzec on 7/2/18.
+ * Created by senzec on 21/2/18.
  */
 
-
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
+ import com.google.gson.annotations.Expose;
+ import com.google.gson.annotations.SerializedName;
 
 public class GeneralSettingResponse {
 

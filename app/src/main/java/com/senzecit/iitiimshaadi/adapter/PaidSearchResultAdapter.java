@@ -18,10 +18,11 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.fragment.ResultPaidSearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.UserDetail;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.Constants;
@@ -29,11 +30,10 @@ import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
-import org.apache.commons.lang3.StringUtils;
-
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -51,11 +51,19 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
 
     Context mContext;
     List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList;
-    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
+    List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKeyword;
+
+    public PaidSearchResultAdapter(Context mContext, List<Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey){
         this.mContext = mContext;
         this.queryList = queryList;
+        this.queryListKeyword = queryListKey;
     }
 
+ /*   public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryList){
+        this.mContext = mContext;
+        this.queryListKeyword = queryList;
+    }
+*/
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         Button mAddFriendBtn,mMoveTo;
@@ -67,6 +75,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
 
             mNameTxt = itemView.findViewById(R.id.idNameTV);
             mDietTxt = itemView.findViewById(R.id.idDietTV);
+            mAgeTxt = itemView.findViewById(R.id.idAgeTV);
             mAgeTxt = itemView.findViewById(R.id.idAgeTV);
             mEmploymentTxt = itemView.findViewById(R.id.idEmploymentTV);
             mCompanyTxt = itemView.findViewById(R.id.idCompanyTV);
@@ -90,36 +99,76 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        UserDetail userDetail = queryList.get(position).getUserDetail();
+        if( queryList != null) {
 
-        holder.mNameTxt.setText(userDetail.getName());
-        holder.mDietTxt.setText(userDetail.getDiet());
-        holder.mAgeTxt.setText(userDetail.getBirthDate());
-        holder.mEmploymentTxt.setText(userDetail.getWorkingAs());
-        holder.mCompanyTxt.setText(userDetail.getNameOfCompany());
-        holder.mHeightTxt.setText(userDetail.getHeight());
-        holder.mReligiontxt.setText(userDetail.getReligion());
-        holder.mEducationTxt.setText(userDetail.getHighestEducation() );
+            UserDetail userDetail = queryList.get(position).getUserDetail();
 
-        holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.mNameTxt.setText(userDetail.getName());
+            holder.mDietTxt.setText(userDetail.getDiet());
+            holder.mAgeTxt.setText(userDetail.getBirthDate());
+            formattedDate(holder.mAgeTxt, userDetail.getBirthDate());
+//            holder.mAgeTxt.setText(formattedDate(holder.mAgeTxt, userDetail.getBirthDate()));
+            holder.mEmploymentTxt.setText(userDetail.getWorkingAs());
+            holder.mCompanyTxt.setText(userDetail.getNameOfCompany());
+            holder.mHeightTxt.setText(userDetail.getHeight());
+            holder.mReligiontxt.setText(userDetail.getReligion());
+            holder.mEducationTxt.setText(userDetail.getHighestEducation());
 
-                String userId = String.valueOf(userDetail.getUserId());
-                callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
+            holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                    String userId = String.valueOf(userDetail.getUserId());
+                    callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
+
+                }
+            });
 //        holder.mPartnerPref.setOnClickListener(this);
-        holder.mMoveTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.mMoveTo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                String userId = String.valueOf(userDetail.getUserId());
-                callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
+                    String userId = String.valueOf(userDetail.getUserId());
+                    callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
 
-            }
-        });
+                }
+            });
+        }else if(queryListKeyword != null ) {
+
+            holder.mNameTxt.setText(queryListKeyword.get(position).getName());
+            holder.mDietTxt.setText(queryListKeyword.get(position).getDiet());
+//            holder.mAgeTxt.setText(queryListKeyword.get(position).getBirthDate());
+            formattedDate(holder.mAgeTxt, queryListKeyword.get(position).getBirthDate());
+            holder.mEmploymentTxt.setText(queryListKeyword.get(position).getWorkingAs());
+            holder.mCompanyTxt.setText(queryListKeyword.get(position).getNameOfCompany());
+            holder.mHeightTxt.setText(queryListKeyword.get(position).getHeight());
+            holder.mReligiontxt.setText(queryListKeyword.get(position).getReligion());
+            holder.mEducationTxt.setText(queryListKeyword.get(position).getHighestEducation());
+
+            holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                    callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
+
+                }
+            });
+//        holder.mPartnerPref.setOnClickListener(this);
+            holder.mMoveTo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                    callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
+
+                }
+            });
+
+        }else {
+
+        }
+
     }
 
     @Override
@@ -266,6 +315,69 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
             }
         });
 
+
+    }
+
+
+    public static String getDate(String _Date){
+
+//        String _Date = "2010-09-29 08:45:22";
+//        String _Date = "2018-05-02T00:00:00+0000";
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        }
+        catch(ParseException pe) {
+
+            return "Date";
+        }
+
+    }
+
+
+    public void formattedDate(TextView tv, String _date) {
+
+//        String _date = "1988-08-28";
+
+        try {
+
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
+//            ProgressClass.getProgressInstance().showDialog(mContext);
+            call.enqueue(new Callback<DateToAgeResponse>() {
+                @Override
+                public void onResponse(Call<DateToAgeResponse> call, Response<DateToAgeResponse> response) {
+                    if (response.isSuccessful()) {
+//                        ProgressClass.getProgressInstance().stopProgress();
+                        Message message = response.body().getMessage();
+                        try {
+                            if (message != null) {
+                                tv.setText(response.body().getAge());
+                            } else {
+                                AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", " Check Religion selected!");
+                            }
+                        } catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+                            AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", " Date Format not correct");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DateToAgeResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (NullPointerException npe) {
+            Log.e("TAG", "#Error : " + npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", "Religion not seletced");
+        }
 
     }
 

@@ -236,7 +236,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - ChoiceOfGroom
-                        txtListChild.setText(myProfileResponse.getPartnerBasicData().getChoiceOfGroom());
+                        txtListChild.setText(myProfileResponse.getPartnerBasicData().getChoiceOfPartner());
                         break;
                 }
                 break;

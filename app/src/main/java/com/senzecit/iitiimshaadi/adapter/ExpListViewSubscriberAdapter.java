@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,6 +52,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -2179,15 +2181,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
- /*   public void showCaste(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Caste1");
-        list.add("Caste2");
-        list.add("Caste3");
-        list.add("Caste4");
 
-        showDialog(list, textView);
-    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -2589,11 +2583,12 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
+        ProgressClass.getProgressInstance().showDialog(_context);
         call.enqueue(new Callback<CountryListResponse>() {
             @Override
             public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
                 if (response.isSuccessful()) {
-
+                    ProgressClass.getProgressInstance().stopProgress();
                     List<AllCountry> rawCountryList = response.body().getAllCountries();
                     for(int i = 0; i<rawCountryList.size(); i++){
                         if(rawCountryList.get(i).getName() != null){
@@ -2608,6 +2603,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
             @Override
             public void onFailure(Call<CountryListResponse> call, Throwable t) {
                 call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -2618,27 +2614,43 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         String token = Constants.Token_Paid;
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(_context);
-        Call<StateListResponse> call = apiInterface.stateList(token, country);
-        call.enqueue(new Callback<StateListResponse>() {
-            @Override
-            public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
+        if(country.length() > 0) {
 
-                    List<String> stateList = response.body().getAllStates();
-                    showDialog(stateList, textView);
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            ProgressClass.getProgressInstance().showDialog(_context);
+            Call<StateListResponse> call = apiInterface.stateList(token, country);
+            call.enqueue(new Callback<StateListResponse>() {
+                @Override
+                public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+
+                        try{
+                        List<String> stateList = response.body().getAllStates();
+                        if(stateList != null){
+                        showDialog(stateList, textView);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
+                        }
+                    }catch (NullPointerException npe) {
+                        Log.e("TAG", "#Error : " + npe, npe);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
+                    }
+
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<StateListResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<StateListResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Country not selected");
+        }
     }
 
     public void showCurrentState(final TextView textView){
@@ -2646,7 +2658,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         String token = Constants.Token_Paid;
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        if(Country.length() > 0) {
+
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<StateListResponse> call = apiInterface.stateList(token, Country);
         ProgressClass.getProgressInstance().showDialog(_context);
         call.enqueue(new Callback<StateListResponse>() {
@@ -2655,8 +2669,19 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
+                    try{
                     List<String> stateList = response.body().getAllStates();
+                    if(stateList !=  null){
                     showDialog(stateList, textView);
+
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
+                }
+            }catch (NullPointerException npe) {
+                Log.e("TAG", "#Error : " + npe, npe);
+                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
+            }
+
                 }
             }
 
@@ -2668,6 +2693,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
             }
         });
 
+    }else {
+        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Country not selected");
+    }
 
     }
 
@@ -2676,27 +2704,44 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         String token = Constants.Token_Paid;
         String religion = ExpOwnProfileModel.getInstance().getReligion();
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
-        ProgressClass.getProgressInstance().showDialog(_context);
-        call.enqueue(new Callback<CasteAccReligionResponse>() {
-            @Override
-            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<String> casteList = response.body().getAllCastes();
+        if(religion.length() > 0) {
+            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
+            ProgressClass.getProgressInstance().showDialog(_context);
+            call.enqueue(new Callback<CasteAccReligionResponse>() {
+                @Override
+                public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
+                    if (response.isSuccessful()) {
+                        ProgressClass.getProgressInstance().stopProgress();
 
-                    showDialog(casteList, textView);
+                        try{
+                        List<String> casteList = response.body().getAllCastes();
+                        if(casteList != null){
+                        showDialog(casteList, textView);
+
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Religion Selected");
+                    }
+                }catch (NullPointerException npe) {
+                    Log.e("TAG", "#Error : " + npe, npe);
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Religion Selected");
                 }
-            }
 
-            @Override
-            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context,"Alert", "Religion not selected");
+        }
+
     }
 
 }
