@@ -157,9 +157,9 @@ public class MyFriendsFragment extends Fragment {
     /** API */
     public void callWebServiceForMyFriend(){
 
-        String token = Constants.Token_Paid;
-/*        AppPrefs prefs = new AppPrefs(getActivity());
-        String token = prefs.getString(Constants.LOGGED_TOKEN);*/
+//        String token = Constants.Token_Paid;
+        AppPrefs prefs = AppController.getInstance().getPrefs();
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

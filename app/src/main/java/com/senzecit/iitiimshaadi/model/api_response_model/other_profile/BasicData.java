@@ -3,6 +3,8 @@ package com.senzecit.iitiimshaadi.model.api_response_model.other_profile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by senzec on 22/2/18.
  */
@@ -43,7 +45,7 @@ public class BasicData {
     private String smoke;
     @SerializedName("interest")
     @Expose
-    private Object interest;
+    private List<String> interest = null;
     @SerializedName("religion")
     @Expose
     private String religion;
@@ -241,11 +243,11 @@ public class BasicData {
         this.smoke = smoke;
     }
 
-    public Object getInterest() {
+    public List<String> getInterest() {
         return interest;
     }
 
-    public void setInterest(Object interest) {
+    public void setInterest(List<String> interest) {
         this.interest = interest;
     }
 

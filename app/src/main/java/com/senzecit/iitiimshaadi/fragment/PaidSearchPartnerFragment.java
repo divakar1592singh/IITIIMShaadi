@@ -297,9 +297,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     public void callWebServiceForSubsIDSearch(){
 
 //        String token = Constants.Token_Paid;
-        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
+//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
 
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String searchID = mSearchByIdET.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -336,8 +336,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     /** Search By Keyword */
     public void callWebServiceForSubsKeywordSearch(){
 
-        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);;
+//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
+        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String keyword = mRandomKeywordET.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -375,8 +375,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         List<String> profileList =new ArrayList<>();
 
-        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";;
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -721,8 +721,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         countryList.clear();
 
 //        AppPrefs prefs = AppController.getInstance().getPrefs();
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Token_Paid;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
@@ -843,7 +843,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
     public void showCaste(final TextView textView){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
         String caste = mSelectReligionTV.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

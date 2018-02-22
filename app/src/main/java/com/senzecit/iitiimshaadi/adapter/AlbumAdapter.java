@@ -20,9 +20,11 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 
 import java.util.List;
@@ -40,6 +42,7 @@ public class AlbumAdapter extends BaseAdapter {
     Context context;
     List<Album> albumList;
     String[] listItem;
+    AppPrefs prefs;
 
     int[] imageItem = {R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2,
             R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2,
@@ -48,6 +51,7 @@ public class AlbumAdapter extends BaseAdapter {
     public AlbumAdapter(Context context, List<Album> albumList) {
         this.context = context;
         this.albumList = albumList;
+        prefs = AppController.getInstance().getPrefs();
     }
 
     @Override
@@ -185,7 +189,9 @@ public class AlbumAdapter extends BaseAdapter {
 
     public void callWebServiceForSetProfile(String profile) {
 
-        String token = "1984afa022ab472e8438f115d0c5ee1b";
+//        String token = "1984afa022ab472e8438f115d0c5ee1b";
+
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -222,7 +228,9 @@ public class AlbumAdapter extends BaseAdapter {
 
     public void callWebServiceForSetting(String album_id, String privacy) {
 
-        String token = "1984afa022ab472e8438f115d0c5ee1b";
+//        String token = "1984afa022ab472e8438f115d0c5ee1b";
+
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -258,7 +266,9 @@ public class AlbumAdapter extends BaseAdapter {
 
     public void callWebServiceForDelAlbum(String album_id, int position) {
 
-        String token = "1984afa022ab472e8438f115d0c5ee1b";
+//        String token = "1984afa022ab472e8438f115d0c5ee1b";
+
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

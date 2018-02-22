@@ -296,11 +296,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void showMyProfile(){
 
+        String token = prefs.getString(Constants.LOGGED_USERID);
+
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<MyProfileResponse> call = apiInterface.myProfileData(Constants.Token_Paid);
+        Call<MyProfileResponse> call = apiInterface.myProfileData(token);
         call.enqueue(new Callback<MyProfileResponse>() {
             @Override
             public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {

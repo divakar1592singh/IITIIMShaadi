@@ -10,6 +10,9 @@ public interface Constants {
     String BASE_URL = "https://www.iitiimshaadi.com/";
     String IMAGE_BASE_URL = "https://iitiimshaadi.com/img/";
     String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/uploads/avatars/";
+//    CHAT
+    String CHAT_SERVER_URL = "http://35.154.217.225:1107";
+    String CHAT_HISTORY_URL = "http://35.154.217.225:1106/";
 
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";

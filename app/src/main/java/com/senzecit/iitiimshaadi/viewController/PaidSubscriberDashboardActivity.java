@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.AllInterestReceived;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
@@ -27,6 +28,8 @@ import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -180,7 +183,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idCustFolderTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Custom Folder", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,CustomFolderTempActivity.class));
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,CustomFoldersActivity.class));
                 break;
             }
             case R.id.idWalletTV: {
@@ -210,8 +213,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     /* Subscriber Dashboard*/
     public void callWebServiceForSubscribeDashboard(){
 
-        String token = Constants.Token_Paid;
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -250,7 +253,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     public void setPaidSubs(PaidDashboardResponse serverResponse){
 
         mProfilePercTV.setText(new StringBuilder(String.valueOf(serverResponse.getBasicData().getProfileComplition())).append("%"));
-
+        List<AllInterestReceived> list = serverResponse.getAllInterestReceived();
+        mInterestReceivedTV.setText("("+String.valueOf(list.size())+")");
         mProgress.setProgress(serverResponse.getBasicData().getProfileComplition());
     }
 

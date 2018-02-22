@@ -725,8 +725,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     /* Subscriber Dashboard*/
     public void callWebServiceForSubscribeDashboard(){
 
-        String token = Constants.Temp_Token;
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Temp_Token;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

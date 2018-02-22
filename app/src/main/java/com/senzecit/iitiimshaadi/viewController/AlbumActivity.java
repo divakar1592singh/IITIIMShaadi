@@ -36,9 +36,11 @@ import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -65,6 +67,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     LinearLayout mAddBtnLL,mAddImage;
     FrameLayout mNoImageFoundFL,mImageFoundFL;
     APIInterface apiInterface;
+    AppPrefs prefs;
 
     /*Profile Image*/
     private Uri fileUri; // file url to store image/video
@@ -87,6 +90,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_album);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        prefs = AppController.getInstance().getPrefs();
 
         init();
         handleView();
@@ -165,7 +169,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     /** Album List */
     public void callWebServiceForAllAlbum(){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
@@ -364,7 +369,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         File   file = new File(fullPath);
         System.out.print(file);
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);

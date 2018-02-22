@@ -227,10 +227,29 @@
         <item name="android:textColorPrimary">@color/payumoney_text_color</item>
     </style>
 
-
     <color name="persian_grey_primary">#616161</color>
     <color name="persian_grey_dark">#424242</color>
     <color name="persian_grey_accent">#9e9e9e</color>
+
+
+    // CHAT
+    <style name="MatchWidth">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="WrapContent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="BorderlessImageButtonStyle" parent="WrapContent">
+        <item name="android:background">@null</item>
+        <item name="android:padding">@dimen/padding_common</item>
+        <item name="android:scaleType">centerInside</item>
+    </style>
+    <style name="WeightWidth">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 
 
 </resources>

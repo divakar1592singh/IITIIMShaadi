@@ -880,7 +880,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     public void saveChangesOfCase_0(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
@@ -932,8 +932,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     }
     public void saveChangesOfCase_1(){
 
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = Constants.Temp_Token;
+//        AppPrefs prefs = new AppPrefs(_context);
+//        String token = Constants.Temp_Token;
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
@@ -983,7 +984,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     }
     public void saveChangesOfCase_2(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
@@ -1029,7 +1030,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     }
     public void saveChangesOfCase_3(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
@@ -1075,7 +1076,8 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     private void showCountry(final TextView textView){
 
 //        String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
@@ -1111,7 +1113,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     public void showCaste(final TextView textView){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
+
         String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
 
         if(preferred_Religion.length() > 0 ) {

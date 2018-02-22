@@ -69,15 +69,6 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
-        /*        Fragment home= mFragmentManager.findFragmentByTag("chatUserFragment");
-                if(home!=null){
-                    if(home.isVisible()){
-                        ChatMessagesActivity.this.finish();
-                    }else{
-                        mFragmentManager.popBackStack("chatMessageFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    }
-                }
-                super.onBackPressed();*/
                 break;
         }
     }

@@ -14,6 +14,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.Genera
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNotificationRespnse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
@@ -392,12 +393,15 @@ public interface APIInterface {
     @POST("api/unshortlisted_friend.json")
     Call<AddFolderResponse> serviceUnShortlistFriend(@Field("token")String token, @Field("friend_user")String friend_user);
 
-
-
-
     /** NEW USER REGISTER */
     @POST("api/contact_us.json")
     Call<AddFolderResponse> contactUs(@Body ContactUsRequest request);
+
+    /** Notifications*/
+    @FormUrlEncoded
+    @POST("api/all_notifications.json")
+    Call<AllNotificationRespnse> allNotificationService(@Field("token") String token);
+
 
     /** Date To AGe*/
 

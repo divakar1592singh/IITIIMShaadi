@@ -289,12 +289,14 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     }
 
     /** API - other profile */
-    private void callWebServiceForOtherProfile(String userId1){
+    private void callWebServiceForOtherProfile(String userId){
 
-        String userId = "30413";
+        String token = prefs.getString(Constants.LOGGED_USERID);
+
+//        String userId = "30413";
         ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<OtherProfileResponse> call = apiInterface.otherProfileData(Constants.Token_Paid, userId);
+        Call<OtherProfileResponse> call = apiInterface.otherProfileData(token, userId);
         call.enqueue(new Callback<OtherProfileResponse>() {
             @Override
             public void onResponse(Call<OtherProfileResponse> call, Response<OtherProfileResponse> response) {

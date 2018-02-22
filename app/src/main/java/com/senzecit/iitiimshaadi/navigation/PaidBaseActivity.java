@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
 import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
@@ -24,6 +25,7 @@ import com.senzecit.iitiimshaadi.viewController.FAQActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.HowToNavigatePageActivity;
 import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
+import com.senzecit.iitiimshaadi.viewController.NotificationsActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 import com.senzecit.iitiimshaadi.viewController.SuccessStoriesActivity;
@@ -200,9 +202,8 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
                 break;
             case R.id.idNotification:
-                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Notification Alert", "There is no new notification");
-
-
+//                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Notification Alert", "There is no new notification");
+                Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, NotificationsActivity.class);
                 break;
 
         }

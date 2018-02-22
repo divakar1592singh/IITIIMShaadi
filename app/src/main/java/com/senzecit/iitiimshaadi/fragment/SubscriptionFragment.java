@@ -110,8 +110,8 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     /** Check API Section */
     public void callWebServiceForGenSetting(){
 
-        String token = Constants.Token_Paid;
-//        String token =  prefs.getString(Constants.LOGGED_TOKEN);;
+//        String token = Constants.Token_Paid;
+        String token =  prefs.getString(Constants.LOGGED_TOKEN);;
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

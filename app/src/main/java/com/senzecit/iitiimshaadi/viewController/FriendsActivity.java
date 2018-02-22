@@ -22,10 +22,12 @@ import com.senzecit.iitiimshaadi.fragment.MyFriendsFragment;
 import com.senzecit.iitiimshaadi.fragment.RequestedFriendFragment;
 import com.senzecit.iitiimshaadi.fragment.ShortlistedFriendFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ RequestedFriendFragment.OnRequestedFriendListener{
     ViewPager mViewPager;
     private ArrayList<String> arrListData;
     APIInterface apiInterface;
+    AppPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ RequestedFriendFragment.OnRequestedFriendListener{
         setContentView(R.layout.activity_friends);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        prefs = AppController.getInstance().getPrefs();
 
         init();
         mBack.setOnClickListener(this);
@@ -188,17 +192,18 @@ RequestedFriendFragment.OnRequestedFriendListener{
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String friend_user)
     {
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
-            return apiInterface.serviceAddAsFriend(Constants.Token_Paid, friend_user);
+            return apiInterface.serviceAddAsFriend(token, friend_user);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.REMOVE.toString())){
-            return apiInterface.serviceRemoveFriend(Constants.Token_Paid, friend_user);
+            return apiInterface.serviceRemoveFriend(token, friend_user);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.CANCEL.toString())){
-            return apiInterface.serviceCancelFriend(Constants.Token_Paid, friend_user);
+            return apiInterface.serviceCancelFriend(token, friend_user);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.SHORTLIST.toString())){
-            return apiInterface.serviceShortlistFriend(Constants.Token_Paid, friend_user);
+            return apiInterface.serviceShortlistFriend(token, friend_user);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.UNSHORTLIST.toString())){
-            return apiInterface.serviceUnShortlistFriend(Constants.Token_Paid, friend_user);
+            return apiInterface.serviceUnShortlistFriend(token, friend_user);
         }else {
             Toast.makeText(FriendsActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
             return null;

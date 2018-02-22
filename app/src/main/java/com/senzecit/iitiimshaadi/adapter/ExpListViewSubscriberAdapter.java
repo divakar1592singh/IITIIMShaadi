@@ -51,6 +51,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdap
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -76,6 +77,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    AppPrefs prefs;
 
 
     public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
@@ -84,6 +86,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        prefs = AppController.getInstance().getPrefs();
+
     }
 
     @Override
@@ -2213,7 +2217,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     public void saveChangesOfCase_0(){
 
 //        ExpListViewSubscriberAdapter.this.notifyDataSetChanged();
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String name = ExpOwnProfileModel.getInstance().getName();
@@ -2276,7 +2280,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 }
     public void saveChangesOfCase_1(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
        String Religion = ExpOwnProfileModel.getInstance().getReligion();
@@ -2343,7 +2347,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Alternate_Number, Toast.LENGTH_LONG).show();
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ContactDetailsRequest request = new ContactDetailsRequest();
@@ -2407,7 +2411,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Father_Name, Toast.LENGTH_LONG).show();
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         FamilyDetailRequest request = new FamilyDetailRequest();
@@ -2472,7 +2476,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Schooling, Toast.LENGTH_LONG).show();
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         EducationCareerRequest request = new EducationCareerRequest();
@@ -2531,7 +2535,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+About_you, Toast.LENGTH_LONG).show();
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         AboutMeRequest request = new AboutMeRequest();
@@ -2578,8 +2582,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         countryList.clear();
 
 //        AppPrefs prefs = new AppPrefs(_context);
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Token_Paid;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
@@ -2611,7 +2615,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     public void showPermanentState(final TextView textView){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
         if(country.length() > 0) {
@@ -2655,7 +2660,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     public void showCurrentState(final TextView textView){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
         if(Country.length() > 0) {
@@ -2701,7 +2707,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     public void showCaste(final TextView textView){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
 
         if(religion.length() > 0) {

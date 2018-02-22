@@ -29,4 +29,29 @@
     <color name="colorSkyBlue">#21a9e1</color>
 
     <color name="colorLightBlack">#1a1a1a</color>
+
+    <!--CHAT-->
+    <color name="username0">#444444</color>
+    <color name="username1">#444444</color>
+    <color name="username2">#444444</color>
+    <color name="username3">#444444</color>
+    <color name="username4">#444444</color>
+    <color name="username5">#444444</color>
+    <color name="username6">#444444</color>
+    <color name="username7">#444444</color>
+    <color name="username8">#444444</color>
+    <color name="username9">#444444</color>
+    <color name="username10">#444444</color>
+    <color name="username11">#444444</color>
+
+    <color name="list_even">#444444 </color>
+    <color name="list_odd">#444444 </color>
+    <color name="list_selected">#444444 </color>
+    <color name="list_header">#444444 </color>
+    //
+    <color name="blue_btn_bg_color">#d49e42</color>
+    <color name="blue_btn_bg_pressed_color">#d49e42</color>
+    <color name="button_text_color">#000000</color>
+
+
 </resources>

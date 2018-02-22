@@ -2,6 +2,7 @@ package com.senzecit.iitiimshaadi.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.session.MediaSession;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,10 +26,12 @@ import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.UserDetail;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,11 +55,13 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
     Context mContext;
     List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList;
     List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKeyword;
+    AppPrefs prefs;
 
     public PaidSearchResultAdapter(Context mContext, List<Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey){
         this.mContext = mContext;
         this.queryList = queryList;
         this.queryListKeyword = queryListKey;
+        prefs  = AppController.getInstance().getPrefs();
     }
 
  /*   public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryList){
@@ -228,12 +233,13 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String s1, String s2)
     {
+        String token = prefs.getString(Constants.LOGGED_USERID);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
-            return apiInterface.serviceAddAsFriend(Constants.Token_Paid, s1);
+            return apiInterface.serviceAddAsFriend(token, s1);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.MOVETO.toString())){
-            return apiInterface.serviceMoveTo(Constants.Token_Paid, s1, s2);
+            return apiInterface.serviceMoveTo(token, s1, s2);
         }else {
             Toast.makeText(mContext, "Default Called", Toast.LENGTH_SHORT).show();
             return null;
@@ -244,8 +250,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
     /** Folder Title */
     public void callWebServiceForCustomFolder(String typeOf, String friend_id){
 
-        String token = Constants.Token_Paid;
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(mContext);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -318,7 +324,6 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
 
     }
 
-
     public static String getDate(String _Date){
 
 //        String _Date = "2010-09-29 08:45:22";
@@ -336,7 +341,6 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
         }
 
     }
-
 
     public void formattedDate(TextView tv, String _date) {
 

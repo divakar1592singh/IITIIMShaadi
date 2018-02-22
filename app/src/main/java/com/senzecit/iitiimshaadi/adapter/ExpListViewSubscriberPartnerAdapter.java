@@ -47,6 +47,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdap
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -72,6 +73,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
+    AppPrefs prefs;
 
     public ExpListViewSubscriberPartnerAdapter(Context context, List<String> listDataHeader,
                                                HashMap<String, List<String>> listChildData) {
@@ -79,6 +81,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
+        prefs = AppController.getInstance().getPrefs();
     }
 
     @Override
@@ -823,7 +826,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     /** Network Operation */
     public void saveChangesOfCase_0(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
@@ -875,8 +878,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
     public void saveChangesOfCase_1(){
 
-        AppPrefs prefs = new AppPrefs(_context);
-        String token = Constants.Temp_Token;
+//        AppPrefs prefs = new AppPrefs(_context);
+//        String token = Constants.Temp_Token;
+        String token = prefs.getString(Constants.LOGGED_USERID);
 
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
@@ -926,7 +930,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
     public void saveChangesOfCase_2(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
@@ -972,7 +976,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
     public void saveChangesOfCase_3(){
 
-        AppPrefs prefs = new AppPrefs(_context);
+//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 //        String token = "362a95acb22b4e842880ef5e78ee223e";
 
@@ -1022,9 +1026,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     private void showCountry(final TextView textView){
 
 //        AppPrefs prefs = new AppPrefs(_context);
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
 
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
@@ -1062,7 +1066,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     public void showCaste(final TextView textView){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_USERID);
+
         String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
 
         if(preferred_Religion.length() > 0) {

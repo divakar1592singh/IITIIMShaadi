@@ -15,16 +15,16 @@ public class PartnerBasicData {
     private String choiceOfPartner;
     @SerializedName("prefered_partner_education")
     @Expose
-    private String preferedPartnerEducation;
+    private List<String> preferedPartnerEducation = null;
     @SerializedName("prefered_partner_religion")
     @Expose
     private String preferedPartnerReligion;
     @SerializedName("prefered_partner_caste")
     @Expose
-    private String preferedPartnerCaste;
+    private List<String> preferedPartnerCaste = null;
     @SerializedName("prefered_partner_country")
     @Expose
-    private String preferedPartnerCountry;
+    private List<String> preferedPartnerCountry = null;
     @SerializedName("prefered_partner_min_age")
     @Expose
     private Integer preferedPartnerMinAge;
@@ -49,11 +49,11 @@ public class PartnerBasicData {
         this.choiceOfPartner = choiceOfPartner;
     }
 
-    public String getPreferedPartnerEducation() {
+    public List<String> getPreferedPartnerEducation() {
         return preferedPartnerEducation;
     }
 
-    public void setPreferedPartnerEducation(String preferedPartnerEducation) {
+    public void setPreferedPartnerEducation(List<String> preferedPartnerEducation) {
         this.preferedPartnerEducation = preferedPartnerEducation;
     }
 
@@ -65,19 +65,19 @@ public class PartnerBasicData {
         this.preferedPartnerReligion = preferedPartnerReligion;
     }
 
-    public String getPreferedPartnerCaste() {
+    public List<String> getPreferedPartnerCaste() {
         return preferedPartnerCaste;
     }
 
-    public void setPreferedPartnerCaste(String preferedPartnerCaste) {
+    public void setPreferedPartnerCaste(List<String> preferedPartnerCaste) {
         this.preferedPartnerCaste = preferedPartnerCaste;
     }
 
-    public String getPreferedPartnerCountry() {
+    public List<String> getPreferedPartnerCountry() {
         return preferedPartnerCountry;
     }
 
-    public void setPreferedPartnerCountry(String preferedPartnerCountry) {
+    public void setPreferedPartnerCountry(List<String> preferedPartnerCountry) {
         this.preferedPartnerCountry = preferedPartnerCountry;
     }
 

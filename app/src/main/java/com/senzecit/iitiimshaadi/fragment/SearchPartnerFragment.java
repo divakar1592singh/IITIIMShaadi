@@ -199,8 +199,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         profileList.clear();
 
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Token_Paid;
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -526,8 +526,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         countryList.clear();
 
 //        AppPrefs prefs = AppController.getInstance().getPrefs();
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String token = Constants.Token_Paid;
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = Constants.Token_Paid;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
@@ -610,7 +610,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     public void showCaste(final TextView textView){
 
         try{
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
+            String token = prefs.getString(Constants.LOGGED_USERID);
+
         String caste = mSelectReligionTV.getText().toString() ;
 
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

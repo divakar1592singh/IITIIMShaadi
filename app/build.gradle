@@ -87,4 +87,10 @@ dependencies {
     compile 'com.payumoney.core:payumoney-sdk:7.0.1'
 //    Cropping
     compile 'com.theartofdev.edmodo:android-image-cropper:2.3.+'
+//IOCHAT
+    compile('io.socket:socket.io-client:0.8.3') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+
 }

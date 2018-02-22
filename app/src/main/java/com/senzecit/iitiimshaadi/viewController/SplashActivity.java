@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.chat.ChatLoginActivity;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -37,7 +39,8 @@ public class SplashActivity extends AppCompatActivity {
 
                 String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
 
-                Intent intent = new Intent(SplashActivity.this, OtherProfileActivity.class);
+                Intent intent = new Intent(SplashActivity.this, ResultPaidSearchPartnerActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

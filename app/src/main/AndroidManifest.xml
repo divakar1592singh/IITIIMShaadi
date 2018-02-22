@@ -49,9 +49,6 @@
             android:name=".viewController.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".viewController.SearchPartnerPaidActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".viewController.WalletActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -74,9 +71,6 @@
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
             android:name=".viewController.UploadVideoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".viewController.SearchPartnerActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.AlbumActivity"
@@ -110,9 +104,6 @@
             android:name=".viewController.ChatMessagesActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".viewController.IntroSliderActivity" />
-        <activity
-            android:name=".viewController.CustomFolderTempActivity"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity android:name=".customdialog.MainActivity" />
         <activity
             android:name=".viewController.YoutubeActivity"
@@ -143,8 +134,13 @@
             android:name="io.fabric.ApiKey"
             android:value="af92b2690420eb183b525f6419537aa3e49e0e3f" />
 
-        <activity android:name=".payment.MakePaymentActivity"
-            android:theme="@style/AppThemePay"></activity>
+        <activity
+            android:name=".payment.MakePaymentActivity"
+            android:theme="@style/AppThemePay" />
+        <activity android:name=".chat.ChatLoginActivity" />
+        <activity android:name=".chat.SocketSingleChatActivity" />
+        <activity android:name=".viewController.NotificationsActivity" />
+        <activity android:name=".viewController.AllInterestActivity"></activity>
     </application>
 
 </manifest>

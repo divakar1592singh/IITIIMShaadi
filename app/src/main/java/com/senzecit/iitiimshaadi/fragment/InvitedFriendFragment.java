@@ -147,10 +147,10 @@ public class InvitedFriendFragment extends Fragment {
     /** API */
     public void callWebServiceForInvitedFriend(){
 
-        String token = Constants.Token_Paid;
+//        String token = Constants.Token_Paid;
 
- /*       AppPrefs prefs = new AppPrefs(getActivity());
-        String token = prefs.getString(Constants.LOGGED_TOKEN);*/
+        AppPrefs prefs = AppController.getInstance().getPrefs();
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

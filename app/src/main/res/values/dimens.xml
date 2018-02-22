@@ -20,4 +20,17 @@
     <dimen name="size_28_dp">28dp</dimen>
     <dimen name="size_32_dp">32dp</dimen>
 
+    <!--CHAT    -->
+   <!-- <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="vertical_margin">16dp</dimen>
+    <dimen name="horizontal_margin_small">8dp</dimen>
+    <dimen name="vertical_margin_small">8dp</dimen>-->
+
+    //CHAT
+    <dimen name="spacing">8dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="padding_common">8dp</dimen>
+    <dimen name="padding_common_twice">16dp</dimen>
+
 </resources>
