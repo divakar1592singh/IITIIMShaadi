@@ -48,27 +48,31 @@ import retrofit2.Response;
  * Created by ravi on 13/11/17.
  */
 
-public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResultAdapter.MyViewHolder> {
+public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    boolean detail,partnerPref,album;
 
     Context mContext;
     List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList;
     List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKeyword;
     AppPrefs prefs;
+    LayoutInflater inflater;
 
-    public PaidSearchResultAdapter(Context mContext, List<Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey){
+    int pageCount = 0;
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
+    private static final int TYPE_FOOTER = 2;
+
+
+
+    public PaidSearchResultAdapter(Context mContext, List<Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey, int pageCount){
         this.mContext = mContext;
         this.queryList = queryList;
         this.queryListKeyword = queryListKey;
+        inflater = LayoutInflater.from(mContext);
         prefs  = AppController.getInstance().getPrefs();
+        this.pageCount = pageCount;
     }
 
- /*   public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryList){
-        this.mContext = mContext;
-        this.queryListKeyword = queryList;
-    }
-*/
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         Button mAddFriendBtn,mMoveTo;
@@ -87,90 +91,118 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
             mHeightTxt = itemView.findViewById(R.id.idHeightTV);
             mReligiontxt = itemView.findViewById(R.id.idReligionTV);
             mEducationTxt = itemView.findViewById(R.id.idEducationTV);
-
             mAddFriendBtn = itemView.findViewById(R.id.idAddFriendBtn);
             mMoveTo = itemView.findViewById(R.id.moveToBtm);
-
             mSearchPartnerIV = itemView.findViewById(R.id.idSearchpartnerIV);
         }
     }
 
+
+    public class FooterViewHolder extends RecyclerView.ViewHolder {
+        private final TextView txtfooter;
+        public FooterViewHolder(View v) {
+            super(v);
+            txtfooter = (TextView) v.findViewById(R.id.idTv2);
+        }
+    }
+
+
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item_paid,parent,false);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+     /*   View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item_paid,parent,false);
         return new MyViewHolder(itemView);
+*/
+        if (viewType == TYPE_ITEM) {
+            View itemView = inflater.inflate(R.layout.search_result_item_paid, null);
+            return new MyViewHolder(itemView);
+        } else if (viewType == TYPE_HEADER) {
+            View itemView = inflater.inflate(R.layout.footer_layout, null);
+            return new FooterViewHolder(itemView);
+
+        } else if (viewType == TYPE_FOOTER) {
+            View itemView = inflater.inflate(R.layout.footer_layout, null);
+            return new FooterViewHolder(itemView);
+
+        }
+//        return null;
+        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if( queryList != null) {
+        if(holder instanceof MyViewHolder) {
+            if (queryList != null) {
+                UserDetail userDetail = queryList.get(position).getUserDetail();
 
-            UserDetail userDetail = queryList.get(position).getUserDetail();
+                ((MyViewHolder)holder).mNameTxt.setText(userDetail.getName());
+                ((MyViewHolder)holder).mDietTxt.setText(userDetail.getDiet());
+                ((MyViewHolder)holder).mAgeTxt.setText(userDetail.getBirthDate());
+                formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate());
+//            ((MyViewHolder)holder).mAgeTxt.setText(formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate()));
+                ((MyViewHolder)holder).mEmploymentTxt.setText(userDetail.getWorkingAs());
+                ((MyViewHolder)holder).mCompanyTxt.setText(userDetail.getNameOfCompany());
+                ((MyViewHolder)holder).mHeightTxt.setText(userDetail.getHeight());
+                ((MyViewHolder)holder).mReligiontxt.setText(userDetail.getReligion());
+                ((MyViewHolder)holder).mEducationTxt.setText(userDetail.getHighestEducation());
 
-            holder.mNameTxt.setText(userDetail.getName());
-            holder.mDietTxt.setText(userDetail.getDiet());
-            holder.mAgeTxt.setText(userDetail.getBirthDate());
-            formattedDate(holder.mAgeTxt, userDetail.getBirthDate());
-//            holder.mAgeTxt.setText(formattedDate(holder.mAgeTxt, userDetail.getBirthDate()));
-            holder.mEmploymentTxt.setText(userDetail.getWorkingAs());
-            holder.mCompanyTxt.setText(userDetail.getNameOfCompany());
-            holder.mHeightTxt.setText(userDetail.getHeight());
-            holder.mReligiontxt.setText(userDetail.getReligion());
-            holder.mEducationTxt.setText(userDetail.getHighestEducation());
+                ((MyViewHolder)holder).mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        String userId = String.valueOf(userDetail.getUserId());
+                        callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
 
-                    String userId = String.valueOf(userDetail.getUserId());
-                    callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
+                    }
+                });
+//        ((MyViewHolder)holder).mPartnerPref.setOnClickListener(this);
+                ((MyViewHolder)holder).mMoveTo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                }
-            });
-//        holder.mPartnerPref.setOnClickListener(this);
-            holder.mMoveTo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        String userId = String.valueOf(userDetail.getUserId());
+                        callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
 
-                    String userId = String.valueOf(userDetail.getUserId());
-                    callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
+                    }
+                });
+            } else if (queryListKeyword != null) {
 
-                }
-            });
-        }else if(queryListKeyword != null ) {
-
-            holder.mNameTxt.setText(queryListKeyword.get(position).getName());
-            holder.mDietTxt.setText(queryListKeyword.get(position).getDiet());
+                ((MyViewHolder)holder).mNameTxt.setText(queryListKeyword.get(position).getName());
+                ((MyViewHolder)holder).mDietTxt.setText(queryListKeyword.get(position).getDiet());
 //            holder.mAgeTxt.setText(queryListKeyword.get(position).getBirthDate());
-            formattedDate(holder.mAgeTxt, queryListKeyword.get(position).getBirthDate());
-            holder.mEmploymentTxt.setText(queryListKeyword.get(position).getWorkingAs());
-            holder.mCompanyTxt.setText(queryListKeyword.get(position).getNameOfCompany());
-            holder.mHeightTxt.setText(queryListKeyword.get(position).getHeight());
-            holder.mReligiontxt.setText(queryListKeyword.get(position).getReligion());
-            holder.mEducationTxt.setText(queryListKeyword.get(position).getHighestEducation());
+                formattedDate(((MyViewHolder)holder).mAgeTxt, queryListKeyword.get(position).getBirthDate());
+                ((MyViewHolder)holder).mEmploymentTxt.setText(queryListKeyword.get(position).getWorkingAs());
+                ((MyViewHolder)holder).mCompanyTxt.setText(queryListKeyword.get(position).getNameOfCompany());
+                ((MyViewHolder)holder).mHeightTxt.setText(queryListKeyword.get(position).getHeight());
+                ((MyViewHolder)holder).mReligiontxt.setText(queryListKeyword.get(position).getReligion());
+                ((MyViewHolder)holder).mEducationTxt.setText(queryListKeyword.get(position).getHighestEducation());
 
-            holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                ((MyViewHolder)holder).mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    String userId = String.valueOf(queryListKeyword.get(position).getUserId());
-                    callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
+                        String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                        callWebServiceForManipulatePartner(UserDefinedKeyword.ADD.toString(), userId, null);
 
-                }
-            });
-//        holder.mPartnerPref.setOnClickListener(this);
-            holder.mMoveTo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                    }
+                });
+//        ((MyViewHolder)holder).mPartnerPref.setOnClickListener(this);
+                ((MyViewHolder)holder).mMoveTo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    String userId = String.valueOf(queryListKeyword.get(position).getUserId());
-                    callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
+                        String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                        callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
 
-                }
-            });
+                    }
+                });
 
-        }else {
+            } else {
+
+            }
+
+        }else if(holder instanceof FooterViewHolder){
 
         }
 
@@ -178,9 +210,32 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<PaidSearchResu
 
     @Override
     public int getItemCount() {
-        return 10;
+//        return 10;
+        if(queryList != null) {
+            return pageCount < queryList.size() ? pageCount + 2 : queryList.size() + 1;
+        }else if(queryListKeyword != null) {
+            return pageCount < queryListKeyword.size() ? pageCount + 2 : queryListKeyword.size() + 1;
+        }else {
+            return 0;
+        }
     }
-/*
+
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isPositionFooter(position)) {
+            return TYPE_FOOTER;
+        }
+
+        return TYPE_ITEM;
+    }
+    private boolean isPositionFooter(int position) {
+//        return position > list.size();
+        return position > pageCount;
+
+    }
+
+    /*
 
     @Override
     public void onClick(View view) {

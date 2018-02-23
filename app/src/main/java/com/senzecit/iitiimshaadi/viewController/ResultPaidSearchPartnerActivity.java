@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.PaidSearchResultAdapter;
@@ -19,6 +21,7 @@ import com.senzecit.iitiimshaadi.adapter.SearchResultAdapter;
 import com.senzecit.iitiimshaadi.fragment.PaidSearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ResultPaidSearchPartnerActivity extends AppCompatActivity implements PaidSearchPartnerFragment.PaidSearchPartnerFragmentCommunicator {
@@ -26,12 +29,21 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
+    boolean loading = false;
     FrameLayout mContainerFragLayout, mContainerResLayout;
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
     PaidSearchPartnerFragment paidSearchPartnerFragment;
+    LinearLayout mCurrentSearchLayout;
 
     RecyclerView mSearchResultRecyclerView;
+    LinearLayoutManager layoutManager;
+    PaidSearchResultAdapter adapter;
+    int pageCount = 10;
+
+    List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList1;
+    List<Query> queryList2;
+
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
 
     @Override
@@ -55,6 +67,12 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        handleView();
+    }
+
     private void init(){
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
         mTitle = (TextView) findViewById(R.id.toolbar_title);
@@ -63,8 +81,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         mContainerFragLayout = (FrameLayout) findViewById(R.id.search_partner_FL);
         mContainerResLayout = (FrameLayout) findViewById(R.id.search_result_FL);
 
+        mCurrentSearchLayout = (LinearLayout)findViewById(R.id.idCurrentSearchLayout);
+
         mSearchResultRecyclerView = (RecyclerView) findViewById(R.id.partnerSearchResulttRV);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
 
         mAgeMin = findViewById(R.id.minAgeTV);
@@ -76,47 +96,71 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         mmaritalStatus = findViewById(R.id.maritalStatusTV);
         mIncome = findViewById(R.id.incomeTV);
 
+        mSearchResultRecyclerView.setHasFixedSize(false);
     }
 
-  /*  @Override
-    public void saveSearchPartner(List<Query> queryList, List<String> profileList) {
-//        mFragmentTransaction.remove(searchPartnerFragment);
-        mContainerFragLayout.setVisibility(View.GONE);
-        mContainerResLayout.setVisibility(View.VISIBLE);
+    public void handleView(){
 
-        System.out.print(queryList);
-        System.out.print(profileList);
+        queryList1 = new ArrayList<>();
+        queryList2 = new ArrayList<>();
 
-        setSearchedData(profileList);
-        setMatchedList(queryList);
+        mSearchResultRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
 
-    }
-*/
-    public void setSearchedData(List<String> profileList){
-        mAgeMin.setText(profileList.get(0));
-        mAgeMax.setText(profileList.get(1));
-        mCountry.setText(profileList.get(2));
-        mCity.setText(profileList.get(3));
-        mReligion.setText(profileList.get(4));
-        mMotherTongue.setText(profileList.get(6));
-        mmaritalStatus.setText(profileList.get(7));
-        mIncome.setText(profileList.get(9));
-//        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
-    }
-    public void setMatchedList(List<Query> queryList){
+                int itemLastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Last Count : "+itemLastVisiblePosition, Toast.LENGTH_SHORT).show();
 
-//        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
+                if(itemLastVisiblePosition == adapter.getItemCount() - 1) {
 
-        SearchResultAdapter adapter = new SearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList);
-        mSearchResultRecyclerView.setAdapter(adapter);
+                   /* if (queryList1.size() > 0) {
 
+                        if (!loading && itemLastVisiblePosition <= queryList1.size()) {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                boolean canScrollDownMore = recyclerView.canScrollVertically(1);
+                                if (!canScrollDownMore) {
+
+//                                fetchData((itemLastVisiblePosition + 1));
+
+                                    setPaidMatchedListByKeyword(queryList2, pageCount + 10);
+
+                                    onScrolled(recyclerView, 0, 1);
+                                }
+                            }
+                        }
+                    }
+
+                }else*/
+                   Toast.makeText(ResultPaidSearchPartnerActivity.this, "Count : "+queryList2.size(), Toast.LENGTH_SHORT).show();
+                    if (queryList2.size() > 0) {
+
+                        if (!loading && itemLastVisiblePosition <= queryList2.size()) {
+                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                                boolean canScrollDownMore = recyclerView.canScrollVertically(1);
+                                if (!canScrollDownMore) {
+
+//                                fetchData((itemLastVisiblePosition + 1));
+
+                                    setPaidMatchedListByKeyword(queryList2, pageCount + 10);
+
+                                    onScrolled(recyclerView, 0, 1);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid) {
 
-        mContainerFragLayout.setVisibility(View.VISIBLE);
-        mContainerResLayout.setVisibility(View.GONE);
+        mContainerFragLayout.setVisibility(View.GONE);
+        mContainerResLayout.setVisibility(View.VISIBLE);
+        mCurrentSearchLayout.setVisibility(View.GONE);
 
         setPaidMatchedList(queryList);
     }
@@ -124,10 +168,12 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     @Override
     public void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword) {
 
-        mContainerFragLayout.setVisibility(View.VISIBLE);
-        mContainerResLayout.setVisibility(View.GONE);
+        queryList2.addAll(queryList);
+        mContainerFragLayout.setVisibility(View.GONE);
+        mContainerResLayout.setVisibility(View.VISIBLE);
+        mCurrentSearchLayout.setVisibility(View.GONE);
 
-        setPaidMatchedListByKeyword(queryList);
+        setPaidMatchedListByKeyword(queryList, pageCount);
     }
 
     @Override
@@ -135,9 +181,12 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
+        mCurrentSearchLayout.setVisibility(View.VISIBLE);
 
         setPaidSearchedData(profileList);
-        setPaidMatchedListByKeyword(queryList);
+
+        setPaidMatchedListByKeyword(queryList, pageCount);
+
 
     }
 
@@ -154,15 +203,16 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     }
     private void setPaidMatchedList(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
 
-        PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList, null);
+        adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList, null, 10);
         mSearchResultRecyclerView.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
 
     }
- private void setPaidMatchedListByKeyword(List<Query> queryList){
+ private void setPaidMatchedListByKeyword(List<Query> queryList, int pageCount){
 
-        PaidSearchResultAdapter adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, null, queryList);
+        adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, null, queryList, pageCount);
         mSearchResultRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
     }
 

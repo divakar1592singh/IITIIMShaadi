@@ -25,8 +25,8 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="20dp">
-
+                android:padding="@dimen/dimen_20dp"
+                >
                 <TextView
                     android:padding="10dp"
                     android:layout_width="match_parent"
@@ -36,6 +36,12 @@
                     android:textColor="@color/colorWhite"
                     android:gravity="center_horizontal"
                     android:textSize="15sp"/>
+            <LinearLayout
+                android:id="@+id/idCurrentSearchLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
                 <LinearLayout
                     android:layout_marginTop="20dp"
@@ -390,17 +396,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorGrey"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="30dp"
-                    android:id="@+id/partnerSearchResulttRV"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </android.support.v7.widget.RecyclerView>
-
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="8dp"
+                android:id="@+id/partnerSearchResulttRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
 
             </LinearLayout>
+
         </ScrollView>
     </FrameLayout>
 </LinearLayout>

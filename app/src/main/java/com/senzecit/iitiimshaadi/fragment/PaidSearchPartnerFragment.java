@@ -47,6 +47,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdap
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -95,7 +96,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        prefs = new AppPrefs(context);
+//        prefs = new AppPrefs(context);
     }
 
     @Nullable
@@ -109,6 +110,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        prefs = AppController.getInstance().getPrefs();
+
         init();
         mSearchByIdIV.setOnClickListener(this);
         mSerchByKeywordIV.setOnClickListener(this);
@@ -869,7 +873,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
     }
-
 
     public interface PaidSearchPartnerFragmentCommunicator{
         void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid);

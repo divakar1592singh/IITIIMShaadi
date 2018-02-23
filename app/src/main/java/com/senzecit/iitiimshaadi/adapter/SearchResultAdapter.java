@@ -111,7 +111,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public int getItemCount() {
-        return queryList.size();
+        return 10;
+//        return queryList.size();
     }
 
 /*    @Override

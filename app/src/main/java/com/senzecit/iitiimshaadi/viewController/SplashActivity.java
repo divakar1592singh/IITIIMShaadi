@@ -27,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = AppController.getInstance().getPrefs();
+        prefs.putString(Constants.LOGGED_USERID, Constants.Token_Paid);
 
     }
 
