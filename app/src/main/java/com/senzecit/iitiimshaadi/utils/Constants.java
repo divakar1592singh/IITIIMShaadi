@@ -28,4 +28,25 @@ public interface Constants {
     String LOGGED_EMAIL = "email";
     String OTHER_USERID = "other_userid";
 
+//    RESULT PAID
+    String SEARCH_TYPE = "search_type";
+
+    String SEARCH_ID = "search_id";
+    String SEARCH_KEYWORD = "search_keyword";
+
+    String MIN_AGE = "min_age";
+    String MAX_AGE = "max_age";
+    String COUNTRY = "country";
+    String CITY = "city";
+    String RELIGION = "religion";
+    String CASTE = "caste";
+    String MOTHER_TONGUE = "mother_tongue";
+    String MARITAL_STATUS = "marital_status";
+    String COURSE = "course";
+    String ANNUAL_INCOME = "annual_income";
+
+    String PARTNER_LOC = "partner_loc";
+    String MIN_HEIGHT = "min_height";
+    String MAX_HEIGHT = "max_height";
+
 }

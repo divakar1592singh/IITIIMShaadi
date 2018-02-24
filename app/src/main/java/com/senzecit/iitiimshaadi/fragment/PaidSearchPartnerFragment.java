@@ -282,105 +282,48 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         if(point == 1){
             if(!TextUtils.isEmpty(searchById)){
-                callWebServiceForSubsIDSearch();
+//                callWebServiceForSubsIDSearch();
+
             }else {
                 AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Search By Id can't Empty");
             }
         }else if(point == 2){
             if(!TextUtils.isEmpty(searchByKeyword)){
-                callWebServiceForSubsKeywordSearch();
+//                callWebServiceForSubsKeywordSearch();
+
             }else {
                 AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Search By Keyword can't Empty");
             }
         }else if(point == 3){
-            callWebServiceForSubsAdvanceSearch();
+//            callWebServiceForSubsAdvanceSearch();
+
         }
     }
     /** API -  */
-    /** Search By ID */
-    public void callWebServiceForSubsIDSearch(){
+//    /** Search By ID */
+    public void callIDSearch(){
 
-//        String token = Constants.Token_Paid;
-//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
+        prefs.putString(Constants.SEARCH_TYPE, "id");
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
         String searchID = mSearchByIdET.getText().toString() ;
+        prefs.putString(Constants.SEARCH_ID, searchID);
+//        communicator.saveAndSearchPaidPartnerByID(queryList, searchID);
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid1(token, searchID);
-        call.enqueue(new Callback<PaidSubscriberResponse>() {
-            @Override
-            public void onResponse(Call<PaidSubscriberResponse> call, Response<PaidSubscriberResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getQuery().size() > 0){
-                            List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList = response.body().getQuery();
-
-                            communicator.saveAndSearchPaidPartnerByID(queryList, searchID);
-
-                        }
-                    }else {
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PaidSubscriberResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
     }
-
     /** Search By Keyword */
-    public void callWebServiceForSubsKeywordSearch(){
+    public void callKeywordSearch(){
 
-//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
+        prefs.putString(Constants.SEARCH_TYPE, "keyword");
+
         String keyword = mRandomKeywordET.getText().toString() ;
+        prefs.putString(Constants.SEARCH_KEYWORD, keyword);
+//        communicator.saveAndSearchPaidPartnerByKeyword(queryList, keyword);
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        Call<SubsAdvanceSearchResponse> call = apiInterface.keywordSearchPaid(token, keyword);
-        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
-            @Override
-            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getQuery().size() > 0){
-                            List<Query> queryList = response.body().getQuery();
-//                            System.out.print(profileList);
-                            communicator.saveAndSearchPaidPartnerByKeyword(queryList, keyword);
-
-                        }
-                    }else {
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
     }
     /** Advance Search */
-    public void callWebServiceForSubsAdvanceSearch(){
+    public void callAdvanceSearch(){
 
-        List<String> profileList =new ArrayList<>();
-
-//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        prefs.putString(Constants.SEARCH_TYPE, "advance");
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -398,57 +341,22 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String sMinHeight = mSelectHeightMinTV.getText().toString() ;
         String sMaxHeight = mSelectHeightMaxTV.getText().toString() ;
 
-        profileList.add(minage);profileList.add(maxage);profileList.add(country);
-        profileList.add(city);profileList.add(religion);profileList.add(caste);
-        profileList.add(mother_tounge);profileList.add(marital_status);
-        profileList.add(course);profileList.add(annual_income);
-        profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);
+        prefs.putString(Constants.MIN_AGE, minage);
+        prefs.putString(Constants.MAX_AGE, maxage);
+        prefs.putString(Constants.COUNTRY, country);
+        prefs.putString(Constants.CITY, city);
+        prefs.putString(Constants.RELIGION, religion);
+        prefs.putString(Constants.CASTE, caste);
+        prefs.putString(Constants.MOTHER_TONGUE, mother_tounge);
+        prefs.putString(Constants.MARITAL_STATUS, marital_status);
+        prefs.putString(Constants.COURSE, course);
+        prefs.putString(Constants.ANNUAL_INCOME, annual_income);
+        prefs.putString(Constants.PARTNER_LOC, sPartnerLoc);
+        prefs.putString(Constants.MIN_HEIGHT, sMinHeight);
+        prefs.putString(Constants.MAX_HEIGHT, sMaxHeight);
 
-        PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
-        searchRequest.token = token;
-        searchRequest.minage = minage;
-        searchRequest.maxage = maxage;
-        searchRequest.country = country;
-        searchRequest.city = city;
-        searchRequest.religion = religion;
-        searchRequest.caste = caste;
-        searchRequest.mother_tounge = mother_tounge;
-        searchRequest.marital_status = marital_status;
-        searchRequest.course = course;
-        searchRequest.annual_income = annual_income;
+        communicator.saveAndSearchPaidPartner();
 
-        searchRequest.min_height = sMinHeight;
-        searchRequest.max_height = sMaxHeight;
-
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
-        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
-            @Override
-            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getQuery().size() > 0){
-                            List<Query> queryList = response.body().getQuery();
-                            System.out.print(profileList);
-                            communicator.saveAndSearchPaidPartnerByAdvance(queryList, profileList);
-
-                        }
-                    }else {
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
     }
 
 
@@ -875,9 +783,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     }
 
     public interface PaidSearchPartnerFragmentCommunicator{
-        void saveAndSearchPaidPartnerByID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, String userid);
-        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);
-        void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList);
+        void saveAndSearchPaidPartner();
+//        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);
+//        void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList);
 
     }
 
