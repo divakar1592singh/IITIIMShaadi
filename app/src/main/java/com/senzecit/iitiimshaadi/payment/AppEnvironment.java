@@ -46,17 +46,17 @@ public enum AppEnvironment {
 
         @Override
         public String merchant_ID() {
-            return "4819816";
+            return "5259474";
         }
 
         @Override
         public String furl() {
-            return "https://payu.herokuapp.com/success";
+            return "https://iitiimshaadi.com/_payment";
         }
 
         @Override
         public String surl() {
-            return "https://payu.herokuapp.com/failure";
+            return "https://iitiimshaadi.com/_payment";
         }
 
         @Override

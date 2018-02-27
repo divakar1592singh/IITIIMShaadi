@@ -79,6 +79,7 @@ public class ResultSearchPartnerActivity extends AppCompatActivity implements  S
 
     @Override
     public void saveSearchPartner(List<Query> queryList, List<String> profileList) {
+        mTitle.setText("Search Partner");
 //        mFragmentTransaction.remove(searchPartnerFragment);
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);

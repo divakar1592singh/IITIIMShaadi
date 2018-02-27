@@ -5,8 +5,8 @@ package com.senzecit.iitiimshaadi.model.api_response_model.subscriber.ptr_religi
  */
 
 
-        import com.google.gson.annotations.Expose;
-        import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class PtrReligionCountryResponse {
 
@@ -34,3 +34,4 @@ public class PtrReligionCountryResponse {
     }
 
 }
+

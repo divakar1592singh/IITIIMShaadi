@@ -198,7 +198,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     public void callWebServiceForCurrentCustomFolder(String mTitle){
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);

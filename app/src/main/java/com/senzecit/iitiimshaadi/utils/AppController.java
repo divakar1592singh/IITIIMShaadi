@@ -84,5 +84,4 @@ public class AppController extends Application {
     public AppPrefs getPrefs() {
         return prefs;
     }
-
 }

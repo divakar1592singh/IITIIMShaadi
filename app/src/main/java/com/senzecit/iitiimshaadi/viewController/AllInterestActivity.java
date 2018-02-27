@@ -68,6 +68,7 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void handleView(){
+        mTitle.setText("Interest Received");
         List<String> list = new ArrayList<>();
         list.add("A");
         list.add("A");

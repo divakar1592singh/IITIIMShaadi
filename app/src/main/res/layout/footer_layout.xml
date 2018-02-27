@@ -6,7 +6,8 @@
         android:id="@+id/idTv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Footer"
+        android:text="Scroll Down to load more"
+        android:gravity="center_horizontal"
         />
 
 </android.support.constraint.ConstraintLayout>

@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Username / Email ID"
                 android:singleLine="true"
-                android:text="jainswati"
+                android:text=""
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:text="swati"
+                android:text=""
                 android:singleLine="true"/>
         </android.support.design.widget.TextInputLayout>
 

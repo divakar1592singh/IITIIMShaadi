@@ -5,7 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by senzec on 7/2/18.
- */
+ */import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class PartnerReligionData {
 
     @SerializedName("prefered_partner_religion")
@@ -13,10 +16,10 @@ public class PartnerReligionData {
     private String preferedPartnerReligion;
     @SerializedName("prefered_partner_caste")
     @Expose
-    private String preferedPartnerCaste;
+    private List<String> preferedPartnerCaste = null;
     @SerializedName("prefered_partner_country")
     @Expose
-    private String preferedPartnerCountry;
+    private List<String> preferedPartnerCountry = null;
 
     public String getPreferedPartnerReligion() {
         return preferedPartnerReligion;
@@ -26,19 +29,19 @@ public class PartnerReligionData {
         this.preferedPartnerReligion = preferedPartnerReligion;
     }
 
-    public String getPreferedPartnerCaste() {
+    public List<String> getPreferedPartnerCaste() {
         return preferedPartnerCaste;
     }
 
-    public void setPreferedPartnerCaste(String preferedPartnerCaste) {
+    public void setPreferedPartnerCaste(List<String> preferedPartnerCaste) {
         this.preferedPartnerCaste = preferedPartnerCaste;
     }
 
-    public String getPreferedPartnerCountry() {
+    public List<String> getPreferedPartnerCountry() {
         return preferedPartnerCountry;
     }
 
-    public void setPreferedPartnerCountry(String preferedPartnerCountry) {
+    public void setPreferedPartnerCountry(List<String> preferedPartnerCountry) {
         this.preferedPartnerCountry = preferedPartnerCountry;
     }
 

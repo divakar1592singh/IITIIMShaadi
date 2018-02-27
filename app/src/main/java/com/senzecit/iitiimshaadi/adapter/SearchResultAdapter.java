@@ -127,7 +127,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         }
     }*/
 
-    /** API - Friend Manipulation Task */
+    /** API -  Manipulation Task */
     private void callWebServiceForManipulatePartner(String typeOf, String friend, String folder)
     {
 
@@ -141,7 +141,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                     if (response.isSuccessful()) {
                         if(response.body().getMessage().getSuccess().length() > 0){
                             String msg = response.body().getMessage().getSuccess();
-                            AlertDialogSingleClick.getInstance().showDialog(mContext, "Friend Alert", msg);
+                            AlertDialogSingleClick.getInstance().showDialog(mContext, " Alert", msg);
                         }
                     }
                 }catch (NullPointerException npe)
@@ -163,7 +163,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     {
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
             return apiInterface.serviceAddAsFriend(token, s1);
@@ -235,7 +235,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, folderList);
         lv.setAdapter(adapter);
         dialog.setCancelable(true);
-        dialog.setTitle("ListView");
+        dialog.setTitle("Folder List");
         dialog.show();
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -39,6 +39,7 @@ import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,12 +77,15 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
 
     private Button payNowButton;
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
+    AppPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mAppPreference = new AppPreference();
+        prefs = AppController.getInstance().getPrefs();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -131,6 +135,8 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             radio_btn_sandbox.setChecked(true);
         }
         setupCitrusConfigs();
+
+        launchPayUMoneyFlow();
     }
 
     public static String hashCal(String str) {
@@ -332,7 +338,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             switch (v.getId()) {
                 case R.id.pay_now_button:
                     payNowButton.setEnabled(false);
-                    launchPayUMoneyFlow();
+//                    launchPayUMoneyFlow();
                     break;
                 case R.id.logout_button:
                     PayUmoneyFlowManager.logoutUser(getApplicationContext());
@@ -460,26 +466,28 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
 
         double amount = 0;
         try {
-            amount = Double.parseDouble(amount_et.getText().toString());
+//            amount = Double.parseDouble(amount_et.getText().toString());
+            String sAmount = getIntent().getExtras().getString(Constants.AMOUNT_PAY);
+            amount = Double.parseDouble(sAmount);
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         String txnId = System.currentTimeMillis() + "";
-        String phone = mobile_til.getEditText().getText().toString().trim();
-        String productName = mAppPreference.getProductInfo();
-        String firstName = mAppPreference.getFirstName();
-        String email = email_til.getEditText().getText().toString().trim();
-        String udf1 = "udf1";
-        String udf2 = "udf2";
-        String udf3 = "udf3";
-        String udf4 = "udf4";
-        String udf5 = "udf5";
-        String udf6 = "udf6";
-        String udf7 = "udf7";
-        String udf8 = "udf8";
-        String udf9 = "udf9";
-        String udf10 = "udf10";
+        String phone = prefs.getString(Constants.LOGGED_MOB);
+//        String phone = mobile_til.getEditText().getText().toString().trim();
+//        String productName = mAppPreference.getProductInfo();
+        String productName = "IITIIMShadi Payment";
+        String firstName = prefs.getString(Constants.LOGGED_USERNAME);
+//        String firstName = mAppPreference.getFirstName();
+        String email = prefs.getString(Constants.LOGGED_EMAIL);
+//        String email = email_til.getEditText().getText().toString().trim();
+        String udf1 = "";
+        String udf2 = "";
+        String udf3 = "";
+        String udf4 = "";
+        String udf5 = "";
 
         AppEnvironment appEnvironment = ((AppController) getApplication()).getAppEnvironment();
         builder.setAmount(amount)
@@ -495,11 +503,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
                 .setUdf3(udf3)
                 .setUdf4(udf4)
                 .setUdf5(udf5)
-        /*        .setUdf6(udf6)
-                .setUdf7(udf7)
-                .setUdf8(udf8)
-                .setUdf9(udf9)
-                .setUdf10(udf10)*/
+
                 .setIsDebug(appEnvironment.debug())
                 .setKey(appEnvironment.merchant_Key())
                 .setMerchantId(appEnvironment.merchant_ID());
@@ -510,21 +514,20 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             /*
             * Hash should always be generated from your server side.
             * */
-            generateHashFromServer(mPaymentParams);
+//            generateHashFromServer(mPaymentParams);
 
 /*            *//**
              * Do not use below code when going live
              * Below code is provided to generate hash from sdk.
              * It is recommended to generate hash from server side only.
              * */
-           /* mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
+            mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
 
            if (AppPreference.selectedTheme != -1) {
                 PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivity.this, AppPreference.selectedTheme,mAppPreference.isOverrideResultScreen());
             } else {
                 PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivity.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
             }
-*/
         } catch (Exception e) {
             // some exception occurred
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -578,12 +581,15 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
         // lets create the post params
         StringBuffer postParamsBuffer = new StringBuffer();
         postParamsBuffer.append(concatParams(PayUmoneyConstants.KEY, params.get(PayUmoneyConstants.KEY)));
-        postParamsBuffer.append(concatParams("token", token));
+//        postParamsBuffer.append(concatParams("token", token));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.AMOUNT, params.get(PayUmoneyConstants.AMOUNT)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.TXNID, params.get(PayUmoneyConstants.TXNID)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.EMAIL, params.get(PayUmoneyConstants.EMAIL)));
-        postParamsBuffer.append(concatParams("productinfo", params.get(PayUmoneyConstants.PRODUCT_INFO)));
-        postParamsBuffer.append(concatParams("firstname", params.get(PayUmoneyConstants.FIRSTNAME)));
+//        postParamsBuffer.append(concatParams("productinfo", params.get(PayUmoneyConstants.PRODUCT_INFO)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.PRODUCT_INFO, params.get(PayUmoneyConstants.PRODUCT_INFO)));
+
+        //        postParamsBuffer.append(concatParams("firstname", params.get(PayUmoneyConstants.FIRSTNAME)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.FIRSTNAME, params.get(PayUmoneyConstants.FIRSTNAME)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF1, params.get(PayUmoneyConstants.UDF1)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF2, params.get(PayUmoneyConstants.UDF2)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF3, params.get(PayUmoneyConstants.UDF3)));

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -102,7 +103,11 @@ public class AlertDialogSingleClick {
 
 
     public void closeDialog(){
-        dialog.dismiss();
+        try {
+            dialog.dismiss();
+        }catch (NullPointerException npe){
+            Log.e("TAG", "#Error : "+npe, npe);
+        }
     }
 
     }

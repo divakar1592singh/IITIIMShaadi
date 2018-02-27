@@ -17,25 +17,29 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <ScrollView
+     <!--   <ScrollView
+            android:id="@+id/idScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+-->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/dimen_20dp"
                 >
-                <TextView
+
+                <Button
+                    android:id="@+id/idCurrentSearchBtn"
                     android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorMaroon"
                     android:text="Current Search"
                     android:textColor="@color/colorWhite"
-                    android:gravity="center_horizontal"
-                    android:textSize="15sp"/>
+                    android:gravity="center_horizontal|center_vertical"
+                    android:textSize="15sp"
+                    />
             <LinearLayout
                 android:id="@+id/idCurrentSearchLayout"
                 android:orientation="vertical"
@@ -401,11 +405,11 @@
                 android:layout_marginTop="8dp"
                 android:id="@+id/partnerSearchResulttRV"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 />
 
             </LinearLayout>
 
-        </ScrollView>
+        <!--</ScrollView>-->
     </FrameLayout>
 </LinearLayout>

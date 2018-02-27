@@ -181,7 +181,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             public void onClick(View view) {
                 Toast.makeText(SubscriberDashboardActivity.this, "Documents", Toast.LENGTH_LONG).show();
                 alertDialogDocuments();
-
             }
         });
         mProofVerifyTV.setOnClickListener(new View.OnClickListener() {
@@ -709,17 +708,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mProfilepercTV.setText(new StringBuilder(String.valueOf(mainResponse.getBasicData().getProfileComplition())).append("%")); ;
         mUsrNameTV.setText(new StringBuilder("@").append(mainResponse.getBasicData().getName()));
     }
-
-    public void manageGraduationData(){
-
-        PriorityQueue<String> queue = new PriorityQueue<>();
-        queue.add("Storage/emulated/0/folderName/FileName.ext");
-        queue.add("Storage/emulated/0/folderName/FileName.ext");
-        queue.add("Storage/emulated/0/folderName/FileName.ext");
-        queue.add("Storage/emulated/0/folderName/FileName.ext");
-
-    }
-
     /** API INTEGRATION */
 
     /* Subscriber Dashboard*/
@@ -767,8 +755,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
 
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
         EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
-        emailVerirequest.token = Constants.Temp_Token;
+        emailVerirequest.token = token;
         emailVerirequest.email = prefs.getString(Constants.LOGGED_EMAIL);;
 
         Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);

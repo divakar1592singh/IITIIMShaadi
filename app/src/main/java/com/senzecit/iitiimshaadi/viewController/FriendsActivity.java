@@ -192,7 +192,7 @@ RequestedFriendFragment.OnRequestedFriendListener{
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String friend_user)
     {
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
             return apiInterface.serviceAddAsFriend(token, friend_user);

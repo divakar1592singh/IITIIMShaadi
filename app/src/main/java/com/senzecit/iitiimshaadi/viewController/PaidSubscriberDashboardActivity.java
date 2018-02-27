@@ -140,7 +140,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idProfileShowTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ProfileActivity.class));
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,AllInterestActivity.class));
 //                showToast("No interest received");
                 AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
                 break;
@@ -173,7 +173,9 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idChatMessageTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Chat/com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.Message", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
+//                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
+                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "Working on Chat");
+
                 break;
             }
             case R.id.idSubscriptionTV: {

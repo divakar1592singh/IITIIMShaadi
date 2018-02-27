@@ -7,6 +7,6 @@ package com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education
 public class PtrEduCareerRequest {
 
     public String token;
-    public String prefered_partner_education;
+    public String[] prefered_partner_education;
 
 }

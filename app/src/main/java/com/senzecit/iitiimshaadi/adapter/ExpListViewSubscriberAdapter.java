@@ -2616,7 +2616,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     public void showPermanentState(final TextView textView){
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
         if(country.length() > 0) {
@@ -2661,7 +2661,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     public void showCurrentState(final TextView textView){
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
         if(Country.length() > 0) {
@@ -2708,7 +2708,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     public void showCaste(final TextView textView){
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
 
         if(religion.length() > 0) {

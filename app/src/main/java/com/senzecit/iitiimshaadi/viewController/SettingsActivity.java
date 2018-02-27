@@ -283,7 +283,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         String sUsername = mNameET.getText().toString().trim();
         String sPassword = mPwdET.getText().toString().trim();
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         GeneralSettingRequest request = new GeneralSettingRequest();
         request.token = token;
@@ -383,7 +383,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void callWebServiceForDeactivate(String reason){
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SettingsActivity.this);
         Call<AddFolderResponse> call = apiInterface.deactivateAccount(token, reason);

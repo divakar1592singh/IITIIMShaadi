@@ -26,6 +26,7 @@ public interface Constants {
     String LOGGED_USER_TYPE = "user_type";
     String LOGGED_USER_PIC = "user_pic";
     String LOGGED_EMAIL = "email";
+    String LOGGED_MOB = "mobile";
     String OTHER_USERID = "other_userid";
 
 //    RESULT PAID
@@ -48,5 +49,21 @@ public interface Constants {
     String PARTNER_LOC = "partner_loc";
     String MIN_HEIGHT = "min_height";
     String MAX_HEIGHT = "max_height";
+
+//    Plan
+    String ONE_MONTH_RS = "7,000";
+    String SIX_MONTH_RS = "11,000";
+    String TWELVE_MONTH_RS = "16,000";
+    String LIFETIME_SUBS_RS = "24,000";
+
+    String ONE_MONTH_DOL = "90";
+    String SIX_MONTH_DOL = "160";
+    String TWELVE_MONTH_DOL = "250";
+    String LIFETIME_SUBS_DOL = "350";
+
+    String AMOUNT_PAY = "amount_payble";
+
+
+
 
 }

@@ -487,9 +487,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild9.setText(childText);
 
                         //SetData - Interest
-                        String interest1 = myProfileResponse.getBasicData().getInterest().toString().replace("[", "");
-                        String interestNet = interest1.replace("]", "");
-                        txtListChild9.setText(interestNet);
+                        if(myProfileResponse.getBasicData().getInterest() != null) {
+                            String interest1 = myProfileResponse.getBasicData().getInterest().toString().replace("[", "");
+                            String interestNet = interest1.replace("]", "");
+                            txtListChild9.setText(interestNet);
+                        }
 
                         TextView txtListChildHeader9 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -2377,7 +2379,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         Toast.makeText(_context, "Output : "+Interests, Toast.LENGTH_LONG).show();
 //        String token  = Constants.Temp_Token;
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
@@ -2432,7 +2434,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : "+Religion, Toast.LENGTH_LONG).show();
 //        String token = Constants.Temp_Token;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
         request.token = token;

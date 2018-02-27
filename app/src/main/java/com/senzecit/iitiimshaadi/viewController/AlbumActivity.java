@@ -71,6 +71,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     /*Profile Image*/
     private Uri fileUri; // file url to store image/video
+    private Uri mCropImagedUri;
+    private final int CROP_IMAGE = 101;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 51;
     private static final int READ_FILE_REQUEST_CODE = 52;
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -170,7 +172,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     public void callWebServiceForAllAlbum(){
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
@@ -361,6 +363,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         }
+
     }
 
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
@@ -370,7 +373,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         System.out.print(file);
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);

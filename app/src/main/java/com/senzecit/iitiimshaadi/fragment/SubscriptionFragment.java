@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,9 +160,12 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     }
 
     public void setData(List<AllSubscription> allSubsList){
-
-        mLastRenewTV.setText(getDate(allSubsList.get(0).getPaymentDate()));
-        mNextRenewTV.setText(getDate(allSubsList.get(0).getExpDate()));
+        try {
+            mLastRenewTV.setText(getDate(allSubsList.get(0).getPaymentDate()));
+            mNextRenewTV.setText(getDate(allSubsList.get(0).getExpDate()));
+        }catch (IndexOutOfBoundsException ioe){
+            Log.e("TAG", "#Error : "+ioe, ioe);
+        }
     }
 
 

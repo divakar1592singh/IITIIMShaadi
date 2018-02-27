@@ -288,7 +288,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String s1, String s2)
     {
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){

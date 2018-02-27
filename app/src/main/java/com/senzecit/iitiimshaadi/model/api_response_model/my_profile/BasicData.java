@@ -19,6 +19,9 @@ public class BasicData {
     @SerializedName("profile_created_for")
     @Expose
     private String profileCreatedFor;
+    @SerializedName("profile_image")
+    @Expose
+    private String profileImage;
     @SerializedName("health_issue")
     @Expose
     private String healthIssue;
@@ -174,6 +177,14 @@ public class BasicData {
 
     public void setProfileCreatedFor(String profileCreatedFor) {
         this.profileCreatedFor = profileCreatedFor;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setprofileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getHealthIssue() {

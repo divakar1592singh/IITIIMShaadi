@@ -54,6 +54,7 @@ import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -835,13 +836,16 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         String Max_Height = ExpPartnerProfileModel.getInstance().getMax_Height();
         String Marital_Status = ExpPartnerProfileModel.getInstance().getMarital_Status();
 
+        String[] Marital_StatusArr = new String[1];
+        Marital_StatusArr[0] = Marital_Status;
+
         ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
         request.token = token;
         request.prefered_partner_min_age = Minimum_Age;
         request.prefered_partner_max_age = Maximum_Age;
         request.prefered_partner_height = Min_Height;
         request.prefered_partner_height_max = Max_Height;
-        request.prefered_partner_marital_status = Marital_Status;
+        request.prefered_partner_marital_status = Marital_StatusArr;
 
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -880,17 +884,23 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
 //        AppPrefs prefs = new AppPrefs(_context);
 //        String token = Constants.Temp_Token;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
         String Preferred_Country = ExpPartnerProfileModel.getInstance().getPreferred_Country();
 
+        String[] Preferred_CasteArr = new String[1];
+        String[] Preferred_CountryArr = new String[1];;
+        Preferred_CasteArr[0] = Preferred_Caste;
+        Preferred_CountryArr[0] = Preferred_Country;
+
         PtrReligionCountryRequest request = new PtrReligionCountryRequest();
         request.token = token;
         request.prefered_partner_religion = Preferred_Religion;
-        request.prefered_partner_caste = Preferred_Caste;
-        request.prefered_partner_country = Preferred_Country;
+        request.prefered_partner_caste = Preferred_CasteArr;
+        request.prefered_partner_country = Preferred_CountryArr;
 
 
         ProgressClass.getProgressInstance().showDialog(_context);
@@ -935,9 +945,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
         String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
 
+        String[] Preferred_EducationArr = new String[1];
+        Preferred_EducationArr[0] = Preferred_Education;
+
         PtrEduCareerRequest request = new PtrEduCareerRequest();
         request.token = token;
-        request.prefered_partner_education = Preferred_Education;
+        request.prefered_partner_education = Preferred_EducationArr;
 
 
         ProgressClass.getProgressInstance().showDialog(_context);
@@ -1067,7 +1080,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     public void showCaste(final TextView textView){
 
 //        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
 

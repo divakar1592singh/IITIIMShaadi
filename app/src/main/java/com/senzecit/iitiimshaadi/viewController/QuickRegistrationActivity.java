@@ -467,6 +467,4 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     }
 
 
-
-
 }

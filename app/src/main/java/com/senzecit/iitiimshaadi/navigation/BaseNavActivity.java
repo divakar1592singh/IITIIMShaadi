@@ -17,6 +17,11 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
 import com.senzecit.iitiimshaadi.viewController.AlertPlanActivity;
 import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
@@ -32,6 +37,8 @@ import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 import com.senzecit.iitiimshaadi.viewController.ResultSearchPartnerActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
+import com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionActivity;
 import com.senzecit.iitiimshaadi.viewController.SuccessStoriesActivity;
 import com.senzecit.iitiimshaadi.viewController.UploadVideoActivity;
@@ -41,6 +48,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
 
     DrawerLayout drawer;
     FrameLayout frameLayout;
+    String userType;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -53,8 +61,6 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         //getLayoutInflater().inflate(R.layout.activity_home, activityContainer, true);
         super.setContentView(drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-
 
         final ToggleButton rightToggle = (ToggleButton)findViewById(R.id.right_menu_toggle);
 //        Button btn1 = (Button) findViewById(R.id.idNavHome);
@@ -133,6 +139,9 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         mReferFriend.setOnClickListener(BaseNavActivity.this);
         mUploadVideo.setOnClickListener(BaseNavActivity.this);
 
+        AppPrefs prefs = AppController.getInstance().getPrefs();
+        userType = prefs.getString(Constants.LOGGED_USER_TYPE);
+
         // SET DEFAULT COLOR
         /*homeBtn.setTextColor(Color.parseColor("#000000"));
         newsFeedBtn.setTextColor(Color.parseColor("#000000"));
@@ -164,23 +173,34 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.idSearchPartnerNav: {
                 // Toast.makeText(getApplicationContext(), "Search Partner", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseNavActivity.this,ResultSearchPartnerActivity.class));
+                if(userType.equalsIgnoreCase("subscriber")) {
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
+                }else {
+                    startActivity(new Intent(BaseNavActivity.this, ResultSearchPartnerActivity.class));
+                }
                 break;
             }
             case R.id.idfriendsNav: {
                 // Toast.makeText(getApplicationContext(), "Friends Navigation", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseNavActivity.this,FriendsActivity.class));
+                if(userType.equalsIgnoreCase("subscriber")) {
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
+                }else {
+                    startActivity(new Intent(BaseNavActivity.this, FriendsActivity.class));
+                }
                 break;
             }
             case R.id.idChatMessageNav: {
                 // Toast.makeText(getApplicationContext(), "Upload your document", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
-//                startActivity(new Intent(BaseNavActivity.this,ChatMessagesActivity.class));
+                if(userType.equalsIgnoreCase("subscriber")) {
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
+                }else {
+                    startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
+                }
                 break;
             }
             case R.id.idSubscriptionNav: {
                 // Toast.makeText(getApplicationContext(), "Subscription", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseNavActivity.this,SubscriptionActivity.class));
+                startActivity(new Intent(BaseNavActivity.this, SubscriptionActivity.class));
                 break;
             }
             case R.id.idPremierServiceNav: {
@@ -259,11 +279,16 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
             }
             case R.id.idCustomFolderNav: {
                 // Toast.makeText(getApplicationContext(), "FAQ", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(BaseNavActivity.this,CustomFoldersActivity.class));
+                if(userType.equalsIgnoreCase("subscriber")) {
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
+                }else {
+                    startActivity(new Intent(BaseNavActivity.this, CustomFoldersActivity.class));
+                }
                 break;
             }
             case R.id.idChat:
-                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
+                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on Chat");
+//                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
                 break;
 
         }

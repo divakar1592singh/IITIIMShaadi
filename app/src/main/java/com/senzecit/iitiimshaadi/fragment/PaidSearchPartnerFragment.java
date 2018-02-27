@@ -283,6 +283,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         if(point == 1){
             if(!TextUtils.isEmpty(searchById)){
 //                callWebServiceForSubsIDSearch();
+                callIDSearch();
 
             }else {
                 AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Search By Id can't Empty");
@@ -290,13 +291,13 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         }else if(point == 2){
             if(!TextUtils.isEmpty(searchByKeyword)){
 //                callWebServiceForSubsKeywordSearch();
-
+                    callKeywordSearch();
             }else {
                 AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Search By Keyword can't Empty");
             }
         }else if(point == 3){
 //            callWebServiceForSubsAdvanceSearch();
-
+            callAdvanceSearch();
         }
     }
     /** API -  */
@@ -308,7 +309,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String searchID = mSearchByIdET.getText().toString() ;
         prefs.putString(Constants.SEARCH_ID, searchID);
 //        communicator.saveAndSearchPaidPartnerByID(queryList, searchID);
-
+        communicator.saveAndSearchPaidPartner();
     }
     /** Search By Keyword */
     public void callKeywordSearch(){
@@ -318,7 +319,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String keyword = mRandomKeywordET.getText().toString() ;
         prefs.putString(Constants.SEARCH_KEYWORD, keyword);
 //        communicator.saveAndSearchPaidPartnerByKeyword(queryList, keyword);
-
+        communicator.saveAndSearchPaidPartner();
     }
     /** Advance Search */
     public void callAdvanceSearch(){

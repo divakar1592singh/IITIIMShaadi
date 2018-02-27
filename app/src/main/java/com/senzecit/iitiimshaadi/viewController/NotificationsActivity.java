@@ -91,7 +91,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
 //        String token = Constants.Token_Paid;
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         retrofit2.Call<AllNotificationRespnse> call = apiInterface.allNotificationService(token);
         call.enqueue(new Callback<AllNotificationRespnse>() {

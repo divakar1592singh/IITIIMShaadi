@@ -196,7 +196,8 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                 break;
             }
             case R.id.idChat:
-                startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
+                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
+//                startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
                 break;
             case R.id.idMyFriends:
                 startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));

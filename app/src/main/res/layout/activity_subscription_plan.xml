@@ -34,28 +34,29 @@
                     android:id="@+id/idCountryGB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:checkedButton="@id/idIndianRB"
                     android:padding="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/idInterNationalRB"
+                        android:id="@+id/idIndianRB"
                         android:layout_marginLeft="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="70dp"
                         android:buttonTint="@color/colorDarkYellow"
-                        android:text="International"
+                        android:text="Indian"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp" />
 
                     <RadioButton
-                        android:id="@+id/idIndianRB"
+                        android:id="@+id/idInterNationalRB"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:buttonTint="@color/colorDarkYellow"
-                        android:text="Indian"
+                        android:text="International"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp" />
 
@@ -133,7 +134,8 @@
                             android:id="@+id/idRadioGroup"
                             android:orientation="vertical"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:checkedButton="@id/idOneMonthRB">
                             <RadioButton
                                 android:id="@+id/idOneMonthRB"
                                 android:layout_width="wrap_content"
@@ -188,7 +190,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rs.5,000+18%\nGST = Rs 5900"
+                            android:text="Rs.7,000+18%\nGST = Rs 8260"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                         <TextView
@@ -196,7 +198,7 @@
                             android:layout_marginTop="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rs.10,000+18%\nGST = Rs 11800"
+                            android:text="Rs.11,000+18%\nGST = Rs 12980"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                         <TextView
@@ -204,7 +206,7 @@
                             android:layout_marginTop="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rs.15,000+18%\nGST = Rs 17700"
+                            android:text="Rs.16,000+18%\nGST = Rs 18880"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                         <TextView
@@ -212,7 +214,7 @@
                             android:layout_marginTop="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rs.25,000+18%\nGST = Rs 29500"
+                            android:text="Rs.24,000+18%\nGST = Rs 28320"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                     </LinearLayout>
@@ -233,28 +235,28 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$ 100"
+                            android:text="$ 90"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                         <TextView
                             android:layout_marginTop="30dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$ 200"
+                            android:text="$ 160"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                         <TextView
                             android:layout_marginTop="30dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$ 300"
+                            android:text="$ 250"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                         <TextView
                             android:layout_marginTop="30dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$ 500"
+                            android:text="$ 350"
                             android:textColor="@color/colorGrey"
                             android:textSize="12sp"/>
                     </LinearLayout>
@@ -291,15 +293,28 @@
                         android:text="Sub-Total"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/idSubSignTV"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Rs"
+                            android:textColor="@color/colorMaroon"
+                            android:textSize="14sp"/>
                     <TextView
                         android:layout_marginRight="10dp"
                         android:id="@+id/idSubTotalAmountTV"
-                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/Rs"
+                        android:text="8260"
                         android:textColor="@color/colorMaroon"
                         android:textSize="14sp"/>
+                    </LinearLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
@@ -317,15 +332,29 @@
                         android:text="Total Amount"
                         android:textColor="@color/colorGrey"
                         android:textSize="14sp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal">
                     <TextView
-                        android:layout_marginRight="10dp"
-                        android:id="@+id/idTotalAmountTV"
+                        android:id="@+id/idTotalSignTV"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Rs"
                         android:textColor="@color/colorMaroon"
                         android:textSize="14sp"/>
+                    <TextView
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/idTotalAmountTV"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8260"
+                        android:textColor="@color/colorMaroon"
+                        android:textSize="14sp"/>
+                    </LinearLayout>
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
@@ -367,6 +396,7 @@
 
 
             <Button
+                android:id="@+id/idPayBtn"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"

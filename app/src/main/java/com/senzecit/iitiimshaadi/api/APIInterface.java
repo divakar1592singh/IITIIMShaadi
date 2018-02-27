@@ -83,90 +83,38 @@ import retrofit2.http.Query;
  */
 
 public interface APIInterface {
-/*
 
-    @POST("/user/registration_user")
-    Call<UserRegistrationResponse> getUserRegisterResponse(@Body UserRegistrationRequest userRegistrationRequest);
-
-    @GET("user/profile/{user_id}")
-    Call<EditInfoDataFromServerModel> getEditInfoProfile(@Path("user_id") String user_id);
-
-    @POST("user/update_user")
-    Call<EditInfoUpdateResponse> updateUserProfile(@Body EditInfoUpdateRequest editInfoUpdateRequest);
-
-    @POST("user/search_people")
-    Call<PeopleResponse> searchPeopleList(@Body PeopleRequest peopleRequest);
-
-    @POST("user/all_posts")
-    Call<AllPostResponseModel> allPostList(@Body PeopleRequest peopleRequest);
-
-
-    @POST("user/add_post")
-    Call<AddPostResponse> addPost(@Body AddPostRequest addPostRequest);
-
-    @GET("user/topiclist")
-    Call<TopicListModelResponse> getTopicList();
-
-    @GET("user/all_list/Condition")
-    Call<ConditionListModelResponse> getConditionList();
-
-    @GET("user/all_list/Symptoms")
-    Call<SymptomsListModelResponse> getSymptomsList();
-
-    @GET("user/all_list/Treatment")
-    Call<TreatmentListModelResponse> getTreatmentList();
-
-    @POST("user/view_particular_post")
-    Call<CommentListClass> commentList(@Body CommentListRequest commentListRequest);
-
-    @POST("user/comment_post")
-    Call<CommentResponse> addComment(@Body ParticularCommentRequest particularCommentRequest);
-
-    @Multipart
-    @POST("media/uploadFile/{user_id}")
-    Call<ImageUploadModelClass> uploadImageFile(@Part MultipartBody.Part file, @Part("imgFile") RequestBody name, @Path("user_id") String user_id);
-
-    @POST("user/delete_account")
-    Call<DeleteAccountResponse> deleteUserAccount(@Body DeleteAccountRequest deleteAccountRequest);
-
-*/
-    /** QUICK REGISTER */
+/** QUICK REGISTER */
     @POST("api/checkEligibilty.json")
     Call<QuickRegStreamResponse> fetchStreamData(@Body QuickRegStreamRequest quickRegStreamRequest);
-    @POST("/partition_url_here/")
-    Call<QuickRegInstitutionResponse> fetchInstitutionData(@Body QuickRegInstitutionRequest quickRegInstitutionRequest);
-    @POST("/partition_url_here/")
-    Call<EligibilityResponse> quickRegisterUser(@Body QuickRegEligibilityRequest quickRegEligibilityRequest);
 
     @POST("api/find_educational_institution.json")
     Call<FindCollegeResponse> quickRegFindCollege(@Body QuickRegFindCollegeRequest quickRegFindCollegeRequest);
 
-    /** NEW USER REGISTER */
+/** NEW USER REGISTER */
     @POST("api/user_registration.json")
     Call<NewRegistrationResponse> newUserRegistration(@Body NewRegistrationRequest newRegistrationRequest);
 
-    /** Login */
+/** Login */
     @POST("api/login.json")
     Call<LoginResponse> loginInUser(@Body LoginRequest loginRequest);
 
-    /** Forgot Password */
+/** Forgot Password */
     @POST("api/forgot_password.json")
     Call<ForgotPasswordResponse> forgotPasswordOfUser(@Body ForgotPasswordRequest forgotPasswordRequest);
 
-    /** Subscriber */
+/** Subscriber */
     /* EMAIL VERIFICATION*/
     @POST("api/email_verification.json")
     Call<AddFolderResponse> emailVerification(@Body EmailVerificationRequest emailVerificationRequest);
 
-/*
-    @POST("api/email_verification.json")
-    Call<ForgotPasswordResponse> emailVerification(@Body ForgotPasswordRequest forgotPasswordRequest);
+/** File Upload*/
+    /*Profile*/
+    @Multipart
+    @POST("api/set_profile_picture.json")
+    Call<AddFolderResponse> profileImageUpload(@Part MultipartBody.Part file, @Part("file[]") RequestBody id_proof, @Query("token") String token);
 
-    @POST("api/email_verification.json")
-    Call<ForgotPasswordResponse> emailVerification(@Body ForgotPasswordRequest forgotPasswordRequest);
-*/
-    /** File Upload*/
-    /*ID*/
+    /*Album*/
     @Multipart
     @POST("api/profile_image_upload.json")
     Call<AddFolderResponse> imageUpload(@Part MultipartBody.Part file, @Part("file[]") RequestBody id_proof, @Query("token") String token);
@@ -393,7 +341,7 @@ public interface APIInterface {
     @POST("api/unshortlisted_friend.json")
     Call<AddFolderResponse> serviceUnShortlistFriend(@Field("token")String token, @Field("friend_user")String friend_user);
 
-    /** NEW USER REGISTER */
+    /** Contact Us */
     @POST("api/contact_us.json")
     Call<AddFolderResponse> contactUs(@Body ContactUsRequest request);
 
@@ -402,9 +350,7 @@ public interface APIInterface {
     @POST("api/all_notifications.json")
     Call<AllNotificationRespnse> allNotificationService(@Field("token") String token);
 
-
     /** Date To AGe*/
-
     @FormUrlEncoded
     @POST("api/date_to_age.json")
     Call<DateToAgeResponse> dateToAge(@Field("birth_date")String birth_date);

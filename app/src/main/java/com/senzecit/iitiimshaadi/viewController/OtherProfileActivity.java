@@ -291,7 +291,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     /** API - other profile */
     private void callWebServiceForOtherProfile(String userId){
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
 //        String userId = "30413";
         ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);

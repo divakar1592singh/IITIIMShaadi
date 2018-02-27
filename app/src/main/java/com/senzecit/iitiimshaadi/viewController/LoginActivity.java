@@ -56,9 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         prefs = new AppPrefs(LoginActivity.this);
 
         init();
-        mForgotPassword.setOnClickListener(this);
-        mRegisterNew.setOnClickListener(this);
-        mLogin.setOnClickListener(this);
+        handleView();
 
     }
 
@@ -74,6 +72,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mTitle.setText("Login");
     }
 
+    public void handleView(){
+        mForgotPassword.setOnClickListener(this);
+        mRegisterNew.setOnClickListener(this);
+        mLogin.setOnClickListener(this::checkUserValidation);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -87,14 +91,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.loginBtn:
 //                Navigator.getClassInstance().navigateToActivity(this, PaidSubscriberDashboardActivity.class);
 //                startActivity(new Intent(LoginActivity.this,PaidSubscriberDashboardActivity.class));
-                checkUserValidation();
+//                checkUserValidation();
                 break;
         }
     }
 
 
     /** VALIDATION SECTION */
-    public void checkUserValidation(){
+    public void checkUserValidation(View view){
 
         String sUsername = mUsername.getText().toString().trim();
         String sPassword = mPassword.getText().toString().trim();

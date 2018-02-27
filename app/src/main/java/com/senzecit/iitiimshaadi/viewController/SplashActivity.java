@@ -27,7 +27,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = AppController.getInstance().getPrefs();
-        prefs.putString(Constants.LOGGED_USERID, Constants.Token_Paid);
+        prefs.putString(Constants.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
+        prefs.putString(Constants.LOGGED_EMAIL, "divakar1591@gmail.com");
+        prefs.putString(Constants.LOGGED_MOB, "98765432210");
+
 
     }
 
@@ -39,46 +42,56 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
                 String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
-
-                Intent intent = new Intent(SplashActivity.this, ResultPaidSearchPartnerActivity.class);
-//                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
 
- /*               if(userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+//***************************
+                /*
+                if(prefs.getString(Constants.LOGGED_USER_TYPE) != null) {
+                    if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
-                    Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
 
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                }else if(userType.equalsIgnoreCase("subscriber_viewer")) {
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
 
-                   Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
-                }else if(userType.equalsIgnoreCase("subscriber")) {
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    } else if (userType.equalsIgnoreCase("subscriber")) {
 
-                    Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    } else {
+//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
                 }else {
-//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
                     Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                }
-*/
 
+                }
+
+*/
             }
         },SPLASH_DISPLAY_TIME);
     }

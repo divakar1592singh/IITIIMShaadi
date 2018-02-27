@@ -191,7 +191,7 @@ public class AlbumAdapter extends BaseAdapter {
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -230,7 +230,7 @@ public class AlbumAdapter extends BaseAdapter {
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -268,7 +268,7 @@ public class AlbumAdapter extends BaseAdapter {
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
-        String token = prefs.getString(Constants.LOGGED_USERID);
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
