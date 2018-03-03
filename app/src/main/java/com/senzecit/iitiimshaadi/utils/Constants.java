@@ -62,7 +62,7 @@ public interface Constants {
     String LIFETIME_SUBS_DOL = "350";
 
     String AMOUNT_PAY = "amount_payble";
-
+    String PLAN_STATUS = "subscription plan status";
 
 
 

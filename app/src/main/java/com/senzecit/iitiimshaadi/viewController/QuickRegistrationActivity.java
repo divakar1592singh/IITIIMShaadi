@@ -261,7 +261,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     public void showEducation(){
         List<String> educationList = new ArrayList<>();
         educationList.add("Indian");
-        educationList.add("InterNational");
+        educationList.add("International");
         showDialog(educationList, mEducationTV);
     }
     public void showStream(){

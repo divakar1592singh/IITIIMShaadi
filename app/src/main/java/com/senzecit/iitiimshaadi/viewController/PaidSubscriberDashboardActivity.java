@@ -111,8 +111,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
     public  void  setProfileData(){
 
-        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
         String userId = prefs.getString(Constants.LOGGED_USERID);
+        String profileUri = Constants.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(Constants.LOGGED_USER_PIC);
         String userName = prefs.getString(Constants.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
@@ -142,7 +142,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(PaidSubscriberDashboardActivity.this,AllInterestActivity.class));
 //                showToast("No interest received");
-                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
+//                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
                 break;
             }
             case R.id.idShowMessageTV: {

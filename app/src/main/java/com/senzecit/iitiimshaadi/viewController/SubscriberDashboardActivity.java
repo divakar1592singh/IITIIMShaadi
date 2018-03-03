@@ -200,8 +200,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     public  void  setProfileData(){
 
-        String profileUri = prefs.getString(Constants.LOGGED_USER_PIC);
         String userId = prefs.getString(Constants.LOGGED_USERID);
+        String profileUri = Constants.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(Constants.LOGGED_USER_PIC);
         String userName = prefs.getString(Constants.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
@@ -943,5 +943,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
                 .show();
     }
+
+
 
 }

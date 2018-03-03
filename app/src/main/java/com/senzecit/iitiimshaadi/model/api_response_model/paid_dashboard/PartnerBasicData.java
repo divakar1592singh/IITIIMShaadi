@@ -7,7 +7,10 @@ import java.util.List;
 
 /**
  * Created by senzec on 21/2/18.
- */
+ */import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class PartnerBasicData {
 
     @SerializedName("prefered_partner_education")
@@ -18,10 +21,10 @@ public class PartnerBasicData {
     private String preferedPartnerReligion;
     @SerializedName("prefered_partner_caste")
     @Expose
-    private List<String> preferedPartnerCaste = null;
+    private String preferedPartnerCaste;
     @SerializedName("prefered_partner_country")
     @Expose
-    private List<String> preferedPartnerCountry = null;
+    private Object preferedPartnerCountry;
     @SerializedName("prefered_partner_min_age")
     @Expose
     private Integer preferedPartnerMinAge;
@@ -37,9 +40,9 @@ public class PartnerBasicData {
     @SerializedName("prefered_partner_marital_status")
     @Expose
     private List<String> preferedPartnerMaritalStatus = null;
-    @SerializedName("choice_of_groom")
+    @SerializedName("choice_of_partner")
     @Expose
-    private String choiceOfGroom;
+    private String choiceOfPartner;
 
     public List<String> getPreferedPartnerEducation() {
         return preferedPartnerEducation;
@@ -57,19 +60,19 @@ public class PartnerBasicData {
         this.preferedPartnerReligion = preferedPartnerReligion;
     }
 
-    public List<String> getPreferedPartnerCaste() {
+    public String getPreferedPartnerCaste() {
         return preferedPartnerCaste;
     }
 
-    public void setPreferedPartnerCaste(List<String> preferedPartnerCaste) {
+    public void setPreferedPartnerCaste(String preferedPartnerCaste) {
         this.preferedPartnerCaste = preferedPartnerCaste;
     }
 
-    public List<String> getPreferedPartnerCountry() {
+    public Object getPreferedPartnerCountry() {
         return preferedPartnerCountry;
     }
 
-    public void setPreferedPartnerCountry(List<String> preferedPartnerCountry) {
+    public void setPreferedPartnerCountry(Object preferedPartnerCountry) {
         this.preferedPartnerCountry = preferedPartnerCountry;
     }
 
@@ -113,12 +116,12 @@ public class PartnerBasicData {
         this.preferedPartnerMaritalStatus = preferedPartnerMaritalStatus;
     }
 
-    public String getChoiceOfGroom() {
-        return choiceOfGroom;
+    public String getChoiceOfPartner() {
+        return choiceOfPartner;
     }
 
-    public void setChoiceOfGroom(String choiceOfGroom) {
-        this.choiceOfGroom = choiceOfGroom;
+    public void setChoiceOfPartner(String choiceOfPartner) {
+        this.choiceOfPartner = choiceOfPartner;
     }
 
 }

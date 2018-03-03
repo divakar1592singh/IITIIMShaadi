@@ -28,6 +28,15 @@
         android:paddingRight="@dimen/size_8_dp"
         android:paddingBottom="@dimen/size_4_dp"
         >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/id_proof_detail"
+            android:textColor="@color/colorBlack"
+            />
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

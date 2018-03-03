@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -31,6 +32,7 @@ import com.senzecit.iitiimshaadi.viewController.DisclaimerActivity;
 import com.senzecit.iitiimshaadi.viewController.FAQActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.HowToNavigatePageActivity;
+import com.senzecit.iitiimshaadi.viewController.IntroSliderWebActivity;
 import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
 import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
@@ -117,6 +119,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         TextView mSettings = (TextView)headerview.findViewById(R.id.idSettingNav);
         TextView mMyProfile = (TextView)headerview.findViewById(R.id.idMyProfileNav);
         TextView mCustomFolder = (TextView)headerview.findViewById(R.id.idCustomFolderNav);
+        TextView mLogOut = (TextView)headerview.findViewById(R.id.idLogoutNav);
 
         mSearchPartnerBtn.setOnClickListener(BaseNavActivity.this);
         mFriendsBtn.setOnClickListener(BaseNavActivity.this);
@@ -138,6 +141,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         mWallet.setOnClickListener(BaseNavActivity.this);
         mReferFriend.setOnClickListener(BaseNavActivity.this);
         mUploadVideo.setOnClickListener(BaseNavActivity.this);
+        mLogOut.setOnClickListener(this);
 
         AppPrefs prefs = AppController.getInstance().getPrefs();
         userType = prefs.getString(Constants.LOGGED_USER_TYPE);
@@ -290,8 +294,21 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on Chat");
 //                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
                 break;
+            case R.id.idLogoutNav:
+//                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "LogOut");
+//                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
+                AppPrefs prefs = AppController.getInstance().getPrefs();
+                prefs.remove(Constants.LOGGED_TOKEN);
+                prefs.remove(Constants.LOGGED_USERNAME);
+                prefs.remove(Constants.LOGGED_USERID);
+                prefs.remove(Constants.LOGGED_USER_TYPE);
+                prefs.remove(Constants.LOGGED_EMAIL);
+                Navigator.getClassInstance().navigateToActivity(BaseNavActivity.this, SplashActivity.class);
+
+                break;
 
         }
     }
+
 
 }

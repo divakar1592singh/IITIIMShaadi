@@ -241,4 +241,29 @@
     <string name="disconnect">Disconnected, Please check your internet connection</string>
     <string name="error_connect">Failed to connect</string>
 
+    ### TERMS &amp; CONDITION
+    <string name="terms_condition">By registering I here by accept <b>Terms and Conditions</b></string>
+    <string name="tnc_detail">Terms and Conditions (*)\n\n
+1. I confirm that all the information provided by me is accurate to the best of my knowledge and belief.
+\n\n
+2. I confirmed of my intent to enter into a matrimonial alliance.
+\n\n
+3. I have read the prevailing Privacy Policy and Disclaimer (also given on home page of website). I accept these policies. I also understand that these policies may undergo change from time to time. It is my responsibility to review the changes periodically and inform IITIIMShaadi in case of any concerns.
+\n\n
+4. I have noted that IITIIMShaadi.com obtains copy of educational certificates prior to activating a profile. I am given to understand that this is a precaution to attempt that database offers genuine profiles only. At the same time, I am fully aware that IITIIMShaadi.com has not got the profiles verified from a third party. I am aware of the risk that I may run by accepting these details as it is. In the light of these facts, I undertake that it shall be solely my responsibility to verify all the details for any profile that I may wish to consider. It has been made clear to me that IITIIMShaadi does not accept any legal responsibility for any risk emanating out of false information or educational certificates submitted by any member.
+\n\n
+5. I am encouraged to report any fraudulent activity to IITIIMShaadi as well as to law enforcement agencies.
+\n\n
+6. I have no objection to receiving information on any non matrimonial service related information either from Alma Mater Matters Pvt Ltd or from any of its associates.
+\n\n
+7. I give permission to IITIIMShaadi for using my personal information including phone number, address, and e-mail for sending promotional information.
+\n\n
+8. The membership through registration on our website shall be considered to have been entered into at New Delhi, India. It shall be governed by Indian Laws and violation of any of our terms and conditions shall be subjected to courts of appropriate jurisdiction in New Delhi. Disputes if any, arising out of or in any way affecting the membership or interpretation of our terms and conditions shall also be addressed to courts in New Delhi. You are hereby requested to explicitly agree to the jurisdiction of New Delhi courts for disagreements or disputes of any kind.</string>
+<!--ID Proof-->
+    <string name="id_proof_detail">Kindly\n
+1.Mail them to us at documents@iitiimshaadi.com or,\n
+2. Whatsapp on +91- 7042947312 or,\n
+3. Upload here directly\n
+</string>
+
 </resources>

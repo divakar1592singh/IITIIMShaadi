@@ -1,10 +1,12 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -16,29 +18,38 @@ import com.senzecit.iitiimshaadi.utils.Navigator;
 
 public class IntroSliderWebActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "IntroSliderWebActivity";
     Button mLogin, mRegistration;
     WebView mWebView;
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_intro_slider_web);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         init();
         handleWeb();
-
     }
 
     private void init() {
         mWebView = (WebView) findViewById(R.id.idIntroWeb);
         mLogin = (Button) findViewById(R.id.idLoginBtn);
         mRegistration = (Button) findViewById(R.id.idRegisterBtn);
-        mLogin.setOnClickListener(this);
-        mRegistration.setOnClickListener(this);
+
     }
 
-    public void handleWeb() {
+    public void handleWeb()
+    {
+        mLogin.setOnClickListener(this);
+        mRegistration.setOnClickListener(this);
+
         mWebView.setBackgroundColor(Color.TRANSPARENT);
         mWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 
@@ -86,8 +97,9 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.idLoginBtn:
-                Navigator.getClassInstance().navigateToActivity(this, LoginActivity.class);
-//                startActivity(new Intent(IntroSliderWebActivity.this, LoginActivity.class));
+
+//                Navigator.getClassInstance().navigateToActivity(this, SubscriberDashboardActivity.class);
+                startActivity(new Intent(IntroSliderWebActivity.this, LoginActivity.class));
                 break;
             case R.id.idRegisterBtn:
                 Navigator.getClassInstance().navigateToActivity(this, QuickRegistrationActivity.class);
@@ -97,6 +109,7 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
     }
 
     private class MyWebViewClient extends WebViewClient {
+        ProgressDialog progressDialog;
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             return false;
@@ -110,7 +123,7 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
                 progressDialog = new ProgressDialog(IntroSliderWebActivity.this);
                 progressDialog.setMessage("Loading please wait...");
                 progressDialog.show();
-                progressDialog.setCancelable(false);
+                progressDialog.setCancelable(false);ProgressDialog progressDialog;
 
                 // Hide the webview while loading
                 mWebView.setEnabled(false);
@@ -120,14 +133,27 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-                progressDialog = null;
-                mWebView.setEnabled(true);
+           try {
+               if (progressDialog != null) {
+                   if (progressDialog.isShowing()) {
+                       progressDialog.dismiss();
+                       progressDialog = null;
+                       mWebView.setEnabled(true);
 //                }
-            }
+                   }
+               }
+           }catch (NullPointerException npe){
+               Log.e(TAG, "#Error"+npe, npe);
+           }
+
         }
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        IntroSliderWebActivity.this.finish();
     }
 
 }

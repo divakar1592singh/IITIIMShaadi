@@ -21,6 +21,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -39,7 +40,9 @@ import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.SubscriptionPlanActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,6 +81,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
     private Button payNowButton;
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
     AppPrefs prefs;
+    boolean isPlanPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
 
         mAppPreference = new AppPreference();
         prefs = AppController.getInstance().getPrefs();
+        isPlanPage = getIntent().getExtras().getBoolean(Constants.PLAN_STATUS);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
@@ -136,7 +141,36 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
         }
         setupCitrusConfigs();
 
-        launchPayUMoneyFlow();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(isPlanPage == true) {
+            isPlanPage = false;
+            launchPayUMoneyFlow();
+        }else {
+            new AlertDialog.Builder(new ContextThemeWrapper(MakePaymentActivity.this, android.R.style.Theme_Dialog))
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Transaction Cancelled")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Navigator.getClassInstance().navigateToActivity(MakePaymentActivity.this, SubscriptionPlanActivity.class);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                         launchPayUMoneyFlow();
+                         dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
     }
 
     public static String hashCal(String str) {

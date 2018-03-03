@@ -611,7 +611,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         try{
 //        String token = Constants.Token_Paid;
-            String token = prefs.getString(Constants.LOGGED_USERID);
+            String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String caste = mSelectReligionTV.getText().toString() ;
 
@@ -625,7 +625,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     ProgressClass.getProgressInstance().stopProgress();
                     List<String> casteList = response.body().getAllCastes();
 
-                    showDialog(casteList, textView);
+                    if(casteList != null){
+                        showDialog(casteList, textView);
+                    }else {
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "No Data \n Reselect Religion");
+                    }
                 }
             }
 
@@ -636,7 +640,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }catch (NullPointerException npe){
         Log.e("SearchPartnerFragment", " #Error : "+npe, npe);

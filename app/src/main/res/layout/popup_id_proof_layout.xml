@@ -13,11 +13,12 @@
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload Document"
+            android:text="ID Proof Verification"
             android:textSize="16sp"
             android:textColor="@color/colorWhite"/>
     </RelativeLayout>
     <!--UPLOAD BIODATA-->
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -29,10 +30,17 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         >
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/id_proof_detail"
+            android:textColor="@color/colorBlack"
+            />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Upload Biodata"
+            android:text="Upload Id Proof"
             android:textAllCaps="true"
             android:textColor="@color/colorMaroon"/>
         <FrameLayout

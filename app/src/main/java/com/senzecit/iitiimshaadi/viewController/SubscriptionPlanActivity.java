@@ -163,10 +163,12 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     public void transactPayment(){
 
-        if(mIndianRB.isChecked() == true){
+        if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
 
+            boolean status = true;
             Intent intent = new Intent(SubscriptionPlanActivity.this, MakePaymentActivity.class);
             intent.putExtra(Constants.AMOUNT_PAY, mTotalAmountTV.getText().toString());
+            intent.putExtra(Constants.PLAN_STATUS, status);
             startActivity(intent);
 
         }else if(mInterNationalRB.isChecked() == true) {

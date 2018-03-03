@@ -16,7 +16,10 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
 import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
@@ -28,6 +31,7 @@ import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
 import com.senzecit.iitiimshaadi.viewController.NotificationsActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 import com.senzecit.iitiimshaadi.viewController.SuccessStoriesActivity;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 
@@ -191,21 +195,28 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             }
-            case R.id.idLogoutNav: {
-                // Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
-                break;
-            }
             case R.id.idChat:
-                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
+            AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
 //                startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
-                break;
+            break;
             case R.id.idMyFriends:
-                startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
-                break;
+            startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
+            break;
             case R.id.idNotification:
 //                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Notification Alert", "There is no new notification");
-                Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, NotificationsActivity.class);
+            Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, NotificationsActivity.class);
+            break;
+            case R.id.idLogoutNav: {
+                // Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
+                AppPrefs prefs = AppController.getInstance().getPrefs();
+                prefs.remove(Constants.LOGGED_TOKEN);
+                prefs.remove(Constants.LOGGED_USERNAME);
+                prefs.remove(Constants.LOGGED_USERID);
+                prefs.remove(Constants.LOGGED_USER_TYPE);
+                prefs.remove(Constants.LOGGED_EMAIL);
+                Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, SplashActivity.class);
                 break;
+            }
 
         }
     }

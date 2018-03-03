@@ -190,7 +190,7 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_alignParentLeft="true"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/dateOfBirthTVHeader"
@@ -207,7 +207,55 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"
                         android:text="Select DOB"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_10dp"
+                        >
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_shape_maroon"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:paddingLeft="@dimen/size_8_dp"
+                            android:paddingRight="@dimen/size_8_dp">
+                        <Spinner
+                            android:id="@+id/idDaySpnr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_shape_maroon"
+                            android:paddingLeft="@dimen/size_8_dp"
+                            android:paddingRight="@dimen/size_8_dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            >
+                        <Spinner
+                            android:id="@+id/idMonthSpnr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                        </FrameLayout>
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/size_8_dp"
+                            android:paddingRight="@dimen/size_8_dp"
+                            android:background="@drawable/border_shape_maroon"
+                            app:layout_constraintEnd_toEndOf="parent">
+                        <Spinner
+                            android:id="@+id/idYearSpnr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                        </FrameLayout>
+                    </android.support.constraint.ConstraintLayout>
                 </LinearLayout>
 
                 <ImageView
@@ -216,10 +264,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@mipmap/arrow_right"/>
+                    android:src="@mipmap/arrow_right"
+                    android:visibility="gone"/>
             </RelativeLayout>
             <View
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorDarkYellow"/>
@@ -339,11 +388,12 @@
                 </FrameLayout>
 
                 <TextView
+                    android:id="@+id/idTermsCondition"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/frameTerm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="By registering I here by accept Terms and Conditions"
+                    android:text="@string/terms_condition"
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </RelativeLayout>
