@@ -27,6 +27,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
@@ -53,6 +57,10 @@ import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1122,7 +1130,50 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         });
     }
 
-    public void showCaste(final TextView textView){
+    public void showCaste(final TextView textView) {
+
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
+        ProgressClass.getProgressInstance().showDialog(_context);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
+                .addBodyParameter("token", token)
+                .addBodyParameter("religion", preferred_Religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCastes");
+                            List<String> casteList = new ArrayList<>();
+                            if(jsonArray.length() > 0){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String country = jsonArray.getString(i);
+                                casteList.add(country);
+                            }
+                            showDialog(casteList, textView);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
+                    }
+                });
+
+    }
+
+  /*  public void showCaste(final TextView textView){
 
 //        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -1170,6 +1221,6 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         }
 
     }
-
+*/
 
 }

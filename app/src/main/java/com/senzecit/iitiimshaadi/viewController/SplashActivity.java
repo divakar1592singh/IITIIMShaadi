@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 
@@ -40,13 +43,13 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+               /* Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                finish();
+                finish();*/
 //***************************
-              /*  try{
+                try{
                     String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
@@ -86,7 +89,7 @@ public class SplashActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                }*/
+                }
 
             }
         },SPLASH_DISPLAY_TIME);

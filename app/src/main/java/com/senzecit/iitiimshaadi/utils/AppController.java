@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.androidnetworking.AndroidNetworking;
 import com.crashlytics.android.Crashlytics;
 import com.senzecit.iitiimshaadi.payment.AppEnvironment;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -41,6 +42,7 @@ public class AppController extends Application {
         prefs = new AppPrefs(this);
 
         appEnvironment = AppEnvironment.SANDBOX;
+        AndroidNetworking.initialize(getApplicationContext());
     }
 
 

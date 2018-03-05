@@ -22,6 +22,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberAdapter;
@@ -40,6 +44,10 @@ import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -193,7 +201,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
 //     Set Data
         setProfileData();
-
         callWebServiceForSubscribeDashboard();
     }
 
@@ -213,42 +220,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         try{
             String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
             if(userType.equalsIgnoreCase("subscriber_viewer")) {
-                //TEXT
-                mEmailVerifyTV.setText("Email Verified");
-                mMobVerifyTV.setText("Mobile Verified");
-                mDocumentsVerifyTV.setText("Doc Verified");
-                mProofVerifyTV.setText("ID Proof Verified");
-                //BACKGROUND
-                mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-                mMobVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-                mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-                mProofVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-                //DISABLE
-                mEmailVerifyTV.setEnabled(false);
-                mMobVerifyTV.setEnabled(false);
-                mDocumentsVerifyTV.setEnabled(false);
-                mProofVerifyTV.setEnabled(false);
+
+                setVerificationStatus(true, true, true, true, true);
 
             }else if(userType.equalsIgnoreCase("subscriber")){
 
-                //TEXT
-                mEmailVerifyTV.setText("Email Unverified");
-                mMobVerifyTV.setText("Mobile Unverified");
-                mDocumentsVerifyTV.setText("Doc Unverified");
-                mProofVerifyTV.setText("ID Proof Unverified");
-                //BACKGROUND
-                mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-                mMobVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-                mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-                mProofVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-                //DISABLE
-                mEmailVerifyTV.setEnabled(true);
-                mMobVerifyTV.setEnabled(true);
-                mDocumentsVerifyTV.setEnabled(true);
-                mProofVerifyTV.setEnabled(true);
-
-
-
+                setVerificationStatus(false, false, false, false, false);
+                callApiForDocVerification();
             }
 
         }catch (NullPointerException npe){
@@ -773,7 +751,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
                             SubscriberMainResponse mainResponse = response.body();
@@ -974,7 +952,98 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         }
 
-        public void callApiForVerification(){
+        public void callApiForDocVerification(){
+
+//        String token = "d7f43182da347f975350c02c30689e30";
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+
+            AndroidNetworking.post("https://iitiimshaadi.com/api/status_report.json")
+                    .addBodyParameter("token", token)
+                    .setTag("test")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+//                            System.out.println("Output -----> "+response);
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Success!", Toast.LENGTH_LONG).show();
+
+                            try {
+//
+                            JSONObject verifiedObject = response.getJSONObject("verificationData");
+
+                            String email_verified = verifiedObject.getString("emailStatus");
+                            int mob_verified = verifiedObject.getInt("mobileStatus");
+                                int biodata_verified = verifiedObject.getInt("biodata_status");
+                                int doc_verified = verifiedObject.getInt("document_verified");
+                                int idProof_verified = verifiedObject.getInt("identity_proof_verified");
+
+                                boolean email = email_verified.equalsIgnoreCase("Yes")?true:false;
+                                boolean mob = mob_verified == 1?true:false;
+                                boolean bioData = biodata_verified == 1?true:false;
+                                boolean doc = doc_verified == 1?true:false;
+                                boolean idProof = idProof_verified == 1?true:false;
+
+                                setVerificationStatus(email, mob, bioData, doc, idProof);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        @Override
+                        public void onError(ANError error) {
+                            // handle error
+                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Failed!", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+        }
+
+        public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
+
+
+            if(email == true){
+                mEmailVerifyTV.setText("Email Verified");
+                mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mEmailVerifyTV.setEnabled(false);
+            }else if (email == false){
+                mEmailVerifyTV.setText("Email Unverified");
+                mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mEmailVerifyTV.setEnabled(true);
+            }
+
+            if(mob == true){
+                mMobVerifyTV.setText("Mobile Verified");
+                mMobVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mMobVerifyTV.setEnabled(false);
+            }else if (mob == false){
+                mMobVerifyTV.setText("Mobile Unverified");
+                mMobVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mMobVerifyTV.setEnabled(true);
+            }
+
+            if(doc == true){
+                mDocumentsVerifyTV.setText("Doc Verified");
+                mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mDocumentsVerifyTV.setEnabled(false);
+            }else if (doc == false){
+                mDocumentsVerifyTV.setText("Doc Unverified");
+                mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mDocumentsVerifyTV.setEnabled(true);
+            }
+
+            if(idProof == true){
+                mProofVerifyTV.setText("ID Proof Verified");
+                mProofVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mProofVerifyTV.setEnabled(false);
+            }else if (idProof == false){
+                mProofVerifyTV.setText("ID Proof Unverified");
+                mProofVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mProofVerifyTV.setEnabled(true);
+            }
 
         }
 

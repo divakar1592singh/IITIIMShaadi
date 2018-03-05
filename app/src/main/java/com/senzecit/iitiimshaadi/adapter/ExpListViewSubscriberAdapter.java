@@ -27,6 +27,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
@@ -56,6 +60,10 @@ import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -321,7 +329,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         });
 
 
-
                         break;
                     case 6:
                         LayoutInflater infalInflater6 = (LayoutInflater) this._context
@@ -532,7 +539,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         });
 
 
-
                         break;
                     case 1:
                         LayoutInflater infalInflater2 = (LayoutInflater) this._context
@@ -627,7 +633,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 break;
 //CONTACT DETAIL
             case 2:
-                switch (childPosition){
+                switch (childPosition) {
 
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -1680,7 +1686,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 }
                 break;
             case 5:
-                switch (childPosition){
+                switch (childPosition) {
 
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -1729,7 +1735,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 }
                 break;
             case 6:
-                switch (childPosition){
+                switch (childPosition) {
 
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -1922,18 +1928,19 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
 
     public Vector<Dialog> dialogs = new Vector<Dialog>();
+
     private void showDialog(List<String> dataList, final TextView txtListChild) {
 
         int d_width = 100;
         int d_height = 50;
         final ArrayList<SliderDialogListLayoutModel> models = new ArrayList<SliderDialogListLayoutModel>();
-        if(dataList.size()>0){
+        if (dataList.size() > 0) {
             for (int i = 0; i < dataList.size(); i++) {
                 SliderDialogListLayoutModel model = new SliderDialogListLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
             }
-        }else {
+        } else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogListLayoutModel model = new SliderDialogListLayoutModel();
                 model.setName("senzecit " + i);
@@ -1996,20 +2003,20 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
 
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
-    private void showSelectableDialog(List<String> dataList, final TextView txtListChild)
-    {
+
+    private void showSelectableDialog(List<String> dataList, final TextView txtListChild) {
         int d_width = 100;
         int d_height = 50;
         final StringBuilder selectedQualification = new StringBuilder();
         final View[] parentListView = {null};
         final ArrayList<SliderDialogCheckboxLayoutModel> models = new ArrayList<SliderDialogCheckboxLayoutModel>();
-        if(dataList.size()>0){
+        if (dataList.size() > 0) {
             for (int i = 0; i < dataList.size(); i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
             }
-        }else {
+        } else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName("senzecit " + i);
@@ -2024,7 +2031,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         View view = layoutInflater.inflate(R.layout.slider_dialog_checkbox_layout, null);
 
         final ListView listView = (ListView) view.findViewById(R.id.custom_list);
-        Button doneBtn = (Button)view.findViewById(R.id.button_done);
+        Button doneBtn = (Button) view.findViewById(R.id.button_done);
 
 
         SliderDialogCheckboxLayoutAdapter clad1 = new SliderDialogCheckboxLayoutAdapter(_context, models);
@@ -2054,12 +2061,12 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 for (int i = 0; i < models.size(); i++) {
 
                     parentListView[0] = getViewByPosition(i, listView);
-                    CheckBox checkBox = (CheckBox)parentListView[0].findViewById(R.id.idCheckbox);
-                    TextView textView = (TextView)parentListView[0].findViewById(R.id.idText);
+                    CheckBox checkBox = (CheckBox) parentListView[0].findViewById(R.id.idCheckbox);
+                    TextView textView = (TextView) parentListView[0].findViewById(R.id.idText);
 
-                    if (checkBox.isChecked()){
+                    if (checkBox.isChecked()) {
 
-                        selectedQualification.append(textView.getText().toString()+", ");
+                        selectedQualification.append(textView.getText().toString() + ", ");
                     }
 
                 }
@@ -2085,7 +2092,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     }
 
     // GET and SET Value
-    public void showDiet(TextView textView){
+    public void showDiet(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("Vegetarian");
         list.add("Jain");
@@ -2094,7 +2101,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showMaritalStatus(TextView textView){
+
+    public void showMaritalStatus(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("Never Married");
         list.add("Divorced");
@@ -2104,7 +2112,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showDrink(TextView textView){
+
+    public void showDrink(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("No");
         list.add("Yes");
@@ -2112,7 +2121,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showSmoke(TextView textView){
+
+    public void showSmoke(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("No");
         list.add("Yes");
@@ -2120,7 +2130,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showHeight(TextView textView){
+
+    public void showHeight(TextView textView) {
         List<String> list = new ArrayList<>();
 
         list.add("4 ft 5in (134 cm)");
@@ -2155,7 +2166,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-    public void showInterests(TextView textView){
+
+    public void showInterests(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("Music");
         list.add("Books");
@@ -2171,7 +2183,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     }
 
     //RELIGIOUS BACKGROUND
-    public void showReligion(TextView textView){
+    public void showReligion(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("Hindu");
         list.add("Muslim");
@@ -2186,7 +2198,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         showDialog(list, textView);
     }
 
-    public void showMotherTongue(TextView textView){
+    public void showMotherTongue(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("Assamese");
         list.add("Bengali");
@@ -2198,7 +2210,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     }
 
     //EDUCATION & CARREER
-    public void showAnnualIncome(TextView textView){
+    public void showAnnualIncome(TextView textView) {
         List<String> list = new ArrayList<>();
         list.add("less than 10 LPA");
         list.add("11-20 LPA");
@@ -2212,26 +2224,28 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         showDialog(list, textView);
     }
 
-    /** Network Operation */
+    /**
+     * Network Operation
+     */
 
-    public void saveChangesOfCase_0(){
+    public void saveChangesOfCase_0() {
 
 //        ExpListViewSubscriberAdapter.this.notifyDataSetChanged();
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         String name = ExpOwnProfileModel.getInstance().getName();
-       String Profile = ExpOwnProfileModel.getInstance().getProfile();
-       String Age = ExpOwnProfileModel.getInstance().getAge();
-       String Diet = ExpOwnProfileModel.getInstance().getDiet();
-       String Date_Of_Birth = ExpOwnProfileModel.getInstance().getDate_Of_Birth();
-       String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
-       String Drink = ExpOwnProfileModel.getInstance().getDrink();
-       String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
-       String Height = ExpOwnProfileModel.getInstance().getHeight();
-       String Interests = ExpOwnProfileModel.getInstance().getInterests();
+        String Profile = ExpOwnProfileModel.getInstance().getProfile();
+        String Age = ExpOwnProfileModel.getInstance().getAge();
+        String Diet = ExpOwnProfileModel.getInstance().getDiet();
+        String Date_Of_Birth = ExpOwnProfileModel.getInstance().getDate_Of_Birth();
+        String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
+        String Drink = ExpOwnProfileModel.getInstance().getDrink();
+        String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
+        String Height = ExpOwnProfileModel.getInstance().getHeight();
+        String Interests = ExpOwnProfileModel.getInstance().getInterests();
 
-        Toast.makeText(_context, "Output : "+Interests, Toast.LENGTH_LONG).show();
+        Toast.makeText(_context, "Output : " + Interests, Toast.LENGTH_LONG).show();
 
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
@@ -2254,7 +2268,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     BasicProfileResponse basicProfileResponse = response.body();
-                    if(basicProfileResponse.getMessage().getSuccess() != null) {
+                    if (basicProfileResponse.getMessage().getSuccess() != null) {
                         if (basicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
@@ -2263,7 +2277,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -2277,23 +2291,24 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
             }
         });
 
-}
-    public void saveChangesOfCase_1(){
+    }
+
+    public void saveChangesOfCase_1() {
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
-       String Religion = ExpOwnProfileModel.getInstance().getReligion();
-       String Caste = ExpOwnProfileModel.getInstance().getCaste();
-       String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
+        String Religion = ExpOwnProfileModel.getInstance().getReligion();
+        String Caste = ExpOwnProfileModel.getInstance().getCaste();
+        String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
 
-        Toast.makeText(_context, "Output : "+Religion, Toast.LENGTH_LONG).show();
+        Toast.makeText(_context, "Output : " + Religion, Toast.LENGTH_LONG).show();
 
 
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
         request.token = token;
         request.religion = Religion;
-        request.caste= Caste;
+        request.caste = Caste;
         request.mother_tounge = Mother_Tongue;
 
 
@@ -2306,7 +2321,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     ReligiousBackgroundResponse religiousResponse = response.body();
-                    if(religiousResponse.getMessage().getSuccess() != null) {
+                    if (religiousResponse.getMessage().getSuccess() != null) {
                         if (religiousResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
@@ -2315,7 +2330,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -2330,22 +2345,23 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         });
 
     }
-    public void saveChangesOfCase_2(){
 
-       String Phone_Number = ExpOwnProfileModel.getInstance().getPhone_Number();
-       String Alternate_Number = ExpOwnProfileModel.getInstance().getAlternate_Number();
-       String Permanent_Address = ExpOwnProfileModel.getInstance().getPermanent_Address();
-       String Permanent_Country = ExpOwnProfileModel.getInstance().getPermanent_Country();
-       String Permanent_State = ExpOwnProfileModel.getInstance().getPermanent_State();
-       String Permanent_City = ExpOwnProfileModel.getInstance().getPermanent_City();
-       String Zip_Code_Perm = ExpOwnProfileModel.getInstance().getZip_Code_Perm();
-       String Current_Address = ExpOwnProfileModel.getInstance().getCurrent_Address();
-       String Current_Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
-       String Current_State = ExpOwnProfileModel.getInstance().getCurrent_State();
-       String Current_City = ExpOwnProfileModel.getInstance().getCurrent_City();
-       String Zip_Code_Cur = ExpOwnProfileModel.getInstance().getZip_Code_Cur();
+    public void saveChangesOfCase_2() {
 
-        Toast.makeText(_context, "Output : "+Alternate_Number, Toast.LENGTH_LONG).show();
+        String Phone_Number = ExpOwnProfileModel.getInstance().getPhone_Number();
+        String Alternate_Number = ExpOwnProfileModel.getInstance().getAlternate_Number();
+        String Permanent_Address = ExpOwnProfileModel.getInstance().getPermanent_Address();
+        String Permanent_Country = ExpOwnProfileModel.getInstance().getPermanent_Country();
+        String Permanent_State = ExpOwnProfileModel.getInstance().getPermanent_State();
+        String Permanent_City = ExpOwnProfileModel.getInstance().getPermanent_City();
+        String Zip_Code_Perm = ExpOwnProfileModel.getInstance().getZip_Code_Perm();
+        String Current_Address = ExpOwnProfileModel.getInstance().getCurrent_Address();
+        String Current_Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
+        String Current_State = ExpOwnProfileModel.getInstance().getCurrent_State();
+        String Current_City = ExpOwnProfileModel.getInstance().getCurrent_City();
+        String Zip_Code_Cur = ExpOwnProfileModel.getInstance().getZip_Code_Cur();
+
+        Toast.makeText(_context, "Output : " + Alternate_Number, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2354,8 +2370,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         request.token = token;
         request.mobile_no = Phone_Number;
         request.alternate_no = Alternate_Number;
-        request.permanent_address= Permanent_Address;
-        request.permanent_country= Permanent_Country;
+        request.permanent_address = Permanent_Address;
+        request.permanent_country = Permanent_Country;
         request.permanent_state = Permanent_State;
         request.permanent_city = Permanent_City;
         request.permanent_zipcode = Zip_Code_Perm;
@@ -2375,7 +2391,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     ContactDetailsResponse contactResponse = response.body();
-                    if(contactResponse.getMessage().getSuccess() != null) {
+                    if (contactResponse.getMessage().getSuccess() != null) {
                         if (contactResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
@@ -2384,7 +2400,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -2400,16 +2416,17 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
 
     }
-    public void saveChangesOfCase_3(){
 
-       String Father_Name = ExpOwnProfileModel.getInstance().getFather_Name();
-       String Father_Occupation = ExpOwnProfileModel.getInstance().getFather_Occupation();
-       String Mother_Name = ExpOwnProfileModel.getInstance().getMother_Name();
-       String Mother_Occupation = ExpOwnProfileModel.getInstance().getMother_Occupation();
-       String Details_Sisters = ExpOwnProfileModel.getInstance().getDetails_Sisters();
-       String Details_Brothers = ExpOwnProfileModel.getInstance().getDetails_Brothers();
+    public void saveChangesOfCase_3() {
 
-        Toast.makeText(_context, "Output : "+Father_Name, Toast.LENGTH_LONG).show();
+        String Father_Name = ExpOwnProfileModel.getInstance().getFather_Name();
+        String Father_Occupation = ExpOwnProfileModel.getInstance().getFather_Occupation();
+        String Mother_Name = ExpOwnProfileModel.getInstance().getMother_Name();
+        String Mother_Occupation = ExpOwnProfileModel.getInstance().getMother_Occupation();
+        String Details_Sisters = ExpOwnProfileModel.getInstance().getDetails_Sisters();
+        String Details_Brothers = ExpOwnProfileModel.getInstance().getDetails_Brothers();
+
+        Toast.makeText(_context, "Output : " + Father_Name, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2418,7 +2435,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         request.token = token;
         request.father_name = Father_Name;
         request.father_occupation = Father_Occupation;
-        request.mother_name= Mother_Name;
+        request.mother_name = Mother_Name;
         request.mother_occupation = Mother_Occupation;
         request.brother_detail = Details_Brothers;
         request.sister_detail = Details_Sisters;
@@ -2432,7 +2449,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     FamilyDetailResponse familyResponse = response.body();
-                    if(familyResponse.getMessage().getSuccess() != null) {
+                    if (familyResponse.getMessage().getSuccess() != null) {
                         if (familyResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
@@ -2441,7 +2458,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -2457,24 +2474,25 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
 
     }
-    public void saveChangesOfCase_4(){
 
-       String Schooling = ExpOwnProfileModel.getInstance().getSchooling();
-       String Schooling_Year = ExpOwnProfileModel.getInstance().getSchooling_Year();
-       String Graduation = ExpOwnProfileModel.getInstance().getGraduation();
-       String Graduation_College = ExpOwnProfileModel.getInstance().getGraduation_College();
-       String Graduation_Year = ExpOwnProfileModel.getInstance().getGraduation_Year();
-       String Post_Graduation = ExpOwnProfileModel.getInstance().getPost_Graduation();
-       String Post_Graduation_College = ExpOwnProfileModel.getInstance().getPost_Graduation_College();
-       String Post_Graduation_Year = ExpOwnProfileModel.getInstance().getPost_Graduation_Year();
-       String Highest_Education = ExpOwnProfileModel.getInstance().getHighest_Education();
-       String Working_With = ExpOwnProfileModel.getInstance().getWorking_With();
-       String Working_As = ExpOwnProfileModel.getInstance().getWorking_As();
-       String Work_Location = ExpOwnProfileModel.getInstance().getWork_Location();
-       String Annual_Income = ExpOwnProfileModel.getInstance().getAnnual_Income();
-       String LinkdIn_Url = ExpOwnProfileModel.getInstance().getLinkdIn_Url();
+    public void saveChangesOfCase_4() {
 
-        Toast.makeText(_context, "Output : "+Schooling, Toast.LENGTH_LONG).show();
+        String Schooling = ExpOwnProfileModel.getInstance().getSchooling();
+        String Schooling_Year = ExpOwnProfileModel.getInstance().getSchooling_Year();
+        String Graduation = ExpOwnProfileModel.getInstance().getGraduation();
+        String Graduation_College = ExpOwnProfileModel.getInstance().getGraduation_College();
+        String Graduation_Year = ExpOwnProfileModel.getInstance().getGraduation_Year();
+        String Post_Graduation = ExpOwnProfileModel.getInstance().getPost_Graduation();
+        String Post_Graduation_College = ExpOwnProfileModel.getInstance().getPost_Graduation_College();
+        String Post_Graduation_Year = ExpOwnProfileModel.getInstance().getPost_Graduation_Year();
+        String Highest_Education = ExpOwnProfileModel.getInstance().getHighest_Education();
+        String Working_With = ExpOwnProfileModel.getInstance().getWorking_With();
+        String Working_As = ExpOwnProfileModel.getInstance().getWorking_As();
+        String Work_Location = ExpOwnProfileModel.getInstance().getWork_Location();
+        String Annual_Income = ExpOwnProfileModel.getInstance().getAnnual_Income();
+        String LinkdIn_Url = ExpOwnProfileModel.getInstance().getLinkdIn_Url();
+
+        Toast.makeText(_context, "Output : " + Schooling, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2504,7 +2522,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     EducationCareerResponse educationResponse = response.body();
-                    if(educationResponse.getMessage().getSuccess() != null) {
+                    if (educationResponse.getMessage().getSuccess() != null) {
                         if (educationResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
@@ -2513,7 +2531,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -2529,11 +2547,12 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
 
     }
-    public void saveChangesOfCase_5(){
 
-       String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
+    public void saveChangesOfCase_5() {
 
-        Toast.makeText(_context, "Output : "+About_you, Toast.LENGTH_LONG).show();
+        String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
+
+        Toast.makeText(_context, "Output : " + About_you, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2551,7 +2570,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     AboutMeResponse aboutMeResponse = response.body();
-                    if(aboutMeResponse.getMessage().getSuccess() != null) {
+                    if (aboutMeResponse.getMessage().getSuccess() != null) {
                         if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
@@ -2560,7 +2579,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -2576,7 +2595,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     }
 
-    private void showCountry(final TextView textView){
+    private void showCountry(final TextView textView) {
 
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
@@ -2594,8 +2613,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 if (response.isSuccessful()) {
                     ProgressClass.getProgressInstance().stopProgress();
                     List<AllCountry> rawCountryList = response.body().getAllCountries();
-                    for(int i = 0; i<rawCountryList.size(); i++){
-                        if(rawCountryList.get(i).getName() != null){
+                    for (int i = 0; i < rawCountryList.size(); i++) {
+                        if (rawCountryList.get(i).getName() != null) {
                             countryList.add(rawCountryList.get(i).getName());
                         }
                     }
@@ -2613,14 +2632,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         });
     }
 
-    public void showPermanentState(final TextView textView){
+    public void showPermanentState(final TextView textView) {
 
 //        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
         try {
-            if(country.length() > 0) {
+            if (country.length() > 0) {
                 APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
                 ProgressClass.getProgressInstance().showDialog(_context);
                 Call<StateListResponse> call = apiInterface.stateList(token, country);
@@ -2654,109 +2673,103 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 });
 
             }
-        }catch (NullPointerException npe){
+        } catch (NullPointerException npe) {
             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
         }
     }
 
-    public void showCurrentState(final TextView textView){
+    public void showCurrentState(final TextView textView) {
 
 //        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
-        try{
-        if(Country.length() > 0) {
+        try {
+            if (Country.length() > 0) {
 
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<StateListResponse> call = apiInterface.stateList(token, Country);
-        ProgressClass.getProgressInstance().showDialog(_context);
-        call.enqueue(new Callback<StateListResponse>() {
-            @Override
-            public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
+                APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+                Call<StateListResponse> call = apiInterface.stateList(token, Country);
+                ProgressClass.getProgressInstance().showDialog(_context);
+                call.enqueue(new Callback<StateListResponse>() {
+                    @Override
+                    public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        if (response.isSuccessful()) {
 
-                    try{
-                    List<String> stateList = response.body().getAllStates();
-                    if(stateList !=  null){
-                    showDialog(stateList, textView);
+                            try {
+                                List<String> stateList = response.body().getAllStates();
+                                if (stateList != null) {
+                                    showDialog(stateList, textView);
 
-                }else {
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-                }
-            }catch (NullPointerException npe) {
-                Log.e("TAG", "#Error : " + npe, npe);
+                                } else {
+                                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+                                }
+                            } catch (NullPointerException npe) {
+                                Log.e("TAG", "#Error : " + npe, npe);
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<StateListResponse> call, Throwable t) {
+                        call.cancel();
+                        ProgressClass.getProgressInstance().stopProgress();
+                        Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            } else {
                 AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
             }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<StateListResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }else {
-        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-    }
-    }catch (NullPointerException npe){
-        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-    }
+        } catch (NullPointerException npe) {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+        }
 
     }
 
-    public void showCaste(final TextView textView){
+    public void showCaste(final TextView textView) {
 
-//        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
-
-        try{
-        if(religion.length() > 0) {
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-            Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
-            ProgressClass.getProgressInstance().showDialog(_context);
-            call.enqueue(new Callback<CasteAccReligionResponse>() {
-                @Override
-                public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                    if (response.isSuccessful()) {
+        ProgressClass.getProgressInstance().showDialog(_context);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
+                .addBodyParameter("token", token)
+                .addBodyParameter("religion", religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCastes");
+                            List<String> casteList = new ArrayList<>();
+//                            if(jsonArray.length() > 0){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String country = jsonArray.getString(i);
+                                casteList.add(country);
+                            }
+                            showDialog(casteList, textView);
+                        /*}else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }
 
-                        try{
-                        List<String> casteList = response.body().getAllCastes();
-                        if(casteList != null){
-                        showDialog(casteList, textView);
+                    }
 
-                    }else {
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
                         AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
                     }
-                }catch (NullPointerException npe) {
-                    Log.e("TAG", "#Error : " + npe, npe);
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                }
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                    call.cancel();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }else {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-        }
-        }catch(NullPointerException npe) {
-                AlertDialogSingleClick.getInstance().showDialog(_context,"Alert", Constants.religion_error_msg);
-    }
+                });
 
     }
 
