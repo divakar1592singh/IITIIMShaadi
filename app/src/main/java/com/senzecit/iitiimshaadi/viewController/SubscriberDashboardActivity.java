@@ -194,7 +194,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 //     Set Data
         setProfileData();
 
-
         callWebServiceForSubscribeDashboard();
     }
 
@@ -210,6 +209,52 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
         mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
+        try{
+            String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
+            if(userType.equalsIgnoreCase("subscriber_viewer")) {
+                //TEXT
+                mEmailVerifyTV.setText("Email Verified");
+                mMobVerifyTV.setText("Mobile Verified");
+                mDocumentsVerifyTV.setText("Doc Verified");
+                mProofVerifyTV.setText("ID Proof Verified");
+                //BACKGROUND
+                mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mMobVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                mProofVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+                //DISABLE
+                mEmailVerifyTV.setEnabled(false);
+                mMobVerifyTV.setEnabled(false);
+                mDocumentsVerifyTV.setEnabled(false);
+                mProofVerifyTV.setEnabled(false);
+
+            }else if(userType.equalsIgnoreCase("subscriber")){
+
+                //TEXT
+                mEmailVerifyTV.setText("Email Unverified");
+                mMobVerifyTV.setText("Mobile Unverified");
+                mDocumentsVerifyTV.setText("Doc Unverified");
+                mProofVerifyTV.setText("ID Proof Unverified");
+                //BACKGROUND
+                mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mMobVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                mProofVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+                //DISABLE
+                mEmailVerifyTV.setEnabled(true);
+                mMobVerifyTV.setEnabled(true);
+                mDocumentsVerifyTV.setEnabled(true);
+                mProofVerifyTV.setEnabled(true);
+
+
+
+            }
+
+        }catch (NullPointerException npe){
+            Log.e(TAG, " #Error : "+npe, npe);
+        }
+
 
     }
 
@@ -926,6 +971,10 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 Toast.makeText(SubscriberDashboardActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
                 return null;
             }
+
+        }
+
+        public void callApiForVerification(){
 
         }
 

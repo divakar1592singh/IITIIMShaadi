@@ -244,6 +244,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             List<Query> queryList = response.body().getQuery();
                             System.out.print(profileList);
                             communicator.saveSearchPartner(queryList, profileList);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.search_ptnr_err_msg);
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");

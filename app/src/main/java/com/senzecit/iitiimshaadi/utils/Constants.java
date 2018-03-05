@@ -65,5 +65,11 @@ public interface Constants {
     String PLAN_STATUS = "subscription plan status";
 
 
+//    Error
+    String edu_error_msg = "Select Education";
+    String search_ptnr_err_msg = "No Match found";
+    String country_error_msg = "Select Country";
+    String religion_error_msg = "Select Religion";
+
 
 }

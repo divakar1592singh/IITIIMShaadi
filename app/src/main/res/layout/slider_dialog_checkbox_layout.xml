@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
-            android:text="Title"
+            android:text="Choose"
             />
 
     </LinearLayout>

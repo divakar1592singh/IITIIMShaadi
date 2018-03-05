@@ -16,14 +16,13 @@
         android:background="@color/colorLightBlack">
 
         <TextView
-            android:layout_marginLeft="20dp"
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Choose"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:text="Title"
-            />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

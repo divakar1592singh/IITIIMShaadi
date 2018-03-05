@@ -272,9 +272,11 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                             List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList = response.body().getQuery();
 
                             setPaidMatchedListID(queryList, pageCount);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", Constants.search_ptnr_err_msg);
                         }
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
+                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", Constants.search_ptnr_err_msg);
                     }
                 }
             }
@@ -308,6 +310,8 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 //                            System.out.print(profileList);
 
                             setPaidMatchedListByKeyword(queryList, pageCount);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", Constants.search_ptnr_err_msg);
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
@@ -384,6 +388,8 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                             setPaidSearchedData(profileList);
                             setPaidMatchedListByKeyword(queryList, pageCount);
 
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", Constants.search_ptnr_err_msg);
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");

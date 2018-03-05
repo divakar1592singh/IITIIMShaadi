@@ -8,7 +8,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -134,6 +136,28 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         idList.add(10);
         idList.add(11);
         idList.add(12);
+
+        mEducationTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String type = s.toString();
+                if(type.equalsIgnoreCase("Indian")){
+                    mStreamRL.setEnabled(true);
+                }else if(type.equalsIgnoreCase("International")){
+                    mStreamRL.setEnabled(false);
+                }
+            }
+        });
 
     }
 
@@ -307,10 +331,19 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         String sStream = mStreamTV.getText().toString().trim();
         String sInstitution = mInstitutionTV.getText().toString().trim();
 
-        if(!sEducation.startsWith("Select") && !sStream.startsWith("Select")){
-            callWebServiceForStream();
+        if(!sEducation.startsWith("Select")) {
+            if(sEducation.equalsIgnoreCase("Indian")){
+            if (!sStream.startsWith("Select")) {
+                callWebServiceForIndianInstitution();
+            } else {
+                AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "\nCheck 'Education or Stream/Course' selected");
+            }}else if(sEducation.equalsIgnoreCase("International")){
+                callWebServiceForInterNationalInstitution();
+            }
+
+
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Education/Stream/Institution are not selected");
+            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", Constants.edu_error_msg);
         }
 
     }
@@ -320,7 +353,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         String sStream = mStreamTV.getText().toString().trim();
         String sInstitution = mInstitutionTV.getText().toString().trim();
 
-        if(!sEducation.startsWith("Select") && !sStream.startsWith("Select") && !sInstitution.startsWith("Select")){
+        if(!sEducation.startsWith("Select") && !sInstitution.startsWith("Select")){
             Navigator.getClassInstance().navigateToActivity(this, NewUserRegisterActivity.class);
         }else {
             AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", "Education/Stream/Institution are not selected");
@@ -366,12 +399,10 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     }
 
     /** Check API Section */
-    public void callWebServiceForStream() {
+    public void callWebServiceForIndianInstitution() {
 
         String sStream = mStreamTV.getText().toString().trim();
-
         int courseIndex = streamList.indexOf(sStream);
-
         int courseId = idList.get(courseIndex);
 
         QuickRegStreamRequest quickRegStreamRequest = new QuickRegStreamRequest();
@@ -379,6 +410,45 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
 //        quickRegStreamRequest.courseId = 1;
         quickRegStreamRequest.gender = getGender();
         quickRegStreamRequest.courseId = courseId;
+
+        ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
+        Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);
+        call.enqueue(new Callback<QuickRegStreamResponse>() {
+            @Override
+            public void onResponse(Call<QuickRegStreamResponse> call, Response<QuickRegStreamResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    QuickRegStreamResponse courseResponse = response.body();
+                    if(courseResponse.getMessage().getSuccess() != null) {
+                        if (courseResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            Toast.makeText(QuickRegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+                            List<College> collegeList = courseResponse.getCollege();
+                            showInstution(collegeList);
+
+                        } else {
+                            Toast.makeText(QuickRegistrationActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(QuickRegistrationActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuickRegStreamResponse> call, Throwable t) {
+            call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+            Toast.makeText(QuickRegistrationActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+        }
+        });
+
+    }
+
+    public void callWebServiceForInterNationalInstitution() {
+
+        QuickRegStreamRequest quickRegStreamRequest = new QuickRegStreamRequest();
+        quickRegStreamRequest.gender = getGender();
 
         ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
         Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);

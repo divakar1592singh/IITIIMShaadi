@@ -2619,42 +2619,43 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
 
-        if(country.length() > 0) {
+        try {
+            if(country.length() > 0) {
+                APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+                ProgressClass.getProgressInstance().showDialog(_context);
+                Call<StateListResponse> call = apiInterface.stateList(token, country);
+                call.enqueue(new Callback<StateListResponse>() {
+                    @Override
+                    public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        if (response.isSuccessful()) {
 
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-            ProgressClass.getProgressInstance().showDialog(_context);
-            Call<StateListResponse> call = apiInterface.stateList(token, country);
-            call.enqueue(new Callback<StateListResponse>() {
-                @Override
-                public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    if (response.isSuccessful()) {
+                            try {
+                                List<String> stateList = response.body().getAllStates();
+                                if (stateList != null) {
+                                    showDialog(stateList, textView);
+                                } else {
+                                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+                                }
+                            } catch (NullPointerException npe) {
+                                Log.e("TAG", "#Error : " + npe, npe);
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+                            }
 
-                        try{
-                        List<String> stateList = response.body().getAllStates();
-                        if(stateList != null){
-                        showDialog(stateList, textView);
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
                         }
-                    }catch (NullPointerException npe) {
-                        Log.e("TAG", "#Error : " + npe, npe);
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
                     }
 
+                    @Override
+                    public void onFailure(Call<StateListResponse> call, Throwable t) {
+                        call.cancel();
+                        ProgressClass.getProgressInstance().stopProgress();
+                        Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
                     }
-                }
+                });
 
-                @Override
-                public void onFailure(Call<StateListResponse> call, Throwable t) {
-                    call.cancel();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }else {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Country not selected");
+            }
+        }catch (NullPointerException npe){
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
         }
     }
 
@@ -2664,6 +2665,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
+        try{
         if(Country.length() > 0) {
 
             APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -2681,11 +2683,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     showDialog(stateList, textView);
 
                 }else {
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
                 }
             }catch (NullPointerException npe) {
                 Log.e("TAG", "#Error : " + npe, npe);
-                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Country Selected");
+                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
             }
 
                 }
@@ -2700,7 +2702,10 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         });
 
     }else {
-        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Country not selected");
+        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+    }
+    }catch (NullPointerException npe){
+        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
     }
 
     }
@@ -2711,6 +2716,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
 
+        try{
         if(religion.length() > 0) {
             APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
             Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
@@ -2727,11 +2733,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                         showDialog(casteList, textView);
 
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Religion Selected");
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
                     }
                 }catch (NullPointerException npe) {
                     Log.e("TAG", "#Error : " + npe, npe);
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Religion Selected");
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
                 }
 
                     }
@@ -2746,8 +2752,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
             });
 
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(_context,"Alert", "Religion not selected");
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
         }
+        }catch(NullPointerException npe) {
+                AlertDialogSingleClick.getInstance().showDialog(_context,"Alert", Constants.religion_error_msg);
+    }
 
     }
 

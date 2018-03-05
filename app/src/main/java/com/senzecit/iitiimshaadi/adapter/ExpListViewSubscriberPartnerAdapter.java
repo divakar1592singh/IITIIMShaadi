@@ -41,7 +41,6 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious
 import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
 import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
@@ -1076,7 +1075,6 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
 
     }
-
     public void showCaste(final TextView textView){
 
 //        String token = Constants.Token_Paid;
@@ -1084,6 +1082,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
         String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
 
+        try{
         if(preferred_Religion.length() > 0) {
             APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
             Call<CasteAccReligionResponse> call = apiInterface.casteList(token, preferred_Religion);
@@ -1099,11 +1098,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         if(casteList != null){
                         showDialog(casteList, textView);
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Religion Selected");
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
                     }
                 }catch (NullPointerException npe) {
                     Log.e("TAG", "#Error : " + npe, npe);
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Check Religion Selected");
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
                 }
 
                     }
@@ -1117,7 +1116,10 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 }
             });
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Religion not selected.");
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
+        }
+        }catch(NullPointerException npe) {
+            AlertDialogSingleClick.getInstance().showDialog(_context,"Alert", Constants.religion_error_msg);
         }
     }
 
