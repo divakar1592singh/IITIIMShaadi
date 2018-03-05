@@ -2595,41 +2595,45 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     }
 
-    private void showCountry(final TextView textView) {
+    public void showCountry(final TextView textView) {
 
-        final List<String> countryList = new ArrayList<>();
-        countryList.clear();
-
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
-//        String token = Constants.Token_Paid;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(token);
         ProgressClass.getProgressInstance().showDialog(_context);
-        call.enqueue(new Callback<CountryListResponse>() {
-            @Override
-            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<AllCountry> rawCountryList = response.body().getAllCountries();
-                    for (int i = 0; i < rawCountryList.size(); i++) {
-                        if (rawCountryList.get(i).getName() != null) {
-                            countryList.add(rawCountryList.get(i).getName());
+        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCountries");
+                            List<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject countryObject = jsonArray.getJSONObject(i);
+                                String country = countryObject.getString("name");
+                                countryList.add(country);
+                            }
+                            showDialog(countryList, textView);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
                         }
+
                     }
 
-                    showDialog(countryList, textView);
-                }
-            }
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                    }
+                });
 
-            @Override
-            public void onFailure(Call<CountryListResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void showPermanentState(final TextView textView) {

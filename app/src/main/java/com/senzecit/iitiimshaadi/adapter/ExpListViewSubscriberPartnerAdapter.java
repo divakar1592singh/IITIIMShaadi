@@ -1044,46 +1044,48 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     }
 
-    private void showCountry(final TextView textView){
 
-//        AppPrefs prefs = new AppPrefs(_context);
+    public void showCountry(final TextView textView) {
+
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
-//        String token = Constants.Token_Paid;
-
-        final List<String> countryList = new ArrayList<>();
-        countryList.clear();
-
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(token);
         ProgressClass.getProgressInstance().showDialog(_context);
-        call.enqueue(new Callback<CountryListResponse>() {
-            @Override
-            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<AllCountry> rawCountryList = response.body().getAllCountries();
-                    for(int i = 0; i<rawCountryList.size(); i++){
-                        if(rawCountryList.get(i).getName() != null){
-                            countryList.add(rawCountryList.get(i).getName());
+        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCountries");
+                            List<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject countryObject = jsonArray.getJSONObject(i);
+                                String country = countryObject.getString("name");
+                                countryList.add(country);
+                            }
+                            showDialog(countryList, textView);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
                         }
+
                     }
 
-                    showDialog(countryList, textView);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CountryListResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                    }
+                });
 
     }
+
 
     public void showCaste(final TextView textView) {
 
@@ -1127,52 +1129,4 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
 
 
-    /*public void showCaste(final TextView textView){
-
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
-
-        String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
-
-        try{
-        if(preferred_Religion.length() > 0) {
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-            Call<CasteAccReligionResponse> call = apiInterface.casteList(token, preferred_Religion);
-            ProgressClass.getProgressInstance().showDialog(_context);
-            call.enqueue(new Callback<CasteAccReligionResponse>() {
-                @Override
-                public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                    if (response.isSuccessful()) {
-                        ProgressClass.getProgressInstance().stopProgress();
-
-                        try{
-                        List<String> casteList = response.body().getAllCastes();
-                        if(casteList != null){
-                        showDialog(casteList, textView);
-                    }else {
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                    }
-                }catch (NullPointerException npe) {
-                    Log.e("TAG", "#Error : " + npe, npe);
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                }
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                    call.cancel();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }else {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-        }
-        }catch(NullPointerException npe) {
-            AlertDialogSingleClick.getInstance().showDialog(_context,"Alert", Constants.religion_error_msg);
-        }
-    }
-*/
 }
