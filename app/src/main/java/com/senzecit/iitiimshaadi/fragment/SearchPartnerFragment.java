@@ -27,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
@@ -36,9 +40,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccC
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
-import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
-import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
-import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
@@ -47,6 +49,10 @@ import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -423,26 +429,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    /*public void showCountry(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("India");
-        list.add("Russia");
-        list.add("China");
-        list.add("America");
-        list.add("USA");
-
-        showDialog(list, textView);
-    }*/
-/*    public void showCity(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("City-1");
-        list.add("City-2");
-        list.add("City-3");
-        list.add("City-4");
-        list.add("City-5");
-
-        showDialog(list, textView);
-    }*/
     public void showReligion(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Hindu");
@@ -457,15 +443,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         showDialog(list, textView);
     }
-    /*public void showCaste(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Caste1");
-        list.add("Caste2");
-        list.add("Caste3");
-        list.add("Caste4");
-
-        showDialog(list, textView);
-    }*/
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -521,52 +498,59 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         showDialog(list, textView);
     }
 
-    private void showCountry(final TextView textView){
+    public void showCountry(final TextView textView) {
 
-        countryListWithId = new ArrayList<>();
-        List<String> countryList = new ArrayList<>();
-        countryList.clear();
-
-//        AppPrefs prefs = AppController.getInstance().getPrefs();
         String token = prefs.getString(Constants.LOGGED_TOKEN);
-//        String token = Constants.Token_Paid;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CountryListResponse> call = apiInterface.countryList(token);
         ProgressClass.getProgressInstance().showDialog(getActivity());
-        call.enqueue(new Callback<CountryListResponse>() {
-            @Override
-            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<AllCountry> rawCountryList = response.body().getAllCountries();
-                    for(int i = 0; i<rawCountryList.size(); i++){
-                        if(rawCountryList.get(i).getName() != null){
-                            countryList.add(rawCountryList.get(i).getName());
-                            countryResponse = new CountryModel(String.valueOf(rawCountryList.get(i).getOldValue()), rawCountryList.get(i).getName());
-                            countryListWithId.add(countryResponse);
-                        }
-                    }
-                    showDialog(countryList, textView);
-                }
-            }
+        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+//                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCountries");
+                            countryListWithId = new ArrayList<>();
+                            List<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject countryObject = jsonArray.getJSONObject(i);
+                                String countryId = countryObject.getString("old_value");
+                                String country = countryObject.getString("name");
+                                countryList.add(country);
 
-            @Override
-            public void onFailure(Call<CountryListResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                                CountryModel countryModel = new CountryModel(countryId, country);
+                                countryListWithId.add(countryModel);
+                            }
+                            showDialog(countryList, textView);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_not_found);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_not_found);
+                    }
+                });
+
     }
 
     public void showCity(final TextView textView){
 
-        try {
-            final List<String> cityList = new ArrayList<>();
-            cityList.clear();
-            String countryId = null;
+        final List<String> cityList = new ArrayList<>();
+        cityList.clear();
+        String countryId = null;
 
+        if(countryListWithId != null) {
             String country = mPartnerCurrentCountryTV.getText().toString();
             for (int i = 0; i < countryListWithId.size(); i++) {
                 if (countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)) {
@@ -574,83 +558,88 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 }
             }
             System.out.println(countryId);
-
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-            Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
-            ProgressClass.getProgressInstance().showDialog(getActivity());
-            call.enqueue(new Callback<CitiesAccCountryResponse>() {
-                @Override
-                public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
-                    if (response.isSuccessful()) {
-                        ProgressClass.getProgressInstance().stopProgress();
-                        List<AllCity> rawCityList = response.body().getAllCities();
-                        for (int i = 0; i < rawCityList.size(); i++) {
-                            if (rawCityList.get(i).getName() != null) {
-                                cityList.add(rawCityList.get(i).getName());
-                            }
-                        }
-
-                        showDialog(cityList, textView);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
-                    call.cancel();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }catch (NullPointerException npe){
-            Log.e("SearchPartnerFragment", " #Error : "+npe, npe);
-            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Check Country selected!");
         }
 
-    }
-
-    public void showCaste(final TextView textView){
-
-        try{
-//        String token = Constants.Token_Paid;
-            String token = prefs.getString(Constants.LOGGED_TOKEN);
-
-        String caste = mSelectReligionTV.getText().toString() ;
-
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<CasteAccReligionResponse> call = apiInterface.casteList(token, caste);
         ProgressClass.getProgressInstance().showDialog(getActivity());
-        call.enqueue(new Callback<CasteAccReligionResponse>() {
-            @Override
-            public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<String> casteList = response.body().getAllCastes();
+        AndroidNetworking.post("https://iitiimshaadi.com/api/cities.json")
+                .addBodyParameter("country_id", countryId)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCities");
+                            List<String> cityList = new ArrayList<>();
+//                            if(jsonArray.length() > 0){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                String city = object.getString("name");
+                                cityList.add(city);
+                            }
+                            showDialog(cityList, textView);
+                        /*}else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.city_not_found);
+                        }
 
-                    if(casteList != null){
-                        showDialog(casteList, textView);
-                    }else {
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "No Data \n Reselect Religion");
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }catch (NullPointerException npe){
-        Log.e("SearchPartnerFragment", " #Error : "+npe, npe);
-        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", "Check Country selected!");
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_error_msg);
+                    }
+                });
     }
 
+    public void showCaste(final TextView textView) {
+
+        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String religion = mSelectReligionTV.getText().toString();
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
+                .addBodyParameter("token", token)
+                .addBodyParameter("religion", religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCastes");
+                            List<String> casteList = new ArrayList<>();
+//                            if(jsonArray.length() > 0){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String country = jsonArray.getString(i);
+                                casteList.add(country);
+                            }
+                            showDialog(casteList, textView);
+                        /*}else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.cast_not_found);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.religion_error_msg);
+                    }
+                });
+
     }
-
-
-
 
 }

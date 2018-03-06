@@ -2,8 +2,10 @@ package com.senzecit.iitiimshaadi.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +13,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,22 +35,18 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_career.EducationCareerResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.religious_background.ReligiousBackgroundResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.family_detail.FamilyDetailRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.profile.BasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
-import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
-import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
-import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
-import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
@@ -57,6 +54,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -78,7 +76,7 @@ import retrofit2.Response;
  * Created by ravi on 8/11/17.
  */
 
-public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
+public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter implements RxNetworkingClass.CompletionHandler{
 
     private Context _context;
     LayoutInflater layoutInflater;
@@ -86,6 +84,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     AppPrefs prefs;
+    RxNetworkingClass rxNetworkingClass;
 
 
     public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
@@ -96,6 +95,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         this._listDataChild = listChildData;
         prefs = AppController.getInstance().getPrefs();
 
+        rxNetworkingClass = RxNetworkingClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
     }
 
     @Override
@@ -2258,7 +2259,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         request.smoke = Smoke;
         request.interest = Interests;
 
-
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<BasicProfileResponse> call = apiInterface.sendBasicProfile(request);
@@ -2304,45 +2304,15 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
         Toast.makeText(_context, "Output : " + Religion, Toast.LENGTH_LONG).show();
 
-
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
         request.token = token;
         request.religion = Religion;
         request.caste = Caste;
         request.mother_tounge = Mother_Tongue;
 
-
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<ReligiousBackgroundResponse> call = apiInterface.sendReligiousBackground(request);
-        call.enqueue(new Callback<ReligiousBackgroundResponse>() {
-            @Override
-            public void onResponse(Call<ReligiousBackgroundResponse> call, Response<ReligiousBackgroundResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    ReligiousBackgroundResponse religiousResponse = response.body();
-                    if (religiousResponse.getMessage().getSuccess() != null) {
-                        if (religiousResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ReligiousBackgroundResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_POST_URL, request);
 
     }
 
@@ -2638,7 +2608,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 });
 
     }
-
     public void showPermanentState(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2725,7 +2694,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 });
 
     }
-
     public void showCaste(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2770,4 +2738,21 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     }
 
+    @Override
+    public void handle(JSONObject object) {
+
+        String methodName = prefs.getString(ConstantsPref.CALLED_METHOD);
+        if(methodName.equalsIgnoreCase("saveChangesOfCase_1")){
+
+            try {
+                String success = object.getJSONObject("message").getString("success");
+                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", success);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Something went wrong!");
+            }
+
+        }
+    }
 }

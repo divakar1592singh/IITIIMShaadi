@@ -14,6 +14,9 @@ public interface Constants {
     String CHAT_SERVER_URL = "http://35.154.217.225:1107";
     String CHAT_HISTORY_URL = "http://35.154.217.225:1106/";
 
+//    RELATIVE URL
+    String RELIGIOUS_BACKGROUND_POST_URL = "api/religious_background.json";
+
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";
     String Temp_Token = "85cf4ac699215d12fe4e47bf0f4caa6f";
@@ -73,6 +76,7 @@ public interface Constants {
     String cast_not_found = "No Cast Found";
     String country_not_found = "Country Not Found";
     String state_not_found = "State Not Found";
+    String city_not_found = "City Not Found";
 
 
 }

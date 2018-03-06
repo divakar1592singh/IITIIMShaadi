@@ -777,11 +777,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     public void callWebServiceForEmailVerification(){
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
         emailVerirequest.token = token;
-        emailVerirequest.email = prefs.getString(Constants.LOGGED_EMAIL);;
 
         Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -952,7 +950,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         }
 
-        public void callApiForDocVerification(){
+    public void callApiForDocVerification(){
 
 //        String token = "d7f43182da347f975350c02c30689e30";
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -1002,7 +1000,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         }
 
-        public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
+    public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
 
 
             if(email == true){

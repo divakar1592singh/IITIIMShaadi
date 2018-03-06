@@ -471,7 +471,9 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String sDay = mDaySPN.getSelectedItem().toString();
         int posMonth = mMonthSPN.getSelectedItemPosition();
         String sYear = mYearSPN.getSelectedItem().toString();
-        String sDateOfBirth = sDay+"/"+posMonth+"/"+sYear;
+//        String sDateOfBirth = sDay+"/"+posMonth+"/"+sYear;
+        String sDateOfBirth = sYear+"-"+posMonth+"-"+sDay;
+
 
         Toast.makeText(NewUserRegisterActivity.this, "Out-"+sDateOfBirth, Toast.LENGTH_LONG).show();
 

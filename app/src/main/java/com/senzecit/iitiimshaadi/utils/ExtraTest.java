@@ -8,10 +8,6 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
-import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
-import com.senzecit.iitiimshaadi.model.common.country.AllCountry;
-import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
-import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 

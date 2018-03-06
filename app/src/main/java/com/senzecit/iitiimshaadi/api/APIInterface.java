@@ -60,10 +60,7 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
-import com.senzecit.iitiimshaadi.model.common.caste.CasteAccReligionResponse;
 import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
-import com.senzecit.iitiimshaadi.model.common.country.CountryListResponse;
-import com.senzecit.iitiimshaadi.model.common.state.StateListResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 
 import okhttp3.MultipartBody;
@@ -142,21 +139,23 @@ public interface APIInterface {
     Call<IdVerificationResponse> postGradCertUpload(@Part MultipartBody.Part file, @Part("post_graduate") RequestBody requestBody, @Query("token") String token);
 
 //    ========COMMON========
-    @FormUrlEncoded
+ /*   @FormUrlEncoded
     @POST("api/country.json")
     Call<CountryListResponse> countryList(@Field("token")String token);
 
     @FormUrlEncoded
     @POST("api/states_acc_country.json")
     Call<StateListResponse> stateList(@Field("token")String token, @Field("country")String country );
-
+*/
     @FormUrlEncoded
     @POST("api/cities.json")
     Call<CitiesAccCountryResponse> cityList(@Field("country_id")String country_id);
 
+/*
     @FormUrlEncoded
     @POST("api/caste.json")
     Call<CasteAccReligionResponse> casteList(@Field("token")String token, @Field("religion")String religion );
+*/
 
 //========================
     /** Own Profile */
