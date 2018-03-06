@@ -72,6 +72,7 @@ public interface Constants {
     String religion_error_msg = "Select Religion";
     String cast_not_found = "No Cast Found";
     String country_not_found = "Country Not Found";
+    String state_not_found = "State Not Found";
 
 
 }

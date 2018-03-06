@@ -2595,6 +2595,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     }
 
+
+
+
     public void showCountry(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2638,98 +2641,88 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     public void showPermanentState(final TextView textView) {
 
-//        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
-
-        try {
-            if (country.length() > 0) {
-                APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-                ProgressClass.getProgressInstance().showDialog(_context);
-                Call<StateListResponse> call = apiInterface.stateList(token, country);
-                call.enqueue(new Callback<StateListResponse>() {
+        ProgressClass.getProgressInstance().showDialog(_context);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
+                .addBodyParameter("token", token)
+                .addBodyParameter("country", country)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
-                        if (response.isSuccessful()) {
-
-                            try {
-                                List<String> stateList = response.body().getAllStates();
-                                if (stateList != null) {
-                                    showDialog(stateList, textView);
-                                } else {
-                                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-                                }
-                            } catch (NullPointerException npe) {
-                                Log.e("TAG", "#Error : " + npe, npe);
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allStates");
+                            List<String> stateList = new ArrayList<>();
+//                            if(jsonArray.length() > 0){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String sState = jsonArray.getString(i);
+                                stateList.add(sState);
                             }
-
+                            showDialog(stateList, textView);
+                        /*}else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.state_not_found);
                         }
+
                     }
 
                     @Override
-                    public void onFailure(Call<StateListResponse> call, Throwable t) {
-                        call.cancel();
+                    public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
                     }
                 });
 
-            }
-        } catch (NullPointerException npe) {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-        }
     }
-
     public void showCurrentState(final TextView textView) {
 
-//        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
-
-        try {
-            if (Country.length() > 0) {
-
-                APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-                Call<StateListResponse> call = apiInterface.stateList(token, Country);
-                ProgressClass.getProgressInstance().showDialog(_context);
-                call.enqueue(new Callback<StateListResponse>() {
+        String country = ExpOwnProfileModel.getInstance().getCurrent_Country();
+        ProgressClass.getProgressInstance().showDialog(_context);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
+                .addBodyParameter("token", token)
+                .addBodyParameter("country", country)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(Call<StateListResponse> call, Response<StateListResponse> response) {
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
-                        if (response.isSuccessful()) {
-
-                            try {
-                                List<String> stateList = response.body().getAllStates();
-                                if (stateList != null) {
-                                    showDialog(stateList, textView);
-
-                                } else {
-                                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-                                }
-                            } catch (NullPointerException npe) {
-                                Log.e("TAG", "#Error : " + npe, npe);
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allStates");
+                            List<String> stateList = new ArrayList<>();
+//                            if(jsonArray.length() > 0){
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String sState = jsonArray.getString(i);
+                                stateList.add(sState);
                             }
-
+                            showDialog(stateList, textView);
+                        /*}else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                        }*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.state_not_found);
                         }
+
                     }
 
                     @Override
-                    public void onFailure(Call<StateListResponse> call, Throwable t) {
-                        call.cancel();
+                    public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
                     }
                 });
-
-            } else {
-                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-            }
-        } catch (NullPointerException npe) {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_error_msg);
-        }
 
     }
 

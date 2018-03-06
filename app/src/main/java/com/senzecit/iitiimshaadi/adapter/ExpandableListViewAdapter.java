@@ -2326,8 +2326,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         showSelectableDialog(list, textView);
     }
-
-    //RELIGIOUS BACKGROUND
     public void showReligion(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Hindu");
@@ -2342,7 +2340,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-
     public void showMotherTongue(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("Assamese");
@@ -2353,8 +2350,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
         showDialog(list, textView);
     }
-
-    //EDUCATION & CARREER
     public void showAnnualIncome(TextView textView){
         List<String> list = new ArrayList<>();
         list.add("less than 10 LPA");
@@ -2735,6 +2730,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     }
 
+
     public void showCountry(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -2775,7 +2771,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 });
 
     }
-
 
     public void showPermanentState(final TextView textView){
 
@@ -2908,56 +2903,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     }
 
-
-    /*public void showCaste(final TextView textView){
-
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_USERID);
-        String religion = ExpOwnProfileModel.getInstance().getReligion();
-
-        try{
-            if(religion.length() > 0) {
-                APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-                Call<CasteAccReligionResponse> call = apiInterface.casteList(token, religion);
-                ProgressClass.getProgressInstance().showDialog(_context);
-                call.enqueue(new Callback<CasteAccReligionResponse>() {
-                    @Override
-                    public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                        if (response.isSuccessful()) {
-                            ProgressClass.getProgressInstance().stopProgress();
-                            List<String> casteList = response.body().getAllCastes();
-                            try {
-                                if (casteList != null) {
-                                    showDialog(casteList, textView);
-                                } else {
-                                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                                }
-                            } catch (NullPointerException npe) {
-                                Log.e("TAG", "#Error : " + npe, npe);
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                        call.cancel();
-                        ProgressClass.getProgressInstance().stopProgress();
-                        Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            }
-        }catch (NullPointerException npe){
-            Log.e("TAG", "#Error : "+npe, npe);
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-        }
-    }*/
-
     public void formattedDate(TextView tv, String _date) {
 
 //        String _date = "1988-08-28";
-
         try {
 
             APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);

@@ -1177,54 +1177,5 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     }
 
-  /*  public void showCaste(final TextView textView){
-
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
-
-        String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
-
-        try{
-        if(preferred_Religion.length() > 0 ) {
-
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-            Call<CasteAccReligionResponse> call = apiInterface.casteList(token, preferred_Religion);
-            ProgressClass.getProgressInstance().showDialog(_context);
-            call.enqueue(new Callback<CasteAccReligionResponse>() {
-                @Override
-                public void onResponse(Call<CasteAccReligionResponse> call, Response<CasteAccReligionResponse> response) {
-                    if (response.isSuccessful()) {
-                        ProgressClass.getProgressInstance().stopProgress();
-                        List<String> casteList = response.body().getAllCastes();
-                        try{
-                            if(casteList != null) {
-                                showDialog(casteList, textView);
-                            }else {
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                            }
-                        }catch (NullPointerException npe) {
-                            Log.e("TAG", "#Error : " + npe, npe);
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CasteAccReligionResponse> call, Throwable t) {
-                    call.cancel();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }else {
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-        }
-        }catch (NullPointerException npe){
-            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
-        }
-
-    }
-*/
 
 }

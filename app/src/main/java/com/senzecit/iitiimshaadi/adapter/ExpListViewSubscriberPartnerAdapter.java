@@ -1086,7 +1086,6 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     }
 
-
     public void showCaste(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
