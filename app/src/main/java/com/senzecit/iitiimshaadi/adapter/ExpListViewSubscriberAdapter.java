@@ -2,10 +2,8 @@ package com.senzecit.iitiimshaadi.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,14 +31,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.api.RxNetworkingClass;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_career.EducationCareerResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
@@ -64,19 +55,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by ravi on 8/11/17.
  */
 
-public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter implements RxNetworkingClass.CompletionHandler{
+public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter implements RxNetworkingForObjectClass.CompletionHandler{
 
     private Context _context;
     LayoutInflater layoutInflater;
@@ -84,7 +72,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     AppPrefs prefs;
-    RxNetworkingClass rxNetworkingClass;
+    RxNetworkingForObjectClass rxNetworkingClass;
 
 
     public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
@@ -95,7 +83,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         this._listDataChild = listChildData;
         prefs = AppController.getInstance().getPrefs();
 
-        rxNetworkingClass = RxNetworkingClass.getInstance();
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
         rxNetworkingClass.setCompletionHandler(this);
     }
 
@@ -2094,134 +2082,69 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
     // GET and SET Value
     public void showDiet(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("Vegetarian");
-        list.add("Jain");
-        list.add("Vegan");
-        list.add("Non Vegetarian");
 
+        String[] ar = _context.getResources().getStringArray(R.array.diet_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showMaritalStatus(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("Never Married");
-        list.add("Divorced");
-        list.add("Divorced Awaited");
-        list.add("Widow/Widower");
-        list.add("Any");
 
+        String[] ar = _context.getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showDrink(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("No");
-        list.add("Yes");
-        list.add("Occasionally");
 
+        String[] ar = _context.getResources().getStringArray(R.array.yes_no_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showSmoke(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("No");
-        list.add("Yes");
-        list.add("Occasionally");
+
+        String[] ar = _context.getResources().getStringArray(R.array.yes_no_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showDialog(list, textView);
 
         showDialog(list, textView);
     }
 
     public void showHeight(TextView textView) {
-        List<String> list = new ArrayList<>();
 
-        list.add("4 ft 5in (134 cm)");
-        list.add("4 ft 6in (137 cm)");
-        list.add("4 ft 7in (139 cm)");
-        list.add("4 ft 8in (142 cm)");
-        list.add("4 ft 9in (144 cm)");
-        list.add("4 ft 10in (147 cm)");
-        list.add("4 ft 11in (149 cm)");
-        list.add("5 ft 0in (152 cm)");
-        list.add("5 ft 1in (154 cm)");
-        list.add("5 ft 2in (157 cm)");
-        list.add("5 ft 3in (160 cm)");
-        list.add("5 ft 4in (162 cm)");
-        list.add("5 ft 5in (165 cm)");
-        list.add("5 ft 6in (167 cm)");
-        list.add("5 ft 7in (170 cm)");
-        list.add("5 ft 8in (172 cm)");
-        list.add("5 ft 9in (175 cm)");
-        list.add("5 ft 10in (177 cm)");
-        list.add("5 ft 11in (180 cm)");
-        list.add("6 ft 0in (182 cm)");
-        list.add("6 ft 1in (185 cm)");
-        list.add("6 ft 2in (187 cm)");
-        list.add("6 ft 3in (190 cm)");
-        list.add("6 ft 4in (193 cm)");
-        list.add("6 ft 5in (195 cm)");
-        list.add("6 ft 6in (198 cm)");
-        list.add("6 ft 7in (200 cm)");
-        list.add("6 ft 8in (203 cm)");
-
-
+        String[] ar = _context.getResources().getStringArray(R.array.height_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showInterests(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("Music");
-        list.add("Books");
-        list.add("Travelling");
-        list.add("Cooking");
-        list.add("Movies");
-        list.add("Sports");
-        list.add("Shopping");
-        list.add("Net Surfing");
-        list.add("Others");
 
+        String[] ar = _context.getResources().getStringArray(R.array.interest_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showSelectableDialog(list, textView);
     }
 
     //RELIGIOUS BACKGROUND
     public void showReligion(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("Hindu");
-        list.add("Muslim");
-        list.add("Christian");
-        list.add("Sikh");
-        list.add("Parsi");
-        list.add("Jain");
-        list.add("Buddhist");
-        list.add("Jewish");
-        list.add("Other");
 
+        String[] ar = _context.getResources().getStringArray(R.array.religion_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showMotherTongue(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("Assamese");
-        list.add("Bengali");
-        list.add("English");
-        list.add("Gujarati");
-        list.add("Hindi");
 
+        String[] ar = _context.getResources().getStringArray(R.array.mother_tongue_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     //EDUCATION & CARREER
     public void showAnnualIncome(TextView textView) {
-        List<String> list = new ArrayList<>();
-        list.add("less than 10 LPA");
-        list.add("11-20 LPA");
-        list.add("21-30 LPA");
-        list.add("31-50 LPA");
-        list.add("51-75 LPA");
-        list.add("76-100 LPA");
-        list.add("More than 100 LPA");
-        list.add("Not Disclosed");
 
+        String[] ar = _context.getResources().getStringArray(R.array.ann_income_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
@@ -2240,11 +2163,18 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Age = ExpOwnProfileModel.getInstance().getAge();
         String Diet = ExpOwnProfileModel.getInstance().getDiet();
         String Date_Of_Birth = ExpOwnProfileModel.getInstance().getDate_Of_Birth();
+
         String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
+        String[] marital_statusArr = new String[1];
+        marital_statusArr[0] = Marital_Status;
+
         String Drink = ExpOwnProfileModel.getInstance().getDrink();
         String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
         String Height = ExpOwnProfileModel.getInstance().getHeight();
+
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
+        String[] interestsArr = new String[1];
+        interestsArr[0] = Interests;
 
         Toast.makeText(_context, "Output : " + Interests, Toast.LENGTH_LONG).show();
 
@@ -2254,15 +2184,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.health = "";
         request.height = Height;
         request.diet = Diet;
-        request.marital_status = Marital_Status;
+        request.marital_status = marital_statusArr;
         request.drink = Drink;
         request.smoke = Smoke;
-        request.interest = Interests;
-
+        request.interest = interestsArr;
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE, request, methodName);
 
     }
 
@@ -2285,7 +2214,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
 
     }
 
@@ -2327,7 +2256,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CONTACT_DETAILS, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CONTACT_DETAILS, request, methodName);
 
 
     }
@@ -2357,7 +2286,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.FAMILY_DETAILS, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.FAMILY_DETAILS, request, methodName);
 
     }
 
@@ -2402,7 +2331,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER, request, methodName);
 
     }
 
@@ -2420,12 +2349,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.ABOUT_ME, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.ABOUT_ME, request, methodName);
 
     }
-
-
-
 
     public void showCountry(final TextView textView) {
 
@@ -2572,20 +2498,15 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                         try {
                             JSONArray jsonArray = response.getJSONArray("allCastes");
                             List<String> casteList = new ArrayList<>();
-//                            if(jsonArray.length() > 0){
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 String country = jsonArray.getString(i);
                                 casteList.add(country);
                             }
                             showDialog(casteList, textView);
-                        /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
-                        }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
                         }
-
                     }
 
                     @Override
@@ -2594,7 +2515,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                         AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
                     }
                 });
-
     }
 
     @Override

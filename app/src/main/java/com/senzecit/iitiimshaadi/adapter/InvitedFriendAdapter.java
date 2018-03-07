@@ -3,13 +3,16 @@ package com.senzecit.iitiimshaadi.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
@@ -45,11 +48,13 @@ public class InvitedFriendAdapter extends RecyclerView.Adapter<InvitedFriendAdap
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
+        ImageView mFriendIV;
         TextView mUserIdTV, mUserNameTv, mReligionTv, mEducationTV, mJobLocTv;
         Button mCancelReqBtn, mShortlistBtn, mViewProfileBtn;
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            mFriendIV = itemView.findViewById(R.id.idFriendIV);
             mUserIdTV = itemView.findViewById(R.id.idUserIDTV);
             mUserNameTv = itemView.findViewById(R.id.idUserNameTV);
             mReligionTv = itemView.findViewById(R.id.idReligionTV);
@@ -75,6 +80,14 @@ public class InvitedFriendAdapter extends RecyclerView.Adapter<InvitedFriendAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         UserDetail userDetail = allFriendList.get(position).getUserDetail();
+
+        try {
+            String userId = String.valueOf(userDetail.getUserId());
+            String partUrl = userDetail.getProfileImage();
+            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mFriendIV);
+        }catch (NullPointerException npe){
+            Log.e("TAG", " #Error : "+npe, npe);
+        }
 
         holder.mUserIdTV.setText(String.valueOf(userDetail.getUserId()));
         holder.mUserNameTv.setText(userDetail.getName());

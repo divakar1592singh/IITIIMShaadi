@@ -1,3 +1,119 @@
 <resources>
 
+    <array name="diet_ar">
+    <item>Vegetarian</item>
+    <item>Jain</item>
+    <item>Vegan</item>
+    <item>Non Vegetarian</item>
+    </array>
+
+    <array name="marital_status_ar">
+    <item>Never Married</item>
+    <item>Divorced</item>
+    <item>Divorced Awaited</item>
+    <item>Widow/Widower</item>
+    <item>Any</item>
+    </array>
+    
+    <array name="yes_no_ar">
+    <item>No</item>
+    <item>Yes</item>
+    <item>Occasionally</item>
+    </array>
+    
+    <array name="height_ar">
+            <item>4 ft 5in (134 cm)</item>
+            <item>4 ft 6in (137 cm)</item>
+            <item>4 ft 7in (139 cm)</item>
+            <item>4 ft 8in (142 cm)</item>
+            <item>4 ft 9in (144 cm)</item>
+            <item>4 ft 10in (147 cm)</item>
+            <item>4 ft 11in (149 cm)</item>
+            <item>5 ft 0in (152 cm)</item>
+            <item>5 ft 1in (154 cm)</item>
+            <item>5 ft 2in (157 cm)</item>
+            <item>5 ft 3in (160 cm)</item>
+            <item>5 ft 4in (162 cm)</item>
+            <item>5 ft 5in (165 cm)</item>
+            <item>5 ft 6in (167 cm)</item>
+            <item>5 ft 7in (170 cm)</item>
+            <item>5 ft 8in (172 cm)</item>
+            <item>5 ft 9in (175 cm)</item>
+            <item>5 ft 10in (177 cm)</item>
+            <item>5 ft 11in (180 cm)</item>
+            <item>6 ft 0in (182 cm)</item>
+            <item>6 ft 1in (185 cm)</item>
+            <item>6 ft 2in (187 cm)</item>
+            <item>6 ft 3in (190 cm)</item>
+            <item>6 ft 4in (193 cm)</item>
+            <item>6 ft 5in (195 cm)</item>
+            <item>6 ft 6in (198 cm)</item>
+            <item>6 ft 7in (200 cm)</item>
+            <item>6 ft 8in (203 cm)</item>
+    </array>
+    
+    <array name="interest_ar">
+            <item>Music</item>
+            <item>Books</item>
+            <item>Travelling</item>
+            <item>Cooking</item>
+            <item>Movies</item>
+            <item>Sports</item>
+            <item>Shopping</item>
+            <item>Net Surfing</item>
+            <item>Others</item>
+    </array>
+    
+    <array name="religion_ar">
+            <item>Hindu</item>
+            <item>Muslim</item>
+            <item>Christian</item>
+            <item>Sikh</item>
+            <item>Parsi</item>
+            <item>Jain</item>
+            <item>Buddhist</item>
+            <item>Jewish</item>
+            <item>Other</item>
+    </array>
+
+    <array name="mother_tongue_ar">
+        <item>
+            <item>Assamese</item>
+            <item>Bengali</item>
+            <item>English</item>
+            <item>Gujarati</item>
+            <item>Hindi</item>
+        </item>
+    </array>
+    
+    <array name="ann_income_ar">
+        <item>less than 10 LPA</item>
+            <item>11-20 LPA</item>
+            <item>21-30 LPA</item>
+            <item>31-50 LPA</item>
+            <item>51-75 LPA</item>
+            <item>76-100 LPA</item>
+            <item>More than 100 LPA</item>
+            <item>Not Disclosed</item>
+    </array>
+    
+    <array name="education_ar">
+        <item>Any</item>
+        <item>Actuary</item>
+        <item>Hotel Management</item>
+        <item>Management</item>
+        <item>Engineering/Architecture</item>
+        <item>Medical</item>
+        <item>CA/CS/ICWA/CFA</item>
+        <item>Law</item>
+        <item>Design/Fashion Design</item>
+        <item>Government Officer</item>
+        <item>Social Work (Masters)</item>
+        <item>Media Communication (Masters)</item>
+        <item>Performing and Fine Arts</item>
+        <item>Masters</item>
+        <item>Research (Ph.D/FPM)</item>
+        <item>Others</item>
+    </array>
+    
 </resources>

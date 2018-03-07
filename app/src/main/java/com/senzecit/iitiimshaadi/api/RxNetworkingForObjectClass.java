@@ -18,22 +18,22 @@ import org.json.JSONObject;
  */
 
 
-public class RxNetworkingClass {
+public class RxNetworkingForObjectClass {
 
 //    ------------------SINGLETON
-    private static RxNetworkingClass instance = null;
+    private static RxNetworkingForObjectClass instance = null;
 
     CompletionHandler handler;
     public void setCompletionHandler(CompletionHandler handler){
         this.handler = handler;
     }
 
-    private RxNetworkingClass(){ }
+    private RxNetworkingForObjectClass(){ }
 
-    public static RxNetworkingClass getInstance()
+    public static RxNetworkingForObjectClass getInstance()
     {
         if(instance == null)
-        { instance = new RxNetworkingClass(); }
+        { instance = new RxNetworkingForObjectClass(); }
         return instance;
     }
 

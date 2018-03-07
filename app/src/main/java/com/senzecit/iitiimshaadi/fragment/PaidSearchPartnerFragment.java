@@ -60,6 +60,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -529,110 +530,43 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
 
     public void showReligion(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Hindu");
-        list.add("Muslim");
-        list.add("Christian");
-        list.add("Sikh");
-        list.add("Parsi");
-        list.add("Jain");
-        list.add("Buddhist");
-        list.add("Jewish");
-        list.add("Other");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.religion_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showMotherTongue(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Assamese");
-        list.add("Bengali");
-        list.add("English");
-        list.add("Gujarati");
-        list.add("Hindi");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.mother_tongue_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
     public void showMaritalStatus(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Never Married");
-        list.add("Divorced");
-        list.add("Divorced Awaited");
-        list.add("Widow/Widower");
-        list.add("Any");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
     public void showEducation(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Any");
-        list.add("Actuary");
-        list.add("Hotel Management");
-        list.add("Management");
-        list.add("Engineering/Architecture");
-        list.add("Medical");
-        list.add("CA/CS/ICWA/CFA");
-        list.add("Law");
-        list.add("Design/Fashion Design");
-        list.add("Government Officer");
-        list.add("Social Work (Masters)");
-        list.add("Media Communication (Masters)");
-        list.add("Performing and Fine Arts");
-        list.add("Masters");
-        list.add("Research (Ph.D/FPM)");
-        list.add("Others");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.education_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showSelectableDialog(list, textView);
     }
     public void showAnnualIncome(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("less than 10 LPA");
-        list.add("11-20 LPA");
-        list.add("21-30 LPA");
-        list.add("31-50 LPA");
-        list.add("51-75 LPA");
-        list.add("76-100 LPA");
-        list.add("More than 100 LPA");
-        list.add("Not Disclosed");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.ann_income_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 
     public void showHeight(TextView textView){
-        List<String> list = new ArrayList<>();
 
-        list.add("4 ft 5in (134 cm)");
-        list.add("4 ft 6in (137 cm)");
-        list.add("4 ft 7in (139 cm)");
-        list.add("4 ft 8in (142 cm)");
-        list.add("4 ft 9in (144 cm)");
-        list.add("4 ft 10in (147 cm)");
-        list.add("4 ft 11in (149 cm)");
-        list.add("5 ft 0in (152 cm)");
-        list.add("5 ft 1in (154 cm)");
-        list.add("5 ft 2in (157 cm)");
-        list.add("5 ft 3in (160 cm)");
-        list.add("5 ft 4in (162 cm)");
-        list.add("5 ft 5in (165 cm)");
-        list.add("5 ft 6in (167 cm)");
-        list.add("5 ft 7in (170 cm)");
-        list.add("5 ft 8in (172 cm)");
-        list.add("5 ft 9in (175 cm)");
-        list.add("5 ft 10in (177 cm)");
-        list.add("5 ft 11in (180 cm)");
-        list.add("6 ft 0in (182 cm)");
-        list.add("6 ft 1in (185 cm)");
-        list.add("6 ft 2in (187 cm)");
-        list.add("6 ft 3in (190 cm)");
-        list.add("6 ft 4in (193 cm)");
-        list.add("6 ft 5in (195 cm)");
-        list.add("6 ft 6in (198 cm)");
-        list.add("6 ft 7in (200 cm)");
-        list.add("6 ft 8in (203 cm)");
-
+        String[] ar = getActivity().getResources().getStringArray(R.array.height_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-
     public void showCountry(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -675,7 +609,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 });
 
     }
-
     public void showCity(final TextView textView){
 
         final List<String> cityList = new ArrayList<>();
@@ -758,7 +691,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });*/
     }
-
     public void showLocation(final TextView textView){
 
         final List<String> cityList = new ArrayList<>();
@@ -802,7 +734,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
     }
-
     public void showCaste(final TextView textView) {
 
         String token = prefs.getString(Constants.LOGGED_TOKEN);
@@ -846,7 +777,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 });
 
     }
-
     public interface PaidSearchPartnerFragmentCommunicator{
         void saveAndSearchPaidPartner();
 //        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);

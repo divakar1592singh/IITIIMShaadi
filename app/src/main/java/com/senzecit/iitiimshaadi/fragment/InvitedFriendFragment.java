@@ -196,8 +196,6 @@ public class InvitedFriendFragment extends Fragment {
     }
 
 
-
-
     public interface OnInvitedFriendListener {
         void onFragmentSetInvitedFriend(int size);
         void onFragmentCancelReq(String typeOf, String otherUserId);

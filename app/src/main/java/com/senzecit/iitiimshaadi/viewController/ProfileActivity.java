@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.test.mock.MockPackageManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +102,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_profile);
 
         apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -132,9 +134,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.refresh_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                callWebServiceMyProfile();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void init(){
 
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
+
         mTitle = (TextView) findViewById(R.id.toolbar_title);
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
@@ -155,6 +177,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void handleView(){
 
+        setSupportActionBar(mToolbar);
         mScrollView.smoothScrollTo(0,0);
         mScrollView.setFocusableInTouchMode(true);
         mScrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -174,7 +197,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String userName = prefs.getString(Constants.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(ProfileActivity.this).load(profileUri).into(mProfileCIV);
+            Glide.with(ProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
@@ -441,7 +464,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         return false;
     }
 
-
     private File createNewFile(String prefix){
         if(prefix==null || "".equalsIgnoreCase(prefix)){
             prefix="IMG_";
@@ -467,7 +489,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
     // ------------------------------------------------------
 
-    //
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
@@ -615,11 +636,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
+        ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<MyProfileResponse> call = apiInterface.myProfileData(token);
         call.enqueue(new Callback<MyProfileResponse>() {
             @Override
             public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
                     if(response.body() != null){
@@ -631,6 +654,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onFailure(Call<MyProfileResponse> call, Throwable t) {
                 call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(ProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
@@ -643,7 +667,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(myProfileResponse.getBasicData() != null){
             String userId = String.valueOf(myProfileResponse.getEmailData().getId());
             String partUrl = myProfileResponse.getBasicData().getProfileImage();
-            Glide.with(ProfileActivity.this).load(Constants.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.ic_camera).into(mProfileCIV);
+            prefs.putString(Constants.LOGGED_USER_PIC, partUrl);
+            Glide.with(ProfileActivity.this).load(Constants.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.profile_img1).into(mProfileCIV);
+
         }
 
         prepareListData();
@@ -685,6 +711,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         if (response.body().getMessage().getSuccess().equalsIgnoreCase("Your Profile picture has been saved.")) {
 
                             Toast.makeText(ProfileActivity.this, "Image Upload Successful", Toast.LENGTH_LONG).show();
+                            callWebServiceMyProfile();
                         } else {
                             Toast.makeText(ProfileActivity.this, "Oops, Something went wrong!", Toast.LENGTH_LONG).show();
                         }

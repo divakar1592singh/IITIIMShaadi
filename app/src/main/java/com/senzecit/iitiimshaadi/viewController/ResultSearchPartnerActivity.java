@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class ResultSearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator {
 
+    private static final String TAG = "ResultSearcPartner";
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
@@ -42,7 +44,6 @@ public class ResultSearchPartnerActivity extends AppCompatActivity implements  S
         getSupportActionBar().hide();
 
         searchPartnerFragment = new SearchPartnerFragment();
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.search_partner_FL, searchPartnerFragment);
@@ -93,14 +94,18 @@ public class ResultSearchPartnerActivity extends AppCompatActivity implements  S
     }
 
     private void setSearchedData(List<String> profileList){
-        mAgeMin.setText(profileList.get(0));
-        mAgeMax.setText(profileList.get(1));
-        mCountry.setText(profileList.get(2));
-        mCity.setText(profileList.get(3));
-        mReligion.setText(profileList.get(4));
-        mMotherTongue.setText(profileList.get(6));
-        mmaritalStatus.setText(profileList.get(7));
-        mIncome.setText(profileList.get(9));
+        try {
+            mAgeMin.setText(profileList.get(0));
+            mAgeMax.setText(profileList.get(1));
+            mCountry.setText(profileList.get(2));
+            mCity.setText(profileList.get(3));
+            mReligion.setText(profileList.get(4));
+            mMotherTongue.setText(profileList.get(6));
+            mmaritalStatus.setText(profileList.get(7));
+            mIncome.setText(profileList.get(9));
+        }catch (IndexOutOfBoundsException ioe){
+            Log.e(TAG, " #Error : "+ioe, ioe);
+        }
 //        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
     }
     private void setMatchedList(List<Query> queryList){

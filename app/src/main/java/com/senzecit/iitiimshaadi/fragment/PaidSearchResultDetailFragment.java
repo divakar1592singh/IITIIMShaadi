@@ -167,8 +167,6 @@ public class PaidSearchResultDetailFragment extends Fragment implements View.OnC
 
     }
 
-
-
     private void prepareListDataPartner() {
         listDataHeaderPartner = new ArrayList<String>();
         listDataChildPartner = new HashMap<String, List<String>>();
@@ -232,4 +230,5 @@ public class PaidSearchResultDetailFragment extends Fragment implements View.OnC
                break;
        }
     }
+
 }

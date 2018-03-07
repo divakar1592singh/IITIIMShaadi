@@ -139,7 +139,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     public void handleView(){
 
         mBack.setOnClickListener(this);
-
         mAddBtnLL.setOnClickListener(this);
         mAddImage.setOnClickListener(this);
 

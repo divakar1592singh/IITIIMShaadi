@@ -55,6 +55,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -202,11 +203,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     public void callWebServiceForSubsAdvanceSearch(){
 
         List<String> profileList =new ArrayList<>();
-
         profileList.clear();
-
         String token = prefs.getString(Constants.LOGGED_TOKEN);
-//        String token = Constants.Token_Paid;
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -430,71 +428,33 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     }
 
     public void showReligion(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Hindu");
-        list.add("Muslim");
-        list.add("Christian");
-        list.add("Sikh");
-        list.add("Parsi");
-        list.add("Jain");
-        list.add("Buddhist");
-        list.add("Jewish");
-        list.add("Other");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.ann_income_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
     public void showMotherTongue(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Assamese");
-        list.add("Bengali");
-        list.add("English");
-        list.add("Gujarati");
-        list.add("Hindi");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.mother_tongue_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
     public void showMaritalStatus(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Never Married");
-        list.add("Divorced");
-        list.add("Divorced Awaited");
-        list.add("Widow/Widower");
-        list.add("Any");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
     public void showEducation(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Any");
-        list.add("Actuary");
-        list.add("Hotel Management");
-        list.add("Management");
-        list.add("Engineering/Architecture");
-        list.add("Medical");
-        list.add("CA/CS/ICWA/CFA");
-        list.add("Law");
-        list.add("Design/Fashion Design");
-        list.add("Government Officer");
-        list.add("Social Work (Masters)");
-        list.add("Media Communication (Masters)");
-        list.add("Performing and Fine Arts");
-        list.add("Masters");
-        list.add("Research (Ph.D/FPM)");
-        list.add("Others");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.education_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showSelectableDialog(list, textView);
     }
     public void showAnnualIncome(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("less than 10 LPA");
-        list.add("11-20 LPA");
-        list.add("21-30 LPA");
-        list.add("31-50 LPA");
-        list.add("51-75 LPA");
-        list.add("76-100 LPA");
-        list.add("More than 100 LPA");
-        list.add("Not Disclosed");
 
+        String[] ar = getActivity().getResources().getStringArray(R.array.ann_income_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
 

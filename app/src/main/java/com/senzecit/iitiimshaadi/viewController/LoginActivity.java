@@ -24,6 +24,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -160,11 +161,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void setPrefData(ResponseData response){
+
+        String sUsername = mUsername.getText().toString().trim();
+        String sPassword = mPassword.getText().toString().trim();
+
         String token = response.getToken();
         String userName = response.getUsername();
         String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
         String profilePic = response.getProfileImage();
+
+        prefs.putString(ConstantsPref.LOGIN_USERNAME, sUsername);
+        prefs.putString(ConstantsPref.LOGIN_PASSWORD, sPassword);
 
         prefs.putString(Constants.LOGGED_TOKEN, token);
         prefs.putString(Constants.LOGGED_USERNAME, userName);

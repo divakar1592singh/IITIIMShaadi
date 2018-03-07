@@ -47,10 +47,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.ProfileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".viewController.WalletActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".viewController.PaidSubscriberDashboardActivity"
             android:screenOrientation="portrait"

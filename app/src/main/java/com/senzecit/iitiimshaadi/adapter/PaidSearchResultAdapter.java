@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
@@ -135,6 +136,14 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         if(holder instanceof MyViewHolder) {
             if (queryList != null) {
                 UserDetail userDetail = queryList.get(position).getUserDetail();
+
+                try {
+                    String userId = String.valueOf(userDetail.getUserId());
+                    String partUrl = userDetail.getProfileImage();
+                    Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(((MyViewHolder)holder).mSearchPartnerIV);
+                }catch (NullPointerException npe){
+                    Log.e("TAG", " #Error : "+npe, npe);
+                }
 
                 ((MyViewHolder)holder).mNameTxt.setText(userDetail.getName());
                 ((MyViewHolder)holder).mDietTxt.setText(userDetail.getDiet());

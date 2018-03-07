@@ -21,10 +21,8 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
-import com.senzecit.iitiimshaadi.viewController.AlertPlanActivity;
 import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
 import com.senzecit.iitiimshaadi.viewController.CustomFoldersActivity;
@@ -32,7 +30,6 @@ import com.senzecit.iitiimshaadi.viewController.DisclaimerActivity;
 import com.senzecit.iitiimshaadi.viewController.FAQActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.HowToNavigatePageActivity;
-import com.senzecit.iitiimshaadi.viewController.IntroSliderWebActivity;
 import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
 import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
@@ -40,11 +37,9 @@ import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 import com.senzecit.iitiimshaadi.viewController.ResultSearchPartnerActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 import com.senzecit.iitiimshaadi.viewController.SplashActivity;
-import com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionActivity;
 import com.senzecit.iitiimshaadi.viewController.SuccessStoriesActivity;
 import com.senzecit.iitiimshaadi.viewController.UploadVideoActivity;
-import com.senzecit.iitiimshaadi.viewController.WalletActivity;
 
 public class BaseNavActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -177,6 +172,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.idSearchPartnerNav: {
                 // Toast.makeText(getApplicationContext(), "Search Partner", // Toast.LENGTH_LONG).show();
+
                 if(userType.equalsIgnoreCase("subscriber")) {
                     AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
                 }else {
@@ -253,17 +249,9 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.idWalletNav: {
-                // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(BaseNavActivity.this,WalletActivity.class);
-                intent.putExtra("type","wallet");
-                startActivity(intent);
                 break;
             }
             case R.id.idReferFriendNav: {
-                // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(BaseNavActivity.this,WalletActivity.class);
-                intent.putExtra("type","referFriend");
-                startActivity(intent);
                 break;
             }
             case R.id.idUploadVideoNav: {

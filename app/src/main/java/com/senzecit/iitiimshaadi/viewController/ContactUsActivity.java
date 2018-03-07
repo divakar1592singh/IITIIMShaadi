@@ -28,12 +28,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Locale;
@@ -42,14 +47,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ContactUsActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
+public class ContactUsActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, RxNetworkingForObjectClass.CompletionHandler {
+
     private static final Double latitude = 28.692467;
     private static final Double longitude = 77.17796399999997;
     private static final int TAG_CODE_PERMISSION_LOCATION = 3;
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
-    APIInterface apiInterface;
+    RxNetworkingForObjectClass rxNetworkingClass;
     EditText mFullNameET, mEmailET, mPhoneET, mSubjectET, mMessageET, mVerifyCaptchaET;
     Button mCaptchaBtn, mSendBtn;
     ImageView mRefreshIV;
@@ -75,7 +81,8 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         handleView();
         mBack.setOnClickListener(this);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -244,9 +251,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    /**
-     * API Section
-     */
+    /** API Section */
 
     public void callWebServiceForContactUs() {
 
@@ -263,35 +268,26 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         request.subject = sSubject;
         request.message = sMessage;
 
-        ProgressClass.getProgressInstance().showDialog(ContactUsActivity.this);
-        Call<AddFolderResponse> call = apiInterface.contactUs(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ContactUsActivity.this, Constants.CONTACT_US_PATH, request, null);
 
-                    if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-                        AlertDialogSingleClick.getInstance().showDialog(ContactUsActivity.this, "Alert", "Send Succesfull");
-
-                    }
-                } else {
-                    Toast.makeText(ContactUsActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(ContactUsActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private boolean isValidMobile(String phone) {
         return android.util.Patterns.PHONE.matcher(phone).matches();
     }
 
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+            try {
+                String success = object.getJSONObject("message").getString("success");
+                AlertDialogSingleClick.getInstance().showDialog(ContactUsActivity.this, "Alert", success);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                AlertDialogSingleClick.getInstance().showDialog(ContactUsActivity.this, "Alert", "Something went wrong!");
+            }
+
+
+    }
 }

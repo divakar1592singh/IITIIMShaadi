@@ -3,15 +3,19 @@ package com.senzecit.iitiimshaadi.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.UserDetail;
+import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
 
 import java.util.List;
@@ -34,12 +38,14 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
+        CircleImageView mCircleIV;
         TextView mUserIdTV, mUserNameTv, mReligionTv, mEducationTV, mJobLocTv;
         Button mAddFriendBtn, mUnShortlistFriendBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            mCircleIV = itemView.findViewById(R.id.idProfileCIV);
             mUserIdTV = itemView.findViewById(R.id.idUserIDTV);
             mUserNameTv = itemView.findViewById(R.id.idUserNameTV);
             mReligionTv = itemView.findViewById(R.id.idReligionTV);
@@ -65,6 +71,14 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         UserDetail userDetail = allFriendList.get(position).getUserDetail();
+
+        try {
+            String userId = String.valueOf(userDetail.getUserId());
+            String partUrl = userDetail.getProfileImage();
+            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mCircleIV);
+        }catch (NullPointerException npe){
+            Log.e("TAG", " #Error : "+npe, npe);
+        }
 
         holder.mUserIdTV.setText(String.valueOf(userDetail.getUserId()));
         holder.mUserNameTv.setText(userDetail.getName());

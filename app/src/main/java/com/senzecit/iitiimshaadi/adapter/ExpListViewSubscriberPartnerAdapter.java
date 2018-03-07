@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,7 +33,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.api.RxNetworkingClass;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForArrayClass;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
@@ -43,7 +43,6 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomReque
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
@@ -51,7 +50,6 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -78,8 +76,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
     private Context _context;
     LayoutInflater layoutInflater;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<String> _listDataHeader;
     private HashMap<String, List<String>> _listDataChild;
     AppPrefs prefs;
 
@@ -746,88 +743,28 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
 
     //SET & GET DATA
-    // Basics & LIFESTYLE
     public void showHeight(TextView textView){
-        List<String> list = new ArrayList<>();
 
-        list.add("4 ft 5in (134 cm)");
-        list.add("4 ft 6in (137 cm)");
-        list.add("4 ft 7in (139 cm)");
-        list.add("4 ft 8in (142 cm)");
-        list.add("4 ft 9in (144 cm)");
-        list.add("4 ft 10in (147 cm)");
-        list.add("4 ft 11in (149 cm)");
-        list.add("5 ft 0in (152 cm)");
-        list.add("5 ft 1in (154 cm)");
-        list.add("5 ft 2in (157 cm)");
-        list.add("5 ft 3in (160 cm)");
-        list.add("5 ft 4in (162 cm)");
-        list.add("5 ft 5in (165 cm)");
-        list.add("5 ft 6in (167 cm)");
-        list.add("5 ft 7in (170 cm)");
-        list.add("5 ft 8in (172 cm)");
-        list.add("5 ft 9in (175 cm)");
-        list.add("5 ft 10in (177 cm)");
-        list.add("5 ft 11in (180 cm)");
-        list.add("6 ft 0in (182 cm)");
-        list.add("6 ft 1in (185 cm)");
-        list.add("6 ft 2in (187 cm)");
-        list.add("6 ft 3in (190 cm)");
-        list.add("6 ft 4in (193 cm)");
-        list.add("6 ft 5in (195 cm)");
-        list.add("6 ft 6in (198 cm)");
-        list.add("6 ft 7in (200 cm)");
-        list.add("6 ft 8in (203 cm)");
-
-
+        String[] ar = _context.getResources().getStringArray(R.array.height_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
     public void showMaritalStatus(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Never Married");
-        list.add("Divorced");
-        list.add("Divorced Awaited");
-        list.add("Widow/Widower");
-        list.add("Any");
 
+        String[] ar = _context.getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-    //RELIGIOUS AND COUNTRY PREFERENCE
     public void showReligion(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Hindu");
-        list.add("Muslim");
-        list.add("Christian");
-        list.add("Sikh");
-        list.add("Parsi");
-        list.add("Jain");
-        list.add("Buddhist");
-        list.add("Jewish");
-        list.add("Other");
 
+        String[] ar = _context.getResources().getStringArray(R.array.religion_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-
-    //EDUCATION
     public void showEducation(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Any");
-        list.add("Actuary");
-        list.add("Hotel Management");
-        list.add("Management");
-        list.add("Engineering/Architecture");
-        list.add("Medical");
-        list.add("CA/CS/ICWA/CFA");
-        list.add("Law");
-        list.add("Design/Fashion Design");
-        list.add("Government Officer");
-        list.add("Social Work (Masters)");
-        list.add("Media Communication (Masters)");
-        list.add("Performing and Fine Arts");
-        list.add("Masters");
-        list.add("Research (Ph.D/FPM)");
-        list.add("Others");
 
+        String[] ar = _context.getResources().getStringArray(R.array.education_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showSelectableDialog(list, textView);
     }
 
@@ -855,11 +792,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_marital_status = Marital_StatusArr;
 
 
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+  /*      String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE_PT_PATH, request, methodName);
+        RxNetworkingForArrayClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE_PT_PATH, request, methodName);
+*/
 
-/*
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<ParnerBasicProfileResponse> call = apiInterface.sendPartnerBasicProfile(request);
@@ -872,8 +809,8 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -891,7 +828,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
 
     }
     public void saveChangesOfCase_1(){
@@ -916,12 +853,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_caste = Preferred_CasteArr;
         request.prefered_partner_country = Preferred_CountryArr;
 
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+ /*       String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_PT_PATH, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_PT_PATH, request, methodName);
+*/
 
 
-/*
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PtrReligionCountryResponse> call = apiInterface.sendPartnerReligionCountry(request);
@@ -934,8 +871,8 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                     if(ptReligionResponse.getMessage().getSuccess() != null) {
                         if (ptReligionResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -953,7 +890,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
 
 
 
@@ -972,12 +909,14 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.token = token;
         request.prefered_partner_education = Preferred_EducationArr;
 
+/*
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER_PT_PATH, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER_PT_PATH, request, methodName);
+*/
 
 
-   /*     ProgressClass.getProgressInstance().showDialog(_context);
+        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PtrEduCareerResponse> call = apiInterface.sendPartnerEduCareer(request);
         call.enqueue(new Callback<PtrEduCareerResponse>() {
@@ -989,7 +928,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                     if(ptrEduResponse.getMessage().getSuccess() != null) {
                         if (ptrEduResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
                             Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -1008,7 +947,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
 
     }
     public void saveChangesOfCase_3(){
@@ -1023,11 +962,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
 
+/*
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CHOICE_OF_PARTNER_PATH, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CHOICE_OF_PARTNER_PATH, request, methodName);
+*/
 
-/*
 
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -1041,7 +981,8 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                     if(aboutMeResponse.getMessage().getSuccess() != null) {
                         if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
                             Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -1060,12 +1001,8 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-*/
-
-
 
     }
-
 
     public void showCountry(final TextView textView) {
 
@@ -1148,6 +1085,5 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 });
 
     }
-
 
 }

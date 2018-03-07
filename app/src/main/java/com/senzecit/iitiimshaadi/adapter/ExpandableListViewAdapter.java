@@ -34,6 +34,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
@@ -56,6 +57,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -77,7 +79,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
+public class ExpandableListViewAdapter extends BaseExpandableListAdapter implements RxNetworkingForObjectClass.CompletionHandler{
 
 
     private Context _context;
@@ -87,6 +89,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> _listDataChild;
     MyProfileResponse myProfileResponse;
     AppPrefs prefs;
+    RxNetworkingForObjectClass rxNetworkingClass;
 
     public ExpandableListViewAdapter(Context context, List<String> listDataHeader,
                                         HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
@@ -97,6 +100,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         this.myProfileResponse = myProfileResponse;
 
         prefs = AppController.getInstance().getPrefs();
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
     }
 
     @Override
@@ -2370,10 +2375,15 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Diet = ExpOwnProfileModel.getInstance().getDiet();
         String Date_Of_Birth = ExpOwnProfileModel.getInstance().getDate_Of_Birth();
         String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
+        String[] marital_statusArr = new String[1];
+        marital_statusArr[0] = Marital_Status;
+
         String Drink = ExpOwnProfileModel.getInstance().getDrink();
         String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
         String Height = ExpOwnProfileModel.getInstance().getHeight();
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
+        String[] interestsArr = new String[1];
+        interestsArr[0] = Interests;
 
         Toast.makeText(_context, "Output : "+Interests, Toast.LENGTH_LONG).show();
 //        String token  = Constants.Temp_Token;
@@ -2386,11 +2396,16 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.health = "";
         request.height = Height;
         request.diet = Diet;
-        request.marital_status = Marital_Status;
+        request.marital_status = marital_statusArr;
         request.drink = Drink;
         request.smoke = Smoke;
-        request.interest = Interests;
+        request.interest = interestsArr;
 
+/*
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE, request, methodName);
+*/
 
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -2404,8 +2419,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                     if(basicProfileResponse.getMessage().getSuccess() != null) {
                         if (basicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Success");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
                             Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -2423,6 +2438,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+
 
     }
     public void saveChangesOfCase_1(){
@@ -2958,4 +2974,21 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     }
 
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+
+        String methodNameFromPref = prefs.getString(ConstantsPref.CALLED_METHOD);
+        if(methodNameFromPref.equalsIgnoreCase(methodName)){
+
+            try {
+                String success = object.getJSONObject("message").getString("success");
+                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", success);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Something went wrong!");
+            }
+        }
+
+    }
 }

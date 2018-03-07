@@ -64,16 +64,6 @@ public class MyFriendsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-/*
-        myFriendList = new ArrayList<>();
-        myFriendList.add("nsp");
-        myFriendList.add("cp");
-        myFriendList.add("mango");
-        myFriendList.add("nsp");
-        myFriendList.add("cp");
-        myFriendList.add("mango");
-*/
-
         callWebServiceForMyFriend();
 
     }

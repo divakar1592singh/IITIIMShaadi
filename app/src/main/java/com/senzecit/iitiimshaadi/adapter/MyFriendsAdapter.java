@@ -3,16 +3,19 @@ package com.senzecit.iitiimshaadi.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.UserDetail;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Constants;
 
 import java.util.List;
 
@@ -58,6 +61,14 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         UserDetail userDetail = allFriendList.get(position).getUserDetail();
+
+        try {
+            String userId = String.valueOf(userDetail.getUserId());
+            String partUrl = userDetail.getProfileImage();
+            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mCircleIV);
+        }catch (NullPointerException npe){
+            Log.e("TAG", " #Error : "+npe, npe);
+        }
 
         holder.mUserIdTV.setText(String.valueOf(userDetail.getUserId()));
         holder.mUserNameTv.setText(userDetail.getName());

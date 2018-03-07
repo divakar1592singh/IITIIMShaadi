@@ -116,7 +116,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         String userName = prefs.getString(Constants.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).into(mProfileCIV);
+            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));

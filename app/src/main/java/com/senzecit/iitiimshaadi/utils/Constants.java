@@ -21,11 +21,11 @@ public interface Constants {
     String FAMILY_DETAILS = "api/family_details.json";
     String EDUCATION_CAREER = "api/education_career.json";
     String ABOUT_ME = "api/about_me.json";
-
     String BASIC_LIFESTYLE_PT_PATH = "api/partner_basic_lifestyle.json";
     String RELIGIOUS_BACKGROUND_PT_PATH = "api/partner_religion_country.json";
     String EDUCATION_CAREER_PT_PATH = "api/partner_education_career.json";
     String CHOICE_OF_PARTNER_PATH = "api/choiceof_partner.json";
+    String CONTACT_US_PATH = "api/contact_us.json";
 
 
 

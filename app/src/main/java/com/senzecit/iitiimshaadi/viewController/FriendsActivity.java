@@ -76,6 +76,8 @@ RequestedFriendFragment.OnRequestedFriendListener{
         setupViewPager(mViewPager);
 
         mTabLayout.setupWithViewPager(mViewPager);
+
+        mViewPager.setOffscreenPageLimit(0);
     }
 
     private void setupViewPager(ViewPager viewPager) {

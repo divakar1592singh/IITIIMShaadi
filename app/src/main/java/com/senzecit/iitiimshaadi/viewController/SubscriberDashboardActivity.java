@@ -211,7 +211,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         String userName = prefs.getString(Constants.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(SubscriberDashboardActivity.this).load(profileUri).into(mProfileCIV);
+            Glide.with(SubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
@@ -232,7 +232,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         }catch (NullPointerException npe){
             Log.e(TAG, " #Error : "+npe, npe);
         }
-
 
     }
 

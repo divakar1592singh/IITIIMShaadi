@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
@@ -29,6 +31,7 @@ import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.CustomFoldersActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
+import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +58,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
+        ImageView mSearchpartnerIV;
         TextView mDietTxt, mEmploymentTxt, mCompanyTxt, mHeightTxt, mReligiontxt, mEducationTxt;
         Button mAddFriendBtn,mMoveTo;
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            mSearchpartnerIV = itemView.findViewById(R.id.idSearchpartnerIV);
             mDietTxt = itemView.findViewById(R.id.idDietTV);
             mEmploymentTxt = itemView.findViewById(R.id.idEmploymentTV);
             mCompanyTxt = itemView.findViewById(R.id.idCompanyTV);
@@ -88,6 +93,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         holder.mReligiontxt.setText(queryList.get(position).getReligion());
         holder.mEducationTxt.setText(queryList.get(position).getHighestEducation() );
 
+        try {
+            String userId = String.valueOf(queryList.get(position).getId());
+            String partUrl = queryList.get(position).getProfileImage();
+            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mSearchpartnerIV);
+        }catch (NullPointerException npe){
+            Log.e("TAG", " #Error : "+npe, npe);
+        }
+
         holder.mAddFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,18 +127,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return 10;
 //        return queryList.size();
     }
-
-/*    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.idAddFriendBtn:
-                callWebServiceForManipulateFriend(String typeOf, String friend, String folder)
-                break;
-            case R.id.moveToBtm:
-
-            break;
-        }
-    }*/
 
     /** API -  Manipulation Task */
     private void callWebServiceForManipulatePartner(String typeOf, String friend, String folder)

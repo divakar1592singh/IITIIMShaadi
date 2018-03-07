@@ -11,9 +11,9 @@ public class BasicProfileRequest {
     public String health;
     public String height;
     public String diet;
-    public String marital_status;
+    public String marital_status[];
     public String drink;
     public String smoke;
-    public String interest;
+    public String interest[];
 
 }
