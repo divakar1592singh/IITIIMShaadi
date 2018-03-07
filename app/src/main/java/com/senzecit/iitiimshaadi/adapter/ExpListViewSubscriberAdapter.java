@@ -2259,37 +2259,10 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.smoke = Smoke;
         request.interest = Interests;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<BasicProfileResponse> call = apiInterface.sendBasicProfile(request);
-        call.enqueue(new Callback<BasicProfileResponse>() {
-            @Override
-            public void onResponse(Call<BasicProfileResponse> call, Response<BasicProfileResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    BasicProfileResponse basicProfileResponse = response.body();
-                    if (basicProfileResponse.getMessage().getSuccess() != null) {
-                        if (basicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicProfileResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE, request, methodName);
 
     }
 
@@ -2312,7 +2285,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_POST_URL, request);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
 
     }
 
@@ -2352,37 +2325,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.current_zipcode = Zip_Code_Cur;
 
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<ContactDetailsResponse> call = apiInterface.sendContactDetails(request);
-        call.enqueue(new Callback<ContactDetailsResponse>() {
-            @Override
-            public void onResponse(Call<ContactDetailsResponse> call, Response<ContactDetailsResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    ContactDetailsResponse contactResponse = response.body();
-                    if (contactResponse.getMessage().getSuccess() != null) {
-                        if (contactResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ContactDetailsResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CONTACT_DETAILS, request, methodName);
 
 
     }
@@ -2410,38 +2355,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.brother_detail = Details_Brothers;
         request.sister_detail = Details_Sisters;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<FamilyDetailResponse> call = apiInterface.sendFamilyDetails(request);
-        call.enqueue(new Callback<FamilyDetailResponse>() {
-            @Override
-            public void onResponse(Call<FamilyDetailResponse> call, Response<FamilyDetailResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    FamilyDetailResponse familyResponse = response.body();
-                    if (familyResponse.getMessage().getSuccess() != null) {
-                        if (familyResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FamilyDetailResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.FAMILY_DETAILS, request, methodName);
 
     }
 
@@ -2483,38 +2399,10 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<EducationCareerResponse> call = apiInterface.sendEducationCareer(request);
-        call.enqueue(new Callback<EducationCareerResponse>() {
-            @Override
-            public void onResponse(Call<EducationCareerResponse> call, Response<EducationCareerResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    EducationCareerResponse educationResponse = response.body();
-                    if (educationResponse.getMessage().getSuccess() != null) {
-                        if (educationResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<EducationCareerResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER, request, methodName);
 
     }
 
@@ -2524,44 +2412,15 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         Toast.makeText(_context, "Output : " + About_you, Toast.LENGTH_LONG).show();
 
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         AboutMeRequest request = new AboutMeRequest();
         request.token = token;
         request.about_me = About_you;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
-        Call<AboutMeResponse> call = apiInterface.sendAboutMe(request);
-        call.enqueue(new Callback<AboutMeResponse>() {
-            @Override
-            public void onResponse(Call<AboutMeResponse> call, Response<AboutMeResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AboutMeResponse aboutMeResponse = response.body();
-                    if (aboutMeResponse.getMessage().getSuccess() != null) {
-                        if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-//                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AboutMeResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.ABOUT_ME, request, methodName);
 
     }
 
@@ -2739,10 +2598,10 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
     }
 
     @Override
-    public void handle(JSONObject object) {
+    public void handle(JSONObject object, String methodName) {
 
-        String methodName = prefs.getString(ConstantsPref.CALLED_METHOD);
-        if(methodName.equalsIgnoreCase("saveChangesOfCase_1")){
+        String methodNameFromPref = prefs.getString(ConstantsPref.CALLED_METHOD);
+        if(methodNameFromPref.equalsIgnoreCase(methodName)){
 
             try {
                 String success = object.getJSONObject("message").getString("success");

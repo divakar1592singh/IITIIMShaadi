@@ -42,14 +42,14 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 
-        /*        Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-//                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                finish();*/
+                finish();
 //***************************
-                try{
+         /*       try{
                     String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
@@ -90,7 +90,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-
+*/
             }
         },SPLASH_DISPLAY_TIME);
     }

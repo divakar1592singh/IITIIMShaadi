@@ -39,7 +39,7 @@ public class RxNetworkingClass {
 
 //    -----------------------------------------------
 
-    public void callWebServiceForRxNetworking(Activity context, String relativePath, Object paramClass ) {
+    public void callWebServiceForRxNetworking(Activity context, String relativePath, Object paramClass, String methodName ) {
         ProgressClass.getProgressInstance().showDialog(context);
         AndroidNetworking.post(Constants.BASE_URL+relativePath)
                 .addBodyParameter(paramClass)
@@ -50,7 +50,7 @@ public class RxNetworkingClass {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
-                        handler.handle(response);
+                        handler.handle(response, methodName);
                     }
 
                     @Override
@@ -61,7 +61,7 @@ public class RxNetworkingClass {
                 });
     }
 
-    public void callWebServiceForRxNetworking(Context context, String relativePath, Object paramClass ) {
+    public void callWebServiceForRxNetworking(Context context, String relativePath, Object paramClass, String methodName ) {
         ProgressClass.getProgressInstance().showDialog(context);
         AndroidNetworking.post(Constants.BASE_URL+relativePath)
                 .addBodyParameter(paramClass)
@@ -72,7 +72,7 @@ public class RxNetworkingClass {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
-                        handler.handle(response);
+                        handler.handle(response, methodName);
                     }
 
                     @Override
@@ -84,7 +84,7 @@ public class RxNetworkingClass {
     }
 
     public interface CompletionHandler {
-        void handle(JSONObject object);
+        void handle(JSONObject object, String methodName);
     }
 
 }

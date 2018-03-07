@@ -15,7 +15,18 @@ public interface Constants {
     String CHAT_HISTORY_URL = "http://35.154.217.225:1106/";
 
 //    RELATIVE URL
+    String BASIC_LIFESTYLE = "api/basic_lifestyle.json";
     String RELIGIOUS_BACKGROUND_POST_URL = "api/religious_background.json";
+    String CONTACT_DETAILS = "api/contact_details.json";
+    String FAMILY_DETAILS = "api/family_details.json";
+    String EDUCATION_CAREER = "api/education_career.json";
+    String ABOUT_ME = "api/about_me.json";
+
+    String BASIC_LIFESTYLE_PT_PATH = "api/partner_basic_lifestyle.json";
+    String RELIGIOUS_BACKGROUND_PT_PATH = "api/partner_religion_country.json";
+    String EDUCATION_CAREER_PT_PATH = "api/partner_education_career.json";
+    String CHOICE_OF_PARTNER_PATH = "api/choiceof_partner.json";
+
 
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";

@@ -34,6 +34,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
@@ -50,6 +51,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -852,6 +854,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_height_max = Max_Height;
         request.prefered_partner_marital_status = Marital_StatusArr;
 
+
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE_PT_PATH, request, methodName);
+
+/*
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<ParnerBasicProfileResponse> call = apiInterface.sendPartnerBasicProfile(request);
@@ -883,6 +891,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+*/
 
     }
     public void saveChangesOfCase_1(){
@@ -907,7 +916,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.prefered_partner_caste = Preferred_CasteArr;
         request.prefered_partner_country = Preferred_CountryArr;
 
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_PT_PATH, request, methodName);
 
+
+/*
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PtrReligionCountryResponse> call = apiInterface.sendPartnerReligionCountry(request);
@@ -939,6 +953,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+*/
 
 
 
@@ -957,8 +972,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.token = token;
         request.prefered_partner_education = Preferred_EducationArr;
 
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER_PT_PATH, request, methodName);
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+
+   /*     ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PtrEduCareerResponse> call = apiInterface.sendPartnerEduCareer(request);
         call.enqueue(new Callback<PtrEduCareerResponse>() {
@@ -989,7 +1008,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
 
     }
     public void saveChangesOfCase_3(){
@@ -1004,6 +1023,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
 
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        RxNetworkingClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CHOICE_OF_PARTNER_PATH, request, methodName);
+
+/*
 
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
@@ -1036,6 +1060,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+*/
 
 
 
