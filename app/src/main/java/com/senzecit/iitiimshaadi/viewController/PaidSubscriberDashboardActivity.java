@@ -13,6 +13,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -28,6 +32,10 @@ import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -139,8 +147,13 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 break;
             }
             case R.id.idProfileShowTV: {
-                //Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
+
+                if(mInterestReceivedTV.getText().toString().equalsIgnoreCase("(0)")){
+                    AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
+                }else {
                 startActivity(new Intent(PaidSubscriberDashboardActivity.this,AllInterestActivity.class));
+                }
 //                showToast("No interest received");
 //                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
                 break;
@@ -219,6 +232,34 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+//                       System.out.println(response);
+
+//                            setSubsDashboardData( username,  profileCompletionPerc);
+                            setPaidSubs(response);
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+
+                    }
+                });
+
+
+/*
+        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PaidDashboardResponse> call = apiInterface.subscribeDashoardPaid(token);
         call.enqueue(new Callback<PaidDashboardResponse>() {
@@ -249,15 +290,26 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 Toast.makeText(PaidSubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
-        });
+        });*/
     }
 
-    public void setPaidSubs(PaidDashboardResponse serverResponse){
+    public void setPaidSubs(JSONObject jsonObject){
 
-        mProfilePercTV.setText(new StringBuilder(String.valueOf(serverResponse.getBasicData().getProfileComplition())).append("%"));
-        List<AllInterestReceived> list = serverResponse.getAllInterestReceived();
-        mInterestReceivedTV.setText("("+String.valueOf(list.size())+")");
-        mProgress.setProgress(serverResponse.getBasicData().getProfileComplition());
+        try {
+            String username = jsonObject.getJSONObject("basicData").getString("name");
+            int profileCompletionPerc = jsonObject.getJSONObject("basicData").getInt("profile_complition");
+            JSONArray jsonArray = jsonObject.getJSONArray("allInterestReceived");
+
+        mProfilePercTV.setText(new StringBuilder(String.valueOf(profileCompletionPerc)).append("%"));
+        mProgress.setProgress(profileCompletionPerc);
+//        List<AllInterestReceived> list = serverResponse.getAllInterestReceived();
+        mInterestReceivedTV.setText("("+String.valueOf(jsonArray.length())+")");
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showToast(String msg){

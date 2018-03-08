@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private  static final String TAG = "LoginActivity";
     EditText mPassword,mUsername;
     TextView mRegisterNew,mForgotPassword;
     Button mLogin;
@@ -137,17 +139,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getResponseData() != null){
+                try {
+                    if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (response.body().getResponseData() != null) {
                             Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
                             ResponseData responseData = response.body().getResponseData();
                             setPrefData(responseData);
                         }
-                    }else {
+                    } else {
                         Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
                     }
-
+                }catch (NullPointerException npe){
+                    Log.e(TAG, " #Error"+npe, npe);
+                    AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert", "Invalid username or password, try again");
+                }
                 }
             }
 

@@ -724,21 +724,52 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         return filePath.substring(filePath.lastIndexOf("/")+1);
     }
 
-    public void setSubsDashboardData(SubscriberMainResponse mainResponse){
+    public void setSubsDashboardData(String username, int profileCompletion){
 
-        mProgress.setProgress(mainResponse.getBasicData().getProfileComplition());
-        mProfilepercTV.setText(new StringBuilder(String.valueOf(mainResponse.getBasicData().getProfileComplition())).append("%")); ;
-        mUsrNameTV.setText(new StringBuilder("@").append(mainResponse.getBasicData().getName()));
+        mProgress.setProgress(profileCompletion);
+        mProfilepercTV.setText(new StringBuilder(String.valueOf(profileCompletion)).append("%")); ;
+        mUsrNameTV.setText(new StringBuilder("@").append(username));
     }
     /** API INTEGRATION */
 
     /* Subscriber Dashboard*/
     public void callWebServiceForSubscribeDashboard(){
 
-//        String token = Constants.Temp_Token;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/subscriber_dashboard.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+//                       System.out.println(response);
+                        try {
+                            String username = response.getJSONObject("basicData").getString("name");
+                            int profileCompletionPerc = response.getJSONObject("basicData").getInt("profile_complition");
+
+                            setSubsDashboardData( username,  profileCompletionPerc);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+
+                    }
+                });
+
+
+/*        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
         call.enqueue(new Callback<SubscriberMainResponse>() {
@@ -770,7 +801,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
-        });
+        });*/
     }
 
     public void callWebServiceForEmailVerification(){

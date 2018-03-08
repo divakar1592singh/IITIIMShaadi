@@ -27,6 +27,10 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 import com.senzecit.iitiimshaadi.viewController.PaidSubscriberDashboardActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -40,14 +44,14 @@ import retrofit2.Response;
 public class AllInterestAdapter extends RecyclerView.Adapter<AllInterestAdapter.MyViewHolder> {
 
     Context mContext;
-    List<AllInterestReceived> list;
+    JSONArray jsonArray;
     LayoutInflater inflater;
     AppPrefs prefs;
 
-    public AllInterestAdapter(Context mContext, List<AllInterestReceived> list){
+    public AllInterestAdapter(Context mContext, JSONArray jsonArray){
     this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
-        this.list = list;
+        this.jsonArray = jsonArray;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
@@ -75,11 +79,18 @@ public class AllInterestAdapter extends RecyclerView.Adapter<AllInterestAdapter.
 
         prefs = AppController.getInstance().getPrefs();
 
-        UserDetail userDetail = list.get(position).getUserDetail();
-        holder.mUsernameTV.setText(userDetail.getName());
-        holder.mMessageTV.setText(userDetail.getNameOfCompany());
+//        UserDetail userDetail = list.get(position).getUserDetail();
+        try {
+            JSONObject jsonObject = jsonArray.getJSONObject(position);
+            holder.mUsernameTV.setText(jsonObject.getJSONObject("user_detail").getString("name"));
+            holder.mMessageTV.setText(jsonObject.getJSONObject("user_detail").getString("role"));
+            formattedDate(holder.mTimeSpentTV, jsonObject.getJSONObject("user_detail").getString("birth_date"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        holder.mMessageTV.setText(userDetail.getNameOfCompany());
 
-        formattedDate(holder.mTimeSpentTV, userDetail.getBirthDate());
+//        formattedDate(holder.mTimeSpentTV, userDetail.getBirthDate());
  /*       holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +108,7 @@ public class AllInterestAdapter extends RecyclerView.Adapter<AllInterestAdapter.
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return jsonArray.length();
     }
 
     public void formattedDate(TextView tv, String _date) {

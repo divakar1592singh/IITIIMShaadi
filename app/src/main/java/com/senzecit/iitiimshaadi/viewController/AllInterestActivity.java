@@ -13,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.AllInterestAdapter;
 import com.senzecit.iitiimshaadi.adapter.ChatUserAdapter;
@@ -25,6 +29,10 @@ import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,15 +77,6 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
 
     public void handleView(){
         mTitle.setText("Interest Received");
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerViewChatUser.setLayoutManager(layoutManager);
@@ -104,7 +103,39 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
 //        String token = Constants.Token_Paid;
         String token = prefs.getString(Constants.LOGGED_TOKEN);
 
+
         ProgressClass.getProgressInstance().showDialog(AllInterestActivity.this);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+//                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+//                       System.out.println(response);
+
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allInterestReceived");
+                            parseInterestData(jsonArray);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+
+                    }
+                });
+
+
+    /*    ProgressClass.getProgressInstance().showDialog(AllInterestActivity.this);
         APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
         Call<PaidDashboardResponse> call = apiInterface.subscribeDashoardPaid(token);
         call.enqueue(new Callback<PaidDashboardResponse>() {
@@ -137,12 +168,12 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(AllInterestActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
-        });
+        });*/
     }
 
-    public void parseInterestData(List<AllInterestReceived> list){
+    public void parseInterestData(JSONArray jsonArray){
 
-        AllInterestAdapter adapter = new AllInterestAdapter(this, list);
+        AllInterestAdapter adapter = new AllInterestAdapter(this, jsonArray);
         mRecyclerViewChatUser.setAdapter(adapter);
 
     }

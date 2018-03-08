@@ -38,10 +38,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = AppController.getInstance().getPrefs();
-
-        prefs.putString(Constants.LOGGED_TOKEN, "3b633a6ef617b476336b829da6e9d5c7");
-        prefs.putString(Constants.LOGGED_USER_TYPE, "subscriber_viewer");
-        prefs.putString(Constants.LOGGED_USERID, "30413");
+//
+//        prefs.putString(Constants.LOGGED_TOKEN, "3b633a6ef617b476336b829da6e9d5c7");
+//        prefs.putString(Constants.LOGGED_USER_TYPE, "subscriber_viewer");
+//        prefs.putString(Constants.LOGGED_USERID, "30413");
 
 /*
         prefs.putString(Constants.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
@@ -59,7 +59,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, MakePaymentActivity.class);
+                Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
