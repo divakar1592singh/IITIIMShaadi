@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONException;
@@ -33,7 +33,7 @@ public class ChatLoginActivity extends AppCompatActivity {
         attemptLogin();
         Intent intent = new Intent();
 //        intent.putExtra("username", new SharedPrefClass(ChatLoginActivity.this).getLoginInfo());
-        intent.putExtra("username", prefs.getString(Constants.LOGGED_USERNAME));
+        intent.putExtra("username", prefs.getString(CONSTANTS.LOGGED_USERNAME));
         intent.putExtra("numUsers", 1);
         setResult(RESULT_OK, intent);
         finish();
@@ -49,7 +49,7 @@ public class ChatLoginActivity extends AppCompatActivity {
         JSONObject obj = new JSONObject();
         try {
 //            obj.put("userId", new SharedPrefClass(ChatLoginActivity.this).getLoginInfo());
-            obj.put("userId", prefs.getString(Constants.OTHER_USERID));
+            obj.put("userId", prefs.getString(CONSTANTS.OTHER_USERID));
 
         }catch (JSONException e) {
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class ChatLoginActivity extends AppCompatActivity {
             }
             Intent intent = new Intent();
 //            intent.putExtra("username", new SharedPrefClass(ChatLoginActivity.this).getLoginInfo());
-            intent.putExtra("username", prefs.getString(Constants.LOGGED_USERNAME));
+            intent.putExtra("username", prefs.getString(CONSTANTS.LOGGED_USERNAME));
             intent.putExtra("numUsers", numUsers);
             setResult(RESULT_OK, intent);
             finish();

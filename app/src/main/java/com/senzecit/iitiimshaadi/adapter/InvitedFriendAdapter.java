@@ -10,25 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.AllInvitedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.UserDetail;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
-import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
-import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by ravi on 15/11/17.
@@ -84,7 +73,7 @@ public class InvitedFriendAdapter extends RecyclerView.Adapter<InvitedFriendAdap
         try {
             String userId = String.valueOf(userDetail.getUserId());
             String partUrl = userDetail.getProfileImage();
-            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mFriendIV);
+            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mFriendIV);
         }catch (NullPointerException npe){
             Log.e("TAG", " #Error : "+npe, npe);
         }

@@ -13,9 +13,8 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
-import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -39,14 +38,14 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-//        prefs.putString(Constants.LOGGED_TOKEN, "3b633a6ef617b476336b829da6e9d5c7");
-//        prefs.putString(Constants.LOGGED_USER_TYPE, "subscriber_viewer");
-//        prefs.putString(Constants.LOGGED_USERID, "30413");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "3af8fb8841d90822a787c3d3d8074967");
+        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
+//        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
 
 /*
-        prefs.putString(Constants.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
-        prefs.putString(Constants.LOGGED_EMAIL, "divakar1591@gmail.com");
-        prefs.putString(Constants.LOGGED_MOB, "98765432210");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
+        prefs.putString(CONSTANTS.LOGGED_EMAIL, "divakar1591@gmail.com");
+        prefs.putString(CONSTANTS.LOGGED_MOB, "98765432210");
 */
 
     }
@@ -66,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
 //***************************
          /*       try{
-                    String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
+                    String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
                         Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
@@ -120,7 +119,7 @@ public class SplashActivity extends AppCompatActivity {
         loginRequest.username = sUsername;
         loginRequest.password = sPassword;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(SplashActivity.this);
         Call<LoginResponse> call = apiInterface.loginInUser(loginRequest);
         call.enqueue(new Callback<LoginResponse>() {
@@ -159,11 +158,11 @@ public class SplashActivity extends AppCompatActivity {
         String typeOfUser = response.getTypeOfUser();
         String profilePic = response.getProfileImage();
 
-        prefs.putString(Constants.LOGGED_TOKEN, token);
-        prefs.putString(Constants.LOGGED_USERNAME, userName);
-        prefs.putString(Constants.LOGGED_USERID, userId);
-        prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
-        prefs.putString(Constants.LOGGED_USER_PIC, profilePic);
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
+        prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
+        prefs.putString(CONSTANTS.LOGGED_USERID, userId);
+        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+        prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
 
         navigateUserToScreen();
     }
@@ -171,7 +170,7 @@ public class SplashActivity extends AppCompatActivity {
     public void navigateUserToScreen(){
 
         try{
-            String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
             if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
                 Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);

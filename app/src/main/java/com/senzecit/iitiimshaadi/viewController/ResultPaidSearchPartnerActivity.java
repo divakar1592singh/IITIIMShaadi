@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Qu
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -125,7 +124,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onClick(View v) {
 
-                String search_type = prefs.getString(Constants.SEARCH_TYPE);
+                String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
                 if(search_type.equalsIgnoreCase("advance")) {
 
@@ -173,7 +172,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     @Override
     public void saveAndSearchPaidPartner() {
 
-        String search_type = prefs.getString(Constants.SEARCH_TYPE);
+        String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
         if(search_type.equalsIgnoreCase("id")){
             mCurrentSearchBtn.setText("CURRENT SEARCH");
@@ -190,7 +189,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
     public void paginateSearchPartner(int pageCount) {
 
-        String search_type = prefs.getString(Constants.SEARCH_TYPE);
+        String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
         if(search_type.equalsIgnoreCase("id")){
             callWebServiceForSubsIDSearch(pageCount);
@@ -230,7 +229,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     }
  private void setPaidMatchedListByKeyword(List<Query> queryList, int pageCount){
 
-     String search_type = prefs.getString(Constants.SEARCH_TYPE);
+     String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
      if(search_type.equalsIgnoreCase("keyword")){
 
@@ -256,10 +255,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 //    /** Search By ID */
     public void callWebServiceForSubsIDSearch(int pageCount){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
-        String searchID = prefs.getString(Constants.SEARCH_ID) ;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
+        String searchID = prefs.getString(CONSTANTS.SEARCH_ID) ;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
         Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid1(token, searchID);
         call.enqueue(new Callback<PaidSubscriberResponse>() {
@@ -273,10 +272,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
                             setPaidMatchedListID(queryList, pageCount);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", Constants.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", Constants.search_ptnr_err_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", CONSTANTS.search_ptnr_err_msg);
                     }
                 }
             }
@@ -293,10 +292,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     public void callWebServiceForSubsKeywordSearch(int pageCount){
 
 //        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
-        String token = prefs.getString(Constants.LOGGED_TOKEN);;
-        String keyword = prefs.getString(Constants.SEARCH_KEYWORD) ;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
+        String keyword = prefs.getString(CONSTANTS.SEARCH_KEYWORD) ;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
         Call<SubsAdvanceSearchResponse> call = apiInterface.keywordSearchPaid(token, keyword);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
@@ -311,7 +310,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
                             setPaidMatchedListByKeyword(queryList, pageCount);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", Constants.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
@@ -333,22 +332,22 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
         List<String> profileList =new ArrayList<>();
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        String minage = prefs.getString(Constants.MIN_AGE) ;
-        String maxage = prefs.getString(Constants.MAX_AGE) ;
-        String country = prefs.getString(Constants.COUNTRY) ;
-        String city =  prefs.getString(Constants.CITY);
-        String religion =  prefs.getString(Constants.RELIGION);
-        String caste = prefs.getString(Constants.CASTE);
-        String mother_tounge =  prefs.getString(Constants.MOTHER_TONGUE);
-        String marital_status =  prefs.getString(Constants.MARITAL_STATUS);
-        String course =  prefs.getString(Constants.COURSE);
-        String annual_income =  prefs.getString(Constants.ANNUAL_INCOME);
+        String minage = prefs.getString(CONSTANTS.MIN_AGE) ;
+        String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
+        String country = prefs.getString(CONSTANTS.COUNTRY) ;
+        String city =  prefs.getString(CONSTANTS.CITY);
+        String religion =  prefs.getString(CONSTANTS.RELIGION);
+        String caste = prefs.getString(CONSTANTS.CASTE);
+        String mother_tounge =  prefs.getString(CONSTANTS.MOTHER_TONGUE);
+        String marital_status =  prefs.getString(CONSTANTS.MARITAL_STATUS);
+        String course =  prefs.getString(CONSTANTS.COURSE);
+        String annual_income =  prefs.getString(CONSTANTS.ANNUAL_INCOME);
 
-        String sPartnerLoc = prefs.getString(Constants.PARTNER_LOC);
-        String sMinHeight = prefs.getString(Constants.MIN_HEIGHT);
-        String sMaxHeight = prefs.getString(Constants.MAX_HEIGHT);
+        String sPartnerLoc = prefs.getString(CONSTANTS.PARTNER_LOC);
+        String sMinHeight = prefs.getString(CONSTANTS.MIN_HEIGHT);
+        String sMaxHeight = prefs.getString(CONSTANTS.MAX_HEIGHT);
 
         profileList.add(minage);profileList.add(maxage);profileList.add(country);
         profileList.add(city);profileList.add(religion);profileList.add(caste);
@@ -372,7 +371,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         searchRequest.min_height = sMinHeight;
         searchRequest.max_height = sMaxHeight;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
@@ -389,7 +388,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                             setPaidMatchedListByKeyword(queryList, pageCount);
 
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", Constants.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");

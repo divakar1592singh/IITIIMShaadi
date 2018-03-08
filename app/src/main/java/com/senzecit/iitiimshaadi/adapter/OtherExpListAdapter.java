@@ -18,9 +18,8 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
@@ -1085,7 +1084,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
 
         try {
 
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
             Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
 //            ProgressClass.getProgressInstance().showDialog(mContext);
             call.enqueue(new Callback<DateToAgeResponse>() {

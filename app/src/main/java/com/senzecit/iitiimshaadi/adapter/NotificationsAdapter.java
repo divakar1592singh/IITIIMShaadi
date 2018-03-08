@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.GetAllNotificaiton;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
@@ -74,7 +74,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 Toast.makeText(mContext, "Current Selection : "+getItemCount(), Toast.LENGTH_SHORT).show();
                 String userID = String.valueOf(list.get(position).getId());
                 if(userID.length()> 0){
-                    prefs.putString(Constants.OTHER_USERID, userID);
+                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
                     Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
                 }
             }

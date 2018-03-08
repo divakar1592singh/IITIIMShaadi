@@ -1,5 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +13,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
@@ -19,11 +20,10 @@ import com.senzecit.iitiimshaadi.adapter.OtherExpListAdapter;
 import com.senzecit.iitiimshaadi.adapter.OtherExpListPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -74,7 +74,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mBack.setOnClickListener(this);
         mTitle.setOnClickListener(this);
 
-        String userId = prefs.getString(Constants.OTHER_USERID);
+        String userId = prefs.getString(CONSTANTS.OTHER_USERID);
         callWebServiceForOtherProfile(userId);
 
 
@@ -105,18 +105,18 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
     }
 
-
-
     public void setProfileData(OtherProfileResponse profileResponse){
 
         String userId = String.valueOf(profileResponse.getBasicData().getUserId());
-        String profileUri = Constants.IMAGE_AVATAR_URL+userId+profileResponse.getBasicData().getProfileImage();
+        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+profileResponse.getBasicData().getProfileImage();
         String userName = profileResponse.getBasicData().getName();
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(OtherProfileActivity.this).load(profileUri).into(mProfileCIV);
+            Glide.with(OtherProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
         }
 
+        String[] usernameAr = userName.split("\\s");
+        mTitle.setText(new StringBuilder("" ).append(usernameAr[0]));
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
         mUsrIdTV.setText(new StringBuilder("@").append(userId));
 
@@ -291,11 +291,11 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     /** API - other profile */
     private void callWebServiceForOtherProfile(String userId){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
 //        String userId = "30413";
         ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<OtherProfileResponse> call = apiInterface.otherProfileData(token, userId);
         call.enqueue(new Callback<OtherProfileResponse>() {
             @Override
@@ -314,9 +314,35 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
             public void onFailure(Call<OtherProfileResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                reTryMethod();
+//                Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(OtherProfileActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String userId = prefs.getString(CONSTANTS.OTHER_USERID);
+                        callWebServiceForOtherProfile(userId);
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
 
     }
 

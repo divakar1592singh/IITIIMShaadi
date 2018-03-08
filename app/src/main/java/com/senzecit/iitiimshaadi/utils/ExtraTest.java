@@ -36,10 +36,10 @@ public class ExtraTest {
         countryList.clear();
 
 //        AppPrefs prefs = AppController.getInstance().getPrefs();
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
-        String token = Constants.Token_Paid;
+//        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        String token = CONSTANTS.Token_Paid;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<CountryListResponse> call = apiInterface.countryList(token);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         call.enqueue(new Callback<CountryListResponse>() {
@@ -84,7 +84,7 @@ public class ExtraTest {
 
 //        String countryId = "1151";
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         call.enqueue(new Callback<CitiesAccCountryResponse>() {
@@ -114,10 +114,10 @@ public class ExtraTest {
 
     public void showCaste(final TextView textView){
 
-        String token = Constants.Token_Paid;
+        String token = CONSTANTS.Token_Paid;
         String caste = mSelectReligionTV.getText().toString() ;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<CasteAccReligionResponse> call = apiInterface.casteList(token, caste);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         call.enqueue(new Callback<CasteAccReligionResponse>() {
@@ -146,12 +146,12 @@ public class ExtraTest {
      *//*   final List<String> stateList = new ArrayList<>();
         stateList.clear();*//*
 //        AppPrefs prefs = new AppPrefs(_context);
-//        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        String token = Constants.Token_Paid;
+        String token = CONSTANTS.Token_Paid;
         String Country = ExpOwnProfileModel.getInstance().getCurrent_Country();
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<StateListResponse> call = apiInterface.stateList(token, Country);
         call.enqueue(new Callback<StateListResponse>() {
             @Override

@@ -1,22 +1,22 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.test.mock.MockPackageManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +35,8 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -84,14 +83,15 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     String mPermission3 = Manifest.permission.READ_EXTERNAL_STORAGE;
     String mPermission4 = Manifest.permission.CAMERA;
     private static final String EXTRA_FILE_PATH = "EXTRA_FILE_PATH";
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_album);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         init();
@@ -120,6 +120,27 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        View view = findViewById(R.id.add);
+        switch (item.getItemId()) {
+            case R.id.add:
+
+                showMediaChooser(view);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void init(){
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
         mTitle = (TextView) findViewById(R.id.toolbar_title);
@@ -129,6 +150,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         mAlbumLogo.setVisibility(View.VISIBLE);
         mTitle.setText("Album");
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
         mGridView = (GridView) findViewById(R.id.gridView);
         mAddBtnLL = (LinearLayout) findViewById(R.id.idAddBtnLL);
         mAddImage = (LinearLayout) findViewById(R.id.idAddImgLL);
@@ -138,11 +160,26 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     public void handleView(){
 
+        setSupportActionBar(mToolbar);
         mBack.setOnClickListener(this);
         mAddBtnLL.setOnClickListener(this);
         mAddImage.setOnClickListener(this);
 
         callWebServiceForAllAlbum();
+
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i("Album", "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        callWebServiceForAllAlbumWithoutPrgs();
+                    }
+                }
+        );
+
     }
 
     @Override
@@ -152,8 +189,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 AlbumActivity.this.finish();
                 break;
             case R.id.idAddBtnLL:
-                mNoImageFoundFL.setVisibility(View.GONE);
-                mImageFoundFL.setVisibility(View.VISIBLE);
+                /*mNoImageFoundFL.setVisibility(View.GONE);
+                mImageFoundFL.setVisibility(View.VISIBLE);*/
+                showMediaChooser(view);
                 break;
             case R.id.idAddImgLL:
                 showMediaChooser(view);
@@ -164,49 +202,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     public void showAlbumImage(List<Album> albumList){
         AlbumAdapter albumAdapter = new AlbumAdapter(this, albumList);
         mGridView.setAdapter(albumAdapter);
-    }
-
-    /** API */
-    /** Album List */
-    public void callWebServiceForAllAlbum(){
-
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
-
-        ProgressClass.getProgressInstance().showDialog(this);
-        Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
-        call.enqueue(new Callback<AllAlbumResponse>() {
-            @Override
-            public void onResponse(Call<AllAlbumResponse> call, Response<AllAlbumResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AllAlbumResponse albumResponse = response.body();
-                    if(albumResponse.getMessage().getSuccess() != null) {
-                        if (albumResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                            mNoImageFoundFL.setVisibility(View.GONE);
-                            mImageFoundFL.setVisibility(View.VISIBLE);
-
-                            List<Album> albumList = albumResponse.getAlbums();
-                            showAlbumImage(albumList);
-
-                        } else {
-                            Toast.makeText(AlbumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    }else {
-                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AllAlbumResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
     }
 
     /** Image Upload */
@@ -365,14 +360,103 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /** API */
+    /** Album List */
+    public void callWebServiceForAllAlbum(){
+
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        ProgressClass.getProgressInstance().showDialog(this);
+        Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
+        call.enqueue(new Callback<AllAlbumResponse>() {
+            @Override
+            public void onResponse(Call<AllAlbumResponse> call, Response<AllAlbumResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AllAlbumResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            try {
+                                if (serverResponse.getAlbums().size() > 0) {
+                                    mNoImageFoundFL.setVisibility(View.GONE);
+                                    mImageFoundFL.setVisibility(View.VISIBLE);
+
+                                    List<Album> albumList = serverResponse.getAlbums();
+                                    showAlbumImage(albumList);
+                                }
+                            }catch (NullPointerException npe){
+                                Log.e(TAG, " # Error : "+npe, npe);
+                            }
+
+                        } else {
+                            Toast.makeText(AlbumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllAlbumResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+    }
+    public void callWebServiceForAllAlbumWithoutPrgs(){
+
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
+        call.enqueue(new Callback<AllAlbumResponse>() {
+            @Override
+            public void onResponse(Call<AllAlbumResponse> call, Response<AllAlbumResponse> response) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                if (response.isSuccessful()) {
+                    AllAlbumResponse albumResponse = response.body();
+                    if(albumResponse.getMessage().getSuccess() != null) {
+                        if (albumResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            mNoImageFoundFL.setVisibility(View.GONE);
+                            mImageFoundFL.setVisibility(View.VISIBLE);
+
+                            List<Album> albumList = albumResponse.getAlbums();
+                            showAlbumImage(albumList);
+
+                        } else {
+                            Toast.makeText(AlbumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AllAlbumResponse> call, Throwable t) {
+                call.cancel();
+                mSwipeRefreshLayout.setRefreshing(false);
+//                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
 
         String fullPath = Commons.getPath(uri, this);
         File   file = new File(fullPath);
         System.out.print(file);
 
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
@@ -380,7 +464,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
         ProgressClass.getProgressInstance().showDialog(AlbumActivity.this);
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> callUpload = apiInterface.imageUpload(fileToUpload, filename, token);
 
         callUpload.enqueue(new Callback<AddFolderResponse>() {

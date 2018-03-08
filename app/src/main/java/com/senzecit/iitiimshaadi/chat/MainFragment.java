@@ -18,14 +18,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONException;
@@ -44,9 +42,6 @@ import java.util.List;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A chat fragment containing messages view and input form.
@@ -232,7 +227,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         chatPostRequest.senderId = new SharedPrefClass(getActivity()).getLoginInfo();
         chatPostRequest.receiverId = new SharedPrefClass(getActivity()).getReceiverID();
 
-        apiInterface = ApiClient.getClient(Constants.CHAT_HISTORY_URL).create(ApiInterface.class);
+        apiInterface = ApiClient.getClient(CONSTANTS.CHAT_HISTORY_URL).create(ApiInterface.class);
         Call<SingleChatHistoryModel> call1 = apiInterface.singleChatPreviousHistory(chatPostRequest);
         call1.enqueue(new Callback<SingleChatHistoryModel>() {
             @Override
@@ -327,16 +322,16 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         }
 
 //        String url = "https://cdn-images-1.medium.com/max/1600/1*U5N_ryt8h94nyO9oaPW9nw.png";
-        String senderId = prefs.getString(Constants.LOGGED_USERID);
+        String senderId = prefs.getString(CONSTANTS.LOGGED_USERID);
         mInputMessageView.setText("");
         addMessage("", senderId, mUsername, message);
 
 
         JSONObject obj = new JSONObject();
-        String receiverId = prefs.getString(Constants.OTHER_USERID);
+        String receiverId = prefs.getString(CONSTANTS.OTHER_USERID);
         //   String senderId = prefs.getString(App.Key.ID_LOGGED);
-        String senderName = prefs.getString(Constants.LOGGED_USERNAME);
-        String senderImageUrl = prefs.getString(Constants.LOGGED_USER_PIC);
+        String senderName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
+        String senderImageUrl = prefs.getString(CONSTANTS.LOGGED_USER_PIC);
 
 //        String currentReceiver = "";
 
@@ -398,7 +393,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         if(null!=mUsername) {
                             JSONObject obj = new JSONObject();
                             try {
-                                obj.put("userId", prefs.getString(Constants.LOGGED_USERID));
+                                obj.put("userId", prefs.getString(CONSTANTS.LOGGED_USERID));
 
                             }catch (JSONException e) {
                                 e.printStackTrace();

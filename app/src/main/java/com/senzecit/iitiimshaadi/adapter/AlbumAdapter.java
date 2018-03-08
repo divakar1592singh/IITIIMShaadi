@@ -21,11 +21,10 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 
 import java.util.List;
 
@@ -41,12 +40,7 @@ public class AlbumAdapter extends BaseAdapter {
 
     Context context;
     List<Album> albumList;
-    String[] listItem;
     AppPrefs prefs;
-
-    int[] imageItem = {R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2,
-            R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2,
-            R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2, R.drawable.profile_img2};
 
     public AlbumAdapter(Context context, List<Album> albumList) {
         this.context = context;
@@ -83,7 +77,7 @@ public class AlbumAdapter extends BaseAdapter {
 //        holder.imageView.setImageResource(imageItem[i]);
 
         try {
-            Glide.with(context).load(Constants.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl()).error(R.drawable.ic_not_available).into(holder.imageView);
+            Glide.with(context).load(CONSTANTS.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl()).error(R.drawable.ic_not_available).into(holder.imageView);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,7 +141,7 @@ public class AlbumAdapter extends BaseAdapter {
 
                 new AlertDialog.Builder(context)
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Account Deletion!")
+                        .setTitle("Album Deletion!")
                         .setMessage("are you sure?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
@@ -162,7 +156,7 @@ public class AlbumAdapter extends BaseAdapter {
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                dialog.dismiss();
                             }
                         })
                         .show();
@@ -191,10 +185,10 @@ public class AlbumAdapter extends BaseAdapter {
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.setProfileAlbum(token, profile);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -230,10 +224,10 @@ public class AlbumAdapter extends BaseAdapter {
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.settingAlbum(token, album_id, privacy);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -268,10 +262,10 @@ public class AlbumAdapter extends BaseAdapter {
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.deleteAlbum(token, album_id);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override

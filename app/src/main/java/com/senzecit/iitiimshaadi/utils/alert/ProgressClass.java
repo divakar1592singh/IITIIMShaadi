@@ -25,9 +25,12 @@ public class ProgressClass {
     }
     public static ProgressClass getProgressInstance()
     {
-        if(progressClass == null)
-        {
-            progressClass = new ProgressClass();
+        if(progressClass == null) {
+            synchronized (ProgressClass.class) {
+                if (progressClass == null) {
+                    progressClass = new ProgressClass();
+                }
+            }
         }
         return progressClass;
     }

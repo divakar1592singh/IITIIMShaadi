@@ -44,7 +44,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -2156,7 +2156,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
 //        ExpListViewSubscriberAdapter.this.notifyDataSetChanged();
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String name = ExpOwnProfileModel.getInstance().getName();
         String Profile = ExpOwnProfileModel.getInstance().getProfile();
@@ -2191,14 +2191,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.BASIC_LIFESTYLE, request, methodName);
 
     }
 
     public void saveChangesOfCase_1() {
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Religion = ExpOwnProfileModel.getInstance().getReligion();
         String Caste = ExpOwnProfileModel.getInstance().getCaste();
@@ -2214,7 +2214,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
 
     }
 
@@ -2236,7 +2236,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         Toast.makeText(_context, "Output : " + Alternate_Number, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ContactDetailsRequest request = new ContactDetailsRequest();
         request.token = token;
@@ -2256,7 +2256,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.CONTACT_DETAILS, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.CONTACT_DETAILS, request, methodName);
 
 
     }
@@ -2273,7 +2273,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         Toast.makeText(_context, "Output : " + Father_Name, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         FamilyDetailRequest request = new FamilyDetailRequest();
         request.token = token;
@@ -2286,7 +2286,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.FAMILY_DETAILS, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.FAMILY_DETAILS, request, methodName);
 
     }
 
@@ -2310,7 +2310,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         Toast.makeText(_context, "Output : " + Schooling, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         EducationCareerRequest request = new EducationCareerRequest();
         request.token = token;
@@ -2331,7 +2331,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.EDUCATION_CAREER, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.EDUCATION_CAREER, request, methodName);
 
     }
 
@@ -2341,7 +2341,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         Toast.makeText(_context, "Output : " + About_you, Toast.LENGTH_LONG).show();
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         AboutMeRequest request = new AboutMeRequest();
         request.token = token;
@@ -2349,13 +2349,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.ABOUT_ME, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.ABOUT_ME, request, methodName);
 
     }
 
     public void showCountry(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
@@ -2380,7 +2380,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                             showDialog(countryList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                         }
 
                     }
@@ -2388,14 +2388,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
     }
     public void showPermanentState(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
@@ -2419,11 +2419,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                             }
                             showDialog(stateList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.state_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.state_not_found);
                         }
 
                     }
@@ -2431,14 +2431,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
     }
     public void showCurrentState(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getCurrent_Country();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
@@ -2462,11 +2462,11 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                             }
                             showDialog(stateList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.state_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.state_not_found);
                         }
 
                     }
@@ -2474,14 +2474,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
     }
     public void showCaste(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
@@ -2505,14 +2505,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                             showDialog(casteList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }
                     }
 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
     }

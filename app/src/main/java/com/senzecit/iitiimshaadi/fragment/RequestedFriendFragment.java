@@ -16,17 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.CustomFolderAdapter;
-import com.senzecit.iitiimshaadi.adapter.MyFriendsAdapter;
 import com.senzecit.iitiimshaadi.adapter.RequestFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
-import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.AllRequestFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.RequestedFriendResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
@@ -82,6 +78,8 @@ public class RequestedFriendFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         callWebServiceForRequestedFriend();
+
+
     }
 
     private void init(){
@@ -110,7 +108,7 @@ public class RequestedFriendFragment extends Fragment {
 //                                listener.onFragmentAddFriend(UserDefinedKeyword.ADD.toString(), userID);
 
                                 if(userID.length()> 0){
-                                    prefs.putString(Constants.OTHER_USERID, userID);
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
                                     Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
                                 }
                             }
@@ -170,12 +168,12 @@ public class RequestedFriendFragment extends Fragment {
     /** API */
     public void callWebServiceForRequestedFriend(){
 
-//        String token = Constants.Token_Paid;
+//        String token = CONSTANTS.Token_Paid;
         AppPrefs prefs = AppController.getInstance().getPrefs();
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<RequestedFriendResponse> call = apiInterface.requestedFriends(token);
         call.enqueue(new Callback<RequestedFriendResponse>() {
             @Override

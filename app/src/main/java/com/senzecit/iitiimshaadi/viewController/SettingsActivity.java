@@ -33,13 +33,9 @@ import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -77,7 +73,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().hide();
         setContentView(R.layout.activity_settings);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
         init();
         handleView();
@@ -283,7 +279,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         String sUsername = mNameET.getText().toString().trim();
         String sPassword = mPwdET.getText().toString().trim();
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         GeneralSettingRequest request = new GeneralSettingRequest();
         request.token = token;
@@ -383,7 +379,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void callWebServiceForDeactivate(String reason){
 
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SettingsActivity.this);
         Call<AddFolderResponse> call = apiInterface.deactivateAccount(token, reason);
@@ -427,11 +423,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        prefs.remove(Constants.LOGGED_TOKEN);
-                        prefs.remove(Constants.LOGGED_USERNAME);
-                        prefs.remove(Constants.LOGGED_USERID);
-                        prefs.remove(Constants.LOGGED_USER_TYPE);
-                        prefs.remove(Constants.LOGGED_EMAIL);
+                        prefs.remove(CONSTANTS.LOGGED_TOKEN);
+                        prefs.remove(CONSTANTS.LOGGED_USERNAME);
+                        prefs.remove(CONSTANTS.LOGGED_USERID);
+                        prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                        prefs.remove(CONSTANTS.LOGGED_EMAIL);
 
                         Navigator.getClassInstance().navigateToActivity(SettingsActivity.this, SplashActivity.class);
 

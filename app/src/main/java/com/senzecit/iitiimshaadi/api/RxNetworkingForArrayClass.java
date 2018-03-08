@@ -7,13 +7,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Created by senzec on 6/3/18.
@@ -43,7 +41,7 @@ public class RxNetworkingForArrayClass {
 
     public void callWebServiceForRxNetworking(Activity context, String relativePath, Object paramClass, String methodName ) {
         ProgressClass.getProgressInstance().showDialog(context);
-        AndroidNetworking.post(Constants.BASE_URL+relativePath)
+        AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
                 .addBodyParameter(paramClass)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -77,7 +75,7 @@ public class RxNetworkingForArrayClass {
 
     public void callWebServiceForRxNetworking(Context context, String relativePath, Object paramClass, String methodName ) {
         ProgressClass.getProgressInstance().showDialog(context);
-        AndroidNetworking.post(Constants.BASE_URL+relativePath)
+        AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
                 .addBodyParameter(paramClass)
                 .setPriority(Priority.MEDIUM)
                 .build()

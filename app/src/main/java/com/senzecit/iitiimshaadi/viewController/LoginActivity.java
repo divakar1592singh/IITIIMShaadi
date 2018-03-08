@@ -24,7 +24,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = new AppPrefs(LoginActivity.this);
 
         init();
@@ -179,11 +179,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         prefs.putString(ConstantsPref.LOGIN_USERNAME, sUsername);
         prefs.putString(ConstantsPref.LOGIN_PASSWORD, sPassword);
 
-        prefs.putString(Constants.LOGGED_TOKEN, token);
-        prefs.putString(Constants.LOGGED_USERNAME, userName);
-        prefs.putString(Constants.LOGGED_USERID, userId);
-        prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
-        prefs.putString(Constants.LOGGED_USER_PIC, profilePic);
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
+        prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
+        prefs.putString(CONSTANTS.LOGGED_USERID, userId);
+        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+        prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
 
         navigateUserToScreen(typeOfUser);
     }

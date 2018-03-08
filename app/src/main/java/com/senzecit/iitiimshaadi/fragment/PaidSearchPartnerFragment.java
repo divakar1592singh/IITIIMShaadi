@@ -40,17 +40,12 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -311,27 +306,27 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 //    /** Search By ID */
     public void callIDSearch(){
 
-        prefs.putString(Constants.SEARCH_TYPE, "id");
+        prefs.putString(CONSTANTS.SEARCH_TYPE, "id");
 
         String searchID = mSearchByIdET.getText().toString() ;
-        prefs.putString(Constants.SEARCH_ID, searchID);
+        prefs.putString(CONSTANTS.SEARCH_ID, searchID);
 //        communicator.saveAndSearchPaidPartnerByID(queryList, searchID);
         communicator.saveAndSearchPaidPartner();
     }
     /** Search By Keyword */
     public void callKeywordSearch(){
 
-        prefs.putString(Constants.SEARCH_TYPE, "keyword");
+        prefs.putString(CONSTANTS.SEARCH_TYPE, "keyword");
 
         String keyword = mRandomKeywordET.getText().toString() ;
-        prefs.putString(Constants.SEARCH_KEYWORD, keyword);
+        prefs.putString(CONSTANTS.SEARCH_KEYWORD, keyword);
 //        communicator.saveAndSearchPaidPartnerByKeyword(queryList, keyword);
         communicator.saveAndSearchPaidPartner();
     }
     /** Advance Search */
     public void callAdvanceSearch(){
 
-        prefs.putString(Constants.SEARCH_TYPE, "advance");
+        prefs.putString(CONSTANTS.SEARCH_TYPE, "advance");
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -349,19 +344,19 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String sMinHeight = mSelectHeightMinTV.getText().toString() ;
         String sMaxHeight = mSelectHeightMaxTV.getText().toString() ;
 
-        prefs.putString(Constants.MIN_AGE, minage);
-        prefs.putString(Constants.MAX_AGE, maxage);
-        prefs.putString(Constants.COUNTRY, country);
-        prefs.putString(Constants.CITY, city);
-        prefs.putString(Constants.RELIGION, religion);
-        prefs.putString(Constants.CASTE, caste);
-        prefs.putString(Constants.MOTHER_TONGUE, mother_tounge);
-        prefs.putString(Constants.MARITAL_STATUS, marital_status);
-        prefs.putString(Constants.COURSE, course);
-        prefs.putString(Constants.ANNUAL_INCOME, annual_income);
-        prefs.putString(Constants.PARTNER_LOC, sPartnerLoc);
-        prefs.putString(Constants.MIN_HEIGHT, sMinHeight);
-        prefs.putString(Constants.MAX_HEIGHT, sMaxHeight);
+        prefs.putString(CONSTANTS.MIN_AGE, minage);
+        prefs.putString(CONSTANTS.MAX_AGE, maxage);
+        prefs.putString(CONSTANTS.COUNTRY, country);
+        prefs.putString(CONSTANTS.CITY, city);
+        prefs.putString(CONSTANTS.RELIGION, religion);
+        prefs.putString(CONSTANTS.CASTE, caste);
+        prefs.putString(CONSTANTS.MOTHER_TONGUE, mother_tounge);
+        prefs.putString(CONSTANTS.MARITAL_STATUS, marital_status);
+        prefs.putString(CONSTANTS.COURSE, course);
+        prefs.putString(CONSTANTS.ANNUAL_INCOME, annual_income);
+        prefs.putString(CONSTANTS.PARTNER_LOC, sPartnerLoc);
+        prefs.putString(CONSTANTS.MIN_HEIGHT, sMinHeight);
+        prefs.putString(CONSTANTS.MAX_HEIGHT, sMaxHeight);
 
         communicator.saveAndSearchPaidPartner();
 
@@ -569,7 +564,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     }
     public void showCountry(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
@@ -596,7 +591,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                             showDialog(countryList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
                         }
 
                     }
@@ -604,7 +599,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
@@ -646,25 +641,25 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                             }
                             showDialog(cityList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.city_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.city_not_found);
                         }
                     }
 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
                     }
                 });
 
 
 //        String countryId = "1151";
 /*
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         call.enqueue(new Callback<CitiesAccCountryResponse>() {
@@ -707,7 +702,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
 //        String countryId = "1151";
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         call.enqueue(new Callback<CitiesAccCountryResponse>() {
@@ -736,7 +731,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     }
     public void showCaste(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = mSelectReligionTV.getText().toString() ;
         ProgressClass.getProgressInstance().showDialog(getActivity());
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
@@ -760,11 +755,11 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                             }
                             showDialog(casteList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.cast_not_found);
                         }
 
                     }
@@ -772,7 +767,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
 

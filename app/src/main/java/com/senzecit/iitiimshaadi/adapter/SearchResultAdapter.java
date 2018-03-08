@@ -24,14 +24,11 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Qu
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.CustomFoldersActivity;
-import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
-import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +93,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         try {
             String userId = String.valueOf(queryList.get(position).getId());
             String partUrl = queryList.get(position).getProfileImage();
-            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mSearchpartnerIV);
+            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mSearchpartnerIV);
         }catch (NullPointerException npe){
             Log.e("TAG", " #Error : "+npe, npe);
         }
@@ -162,9 +159,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String s1, String s2)
     {
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
             return apiInterface.serviceAddAsFriend(token, s1);
@@ -180,11 +177,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     /** Folder Title */
     public void callWebServiceForCustomFolder(String typeOf, String friend_id){
 
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(mContext);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
         call.enqueue(new Callback<FolderListModelResponse>() {
             @Override

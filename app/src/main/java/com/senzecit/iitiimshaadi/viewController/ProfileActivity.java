@@ -36,8 +36,8 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -105,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //        getSupportActionBar().hide();
         setContentView(R.layout.activity_profile);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         init();
@@ -192,9 +192,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public  void  setProfileData(){
 
-        String userId = prefs.getString(Constants.LOGGED_USERID);
-        String profileUri = Constants.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(Constants.LOGGED_USER_PIC);
-        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+        String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
+        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
+        String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
             Glide.with(ProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
@@ -631,13 +631,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void callWebServiceMyProfile(){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
         ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<MyProfileResponse> call = apiInterface.myProfileData(token);
         call.enqueue(new Callback<MyProfileResponse>() {
             @Override
@@ -667,8 +667,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(myProfileResponse.getBasicData() != null){
             String userId = String.valueOf(myProfileResponse.getEmailData().getId());
             String partUrl = myProfileResponse.getBasicData().getProfileImage();
-            prefs.putString(Constants.LOGGED_USER_PIC, partUrl);
-            Glide.with(ProfileActivity.this).load(Constants.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.profile_img1).into(mProfileCIV);
+            prefs.putString(CONSTANTS.LOGGED_USER_PIC, partUrl);
+            Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.profile_img1).into(mProfileCIV);
 
         }
 
@@ -688,8 +688,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         File   file = new File(fullPath);
         System.out.print(file);
 
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 //        String token = "1cbaaa66e729e857a81979693fe2d125";
 
 
@@ -699,7 +699,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
         ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> callUpload = apiInterface.profileImageUpload(fileToUpload, filename, token);
 
         callUpload.enqueue(new Callback<AddFolderResponse>() {

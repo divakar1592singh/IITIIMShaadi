@@ -72,7 +72,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.AlbumActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".viewController.SubscriptionActivity"
             android:screenOrientation="portrait" />

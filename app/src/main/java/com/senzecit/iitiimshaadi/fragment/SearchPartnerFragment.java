@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,17 +34,14 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -204,7 +200,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         List<String> profileList =new ArrayList<>();
         profileList.clear();
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
@@ -235,7 +231,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         searchRequest.course = course;
         searchRequest.annual_income = annual_income;
 
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(searchRequest);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
@@ -249,7 +245,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             System.out.print(profileList);
                             communicator.saveSearchPartner(queryList, profileList);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
@@ -460,7 +456,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
     public void showCountry(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
@@ -490,7 +486,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             showDialog(countryList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
                         }
 
                     }
@@ -498,7 +494,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
@@ -541,11 +537,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             }
                             showDialog(cityList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.city_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.city_not_found);
                         }
 
                     }
@@ -553,14 +549,14 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.country_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
                     }
                 });
     }
 
     public void showCaste(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = mSelectReligionTV.getText().toString();
         ProgressClass.getProgressInstance().showDialog(getActivity());
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
@@ -584,11 +580,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             }
                             showDialog(casteList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.cast_not_found);
                         }
 
                     }
@@ -596,7 +592,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", Constants.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
 

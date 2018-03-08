@@ -34,7 +34,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_str
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.QuickRegStreamResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegFindCollegeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegStreamRequest;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -69,7 +69,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         getSupportActionBar().hide();
         setContentView(R.layout.activity_registration_quick);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
 
         init();
         handleView();
@@ -343,7 +343,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
 
 
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", Constants.edu_error_msg);
+            AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Alert!", CONSTANTS.edu_error_msg);
         }
 
     }

@@ -36,8 +36,8 @@ import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
 import com.senzecit.iitiimshaadi.model.commons.CountryCodeModel;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
-import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.ModalBottomSheet;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -83,7 +83,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         getSupportActionBar().hide();
         setContentView(R.layout.activity_new_user_regiater);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = new AppPrefs(NewUserRegisterActivity.this);
 
         init();
@@ -530,13 +530,13 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String typeOfUser = response.getTypeOfUser();
         String email = response.getEmail();
 
-        prefs.putString(Constants.LOGGED_TOKEN, token);
-        prefs.putString(Constants.LOGGED_USERNAME, userName);
-        prefs.putString(Constants.LOGGED_USERID, userId);
-        prefs.putString(Constants.LOGGED_USER_TYPE, typeOfUser);
-        prefs.putString(Constants.LOGGED_EMAIL, email);
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
+        prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
+        prefs.putString(CONSTANTS.LOGGED_USERID, userId);
+        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+        prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
 
-        prefs.getString(Constants.LOGGED_TOKEN);
+        prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         navigateUserToScreen(typeOfUser);
     }

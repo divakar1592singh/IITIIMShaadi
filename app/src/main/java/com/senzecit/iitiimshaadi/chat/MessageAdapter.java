@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.cache.DownloadImageTask;
 import com.senzecit.iitiimshaadi.utils.cache.ImagesCache;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -107,8 +107,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         public void setMessage(String userid, String message) {
             if (null == mMessageView) return;
-            String senderId = prefs.getString(Constants.LOGGED_USERID);
-            String receiverId = prefs.getString(Constants.OTHER_USERID);
+            String senderId = prefs.getString(CONSTANTS.LOGGED_USERID);
+            String receiverId = prefs.getString(CONSTANTS.OTHER_USERID);
 
             if(senderId.equalsIgnoreCase(userid)){
                 mProfileIV.setVisibility(View.INVISIBLE);

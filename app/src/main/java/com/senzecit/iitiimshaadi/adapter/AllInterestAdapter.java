@@ -15,23 +15,15 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.AllInterestReceived;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.UserDetail;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
-import com.senzecit.iitiimshaadi.viewController.PaidSubscriberDashboardActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,7 +89,7 @@ public class AllInterestAdapter extends RecyclerView.Adapter<AllInterestAdapter.
                 Toast.makeText(mContext, "Current Selection : "+userDetail.getUserId(), Toast.LENGTH_SHORT).show();
                 String userID = String.valueOf(userDetail.getUserId());
                 if(userID.length()> 0){
-                    prefs.putString(Constants.OTHER_USERID, userID);
+                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
                     Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
                 }else {
 
@@ -115,7 +107,7 @@ public class AllInterestAdapter extends RecyclerView.Adapter<AllInterestAdapter.
 
         try {
 
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
             Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
 //            ProgressClass.getProgressInstance().showDialog(mContext);
             call.enqueue(new Callback<DateToAgeResponse>() {

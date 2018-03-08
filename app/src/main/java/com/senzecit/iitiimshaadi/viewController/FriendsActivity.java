@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +24,7 @@ import com.senzecit.iitiimshaadi.fragment.RequestedFriendFragment;
 import com.senzecit.iitiimshaadi.fragment.ShortlistedFriendFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -31,7 +32,9 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +59,7 @@ RequestedFriendFragment.OnRequestedFriendListener{
         getSupportActionBar().hide();
         setContentView(R.layout.activity_friends);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         init();
@@ -194,7 +197,7 @@ RequestedFriendFragment.OnRequestedFriendListener{
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String friend_user)
     {
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
             return apiInterface.serviceAddAsFriend(token, friend_user);
@@ -207,7 +210,7 @@ RequestedFriendFragment.OnRequestedFriendListener{
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.UNSHORTLIST.toString())){
             return apiInterface.serviceUnShortlistFriend(token, friend_user);
         }else {
-            Toast.makeText(FriendsActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(FriendsActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
             return null;
         }
 

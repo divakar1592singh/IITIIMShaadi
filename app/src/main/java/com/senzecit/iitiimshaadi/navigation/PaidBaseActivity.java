@@ -17,11 +17,10 @@ import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
-import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
 import com.senzecit.iitiimshaadi.viewController.DisclaimerActivity;
 import com.senzecit.iitiimshaadi.viewController.FAQActivity;
@@ -209,11 +208,11 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
             case R.id.idLogoutNav: {
                 // Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
                 AppPrefs prefs = AppController.getInstance().getPrefs();
-                prefs.remove(Constants.LOGGED_TOKEN);
-                prefs.remove(Constants.LOGGED_USERNAME);
-                prefs.remove(Constants.LOGGED_USERID);
-                prefs.remove(Constants.LOGGED_USER_TYPE);
-                prefs.remove(Constants.LOGGED_EMAIL);
+                prefs.remove(CONSTANTS.LOGGED_TOKEN);
+                prefs.remove(CONSTANTS.LOGGED_USERNAME);
+                prefs.remove(CONSTANTS.LOGGED_USERID);
+                prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                prefs.remove(CONSTANTS.LOGGED_EMAIL);
                 Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, SplashActivity.class);
                 break;
             }

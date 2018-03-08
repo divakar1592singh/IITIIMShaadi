@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 
 public class SubscriptionPlanActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener{
 
@@ -167,8 +167,8 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
             boolean status = true;
             Intent intent = new Intent(SubscriptionPlanActivity.this, MakePaymentActivity.class);
-            intent.putExtra(Constants.AMOUNT_PAY, mTotalAmountTV.getText().toString());
-            intent.putExtra(Constants.PLAN_STATUS, status);
+            intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());
+            intent.putExtra(CONSTANTS.PLAN_STATUS, status);
             startActivity(intent);
 
         }else if(mInterNationalRB.isChecked() == true) {

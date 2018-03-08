@@ -15,8 +15,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.UserDetail;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
         try {
             String userId = String.valueOf(userDetail.getUserId());
             String partUrl = userDetail.getProfileImage();
-            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mCircleIV);
+            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mCircleIV);
         }catch (NullPointerException npe){
             Log.e("TAG", " #Error : "+npe, npe);
         }

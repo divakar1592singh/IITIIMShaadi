@@ -56,7 +56,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -2386,9 +2386,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         interestsArr[0] = Interests;
 
         Toast.makeText(_context, "Output : "+Interests, Toast.LENGTH_LONG).show();
-//        String token  = Constants.Temp_Token;
+//        String token  = CONSTANTS.Temp_Token;
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
@@ -2404,11 +2404,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 /*
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, Constants.BASIC_LIFESTYLE, request, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.BASIC_LIFESTYLE, request, methodName);
 */
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<BasicProfileResponse> call = apiInterface.sendBasicProfile(request);
         call.enqueue(new Callback<BasicProfileResponse>() {
             @Override
@@ -2448,8 +2448,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
 
         Toast.makeText(_context, "Output : "+Religion, Toast.LENGTH_LONG).show();
-//        String token = Constants.Temp_Token;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Temp_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
         request.token = token;
@@ -2458,7 +2458,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.mother_tounge = Mother_Tongue;
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ReligiousBackgroundResponse> call = apiInterface.sendReligiousBackground(request);
         call.enqueue(new Callback<ReligiousBackgroundResponse>() {
             @Override
@@ -2510,7 +2510,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ContactDetailsRequest request = new ContactDetailsRequest();
         request.token = token;
@@ -2529,7 +2529,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ContactDetailsResponse> call = apiInterface.sendContactDetails(request);
         call.enqueue(new Callback<ContactDetailsResponse>() {
             @Override
@@ -2575,7 +2575,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         FamilyDetailRequest request = new FamilyDetailRequest();
         request.token = token;
@@ -2587,7 +2587,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.sister_detail = Details_Sisters;
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<FamilyDetailResponse> call = apiInterface.sendFamilyDetails(request);
         call.enqueue(new Callback<FamilyDetailResponse>() {
             @Override
@@ -2640,7 +2640,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         EducationCareerRequest request = new EducationCareerRequest();
         request.token = token;
@@ -2659,7 +2659,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.annual_income = Annual_Income;
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<EducationCareerResponse> call = apiInterface.sendEducationCareer(request);
         call.enqueue(new Callback<EducationCareerResponse>() {
             @Override
@@ -2700,7 +2700,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         AboutMeRequest request = new AboutMeRequest();
         request.token = token;
@@ -2708,7 +2708,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AboutMeResponse> call = apiInterface.sendAboutMe(request);
         call.enqueue(new Callback<AboutMeResponse>() {
             @Override
@@ -2745,7 +2745,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
     public void showCountry(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
@@ -2770,7 +2770,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                             showDialog(countryList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                         }
 
                     }
@@ -2778,7 +2778,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
@@ -2786,7 +2786,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
     public void showPermanentState(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
@@ -2810,11 +2810,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                             }
                             showDialog(stateList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.state_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.state_not_found);
                         }
 
                     }
@@ -2822,14 +2822,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
     }
     public void showCurrentState(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getCurrent_Country();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
@@ -2853,11 +2853,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                             }
                             showDialog(stateList, textView);
                         /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.state_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.state_not_found);
                         }
 
                     }
@@ -2865,7 +2865,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
@@ -2873,7 +2873,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 
     public void showCaste(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
@@ -2897,7 +2897,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                             }
                             showDialog(casteList, textView);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -2908,7 +2908,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
 
@@ -2919,7 +2919,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
 //        String _date = "1988-08-28";
         try {
 
-            APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
             Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
 //            ProgressClass.getProgressInstance().showDialog(mContext);
             call.enqueue(new Callback<DateToAgeResponse>() {

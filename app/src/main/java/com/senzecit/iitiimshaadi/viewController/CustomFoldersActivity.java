@@ -32,7 +32,7 @@ import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderList
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -67,7 +67,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().hide();
         setContentView(R.layout.activity_custom_folders);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         init();
@@ -160,8 +160,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     /** Folder Title */
     public void callWebServiceForCustomFolder(){
 
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
@@ -197,8 +197,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     /** Folder List Data */
     public void callWebServiceForCurrentCustomFolder(String mTitle){
 
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
@@ -367,8 +367,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void callWebServiceForAdd(){
 
-//        String token = Constants.Temp_Token;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Temp_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String sFolderName = mFolderNameET.getText().toString().trim();
 
@@ -406,7 +406,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void callWebServiceForRename(){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String sFolderName = mFolderNameET.getText().toString().trim();
         int positin = mFolderSpnr.getSelectedItemPosition();
@@ -452,8 +452,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void callWebServiceForDelete(){
 
-//        String token = Constants.Temp_Token;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Temp_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         int positin = mFolderSpnr.getSelectedItemPosition();
         int folder_id = metaDataList.get(positin).getMetaId();

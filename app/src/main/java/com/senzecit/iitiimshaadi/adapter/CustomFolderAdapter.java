@@ -1,7 +1,6 @@
 package com.senzecit.iitiimshaadi.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +13,10 @@ import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
-import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 
 import java.util.List;
 
@@ -83,7 +81,7 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
                 String userID = "";
                 userID = String.valueOf(userList.get(position).getUserId());
                 if (userID.length() > 0) {
-                    prefs.putString(Constants.OTHER_USERID, userID);
+                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
                     Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
                 }
             }

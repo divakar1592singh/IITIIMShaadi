@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,26 +25,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
-import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
-import com.senzecit.iitiimshaadi.utils.Constants;
-import com.senzecit.iitiimshaadi.utils.ConstantsPref;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ContactUsActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, RxNetworkingForObjectClass.CompletionHandler {
 
@@ -268,7 +258,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         request.subject = sSubject;
         request.message = sMessage;
 
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ContactUsActivity.this, Constants.CONTACT_US_PATH, request, null);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ContactUsActivity.this, CONSTANTS.CONTACT_US_PATH, request, null);
 
     }
 

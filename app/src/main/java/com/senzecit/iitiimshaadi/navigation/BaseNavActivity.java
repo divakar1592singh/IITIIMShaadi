@@ -18,7 +18,7 @@ import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -139,7 +139,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         mLogOut.setOnClickListener(this);
 
         AppPrefs prefs = AppController.getInstance().getPrefs();
-        userType = prefs.getString(Constants.LOGGED_USER_TYPE);
+        userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
 
         // SET DEFAULT COLOR
         /*homeBtn.setTextColor(Color.parseColor("#000000"));
@@ -286,11 +286,11 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
 //                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "LogOut");
 //                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
                 AppPrefs prefs = AppController.getInstance().getPrefs();
-                prefs.remove(Constants.LOGGED_TOKEN);
-                prefs.remove(Constants.LOGGED_USERNAME);
-                prefs.remove(Constants.LOGGED_USERID);
-                prefs.remove(Constants.LOGGED_USER_TYPE);
-                prefs.remove(Constants.LOGGED_EMAIL);
+                prefs.remove(CONSTANTS.LOGGED_TOKEN);
+                prefs.remove(CONSTANTS.LOGGED_USERNAME);
+                prefs.remove(CONSTANTS.LOGGED_USERID);
+                prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                prefs.remove(CONSTANTS.LOGGED_EMAIL);
                 Navigator.getClassInstance().navigateToActivity(BaseNavActivity.this, SplashActivity.class);
 
                 break;

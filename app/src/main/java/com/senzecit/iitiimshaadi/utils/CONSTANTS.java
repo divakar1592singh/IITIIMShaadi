@@ -4,9 +4,9 @@ package com.senzecit.iitiimshaadi.utils;
  * Created by senzec on 30/12/17.
  */
 
-public interface Constants {
+public interface CONSTANTS {
 
-    int splshTime = 100;
+    int splshTime = 200;
     String BASE_URL = "https://www.iitiimshaadi.com/";
     String IMAGE_BASE_URL = "https://iitiimshaadi.com/img/";
     String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/uploads/avatars/";

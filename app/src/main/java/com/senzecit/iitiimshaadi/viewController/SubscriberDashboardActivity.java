@@ -34,18 +34,16 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
 import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,7 +52,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
@@ -94,7 +91,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscriber_dashboard);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         init();
@@ -206,9 +203,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     public  void  setProfileData(){
 
-        String userId = prefs.getString(Constants.LOGGED_USERID);
-        String profileUri = Constants.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(Constants.LOGGED_USER_PIC);
-        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+        String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
+        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
+        String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
             Glide.with(SubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
@@ -218,7 +215,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mUsrIdTV.setText(new StringBuilder("@").append(userId));
 
         try{
-            String userType = prefs.getString(Constants.LOGGED_USER_TYPE);
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
             if(userType.equalsIgnoreCase("subscriber_viewer")) {
 
                 setVerificationStatus(true, true, true, true, true);
@@ -735,7 +732,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     /* Subscriber Dashboard*/
     public void callWebServiceForSubscribeDashboard(){
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/subscriber_dashboard.json")
@@ -770,7 +767,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
 
 /*        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
         call.enqueue(new Callback<SubscriberMainResponse>() {
             @Override
@@ -807,7 +804,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     public void callWebServiceForEmailVerification(){
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
         emailVerirequest.token = token;
 
@@ -842,11 +839,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     /** MOBILE */
     public void callWebServiceForResendOTP(){
 
-//        String token = Constants.Own_Token;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Own_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.resendOTP(token);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -881,11 +878,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     public void callWebServiceForOTPVerification(String otp){
 
-//        String token = Constants.Own_Token;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Own_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.verifiyOTP(token, otp);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -925,7 +922,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         Call<IdVerificationResponse> callUpload = null;
 
-        String token = Constants.Temp_Token;
+        String token = CONSTANTS.Temp_Token;
         Toast.makeText(SubscriberDashboardActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
@@ -934,7 +931,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         callUpload = callManipulationMethod(fileToUpload, filename, token);
 
         callUpload.enqueue(new Callback<IdVerificationResponse>() {
@@ -983,7 +980,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     public void callApiForDocVerification(){
 
 //        String token = "d7f43182da347f975350c02c30689e30";
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
             AndroidNetworking.post("https://iitiimshaadi.com/api/status_report.json")
                     .addBodyParameter("token", token)

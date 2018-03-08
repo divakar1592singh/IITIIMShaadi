@@ -13,9 +13,8 @@ import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.UserDetail;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
         try {
             String userId = String.valueOf(userDetail.getUserId());
             String partUrl = userDetail.getProfileImage();
-            Glide.with(mContext).load(Constants.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mCircleIV);
+            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mCircleIV);
         }catch (NullPointerException npe){
             Log.e("TAG", " #Error : "+npe, npe);
         }

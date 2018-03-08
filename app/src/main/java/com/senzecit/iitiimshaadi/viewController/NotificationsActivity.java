@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telecom.Call;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNotificationRespnse;
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.GetAllNotificaiton;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -41,7 +40,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().hide();
         setContentView(R.layout.activity_chat_messages);
 
-        apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         init();
@@ -60,15 +59,6 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
     }
 
     public void handleView(){
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerViewChatUser.setLayoutManager(layoutManager);
@@ -89,9 +79,9 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
     /** API Integration*/
     public void callServiceForAllNotific(){
 
-//        String token = Constants.Token_Paid;
+//        String token = CONSTANTS.Token_Paid;
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         retrofit2.Call<AllNotificationRespnse> call = apiInterface.allNotificationService(token);
         call.enqueue(new Callback<AllNotificationRespnse>() {

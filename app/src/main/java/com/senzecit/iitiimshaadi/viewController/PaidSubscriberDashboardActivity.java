@@ -19,16 +19,10 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.AllInterestReceived;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
-import com.senzecit.iitiimshaadi.utils.Constants;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -36,12 +30,6 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
@@ -119,9 +107,9 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
     public  void  setProfileData(){
 
-        String userId = prefs.getString(Constants.LOGGED_USERID);
-        String profileUri = Constants.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(Constants.LOGGED_USER_PIC);
-        String userName = prefs.getString(Constants.LOGGED_USERNAME);
+        String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
+        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
+        String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
             Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
@@ -228,8 +216,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     /* Subscriber Dashboard*/
     public void callWebServiceForSubscribeDashboard(){
 
-//        String token = Constants.Token_Paid;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Token_Paid;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
@@ -260,7 +248,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
 /*
         ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<PaidDashboardResponse> call = apiInterface.subscribeDashoardPaid(token);
         call.enqueue(new Callback<PaidDashboardResponse>() {
             @Override

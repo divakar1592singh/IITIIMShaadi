@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.utils.Constants;
 
 /**
  * Created by senzec on 1/12/17.

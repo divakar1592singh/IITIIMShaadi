@@ -2,7 +2,7 @@ package com.senzecit.iitiimshaadi.chat;
 
 import android.app.Application;
 
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 
 import java.net.URISyntaxException;
 
@@ -14,7 +14,7 @@ public class ChatApplication extends Application {
     private Socket mSocket;
     {
         try {
-            mSocket = IO.socket(Constants.CHAT_SERVER_URL);
+            mSocket = IO.socket(CONSTANTS.CHAT_SERVER_URL);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -20,7 +20,7 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyFriendsResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
@@ -120,7 +120,7 @@ public class MyFriendsFragment extends Fragment {
                             public void onClick(View v) {
                                 Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
                                 if(userID.length()> 0){
-                                    prefs.putString(Constants.OTHER_USERID, userID);
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
                                     Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
                                 }
                             }
@@ -147,12 +147,12 @@ public class MyFriendsFragment extends Fragment {
     /** API */
     public void callWebServiceForMyFriend(){
 
-//        String token = Constants.Token_Paid;
+//        String token = CONSTANTS.Token_Paid;
         AppPrefs prefs = AppController.getInstance().getPrefs();
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<MyFriendsResponse> call = apiInterface.myFriends(token);
         call.enqueue(new Callback<MyFriendsResponse>() {
             @Override

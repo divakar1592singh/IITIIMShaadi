@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,14 +42,13 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomReque
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -829,7 +827,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public void saveChangesOfCase_0(){
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
         String Maximum_Age = ExpPartnerProfileModel.getInstance().getMaximum_Age();
@@ -849,7 +847,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         request.prefered_partner_marital_status = Marital_StatusArr;
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ParnerBasicProfileResponse> call = apiInterface.sendPartnerBasicProfile(request);
         call.enqueue(new Callback<ParnerBasicProfileResponse>() {
             @Override
@@ -884,8 +882,8 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public void saveChangesOfCase_1(){
 
 //        AppPrefs prefs = new AppPrefs(_context);
-//        String token = Constants.Temp_Token;
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+//        String token = CONSTANTS.Temp_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
@@ -903,7 +901,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         request.prefered_partner_country = Preferred_CountryArr;
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<PtrReligionCountryResponse> call = apiInterface.sendPartnerReligionCountry(request);
         call.enqueue(new Callback<PtrReligionCountryResponse>() {
             @Override
@@ -940,7 +938,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public void saveChangesOfCase_2(){
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
 
@@ -953,7 +951,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<PtrEduCareerResponse> call = apiInterface.sendPartnerEduCareer(request);
         call.enqueue(new Callback<PtrEduCareerResponse>() {
             @Override
@@ -989,7 +987,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public void saveChangesOfCase_3(){
 
 //        AppPrefs prefs = new AppPrefs(_context);
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
 
@@ -998,7 +996,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         request.choice_of_partner = Choice_of_Groom;
 
         ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(Constants.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ChoiceOfGroomResponse> call = apiInterface.sendPartnerGroom(request);
         call.enqueue(new Callback<ChoiceOfGroomResponse>() {
             @Override
@@ -1033,7 +1031,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     public void showCountry(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
@@ -1058,7 +1056,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                             showDialog(countryList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                         }
 
                     }
@@ -1066,7 +1064,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.country_not_found);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
 
@@ -1074,7 +1072,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     public void showCaste(final TextView textView) {
 
-        String token = prefs.getString(Constants.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
@@ -1098,7 +1096,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                             }
                             showDialog(casteList, textView);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1109,7 +1107,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", Constants.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
 

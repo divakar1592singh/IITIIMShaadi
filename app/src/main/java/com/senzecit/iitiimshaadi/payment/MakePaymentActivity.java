@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.SwitchCompat;
@@ -39,7 +38,7 @@ import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.Constants;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionPlanActivity;
@@ -89,7 +88,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
 
         mAppPreference = new AppPreference();
         prefs = AppController.getInstance().getPrefs();
-        isPlanPage = getIntent().getExtras().getBoolean(Constants.PLAN_STATUS);
+        isPlanPage = getIntent().getExtras().getBoolean(CONSTANTS.PLAN_STATUS);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
@@ -501,7 +500,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
         double amount = 0;
         try {
 //            amount = Double.parseDouble(amount_et.getText().toString());
-            String sAmount = getIntent().getExtras().getString(Constants.AMOUNT_PAY);
+            String sAmount = getIntent().getExtras().getString(CONSTANTS.AMOUNT_PAY);
             amount = Double.parseDouble(sAmount);
 
 
@@ -509,13 +508,13 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             e.printStackTrace();
         }
         String txnId = System.currentTimeMillis() + "";
-        String phone = prefs.getString(Constants.LOGGED_MOB);
+        String phone = prefs.getString(CONSTANTS.LOGGED_MOB);
 //        String phone = mobile_til.getEditText().getText().toString().trim();
 //        String productName = mAppPreference.getProductInfo();
         String productName = "IITIIMShadi Payment";
-        String firstName = prefs.getString(Constants.LOGGED_USERNAME);
+        String firstName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 //        String firstName = mAppPreference.getFirstName();
-        String email = prefs.getString(Constants.LOGGED_EMAIL);
+        String email = prefs.getString(CONSTANTS.LOGGED_EMAIL);
 //        String email = email_til.getEditText().getText().toString().trim();
         String udf1 = "";
         String udf2 = "";
@@ -662,7 +661,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             String merchantHash = "";
             try {
                 //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
-                URL url = new URL(Constants.BASE_URL+"api/generate_payment_hash.json");
+                URL url = new URL(CONSTANTS.BASE_URL+"api/generate_payment_hash.json");
 //                URL url = new URL("https://payu.herokuapp.com/get_hash");
 
                 String postParam = postParams[0];
