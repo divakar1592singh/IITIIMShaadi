@@ -99,7 +99,7 @@ public class MyFriendsFragment extends Fragment {
                         btnRemoveFriend.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentRemoveFriend(UserDefinedKeyword.REMOVE.toString(), userID);
 
                             }
@@ -109,7 +109,7 @@ public class MyFriendsFragment extends Fragment {
                         btnUnShortList.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentShortListFriend(UserDefinedKeyword.SHORTLIST.toString(), userID);
                             }
                         });
@@ -118,7 +118,7 @@ public class MyFriendsFragment extends Fragment {
                         btnViewProfile.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "View Profile : "+userID, Toast.LENGTH_SHORT).show();
                                 if(userID.length()> 0){
                                     prefs.putString(CONSTANTS.OTHER_USERID, userID);
                                     Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
@@ -137,7 +137,7 @@ public class MyFriendsFragment extends Fragment {
 //                        resetData(mSelectedIV);
 //                        Glide.with(getActivity()).load(R.drawable.ic_done).error(R.drawable.ic_transparent).into(mSelectedIV);
 
-                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -162,14 +162,14 @@ public class MyFriendsFragment extends Fragment {
                     MyFriendsResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 
                             List<AllFriend> allFriendList = serverResponse.getAllFriend();
 
                             setDataToAdapter(allFriendList);
                         } else {
-                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();

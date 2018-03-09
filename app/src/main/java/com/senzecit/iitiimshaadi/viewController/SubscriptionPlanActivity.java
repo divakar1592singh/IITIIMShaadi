@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
@@ -165,6 +166,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
         if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
 
+//            Toast.makeText(SubscriptionPlanActivity.this, mTotalAmountTV.getText().toString(), Toast.LENGTH_LONG).show();
             boolean status = true;
             Intent intent = new Intent(SubscriptionPlanActivity.this, MakePaymentActivity.class);
             intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());

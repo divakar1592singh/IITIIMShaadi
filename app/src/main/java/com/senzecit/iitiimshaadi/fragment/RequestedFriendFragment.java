@@ -52,9 +52,7 @@ public class RequestedFriendFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         listener = (OnRequestedFriendListener) activity;
-
     }
-
 
     @Nullable
     @Override
@@ -105,7 +103,7 @@ public class RequestedFriendFragment extends Fragment {
                         layout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
 //                                listener.onFragmentAddFriend(UserDefinedKeyword.ADD.toString(), userID);
 
                                 if(userID.length()> 0){
@@ -120,7 +118,7 @@ public class RequestedFriendFragment extends Fragment {
                         btnAddFriend.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Add as Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentAddFriend(UserDefinedKeyword.ADD.toString(), userID);
 
                             }
@@ -131,7 +129,7 @@ public class RequestedFriendFragment extends Fragment {
                         btnCancelReq.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Cancel : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Cancel : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentCancelReq(UserDefinedKeyword.CANCEL.toString(), userID);
                             }
                         });
@@ -141,7 +139,7 @@ public class RequestedFriendFragment extends Fragment {
                         btnUnShortList.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Shortlist Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Shortlist Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentShortListFriend(UserDefinedKeyword.SHORTLIST.toString(), userID);
                             }
                         });
@@ -158,7 +156,7 @@ public class RequestedFriendFragment extends Fragment {
 //                        resetData(mSelectedIV);
 //                        Glide.with(getActivity()).load(R.drawable.ic_done).error(R.drawable.ic_transparent).into(mSelectedIV);
 
-                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -190,14 +188,14 @@ public class RequestedFriendFragment extends Fragment {
                     RequestedFriendResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 
                             List<AllRequestFriend> allFriendList = serverResponse.getAllRequestFriend();
 
                             setDataToAdapter(allFriendList);
                         } else {
-                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();

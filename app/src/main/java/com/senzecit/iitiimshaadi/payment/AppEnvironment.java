@@ -24,7 +24,7 @@ public enum AppEnvironment {
 
         @Override
         public String surl() {
-            return "https://www.payumoney.com/mobileapp/payumoney/success.php";
+            return "https://iitiimshaadi.com/members/paymentSuccess";
         }
 
         @Override
@@ -34,7 +34,7 @@ public enum AppEnvironment {
 
         @Override
         public boolean debug() {
-            return true;
+            return false;
         }
     },
     PRODUCTION {
@@ -56,7 +56,7 @@ public enum AppEnvironment {
 
         @Override
         public String surl() {
-            return "https://iitiimshaadi.com/_payment";
+            return "https://iitiimshaadi.com/members/paymentSuccess";
         }
 
         @Override
@@ -66,7 +66,7 @@ public enum AppEnvironment {
 
         @Override
         public boolean debug() {
-            return false;
+            return true;
         }
     };
 

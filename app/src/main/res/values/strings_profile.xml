@@ -77,13 +77,11 @@
     </array>
 
     <array name="mother_tongue_ar">
-        <item>
             <item>Assamese</item>
             <item>Bengali</item>
             <item>English</item>
             <item>Gujarati</item>
             <item>Hindi</item>
-        </item>
     </array>
     
     <array name="ann_income_ar">

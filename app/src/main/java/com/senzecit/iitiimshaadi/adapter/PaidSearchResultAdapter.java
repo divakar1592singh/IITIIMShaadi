@@ -304,7 +304,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.MOVETO.toString())){
             return apiInterface.serviceMoveTo(token, s1, s2);
         }else {
-            Toast.makeText(mContext, "Default Called", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Default Called", Toast.LENGTH_SHORT).show();
             return null;
         }
 
@@ -376,7 +376,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(mContext, "Output : " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "Output : " + position, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 String folderId = String.valueOf(myMetaList.get(position).getId());
                 callWebServiceForManipulatePartner(UserDefinedKeyword.MOVETO.toString(), friend_id, folderId);

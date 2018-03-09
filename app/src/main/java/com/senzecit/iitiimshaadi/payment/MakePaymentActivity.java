@@ -151,23 +151,31 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             isPlanPage = false;
             launchPayUMoneyFlow();
         }else {
+
             new AlertDialog.Builder(new ContextThemeWrapper(MakePaymentActivity.this, android.R.style.Theme_Dialog))
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Transaction Cancelled")
                     .setMessage("Are you sure?")
+                    .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+//                            isPlanPage = true;
+//                            PayUmoneyFlowManager.logoutUser(getApplicationContext());
                             Navigator.getClassInstance().navigateToActivity(MakePaymentActivity.this, SubscriptionPlanActivity.class);
+                            finish();
+
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    /*.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                         launchPayUMoneyFlow();
-                         dialog.dismiss();
+                            isPlanPage = true;
+//                            PayUmoneyFlowManager.logoutUser(getApplicationContext());
+                            launchPayUMoneyFlow();
+                            dialog.dismiss();
                         }
-                    })
+                    })*/
                     .show();
         }
     }
@@ -191,7 +199,6 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
         }
         return hexString.toString();
     }
-
 
     public static void setErrorInputLayout(EditText editText, String msg, TextInputLayout textInputLayout) {
         textInputLayout.setError(msg);
@@ -365,25 +372,25 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        userEmail = email_et.getText().toString().trim();
+      /*  userEmail = email_et.getText().toString().trim();
         userMobile = mobile_et.getText().toString().trim();
-        if (v.getId() == R.id.logout_button || validateDetails(userEmail, userMobile)) {
+        if (v.getId() == R.id.logout_button || validateDetails(userEmail, userMobile)) {*/
             switch (v.getId()) {
                 case R.id.pay_now_button:
-                    payNowButton.setEnabled(false);
-//                    launchPayUMoneyFlow();
+                    payNowButton.setEnabled(true);
+                    launchPayUMoneyFlow();
                     break;
                 case R.id.logout_button:
                     PayUmoneyFlowManager.logoutUser(getApplicationContext());
                     logoutBtn.setVisibility(View.GONE);
                     break;
             }
-        }
+//        }
     }
 
     private void initListeners() {
-        email_et.addTextChangedListener(new EditTextInputWatcher(email_til));
-        mobile_et.addTextChangedListener(new EditTextInputWatcher(mobile_til));
+      /*  email_et.addTextChangedListener(new EditTextInputWatcher(email_til));
+        mobile_et.addTextChangedListener(new EditTextInputWatcher(mobile_til));*/
 
 
         radioGroup_color_theme.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -414,12 +421,15 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        radioGroup_select_env.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        selectProdEnv();
+
+        /*radioGroup_select_env.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 switch (i) {
                     case R.id.radio_btn_sandbox:
-                        selectSandBoxEnv();
+//                        selectSandBoxEnv();
+                        selectProdEnv();
                         break;
                     case R.id.radio_btn_production:
                         selectProdEnv();
@@ -429,9 +439,9 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
                         break;
                 }
             }
-        });
+        });*/
 
-        switch_disable_cards.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+  /*      switch_disable_cards.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 PPConfig.getInstance().disableSavedCards(b);
@@ -451,7 +461,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
                 PPConfig.getInstance().disableWallet(b);
             }
         });
-
+*/
     }
 
     /**
@@ -556,7 +566,7 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
              * */
             mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
 
-           if (AppPreference.selectedTheme != -1) {
+            if (AppPreference.selectedTheme != -1) {
                 PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivity.this, AppPreference.selectedTheme,mAppPreference.isOverrideResultScreen());
             } else {
                 PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivity.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
@@ -608,7 +618,6 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
     public void generateHashFromServer(PayUmoneySdkInitializer.PaymentParam paymentParam) {
         //nextButton.setEnabled(false); // lets not allow the user to click the button again and again.
 
-        String token = "d50a3aa1bcdd0613ff80d5d0a1613adc";
         HashMap<String, String> params = paymentParam.getParams();
 
         // lets create the post params
@@ -779,4 +788,5 @@ public class MakePaymentActivity extends BaseActivity implements View.OnClickLis
         }
 
     }
+
 }

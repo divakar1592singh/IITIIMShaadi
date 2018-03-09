@@ -31,7 +31,10 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
@@ -59,6 +62,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ravi on 8/11/17.
@@ -2174,7 +2181,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String[] interestsArr = new String[1];
         interestsArr[0] = Interests;
 
-        Toast.makeText(_context, "Output : " + Interests, Toast.LENGTH_LONG).show();
+//        Toast.makeText(_context, "Output : " + Interests, Toast.LENGTH_LONG).show();
 
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
@@ -2187,9 +2194,38 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.smoke = Smoke;
         request.interest = interestsArr;
 
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.BASIC_LIFESTYLE, request, methodName);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.sendBasicProfile(request);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -2202,17 +2238,45 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Caste = ExpOwnProfileModel.getInstance().getCaste();
         String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
 
-        Toast.makeText(_context, "Output : " + Religion, Toast.LENGTH_LONG).show();
-
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
         request.token = token;
         request.religion = Religion;
         request.caste = Caste;
         request.mother_tounge = Mother_Tongue;
 
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.sendReligiousBackground(request);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
     }
 
@@ -2231,7 +2295,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Current_City = ExpOwnProfileModel.getInstance().getCurrent_City();
         String Zip_Code_Cur = ExpOwnProfileModel.getInstance().getZip_Code_Cur();
 
-        Toast.makeText(_context, "Output : " + Alternate_Number, Toast.LENGTH_LONG).show();
+//        Toast.makeText(_context, "Output : " + Alternate_Number, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
@@ -2251,10 +2315,41 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.current_city = Current_City;
         request.current_zipcode = Zip_Code_Cur;
 
-
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+ /*       String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.CONTACT_DETAILS, request, methodName);
+*/
+        ProgressClass.getProgressInstance().showDialog(_context);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.sendContactDetails(request);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -2268,9 +2363,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Details_Sisters = ExpOwnProfileModel.getInstance().getDetails_Sisters();
         String Details_Brothers = ExpOwnProfileModel.getInstance().getDetails_Brothers();
 
-        Toast.makeText(_context, "Output : " + Father_Name, Toast.LENGTH_LONG).show();
-
-//        AppPrefs prefs = new AppPrefs(_context);
+//        Toast.makeText(_context, "Output : " + Father_Name, Toast.LENGTH_LONG).show();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         FamilyDetailRequest request = new FamilyDetailRequest();
@@ -2282,9 +2375,43 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.brother_detail = Details_Brothers;
         request.sister_detail = Details_Sisters;
 
+/*
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.FAMILY_DETAILS, request, methodName);
+*/
+        ProgressClass.getProgressInstance().showDialog(_context);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.sendFamilyDetails(request);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -2305,7 +2432,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Annual_Income = ExpOwnProfileModel.getInstance().getAnnual_Income();
         String LinkdIn_Url = ExpOwnProfileModel.getInstance().getLinkdIn_Url();
 
-        Toast.makeText(_context, "Output : " + Schooling, Toast.LENGTH_LONG).show();
+//        Toast.makeText(_context, "Output : " + Schooling, Toast.LENGTH_LONG).show();
 
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
@@ -2326,10 +2453,43 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
 
-
+/*
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
         prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.EDUCATION_CAREER, request, methodName);
+*/
+        ProgressClass.getProgressInstance().showDialog(_context);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.sendEducationCareer(request);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -2337,7 +2497,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
         String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
 
-        Toast.makeText(_context, "Output : " + About_you, Toast.LENGTH_LONG).show();
+//        Toast.makeText(_context, "Output : " + About_you, Toast.LENGTH_LONG).show();
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
@@ -2345,9 +2505,37 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.token = token;
         request.about_me = About_you;
 
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.ABOUT_ME, request, methodName);
+        ProgressClass.getProgressInstance().showDialog(_context);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<AddFolderResponse> call = apiInterface.sendAboutMe(request);
+        call.enqueue(new Callback<AddFolderResponse>() {
+            @Override
+            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    AddFolderResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                        } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

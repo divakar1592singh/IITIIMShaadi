@@ -37,6 +37,7 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.pic_response.SetProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -310,7 +311,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
-
             // if the result is capturing Image
             if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
@@ -319,15 +319,11 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
-
-
                 } else if (resultCode == RESULT_CANCELED) {
-
                     // user cancelled Image capture
                     Toast.makeText(getApplicationContext(),
                             "User cancelled image capture", Toast.LENGTH_SHORT)
                             .show();
-
                 } else {
                     // failed to capture image
                     Toast.makeText(getApplicationContext(),
@@ -339,7 +335,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 Uri uri = null;
                 if (data != null) {
                     uri = data.getData();
-
                     Log.i(TAG, "Uri: " + uri.toString());
                     try {
 //                        uploadCvFile(uri);
@@ -358,6 +353,19 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                             .show();
                 }
             }
+
+            if(requestCode==CROP_IMAGE) {
+                if (data != null) {
+                    try {
+//                        Toast.makeText(AlbumActivity.this, "Crop", Toast.LENGTH_LONG).show();
+                        callWebServiceForSetProfile(data.getData());
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
         }
 
     }
@@ -380,7 +388,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             try {
                                 if (serverResponse.getAlbums().size() > 0) {
                                     mNoImageFoundFL.setVisibility(View.GONE);
@@ -494,52 +502,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    /** EXTRA */
-    public void showToast(String msg){
-
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_dialog,
-                (ViewGroup) findViewById(R.id.toast_layout_root));
-
-        ImageView image = (ImageView) layout.findViewById(R.id.image);
-        image.setImageResource(R.drawable.logo_main);
-        TextView text = (TextView) layout.findViewById(R.id.text);
-        text.setText(msg);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-
-    }
-/*
-    @Override
-    protected void onStop() {
-        super.onStop();
-        AlbumActivity.this.finish();
-    }
-*/
-
-//
-    //Image Crop Code End Here
-
-/*    public void EnableRuntimePermission(){
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(AlbumActivity.this,
-                Manifest.permission.CAMERA))
-        {
-
-            Toast.makeText(AlbumActivity.this,"CAMERA permission allows us to Access CAMERA app", Toast.LENGTH_LONG).show();
-
-        } else {
-
-            ActivityCompat.requestPermissions(AlbumActivity.this,new String[]{
-                    Manifest.permission.CAMERA}, RequestPermissionCode);
-
-        }
-    }*/
-
     public void reTryMethod(){
 
         new AlertDialog.Builder(AlbumActivity.this)
@@ -564,5 +526,53 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    public void callWebServiceForSetProfile(final Uri uri)throws URISyntaxException {
+
+        String fullPath = Commons.getPath(uri, AlbumActivity.this);
+        File   file = new File(fullPath);
+
+        System.out.print(file);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
+        RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
+
+        ProgressClass.getProgressInstance().showDialog(AlbumActivity.this);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<SetProfileResponse> callUpload = apiInterface.setProfileFromURI(fileToUpload, filename, token);
+
+        callUpload.enqueue(new Callback<SetProfileResponse>() {
+            @Override
+            public void onResponse(Call<SetProfileResponse> call, Response<SetProfileResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body().getMessage().getSuccess().equalsIgnoreCase("Your Profile picture has been saved.")) {
+
+//                            AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Alert", "Uploaded Succs");
+                            Toast.makeText(AlbumActivity.this, "Profile Changed", Toast.LENGTH_SHORT).show();
+                            callWebServiceForAllAlbum();
+                        } else {
+                            Toast.makeText(AlbumActivity.this, "Oops, Something went wrong!", Toast.LENGTH_LONG).show();
+                        }
+                    }catch (NullPointerException npe){
+                        Log.e("TAG", "#Error : "+npe, npe);
+                    }
+//                    callWebServiceForAllAlbum();
+                } else {
+                    AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "ID", "Confuse");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SetProfileResponse> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Failed", "Something went wrong!");
+            }
+        });
+    }
 
 }

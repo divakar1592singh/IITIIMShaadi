@@ -151,7 +151,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                 super.onScrollStateChanged(recyclerView, newState);
 
                 int itemLastVisiblePosition = layoutManager.findLastVisibleItemPosition();
-                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Last Count : "+itemLastVisiblePosition, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Last Count : "+itemLastVisiblePosition, Toast.LENGTH_SHORT).show();
 
                 if(itemLastVisiblePosition == adapter.getItemCount() - 1) {
 

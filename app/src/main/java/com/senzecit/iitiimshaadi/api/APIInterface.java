@@ -18,6 +18,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNo
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.pic_response.SetProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.EligibilityResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_college.FindCollegeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
@@ -110,6 +111,11 @@ public interface APIInterface {
     @Multipart
     @POST("api/set_profile_picture.json")
     Call<AddFolderResponse> profileImageUpload(@Part MultipartBody.Part file, @Part("file[]") RequestBody id_proof, @Query("token") String token);
+
+    /*Profile*/
+    @Multipart
+    @POST("api/set_profile_picture.json")
+    Call<SetProfileResponse> setProfileFromURI(@Part MultipartBody.Part file, @Part("file[]") RequestBody id_proof, @Query("token") String token);
 
     /*Album*/
     @Multipart
@@ -235,35 +241,35 @@ public interface APIInterface {
 
     /*1*/
     @POST("api/basic_lifestyle.json")
-    Call<BasicProfileResponse> sendBasicProfile(@Body BasicProfileRequest request);
+    Call<AddFolderResponse> sendBasicProfile(@Body BasicProfileRequest request);
     /*2*/
     @POST("api/religious_background.json")
-    Call<ReligiousBackgroundResponse> sendReligiousBackground(@Body ReligiousBackgroundRequest request);
+    Call<AddFolderResponse> sendReligiousBackground(@Body ReligiousBackgroundRequest request);
     /*3*/
     @POST("api/contact_details.json")
-    Call<ContactDetailsResponse> sendContactDetails(@Body ContactDetailsRequest request);
+    Call<AddFolderResponse> sendContactDetails(@Body ContactDetailsRequest request);
     /*4*/
     @POST("api/family_details.json")
-    Call<FamilyDetailResponse> sendFamilyDetails(@Body FamilyDetailRequest request);
+    Call<AddFolderResponse> sendFamilyDetails(@Body FamilyDetailRequest request);
     /*5*/
     @POST("api/education_career.json")
-    Call<EducationCareerResponse> sendEducationCareer(@Body EducationCareerRequest request);
+    Call<AddFolderResponse> sendEducationCareer(@Body EducationCareerRequest request);
     /*6*/
     @POST("api/about_me.json")
-    Call<AboutMeResponse> sendAboutMe(@Body AboutMeRequest request);
+    Call<AddFolderResponse> sendAboutMe(@Body AboutMeRequest request);
     /**Partner*/
     /*7*/
     @POST("api/partner_basic_lifestyle.json")
-    Call<ParnerBasicProfileResponse> sendPartnerBasicProfile(@Body ParnerBasicProfileRequest request);
+    Call<AddFolderResponse> sendPartnerBasicProfile(@Body ParnerBasicProfileRequest request);
     /*8*/
     @POST("api/partner_religion_country.json")
-    Call<PtrReligionCountryResponse> sendPartnerReligionCountry(@Body PtrReligionCountryRequest request);
+    Call<AddFolderResponse> sendPartnerReligionCountry(@Body PtrReligionCountryRequest request);
     /*9*/
     @POST("api/partner_education_career.json")
-    Call<PtrEduCareerResponse> sendPartnerEduCareer(@Body PtrEduCareerRequest request);
+    Call<AddFolderResponse> sendPartnerEduCareer(@Body PtrEduCareerRequest request);
     /*10*/
     @POST("api/choiceof_partner.json")
-    Call<ChoiceOfGroomResponse> sendPartnerGroom(@Body ChoiceOfGroomRequest request);
+    Call<AddFolderResponse> sendPartnerGroom(@Body ChoiceOfGroomRequest request);
 
     /** General Setting */
     @POST("api/general_settings.json")

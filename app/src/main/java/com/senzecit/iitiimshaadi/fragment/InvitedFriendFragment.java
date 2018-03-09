@@ -98,7 +98,7 @@ public class InvitedFriendFragment extends Fragment {
                         mCancelReqBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "Cancel Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Cancel Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentCancelReq(UserDefinedKeyword.CANCEL.toString(), userID);
 
                             }
@@ -109,7 +109,7 @@ public class InvitedFriendFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
 
-                                Toast.makeText(getContext(), "Shortlist Friend : "+userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "Shortlist Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentShortListFriend(UserDefinedKeyword.SHORTLIST.toString(), userID);
 
                             }
@@ -119,7 +119,7 @@ public class InvitedFriendFragment extends Fragment {
                         mViewProfileBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
                                 if (userID.length() > 0) {
                                     prefs.putString(CONSTANTS.OTHER_USERID, userID);
                                     Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
@@ -138,7 +138,7 @@ public class InvitedFriendFragment extends Fragment {
 //                        resetData(mSelectedIV);
 //                        Glide.with(getActivity()).load(R.drawable.ic_done).error(R.drawable.ic_transparent).into(mSelectedIV);
 
-                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -169,14 +169,14 @@ public class InvitedFriendFragment extends Fragment {
                     InvitedFriendResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 
                             List<AllInvitedFriend> allFriendList = serverResponse.getAllInvitedFriend();
 
                             setDataToAdapter(allFriendList);
                         } else {
-                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
