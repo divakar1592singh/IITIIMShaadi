@@ -15,7 +15,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.ConstantsPref;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -38,8 +38,8 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "3af8fb8841d90822a787c3d3d8074967");
-        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "3d46c21207552e2cc11e4c6fc969445b");
+        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
 
 /*
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -112,8 +112,8 @@ public class SplashActivity extends AppCompatActivity {
 
     public void callWebServiceForSignin(){
 
-        String sUsername = prefs.getString(ConstantsPref.LOGIN_USERNAME);
-        String sPassword = prefs.getString(ConstantsPref.LOGIN_PASSWORD);
+        String sUsername = prefs.getString(CONSTANTPREF.LOGIN_USERNAME);
+        String sPassword = prefs.getString(CONSTANTPREF.LOGIN_PASSWORD);
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.username = sUsername;

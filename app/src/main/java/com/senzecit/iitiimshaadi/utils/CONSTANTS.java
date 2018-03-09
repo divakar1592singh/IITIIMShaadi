@@ -25,6 +25,7 @@ public interface CONSTANTS {
     String RELIGIOUS_BACKGROUND_PT_PATH = "api/partner_religion_country.json";
     String EDUCATION_CAREER_PT_PATH = "api/partner_education_career.json";
     String CHOICE_OF_PARTNER_PATH = "api/choiceof_partner.json";
+
     String CONTACT_US_PATH = "api/contact_us.json";
 
 
@@ -42,6 +43,12 @@ public interface CONSTANTS {
     String LOGGED_EMAIL = "email";
     String LOGGED_MOB = "mobile";
     String OTHER_USERID = "other_userid";
+
+//    Viewer Type
+    String VIEWER_TYPE_1 = "paid_subscriber_viewer";
+    String VIEWER_TYPE_2 = "subscriber_viewer";
+    String VIEWER_TYPE_3 = "subscriber";
+
 
 //    RESULT PAID
     String SEARCH_TYPE = "search_type";

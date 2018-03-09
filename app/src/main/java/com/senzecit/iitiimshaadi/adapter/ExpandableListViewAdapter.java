@@ -57,7 +57,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.ConstantsPref;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -2401,12 +2401,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.smoke = Smoke;
         request.interest = interestsArr;
 
-/*
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.BASIC_LIFESTYLE, request, methodName);
-*/
 
+
+/*
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<BasicProfileResponse> call = apiInterface.sendBasicProfile(request);
@@ -2438,6 +2438,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+*/
 
 
     }
@@ -2457,7 +2458,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.caste= Caste;
         request.mother_tounge = Mother_Tongue;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
+
+ /*       ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ReligiousBackgroundResponse> call = apiInterface.sendReligiousBackground(request);
         call.enqueue(new Callback<ReligiousBackgroundResponse>() {
@@ -2488,7 +2493,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
 
     }
     public void saveChangesOfCase_2(){
@@ -2527,8 +2532,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.current_city = Current_City;
         request.current_zipcode = Zip_Code_Cur;
 
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.CONTACT_DETAILS, request, methodName);
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+ /*       ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ContactDetailsResponse> call = apiInterface.sendContactDetails(request);
         call.enqueue(new Callback<ContactDetailsResponse>() {
@@ -2559,7 +2567,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
 
     }
     public void saveChangesOfCase_3(){
@@ -2586,7 +2594,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.brother_detail = Details_Brothers;
         request.sister_detail = Details_Sisters;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.FAMILY_DETAILS, request, methodName);
+
+/*        ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<FamilyDetailResponse> call = apiInterface.sendFamilyDetails(request);
         call.enqueue(new Callback<FamilyDetailResponse>() {
@@ -2616,7 +2628,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                 ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
     }
     public void saveChangesOfCase_4(){
@@ -2658,7 +2670,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.EDUCATION_CAREER, request, methodName);
+
+ /*       ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<EducationCareerResponse> call = apiInterface.sendEducationCareer(request);
         call.enqueue(new Callback<EducationCareerResponse>() {
@@ -2688,7 +2704,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                 ProgressClass.getProgressInstance().stopProgress();
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
 
     }
@@ -2706,8 +2722,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
         request.token = token;
         request.about_me = About_you;
 
+        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.ABOUT_ME, request, methodName);
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+
+ /*       ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AboutMeResponse> call = apiInterface.sendAboutMe(request);
         call.enqueue(new Callback<AboutMeResponse>() {
@@ -2738,7 +2758,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
                 Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
 
     }
 
@@ -2978,7 +2998,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter impleme
     public void handle(JSONObject object, String methodName) {
 
 
-        String methodNameFromPref = prefs.getString(ConstantsPref.CALLED_METHOD);
+        String methodNameFromPref = prefs.getString(CONSTANTPREF.CALLED_METHOD);
         if(methodNameFromPref.equalsIgnoreCase(methodName)){
 
             try {

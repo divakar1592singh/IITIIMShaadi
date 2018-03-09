@@ -20,6 +20,7 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.ShortlistedFriendResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
@@ -156,7 +157,14 @@ public class ShortlistedFriendFragment extends Fragment {
         AppPrefs prefs = AppController.getInstance().getPrefs();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        ProgressClass.getProgressInstance().showDialog(getActivity());
+
+        if(prefs.getInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB) != 1){
+
+            ProgressClass.getProgressInstance().showDialog(getActivity());
+        }else {
+            prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 2);
+        }
+
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<ShortlistedFriendResponse> call = apiInterface.shortlistedFriends(token);
         call.enqueue(new Callback<ShortlistedFriendResponse>() {

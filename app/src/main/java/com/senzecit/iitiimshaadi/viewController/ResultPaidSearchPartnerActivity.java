@@ -1,7 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -275,7 +277,8 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                             AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", CONSTANTS.search_ptnr_err_msg);
+//                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", CONSTANTS.search_ptnr_err_msg);
+                        reTryMethod(1, pageCount);;
                     }
                 }
             }
@@ -283,8 +286,9 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onFailure(Call<PaidSubscriberResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
+                reTryMethod(1, pageCount);
             }
         });
     }
@@ -313,7 +317,8 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                             AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
+//                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
+                        reTryMethod(2, pageCount);
                     }
 
                 }
@@ -322,8 +327,9 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
+                reTryMethod(2, pageCount);
             }
         });
     }
@@ -392,6 +398,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
+                        reTryMethod(3, pageCount);
                     }
 
                 }
@@ -400,11 +407,40 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
+                reTryMethod(3, pageCount);
             }
         });
+
     }
 
+    public void reTryMethod(int pos, int pageCount){
+
+        new AlertDialog.Builder(ResultPaidSearchPartnerActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if(pos == 1){
+                            callWebServiceForSubsIDSearch(pageCount);
+                        }else if(pos == 2){
+                            callWebServiceForSubsKeywordSearch(pageCount);
+                        }else if(pos == 3){
+                            callWebServiceForSubsAdvanceSearch(pageCount);
+                        }
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
 
 }

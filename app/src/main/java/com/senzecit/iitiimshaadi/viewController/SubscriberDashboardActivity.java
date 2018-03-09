@@ -37,6 +37,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verifica
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
 import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
@@ -129,7 +130,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         super.onStart();
 
         mScrollView.smoothScrollTo(0, 0);
+        prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
     }
+
 
     private void init(){
         mScrollView = (ScrollView)findViewById(R.id.idScrlView);
@@ -761,7 +764,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-
+                        reTryMethod();
                     }
                 });
 
@@ -1087,6 +1090,26 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 .show();
     }
 
+    public void reTryMethod(){
 
+        new AlertDialog.Builder(SubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForSubscribeDashboard();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
 
 }

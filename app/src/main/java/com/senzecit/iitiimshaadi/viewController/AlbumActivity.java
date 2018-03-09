@@ -1,6 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -392,10 +394,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                             }
 
                         } else {
-                            Toast.makeText(AlbumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            reTryMethod();
+//                            Toast.makeText(AlbumActivitybumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        reTryMethod();
                     }
                 }
             }
@@ -403,7 +407,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(Call<AllAlbumResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                reTryMethod();
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
@@ -447,7 +452,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-
 
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
 
@@ -535,5 +539,30 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }*/
+
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(AlbumActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForAllAlbum();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+
+    }
+
 
 }

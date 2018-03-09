@@ -44,8 +44,8 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.ConstantsPref;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -1917,7 +1917,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
 
     public Vector<Dialog> dialogs = new Vector<Dialog>();
-
     private void showDialog(List<String> dataList, final TextView txtListChild) {
 
         int d_width = 100;
@@ -1992,7 +1991,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
 
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
-
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild) {
         int d_width = 100;
         int d_height = 50;
@@ -2190,7 +2188,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.interest = interestsArr;
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.BASIC_LIFESTYLE, request, methodName);
 
     }
@@ -2213,7 +2211,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.mother_tounge = Mother_Tongue;
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.RELIGIOUS_BACKGROUND_POST_URL, request, methodName);
 
     }
@@ -2255,7 +2253,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.CONTACT_DETAILS, request, methodName);
 
 
@@ -2285,7 +2283,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.sister_detail = Details_Sisters;
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.FAMILY_DETAILS, request, methodName);
 
     }
@@ -2330,7 +2328,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
 
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.EDUCATION_CAREER, request, methodName);
 
     }
@@ -2348,7 +2346,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.about_me = About_you;
 
         String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(ConstantsPref.CALLED_METHOD, methodName);
+        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.ABOUT_ME, request, methodName);
 
     }
@@ -2520,7 +2518,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
     @Override
     public void handle(JSONObject object, String methodName) {
 
-        String methodNameFromPref = prefs.getString(ConstantsPref.CALLED_METHOD);
+        String methodNameFromPref = prefs.getString(CONSTANTPREF.CALLED_METHOD);
         if(methodNameFromPref.equalsIgnoreCase(methodName)){
 
             try {

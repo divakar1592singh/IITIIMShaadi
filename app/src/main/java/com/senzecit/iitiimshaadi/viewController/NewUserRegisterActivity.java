@@ -3,6 +3,8 @@ package com.senzecit.iitiimshaadi.viewController;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -511,14 +513,17 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                     }
                 }catch (NullPointerException npe){
                     Log.e("TAG", "#Error : "+npe, npe);
-                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong!");
+//                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong!");
+                    reTryMethod();
                 }
             }
 
             @Override
             public void onFailure(Call<NewRegistrationResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(NewUserRegisterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                reTryMethod();
+//                Toast.makeText(NewUserRegisterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+//                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong! \n Try again!");
             }
         });
     }
@@ -668,5 +673,28 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         modalBottomSheet.show(getSupportFragmentManager(), "Terms and Conditions");
 
     }
+
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(NewUserRegisterActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForNewRegistration();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
 }
 

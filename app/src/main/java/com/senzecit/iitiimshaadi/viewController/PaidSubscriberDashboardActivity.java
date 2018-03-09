@@ -1,7 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -53,6 +56,14 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         initView();
         handleClick();
         callWebServiceForSubscribeDashboard();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
+
     }
 
     public void initView(){
@@ -231,17 +242,14 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
-//                       System.out.println(response);
-
 //                            setSubsDashboardData( username,  profileCompletionPerc);
                             setPaidSubs(response);
-
                     }
 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-
+                        reTryMethod();
                     }
                 });
 
@@ -293,11 +301,31 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 //        List<AllInterestReceived> list = serverResponse.getAllInterestReceived();
         mInterestReceivedTV.setText("("+String.valueOf(jsonArray.length())+")");
 
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForSubscribeDashboard();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     public void showToast(String msg){

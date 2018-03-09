@@ -2,9 +2,11 @@ package com.senzecit.iitiimshaadi.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -248,7 +250,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
+//                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
+                        reTryMethod();
                     }
                 }
             }
@@ -256,8 +259,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             @Override
             public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
+                reTryMethod();
             }
         });
     }
@@ -596,6 +600,28 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     }
                 });
 
+    }
+
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(getActivity())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForSubsAdvanceSearch();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
 }

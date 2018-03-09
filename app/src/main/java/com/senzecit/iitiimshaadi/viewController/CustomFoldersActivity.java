@@ -180,7 +180,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                         setDropDown(myMetaList);
 
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Search Partner", "Opps");
+                        reTryMethod();
+//                        AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Search Partner", "Opps");
                     }
 
                 }
@@ -189,8 +190,9 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onFailure(Call<FolderListModelResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(CustomFoldersActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CustomFoldersActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
+                reTryMethod();
             }
         });
     }
@@ -491,5 +493,26 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         });
     }
 
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(CustomFoldersActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForAdd();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
 
 }

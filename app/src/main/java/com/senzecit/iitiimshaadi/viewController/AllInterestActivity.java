@@ -1,7 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -89,7 +91,6 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-
         ProgressClass.getProgressInstance().showDialog(AllInterestActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
                 .addBodyParameter("token", token)
@@ -109,6 +110,7 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
                             parseInterestData(jsonArray);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            reTryMethod();
                         }
 
                     }
@@ -116,7 +118,7 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-
+                        reTryMethod();
                     }
                 });
 
@@ -177,4 +179,29 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
 //        Toast.makeText(ChatMessagesActivity.this, "Stop click hua", Toast.LENGTH_LONG).show();
         AllInterestActivity.this.finish();
     }
+
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(AllInterestActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForSubscribeDashboard();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+
+    }
+
 }
