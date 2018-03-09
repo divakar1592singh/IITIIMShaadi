@@ -34,7 +34,7 @@ public enum AppEnvironment {
 
         @Override
         public boolean debug() {
-            return false;
+            return true;
         }
     },
     PRODUCTION {
@@ -66,7 +66,7 @@ public enum AppEnvironment {
 
         @Override
         public boolean debug() {
-            return true;
+            return false;
         }
     };
 

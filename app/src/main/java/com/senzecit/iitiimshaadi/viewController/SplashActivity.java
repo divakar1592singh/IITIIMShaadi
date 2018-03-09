@@ -38,12 +38,12 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-      /*  prefs.putString(CONSTANTS.LOGGED_TOKEN, "33aae50424b1bc7d9fc3ae524ce673f2");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "33aae50424b1bc7d9fc3ae524ce673f2");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
-        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");*/
+        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
 
@@ -63,13 +63,13 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-     /*           Intent intent = new Intent(SplashActivity.this, ResultPaidSearchPartnerActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                finish();*/
+                finish();
 //***************************
-                try{
+   /*             try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
@@ -109,7 +109,7 @@ public class SplashActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                }
+                }*/
             }
         },SPLASH_DISPLAY_TIME);
     }

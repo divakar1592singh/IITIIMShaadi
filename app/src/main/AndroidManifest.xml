@@ -48,7 +48,7 @@
         <activity
             android:name=".viewController.ProfileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".viewController.PaidSubscriberDashboardActivity"
             android:screenOrientation="portrait"
@@ -73,7 +73,7 @@
         <activity
             android:name=".viewController.AlbumActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".viewController.SubscriptionActivity"
             android:screenOrientation="portrait" />
@@ -139,7 +139,7 @@
         <activity android:name=".chat.ChatLoginActivity" />
         <activity android:name=".chat.SocketSingleChatActivity" />
         <activity android:name=".viewController.NotificationsActivity" />
-        <activity android:name=".viewController.AllInterestActivity"></activity>
+        <activity android:name=".viewController.AllInterestActivity" />
     </application>
 
 </manifest>

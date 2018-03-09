@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -23,9 +23,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +32,6 @@ import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
-import com.payumoney.core.response.ErrorResponse;
-import com.payumoney.sdkui.ui.utils.PPConfig;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.senzecit.iitiimshaadi.R;
@@ -62,7 +58,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class MakePaymentActivity extends BaseActivity {
+public class MakePaymentActivityBkp extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = "MakePaymentActivity : ";
 
@@ -78,7 +74,6 @@ public class MakePaymentActivity extends BaseActivity {
     private AppCompatRadioButton radio_btn_default;
     private AppPreference mAppPreference;
     private AppCompatRadioButton radio_btn_theme_purple, radio_btn_theme_pink, radio_btn_theme_green, radio_btn_theme_grey;
-    ImageView mBackButton;
 
     private Button payNowButton;
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
@@ -112,14 +107,13 @@ public class MakePaymentActivity extends BaseActivity {
         radio_btn_theme_green = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_green);
         radio_btn_theme_grey = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_grey);
 
-        mBackButton = (ImageView)findViewById(R.id.idBackIV);
-
         if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
             logoutBtn.setVisibility(View.VISIBLE);
         } else {
             logoutBtn.setVisibility(View.GONE);
         }
 
+        logoutBtn.setOnClickListener(this);
         switch_disable_wallet = (SwitchCompat) findViewById(R.id.switch_disable_wallet);
         switch_disable_netBanks = (SwitchCompat) findViewById(R.id.switch_disable_netbanks);
         switch_disable_cards = (SwitchCompat) findViewById(R.id.switch_disable_cards);
@@ -128,6 +122,7 @@ public class MakePaymentActivity extends BaseActivity {
         radioGroup_select_env = (RadioGroup) findViewById(R.id.radio_grp_env);
 
         payNowButton = (Button) findViewById(R.id.pay_now_button);
+        payNowButton.setOnClickListener(this);
 
         initListeners();
 
@@ -155,31 +150,32 @@ public class MakePaymentActivity extends BaseActivity {
             launchPayUMoneyFlow();
         }else {
 
-            if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
-                PayUmoneyFlowManager.logoutUser(getApplicationContext());
-            }
-            removeSharedPref();
-            Intent i = new Intent(MakePaymentActivity.this, SubscriptionPlanActivity.class);
-            startActivity(i);
-            finishActivity(0);
+            new AlertDialog.Builder(new ContextThemeWrapper(MakePaymentActivityBkp.this, android.R.style.Theme_Dialog))
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Transaction Cancelled")
+                    .setMessage("Are you sure?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+//                            isPlanPage = true;
+//                            PayUmoneyFlowManager.logoutUser(getApplicationContext());
+                            Navigator.getClassInstance().navigateToActivity(MakePaymentActivityBkp.this, SubscriptionPlanActivity.class);
+                            finish();
 
+                        }
+                    })
+                    /*.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            isPlanPage = true;
+//                            PayUmoneyFlowManager.logoutUser(getApplicationContext());
+                            launchPayUMoneyFlow();
+                            dialog.dismiss();
+                        }
+                    })*/
+                    .show();
         }
-
-   /*     mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
-                    PayUmoneyFlowManager.logoutUser(getApplicationContext());
-                }
-                removeSharedPref();
-                Intent i = new Intent(MakePaymentActivity.this, SubscriptionPlanActivity.class);
-                startActivity(i);
-                finishActivity(0);
-
-            }
-        });*/
     }
 
     public static String hashCal(String str) {
@@ -202,17 +198,30 @@ public class MakePaymentActivity extends BaseActivity {
         return hexString.toString();
     }
 
+    public static void setErrorInputLayout(EditText editText, String msg, TextInputLayout textInputLayout) {
+        textInputLayout.setError(msg);
+        editText.requestFocus();
+    }
+
+    public static boolean isValidEmail(String strEmail) {
+        return strEmail != null && android.util.Patterns.EMAIL_ADDRESS.matcher(strEmail).matches();
+    }
+
+    public static boolean isValidPhone(String phone) {
+        Pattern pattern = Pattern.compile(AppPreference.PHONE_PATTERN);
+
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
 
     private void setUpUserDetails() {
-        /*userDetailsPreference = getSharedPreferences(AppPreference.USER_DETAILS, MODE_PRIVATE);
+        userDetailsPreference = getSharedPreferences(AppPreference.USER_DETAILS, MODE_PRIVATE);
         userEmail = userDetailsPreference.getString(AppPreference.USER_EMAIL, mAppPreference.getDummyEmail());
         userMobile = userDetailsPreference.getString(AppPreference.USER_MOBILE, mAppPreference.getDummyMobile());
         email_et.setText(userEmail);
         mobile_et.setText(userMobile);
-        amount_et.setText(mAppPreference.getDummyAmount());*/
+        amount_et.setText(mAppPreference.getDummyAmount());
         restoreAppPref();
-
-
     }
 
     private void restoreAppPref() {
@@ -269,18 +278,41 @@ public class MakePaymentActivity extends BaseActivity {
                 editor.putBoolean("is_prod_env", true);
                 editor.apply();
 
+                if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
+                    logoutBtn.setVisibility(View.VISIBLE);
+                } else {
+                    logoutBtn.setVisibility(View.GONE);
+                }
+
                 setupCitrusConfigs();
             }
         }, AppPreference.MENU_DELAY);
     }
 
+    /**
+     * This function sets the mode to SANDBOX in Shared Preference
+     */
+    private void selectSandBoxEnv() {
+        ((AppController) getApplication()).setAppEnvironment(AppEnvironment.SANDBOX);
+        editor = settings.edit();
+        editor.putBoolean("is_prod_env", false);
+        editor.apply();
+
+        if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
+            logoutBtn.setVisibility(View.VISIBLE);
+        } else {
+            logoutBtn.setVisibility(View.GONE);
+
+        }
+        setupCitrusConfigs();
+    }
 
     private void setupCitrusConfigs() {
         AppEnvironment appEnvironment = ((AppController) getApplication()).getAppEnvironment();
         if (appEnvironment == AppEnvironment.PRODUCTION) {
-//            Toast.makeText(MakePaymentActivity.this, "Environment Set to Production", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MakePaymentActivityBkp.this, "Environment Set to Production", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(MakePaymentActivity.this, "Environment Set to SandBox", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MakePaymentActivityBkp.this, "Environment Set to SandBox", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -336,8 +368,28 @@ public class MakePaymentActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+      /*  userEmail = email_et.getText().toString().trim();
+        userMobile = mobile_et.getText().toString().trim();
+        if (v.getId() == R.id.logout_button || validateDetails(userEmail, userMobile)) {*/
+            switch (v.getId()) {
+                case R.id.pay_now_button:
+                    payNowButton.setEnabled(true);
+                    launchPayUMoneyFlow();
+                    break;
+                case R.id.logout_button:
+                    PayUmoneyFlowManager.logoutUser(getApplicationContext());
+                    logoutBtn.setVisibility(View.GONE);
+                    break;
+            }
+//        }
+    }
 
     private void initListeners() {
+      /*  email_et.addTextChangedListener(new EditTextInputWatcher(email_til));
+        mobile_et.addTextChangedListener(new EditTextInputWatcher(mobile_til));*/
+
 
         radioGroup_color_theme.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -369,6 +421,73 @@ public class MakePaymentActivity extends BaseActivity {
 
         selectProdEnv();
 
+        /*radioGroup_select_env.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                switch (i) {
+                    case R.id.radio_btn_sandbox:
+//                        selectSandBoxEnv();
+                        selectProdEnv();
+                        break;
+                    case R.id.radio_btn_production:
+                        selectProdEnv();
+                        break;
+                    default:
+                        selectSandBoxEnv();
+                        break;
+                }
+            }
+        });*/
+
+  /*      switch_disable_cards.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                PPConfig.getInstance().disableSavedCards(b);
+            }
+        });
+
+        switch_disable_netBanks.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                PPConfig.getInstance().disableNetBanking(b);
+            }
+        });
+
+        switch_disable_wallet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                PPConfig.getInstance().disableWallet(b);
+            }
+        });
+*/
+    }
+
+    /**
+     * This fucntion checks if email and mobile number are valid or not.
+     *
+     * @param email  email id entered in edit text
+     * @param mobile mobile number entered in edit text
+     * @return boolean value
+     */
+    public boolean validateDetails(String email, String mobile) {
+        email = email.trim();
+        mobile = mobile.trim();
+
+        if (TextUtils.isEmpty(mobile)) {
+            setErrorInputLayout(mobile_et, getString(R.string.err_phone_empty), mobile_til);
+            return false;
+        } else if (!isValidPhone(mobile)) {
+            setErrorInputLayout(mobile_et, getString(R.string.err_phone_not_valid), mobile_til);
+            return false;
+        } else if (TextUtils.isEmpty(email)) {
+            setErrorInputLayout(email_et, getString(R.string.err_email_empty), email_til);
+            return false;
+        } else if (!isValidEmail(email)) {
+            setErrorInputLayout(email_et, getString(R.string.email_not_valid), email_til);
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -446,9 +565,9 @@ public class MakePaymentActivity extends BaseActivity {
             mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
 
             if (AppPreference.selectedTheme != -1) {
-                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivity.this, AppPreference.selectedTheme,mAppPreference.isOverrideResultScreen());
+                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivityBkp.this, AppPreference.selectedTheme,mAppPreference.isOverrideResultScreen());
             } else {
-                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivity.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
+                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MakePaymentActivityBkp.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
             }
         } catch (Exception e) {
             // some exception occurred
@@ -489,6 +608,166 @@ public class MakePaymentActivity extends BaseActivity {
         return paymentParam;
     }
 
+    /**
+     * This method generates hash from server.
+     *
+     * @param paymentParam payments params used for hash generation
+     */
+    public void generateHashFromServer(PayUmoneySdkInitializer.PaymentParam paymentParam) {
+        //nextButton.setEnabled(false); // lets not allow the user to click the button again and again.
+
+        HashMap<String, String> params = paymentParam.getParams();
+
+        // lets create the post params
+        StringBuffer postParamsBuffer = new StringBuffer();
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.KEY, params.get(PayUmoneyConstants.KEY)));
+//        postParamsBuffer.append(concatParams("token", token));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.AMOUNT, params.get(PayUmoneyConstants.AMOUNT)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.TXNID, params.get(PayUmoneyConstants.TXNID)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.EMAIL, params.get(PayUmoneyConstants.EMAIL)));
+//        postParamsBuffer.append(concatParams("productinfo", params.get(PayUmoneyConstants.PRODUCT_INFO)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.PRODUCT_INFO, params.get(PayUmoneyConstants.PRODUCT_INFO)));
+
+        //        postParamsBuffer.append(concatParams("firstname", params.get(PayUmoneyConstants.FIRSTNAME)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.FIRSTNAME, params.get(PayUmoneyConstants.FIRSTNAME)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF1, params.get(PayUmoneyConstants.UDF1)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF2, params.get(PayUmoneyConstants.UDF2)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF3, params.get(PayUmoneyConstants.UDF3)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF4, params.get(PayUmoneyConstants.UDF4)));
+        postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF5, params.get(PayUmoneyConstants.UDF5)));
+
+        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1).toString() : postParamsBuffer.toString();
+
+        // lets make an api call
+        GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();
+        getHashesFromServerTask.execute(postParams);
+    }
+
+
+    protected String concatParams(String key, String value) {
+        return key + "=" + value + "&";
+    }
+
+    /**
+     * This AsyncTask generates hash from server.
+     */
+    private class GetHashesFromServerTask extends AsyncTask<String, String, String> {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MakePaymentActivityBkp.this);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... postParams) {
+
+            String merchantHash = "";
+            try {
+                //TODO Below url is just for testing purpose, merchant needs to replace this with their server side hash generation url
+                URL url = new URL(CONSTANTS.BASE_URL+"api/generate_payment_hash.json");
+//                URL url = new URL("https://payu.herokuapp.com/get_hash");
+
+                String postParam = postParams[0];
+
+                byte[] postParamsByte = postParam.getBytes("UTF-8");
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestProperty("Content-Length", String.valueOf(postParamsByte.length));
+                conn.setDoOutput(true);
+                conn.getOutputStream().write(postParamsByte);
+
+                InputStream responseInputStream = conn.getInputStream();
+                StringBuffer responseStringBuffer = new StringBuffer();
+                byte[] byteContainer = new byte[1024];
+                for (int i; (i = responseInputStream.read(byteContainer)) != -1; ) {
+                    responseStringBuffer.append(new String(byteContainer, 0, i));
+                }
+
+                JSONObject response = new JSONObject(responseStringBuffer.toString());
+
+                Iterator<String> payuHashIterator = response.keys();
+                while (payuHashIterator.hasNext()) {
+                    String key = payuHashIterator.next();
+                    switch (key) {
+                        /**
+                         * This hash is mandatory and needs to be generated from merchant's server side
+                         *
+                         */
+//                        case "payment_hash":
+                        case "hash":
+                            merchantHash = response.getString(key);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return merchantHash;
+        }
+
+        @Override
+        protected void onPostExecute(String merchantHash) {
+            super.onPostExecute(merchantHash);
+
+            progressDialog.dismiss();
+            payNowButton.setEnabled(true);
+
+            if (merchantHash.isEmpty() || merchantHash.equals("")) {
+                Toast.makeText(MakePaymentActivityBkp.this, "Could not generate hash", Toast.LENGTH_SHORT).show();
+            } else {
+                mPaymentParams.setMerchantHash(merchantHash);
+
+                if (AppPreference.selectedTheme != -1) {
+                    PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, MakePaymentActivityBkp.this, AppPreference.selectedTheme, mAppPreference.isOverrideResultScreen());
+                } else {
+                    PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, MakePaymentActivityBkp.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
+                }
+            }
+        }
+    }
+
+    public static class EditTextInputWatcher implements TextWatcher {
+
+        private TextInputLayout textInputLayout;
+
+        EditTextInputWatcher(TextInputLayout textInputLayout) {
+            this.textInputLayout = textInputLayout;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s.toString().length() > 0) {
+                textInputLayout.setError(null);
+                textInputLayout.setErrorEnabled(false);
+            }
+        }
+    }
+
     public class DecimalDigitsInputFilter implements InputFilter {
 
         Pattern mPattern;
@@ -506,12 +785,6 @@ public class MakePaymentActivity extends BaseActivity {
             return null;
         }
 
-    }
-
-    public void removeSharedPref(){
-        editor.remove("is_prod_env");
-        editor.clear();
-        editor.commit();
     }
 
 }

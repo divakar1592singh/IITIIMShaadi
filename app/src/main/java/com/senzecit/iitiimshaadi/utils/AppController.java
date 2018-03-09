@@ -41,7 +41,7 @@ public class AppController extends Application {
         sInstance = this;
         prefs = new AppPrefs(this);
 
-        appEnvironment = AppEnvironment.SANDBOX;
+        appEnvironment = AppEnvironment.PRODUCTION;
         AndroidNetworking.initialize(getApplicationContext());
     }
 
