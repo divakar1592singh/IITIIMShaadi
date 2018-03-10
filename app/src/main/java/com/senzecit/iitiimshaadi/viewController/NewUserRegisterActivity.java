@@ -176,7 +176,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 //                showDateOfBirth();
                 break;
             case R.id.idRefreshIV:
-                Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
                 showCaptcha();
                 break;
 
@@ -263,8 +263,11 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
         if(statusDay == true &&statusMonth == true && statusYear == true ){
 
-            checkNewUserValidation();
-//            callWebServiceForNewRegistration();
+            if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
+                checkNewUserValidation();
+            }else {
+                NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
+            }
 
         }else {
             AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Check 'Day/Month/Year' is selected!");
@@ -479,7 +482,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String sDateOfBirth = sYear+"-"+posMonth+"-"+sDay;
 
 
-        Toast.makeText(NewUserRegisterActivity.this, "Out-"+sDateOfBirth, Toast.LENGTH_LONG).show();
+//        Toast.makeText(NewUserRegisterActivity.this, "Out-"+sDateOfBirth, Toast.LENGTH_LONG).show();
 
         NewRegistrationRequest newRegistrationRequest = new NewRegistrationRequest();
         newRegistrationRequest.username = sUsername;
@@ -490,8 +493,6 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         newRegistrationRequest.gender = sGender;
         newRegistrationRequest.date_of_birth = sDateOfBirth;
         newRegistrationRequest.mob_no = sMobile;
-
-        if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(NewUserRegisterActivity.this);
         Call<NewRegistrationResponse> call = apiInterface.newUserRegistration(newRegistrationRequest);
@@ -505,7 +506,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
                         if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("User is registered successfully !")) {
                             if (response.body().getResponseData() != null) {
-                                Toast.makeText(NewUserRegisterActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NewUserRegisterActivity.this, "Registration Succesfull", Toast.LENGTH_SHORT).show();
                                 com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData responseData = response.body().getResponseData();
 
                                 setPrefData(responseData);
@@ -531,9 +532,6 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             }
         });
 
-        }else {
-            NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
-        }
     }
 
     public void setPrefData(com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData response){
@@ -704,5 +702,10 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                 .show();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }
 

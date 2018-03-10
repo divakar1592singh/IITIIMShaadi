@@ -40,7 +40,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileRe
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -216,7 +218,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 mPartnerProfile.setBackground(getResources().getDrawable(R.drawable.button_shape_profile_unselect));
                 mPartnerProfile.setTextColor(getResources().getColor(R.color.colorGrey));
-
 
                 expListView.setVisibility(View.VISIBLE);
                 expListViewPartner.setVisibility(View.GONE);
@@ -638,6 +639,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
+        if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<MyProfileResponse> call = apiInterface.myProfileData(token);
@@ -661,6 +664,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
+        }
     }
 
     private void setMyProfile(MyProfileResponse myProfileResponse){
@@ -695,9 +701,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //        String token = "1cbaaa66e729e857a81979693fe2d125";
 
 
+        if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
+
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
-//      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
         ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
@@ -735,6 +742,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
+        }
     }
 
     public void reTryMethod(){

@@ -15,7 +15,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNo
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.GetAllNotificaiton;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
@@ -83,6 +85,9 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+
+        if(NetworkClass.getInstance().checkInternet(NotificationsActivity.this) == true){
+
         retrofit2.Call<AllNotificationRespnse> call = apiInterface.allNotificationService(token);
         call.enqueue(new Callback<AllNotificationRespnse>() {
             @Override
@@ -108,6 +113,10 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(NotificationsActivity.this);
+        }
 
     }
 

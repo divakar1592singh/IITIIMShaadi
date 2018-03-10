@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,6 +16,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
@@ -24,6 +28,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherPro
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -50,15 +57,12 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     boolean userProfile = true;
     boolean partnerPrefrence =true;
     AppPrefs prefs;
-
-
     CircleImageView mProfileCIV;
     TextView mUsrNameTV, mUsrIdTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_other_profile);
 
         prefs = AppController.getInstance().getPrefs();
@@ -85,6 +89,27 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         super.onStart();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.album_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.idAlbum:
+
+                Navigator.getClassInstance().navigateToActivity(OtherProfileActivity.this, OtherAlbumActivity.class);
+//                Toast.makeText(OtherProfileActivity.this, "Album", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void init(){
 
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
@@ -103,6 +128,8 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         expListViewPartner = (ExpandableListView) findViewById(R.id.expandablePartnerLV);
 
         mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
+
+        setSupportActionBar(mToolbar);
     }
 
     public void setProfileData(OtherProfileResponse profileResponse){
@@ -293,7 +320,8 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-//        String userId = "30413";
+        if(NetworkClass.getInstance().checkInternet(OtherProfileActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(OtherProfileActivity.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<OtherProfileResponse> call = apiInterface.otherProfileData(token, userId);
@@ -318,6 +346,10 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 //                Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(OtherProfileActivity.this);
+        }
 
     }
 

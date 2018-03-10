@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -22,6 +23,8 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.AllInterestAdapter;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -69,8 +72,11 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerViewChatUser.setLayoutManager(layoutManager);
 
+        if(NetworkClass.getInstance().checkInternet(AllInterestActivity.this) == true){
         callWebServiceForSubscribeDashboard();
-
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(AllInterestActivity.this);
+        }
     }
 
     @Override
@@ -81,10 +87,7 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-
-
     /** API INTEGRATION */
-
     /* Subscriber Dashboard*/
     public void callWebServiceForSubscribeDashboard(){
 

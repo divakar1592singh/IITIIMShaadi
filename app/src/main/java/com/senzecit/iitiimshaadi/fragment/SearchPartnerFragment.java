@@ -233,6 +233,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         searchRequest.course = course;
         searchRequest.annual_income = annual_income;
 
+
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(searchRequest);

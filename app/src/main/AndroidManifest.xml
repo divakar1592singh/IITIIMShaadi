@@ -124,7 +124,9 @@
 
         <activity android:name=".viewController.IntroSliderWebActivity" />
         <activity android:name=".viewController.SubscriptionPlanActivity" />
-        <activity android:name=".viewController.OtherProfileActivity" />
+        <activity
+            android:name=".viewController.OtherProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".viewController.ResultSearchPartnerActivity" />
         <activity android:name=".viewController.ResultPaidSearchPartnerActivity" />
         <activity android:name=".viewController.CustomFoldersActivity" />
@@ -140,6 +142,7 @@
         <activity android:name=".chat.SocketSingleChatActivity" />
         <activity android:name=".viewController.NotificationsActivity" />
         <activity android:name=".viewController.AllInterestActivity" />
+        <activity android:name=".viewController.OtherAlbumActivity"></activity>
     </application>
 
 </manifest>

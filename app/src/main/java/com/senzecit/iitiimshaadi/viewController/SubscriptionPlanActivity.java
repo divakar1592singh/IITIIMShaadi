@@ -1,10 +1,22 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -13,8 +25,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
+import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 public class SubscriptionPlanActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener{
 
@@ -70,6 +90,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     public void handleView(){
 
+        mBack.setOnClickListener(this);
         mCountryRadioGroup.setOnCheckedChangeListener(this);
         mRadioGroup.setOnCheckedChangeListener(this);
         mPayBtn.setOnClickListener(this);
@@ -89,7 +110,14 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
                 SubscriptionPlanActivity.this.finish();
                 break;
             case R.id.idPayBtn:
-                transactPayment();
+
+                if(NetworkClass.getInstance().checkInternet(SubscriptionPlanActivity.this) == true){
+//                    showPaymentAlert();
+                    alertPaymentSummary();
+                }else {
+                    NetworkDialogHelper.getInstance().showDialog(SubscriptionPlanActivity.this);
+                }
+//                transactPayment();
                 break;
 
         }
@@ -161,6 +189,97 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         }
 
     }
+
+    public void showPaymentAlert(){
+//        showDialogPayment();
+
+        transactPayment();
+    }
+
+/*
+    public Vector<Dialog> dialogs = new Vector<Dialog>();
+    private void showDialogPayment() {
+        int d_width = 100;
+        int d_height = 50;
+
+        final Dialog dialog = new Dialog(this, R.style.CustomDialog);//,R.style.CustomDialog
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+
+        View view = getLayoutInflater().inflate(R.layout.toast_payment_layout, null);
+
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+//		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        final CustomListAdapterDialog clad1 = new CustomListAdapterDialog(SubscriptionPlanActivity.this, null);
+        recyclerView.setAdapter(clad1);
+
+        dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
+        dialogs.add(dialog);
+        dialog.show();
+
+        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.RIGHT);
+        window.setLayout(width - d_width, height - d_height);
+
+        clad1.setOnItemClickListener(new CustomListAdapterDialog.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, String id) {
+
+                dialog.dismiss();
+
+//				showDialog(130,50);
+            }
+        });
+    }
+*/
+
+    private void alertPaymentSummary(){
+
+        final TextView mMessage;
+        final Button mCloseBtn;
+        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        final AlertDialog dialog = dialogBuilder.create();
+        View dialogView = inflater.inflate(R.layout.toast_payment_layout,null);
+
+        mMessage = dialogView.findViewById(R.id.tvEmail);
+        mCloseBtn = dialogView.findViewById(R.id.idCloseBtn);
+
+        mMessage.setText("Check Payment Detail");
+
+        mCloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                callWebServiceForEmailVerification();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setView(dialogView);
+        dialog.show();
+    }
+
 
     public void transactPayment(){
 

@@ -37,7 +37,9 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralS
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -169,7 +171,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 showBooleanData(mMemberAddsTV);
                 break;
             case R.id.generalSaveBtn:
+
+                if(NetworkClass.getInstance().checkInternet(SettingsActivity.this) == true){
                 checkUserValidation();
+                }else {
+                    NetworkDialogHelper.getInstance().showDialog(SettingsActivity.this);
+                }
                 break;
             case R.id.deactiveAccountSaveBtn:
                 findDeactivateReason();
@@ -381,6 +388,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        if(NetworkClass.getInstance().checkInternet(SettingsActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(SettingsActivity.this);
         Call<AddFolderResponse> call = apiInterface.deactivateAccount(token, reason);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -411,6 +420,11 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SettingsActivity.this);
+        }
+
     }
 
     public void logout(){

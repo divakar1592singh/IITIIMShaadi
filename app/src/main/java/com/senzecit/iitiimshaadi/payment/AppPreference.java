@@ -11,13 +11,13 @@ public class AppPreference {
 
     private String dummyMobile = "8860807707";
     private String dummyAmount = "10";
-    private String dummyEmail = "divakar1592singh@gmail.com";
-    private String productInfo = "Shaadi Bill";
-    private String firstName = "Divakar";
+    private String dummyEmail = "diwakar@senzecit.com";
+    private String productInfo = "IITIIMShaadi.com";
+    private String firstName = "Alma Matters";
     private boolean isOverrideResultScreen = false;
  
     public static final String USER_EMAIL = "8860807707";
-    public static final String USER_MOBILE = "praveen@senzecit.com";
+    public static final String USER_MOBILE = "diwakar@senzecit.com";
     public static final String PHONE_PATTERN = "^[987]\\d{9}$";
     public static final long MENU_DELAY = 300;
     public static String USER_DETAILS = "user_details";

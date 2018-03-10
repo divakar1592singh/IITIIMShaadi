@@ -100,7 +100,6 @@ public class AlertDialogSingleClick {
         dialog.show();
     }
 
-
     public void closeDialog(){
         try {
             dialog.dismiss();

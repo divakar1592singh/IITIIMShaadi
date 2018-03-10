@@ -503,7 +503,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="If Any Issue"
+                android:text="Have some issue"
                 android:textSize="@dimen/dimen_20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -514,8 +514,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Go Back and RePay"
+                android:text="Go Back and Re-Pay \n or Contact Us"
                 android:textSize="@dimen/dimen_20dp"
+                android:gravity="center_horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

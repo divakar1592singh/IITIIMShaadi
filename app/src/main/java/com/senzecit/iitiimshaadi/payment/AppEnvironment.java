@@ -9,12 +9,12 @@ public enum AppEnvironment {
     SANDBOX {
         @Override
         public String merchant_Key() {
-            return "cA22SFFD";
+            return "YhZXAj";
         }
 
         @Override
         public String merchant_ID() {
-            return "393463";
+            return "5259474";
         }
 
         @Override
@@ -29,12 +29,12 @@ public enum AppEnvironment {
 
         @Override
         public String salt() {
-            return "qi1nH3DsQl";
+            return "shUO0FaL";
         }
 
         @Override
         public boolean debug() {
-            return true;
+            return false;
         }
     },
     PRODUCTION {
@@ -66,7 +66,7 @@ public enum AppEnvironment {
 
         @Override
         public boolean debug() {
-            return false;
+            return true;
         }
     };
 

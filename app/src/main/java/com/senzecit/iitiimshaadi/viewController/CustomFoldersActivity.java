@@ -33,7 +33,9 @@ import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -163,6 +165,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        if(NetworkClass.getInstance().checkInternet(CustomFoldersActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
         call.enqueue(new Callback<FolderListModelResponse>() {
@@ -195,12 +199,19 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 reTryMethod();
             }
         });
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(CustomFoldersActivity.this);
+        }
+
+
     }
     /** Folder List Data */
     public void callWebServiceForCurrentCustomFolder(String mTitle){
 
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(CustomFoldersActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
@@ -228,6 +239,10 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(CustomFoldersActivity.this);
+        }
     }
 
     public void setTitle(List<MyMeta> myMetaList){
@@ -374,6 +389,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
         String sFolderName = mFolderNameET.getText().toString().trim();
 
+        if(NetworkClass.getInstance().checkInternet(CustomFoldersActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
         Call<AddFolderResponse> call = apiInterface.addFolder(token, sFolderName);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -404,6 +421,10 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(CustomFoldersActivity.this);
+        }
     }
 
     public void callWebServiceForRename(){
@@ -418,6 +439,8 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         request.token = token;
         request.meta_id = metaId;
         request.name = sFolderName;
+
+        if(NetworkClass.getInstance().checkInternet(CustomFoldersActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
         Call<RenameFolderResponse> call = apiInterface.renameFolder(request);
@@ -450,6 +473,10 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(CustomFoldersActivity.this);
+        }
     }
 
     public void callWebServiceForDelete(){
@@ -460,6 +487,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         int positin = mFolderSpnr.getSelectedItemPosition();
         int folder_id = metaDataList.get(positin).getMetaId();
 
+        if(NetworkClass.getInstance().checkInternet(CustomFoldersActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(CustomFoldersActivity.this);
         Call<AddFolderResponse> call = apiInterface.deleteFolder(token, folder_id);
@@ -491,6 +519,10 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(CustomFoldersActivity.this);
+        }
     }
 
     public void reTryMethod(){

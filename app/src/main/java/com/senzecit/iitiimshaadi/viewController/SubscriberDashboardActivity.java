@@ -40,8 +40,11 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -158,13 +161,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mProfileCIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SubscriberDashboardActivity.this, "Profile", Toast.LENGTH_LONG).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "Profile", Toast.LENGTH_LONG).show();
+                Navigator.getClassInstance().navigateToActivity(SubscriberDashboardActivity.this, ProfileActivity.class);
             }
         });
         mAlbumIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SubscriberDashboardActivity.this, "Album", Toast.LENGTH_LONG).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "Album", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(SubscriberDashboardActivity.this, AlbumActivity.class));
             }
         });
@@ -172,7 +176,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mEmailVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SubscriberDashboardActivity.this, "Email", Toast.LENGTH_LONG).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "Email", Toast.LENGTH_LONG).show();
 
                 alertDialogEmail();
             }
@@ -180,21 +184,21 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mMobVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SubscriberDashboardActivity.this, "Mobile", Toast.LENGTH_LONG).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "Mobile", Toast.LENGTH_LONG).show();
                 alertDialogMobile();
             }
         });
         mDocumentsVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SubscriberDashboardActivity.this, "Documents", Toast.LENGTH_LONG).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "Documents", Toast.LENGTH_LONG).show();
                 alertDialogDocuments();
             }
         });
         mProofVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SubscriberDashboardActivity.this, "ID Proof", Toast.LENGTH_LONG).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "ID Proof", Toast.LENGTH_LONG).show();
                 alertDialogIDProof();
             }
         });
@@ -226,7 +230,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             }else if(userType.equalsIgnoreCase("subscriber")){
 
                 setVerificationStatus(false, false, false, false, false);
-                callApiForDocVerification();
+                callApiForDocStatus();
             }
 
         }catch (NullPointerException npe){
@@ -537,7 +541,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     }
     private void alertDialogDocuments(){
 
-
         Button mClose ;
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -737,6 +740,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/subscriber_dashboard.json")
                 .addBodyParameter("token", token)
@@ -767,6 +773,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                         reTryMethod();
                     }
                 });
+
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
 
 
 /*        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
@@ -806,11 +817,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     public void callWebServiceForEmailVerification(){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
         emailVerirequest.token = token;
 
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -821,7 +835,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
                         if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
+                            showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
                         }
                     }
                 }catch (NullPointerException npe){
@@ -833,10 +848,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             @Override
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
     }
 
     /** MOBILE */
@@ -845,6 +864,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 //        String token = CONSTANTS.Own_Token;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.resendOTP(token);
@@ -852,17 +874,20 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             @Override
             public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
-                String msg1 = "We have sent you a new OTP. In case, you don\\u2019t receive it, please send \\u0022Verify\\u0022 message to our mobile number 07042947312.";
+                String msg1 = "We have sent you a new OTP. In case, you don’t receive it, please send \\\"Verify\\\" message to our mobile number 07042947312.";
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
+//                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
 //                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+                            showAlertMsg("Info", msg1);
 
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", msg1);
+                            showAlertMsg("Info", msg1);
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", msg1);
                         }
                     }else {
                         Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -877,12 +902,17 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
     }
 
     public void callWebServiceForOTPVerification(String otp){
 
-//        String token = CONSTANTS.Own_Token;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -896,12 +926,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
 
-                            AlertDialogSingleClick.getInstance().closeDialog();
-                            // Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+                            showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
                         } else {
-                            Toast.makeText(SubscriberDashboardActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -916,6 +945,10 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
     }
 
     /* File Upload */
@@ -924,9 +957,10 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         System.out.print(file);
 
         Call<IdVerificationResponse> callUpload = null;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+//        Toast.makeText(SubscriberDashboardActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
 
-        String token = CONSTANTS.Temp_Token;
-        Toast.makeText(SubscriberDashboardActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData(typeOf, file.getName(), requestBody);
@@ -943,9 +977,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
-                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Response :" + response.body().getMessage().getSuccess());
+                    showAlertMsg("Info", response.body().getMessage().getSuccess());
+//                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "" + response.body().getMessage().getSuccess());
                 } else {
-                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Confuse");
+
+                        showAlertMsg("Alert", CONSTANTS.unknown_err);
+//                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "Confuse");
                 }
 
             }
@@ -954,10 +991,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             public void onFailure(Call<IdVerificationResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Oops");
+                showAlertMsg("Alert", CONSTANTS.unknown_err);
+//                AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Oops");
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
     }
 
     public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
@@ -974,16 +1015,17 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.post_graduate.toString())){
                 return apiInterface.postGradCertUpload(fileToUpload, filename, token);
             }else {
-                Toast.makeText(SubscriberDashboardActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SubscriberDashboardActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
                 return null;
             }
 
         }
 
-    public void callApiForDocVerification(){
+    public void callApiForDocStatus(){
 
-//        String token = "d7f43182da347f975350c02c30689e30";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
             AndroidNetworking.post("https://iitiimshaadi.com/api/status_report.json")
                     .addBodyParameter("token", token)
@@ -993,12 +1035,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            // do anything with response
-//                            System.out.println("Output -----> "+response);
-//                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Success!", Toast.LENGTH_LONG).show();
 
                             try {
-//
                             JSONObject verifiedObject = response.getJSONObject("verificationData");
 
                             String email_verified = verifiedObject.getString("emailStatus");
@@ -1023,10 +1061,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                         @Override
                         public void onError(ANError error) {
                             // handle error
-                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Failed!", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Failed!", Toast.LENGTH_LONG).show();
 
                         }
                     });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
 
         }
 
@@ -1076,7 +1118,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         }
 
 //        EXTRA
-
     public void showSnackBar(){
         View parentLayout = findViewById(android.R.id.content);
         Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
@@ -1090,6 +1131,19 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 .show();
     }
 
+    public void showAlertMsg(String title, String msg){
+        new AlertDialog.Builder(SubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
     public void reTryMethod(){
 
         new AlertDialog.Builder(SubscriberDashboardActivity.this)
@@ -1111,5 +1165,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 })
                 .show();
     }
+
 
 }

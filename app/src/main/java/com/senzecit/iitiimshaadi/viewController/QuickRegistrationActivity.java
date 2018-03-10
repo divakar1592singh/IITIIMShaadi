@@ -276,10 +276,10 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     /** Handle view to Set and Get*/
     public int getGender(){
         if(mBoySelect.getVisibility() == View.VISIBLE){
-            Toast.makeText(this, "Male", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Male", Toast.LENGTH_SHORT).show();
             return 1;
         }else if(mGirlSelect.getVisibility() == View.VISIBLE){
-            Toast.makeText(this, "Female", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Female", Toast.LENGTH_SHORT).show();
             return 2;
         }
         return  0;
@@ -426,13 +426,13 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
                     QuickRegStreamResponse courseResponse = response.body();
                     if(courseResponse.getMessage().getSuccess() != null) {
                         if (courseResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(QuickRegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(QuickRegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                             List<College> collegeList = courseResponse.getCollege();
                             showInstution(collegeList);
 
                         } else {
-                            Toast.makeText(QuickRegistrationActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(QuickRegistrationActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(QuickRegistrationActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -469,13 +469,13 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
                     QuickRegStreamResponse courseResponse = response.body();
                     if(courseResponse.getMessage().getSuccess() != null) {
                         if (courseResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(QuickRegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(QuickRegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                             List<College> collegeList = courseResponse.getCollege();
                             showInstution(collegeList);
 
                         } else {
-                            Toast.makeText(QuickRegistrationActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(QuickRegistrationActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(QuickRegistrationActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -522,7 +522,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
                    /* if (response.body().getResponseCode() == 200) {
                         Toast.makeText(this, "Succesfully", Toast.LENGTH_SHORT).show();
                     }*/
-                    AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Find College", "Success");
+                    AlertDialogSingleClick.getInstance().showDialog(QuickRegistrationActivity.this, "Find College", "Submitted Successfully");
 
                 }
             }
@@ -555,5 +555,9 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         return android.util.Patterns.PHONE.matcher(phone).matches();
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }

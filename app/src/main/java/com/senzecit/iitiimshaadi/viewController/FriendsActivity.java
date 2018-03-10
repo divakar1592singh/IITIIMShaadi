@@ -23,8 +23,10 @@ import com.senzecit.iitiimshaadi.fragment.ShortlistedFriendFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import java.util.ArrayList;
@@ -160,6 +162,8 @@ RequestedFriendFragment.OnRequestedFriendListener{
     /** API - Friend Manipulation Task */
     private void callWebServiceForManipulateFriend(String typeOf, String otherUserID)
     {
+        if(NetworkClass.getInstance().checkInternet(FriendsActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(FriendsActivity.this);
         Call<AddFolderResponse> call = callManipulationMethod(typeOf, otherUserID);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -187,6 +191,9 @@ RequestedFriendFragment.OnRequestedFriendListener{
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(FriendsActivity.this);
+        }
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String friend_user)
     {

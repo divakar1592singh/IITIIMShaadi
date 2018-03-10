@@ -95,6 +95,8 @@ public interface CONSTANTS {
     String country_not_found = "Country Not Found";
     String state_not_found = "State Not Found";
     String city_not_found = "City Not Found";
+    String album_not_found = "No Image Available";
+    String unknown_err = "Something went wrong! \n Try again";
 
 
 }

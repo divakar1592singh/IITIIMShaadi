@@ -28,7 +28,9 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequ
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -81,7 +83,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void handleView() {
         mForgotPassword.setOnClickListener(this);
         mRegisterNew.setOnClickListener(this);
-        mLogin.setOnClickListener(this::checkUserValidation);
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(NetworkClass.getInstance().checkInternet(LoginActivity.this) == true){
+                    checkUserValidation();
+                }else {
+                    NetworkDialogHelper.getInstance().showDialog(LoginActivity.this);
+                }
+            }
+        });
     }
 
     @Override
@@ -106,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * VALIDATION SECTION
      */
-    public void checkUserValidation(View view) {
+    public void checkUserValidation() {
 
         String sUsername = mUsername.getText().toString().trim();
         String sPassword = mPassword.getText().toString().trim();
@@ -247,7 +258,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                dialog.dismiss();
                 System.out.println("Email/Username is : " + sdUsername);
                 if (!sdUsername.isEmpty()) {
-                    if (isValidEmail(sdUsername)) {
+//                    if (isValidEmail(sdUsername)) {
 
                         callWebServiceForForgotPassword(sdUsername);
                         dialog.dismiss();
@@ -255,9 +266,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else {
                         AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Email not valid");
                     }
-                } else {
+                /*} else {
                     AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Email can't Empty");
-                }
+                }*/
             }
         });
 
@@ -268,7 +279,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 dialog.dismiss();
             }
         });
-
 
         dialog.setView(dialogView);
         dialog.show();
@@ -326,6 +336,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }

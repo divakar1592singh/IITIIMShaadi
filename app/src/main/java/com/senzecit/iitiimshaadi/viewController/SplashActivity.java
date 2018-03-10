@@ -40,15 +40,16 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "33aae50424b1bc7d9fc3ae524ce673f2");
+/*        prefs.putString(CONSTANTS.LOGGED_TOKEN, "33aae50424b1bc7d9fc3ae524ce673f2");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
         prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
+        */
+
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
-
 /*
         prefs.putString(CONSTANTS.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "divakar1591@gmail.com");
@@ -77,44 +78,43 @@ public class SplashActivity extends AppCompatActivity {
                     NetworkDialogHelper.getInstance().showDialog(SplashActivity.this);
                 }
 //***************************
-   /*             try{
+
+             /*   try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
                         Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish();
+//                        finish();
                     } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
 
                         Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish();
+//                        finish();
                     } else if (userType.equalsIgnoreCase("subscriber")) {
 
                         Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish();
+//                        finish();
                     } else {
-//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
                         Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        finish();
+//                        finish();
                     }
                 }catch (NullPointerException npe){
 
                     Log.e(TAG, "#Error : "+npe, npe);
                     Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
                 }*/

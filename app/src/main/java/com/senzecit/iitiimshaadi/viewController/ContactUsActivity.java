@@ -29,7 +29,9 @@ import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,7 +119,11 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
 
                 break;
             case R.id.sendBtn:
+                if(NetworkClass.getInstance().checkInternet(ContactUsActivity.this) == true){
                 checkNewUserValidation();
+                }else {
+                    NetworkDialogHelper.getInstance().showDialog(ContactUsActivity.this);
+                }
                 break;
             case R.id.refreshIV:
                 showCaptcha();
@@ -189,9 +195,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         CaptchaClass captcha = new CaptchaClass();
         String str = captcha.generateCaptcha();
         System.out.println(str);
-
         mCaptchaBtn.setText(str);
-
     }
 
     /**

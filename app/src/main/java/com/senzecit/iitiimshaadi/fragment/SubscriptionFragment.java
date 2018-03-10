@@ -23,8 +23,11 @@ import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.
 import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.SubsRetrieveResponse;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.LinearLayoutManagerWithSmoothScroller;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,7 +76,7 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        callWebServiceForGenSetting();
+        callWebServiceForSubscription();
 
     }
 
@@ -112,7 +115,7 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
                 mUserTypeTV.setText("Subscriber Viewer");
                 mSubscriptionLayout.setVisibility(View.VISIBLE);
             } else if (userType.equalsIgnoreCase("subscriber")) {
-                mUserTypeTV.setText("Viewer");
+                mUserTypeTV.setText("Subscriber");
                 mSubscriptionLayout.setVisibility(View.VISIBLE);
             }
 
@@ -138,10 +141,13 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     }
 
     /** Check API Section */
-    public void callWebServiceForGenSetting(){
+    public void callWebServiceForSubscription(){
 
 //        String token = CONSTANTS.Token_Paid;
         String token =  prefs.getString(CONSTANTS.LOGGED_TOKEN);;
+
+
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
 
         ProgressClass.getProgressInstance().showDialog(getActivity());
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -159,10 +165,10 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
                             List<AllSubscription> allSubsList = subsResponse.getAllSubscriptions();
                             setSubsToRecyclerView(allSubsList);
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Confuse", Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -177,6 +183,10 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(getActivity());
+        }
     }
 
     public void setSubsToRecyclerView(List<AllSubscription> allSubsList){

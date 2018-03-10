@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorMaroon">
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment Confirmation"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Personal Info"
+        android:textColor="@color/colorDarkYellow"
+        android:singleLine="false"
+        android:padding="@dimen/activity_horizontal_margin"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        android:padding="@dimen/dimen_8dp">
+
+        <!--NAME-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+<!--EMAIL-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="diwakar@senzecit.com"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+<!--MOBILE-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Mobile"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+91 8860807707"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+
+    </TableLayout>
+
+    <!-- PAYMENT-->
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Subcription Info"
+        android:textColor="@color/colorDarkYellow"
+        android:singleLine="false"
+        android:padding="@dimen/activity_horizontal_margin"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1"
+        android:padding="@dimen/dimen_8dp">
+
+        <!--NAME-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Plan"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Indian"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+        <!--EMAIL-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Duration"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6 Month"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+        <!--MOBILE-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="120"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+
+    </TableLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        >
+
+        <Button
+            android:id="@+id/idCloseBtn"
+            android:layout_marginRight="8dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/border_maroon_selector"
+            android:text="Confirm &amp; Pay"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@color/colorMaroon"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -26,7 +26,9 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -230,6 +232,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
                 .addBodyParameter("token", token)
@@ -252,6 +256,10 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                         reTryMethod();
                     }
                 });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
 
 
 /*

@@ -30,7 +30,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Su
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -260,6 +262,8 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String searchID = prefs.getString(CONSTANTS.SEARCH_ID) ;
 
+        if(NetworkClass.getInstance().checkInternet(ResultPaidSearchPartnerActivity.this) == true){
+
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
         Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid1(token, searchID);
@@ -291,6 +295,11 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                 reTryMethod(1, pageCount);
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+        }
+
     }
     /** Search By Keyword */
     public void callWebServiceForSubsKeywordSearch(int pageCount){
@@ -298,6 +307,8 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 //        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String keyword = prefs.getString(CONSTANTS.SEARCH_KEYWORD) ;
+
+        if(NetworkClass.getInstance().checkInternet(ResultPaidSearchPartnerActivity.this) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
@@ -332,6 +343,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                 reTryMethod(2, pageCount);
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+        }
     }
     /** Advance Search */
     public void callWebServiceForSubsAdvanceSearch(int pageCount){
@@ -377,7 +392,9 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         searchRequest.min_height = sMinHeight;
         searchRequest.max_height = sMaxHeight;
 
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        if(NetworkClass.getInstance().checkInternet(ResultPaidSearchPartnerActivity.this) == true){
+
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
@@ -412,6 +429,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                 reTryMethod(3, pageCount);
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+        }
 
     }
 

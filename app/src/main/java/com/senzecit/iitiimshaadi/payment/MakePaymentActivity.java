@@ -165,7 +165,7 @@ public class MakePaymentActivity extends BaseActivity {
 
         }
 
-   /*     mBackButton.setOnClickListener(new View.OnClickListener() {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -179,7 +179,7 @@ public class MakePaymentActivity extends BaseActivity {
                 finishActivity(0);
 
             }
-        });*/
+        });
     }
 
     public static String hashCal(String str) {
@@ -280,7 +280,7 @@ public class MakePaymentActivity extends BaseActivity {
         if (appEnvironment == AppEnvironment.PRODUCTION) {
 //            Toast.makeText(MakePaymentActivity.this, "Environment Set to Production", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(MakePaymentActivity.this, "Environment Set to SandBox", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MakePaymentActivity.this, "Environment Set to SandBox", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -459,7 +459,6 @@ public class MakePaymentActivity extends BaseActivity {
 
     /**
      * Thus function calculates the hash for transaction
-     *
      * @param paymentParam payment params of transaction
      * @return payment params along with calculated merchant hash
      */
