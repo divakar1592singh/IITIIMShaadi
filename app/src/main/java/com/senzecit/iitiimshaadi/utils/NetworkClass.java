@@ -11,14 +11,25 @@ package com.senzecit.iitiimshaadi.utils;
 
 public class NetworkClass {
 
-    Context context;
+    private static NetworkClass instance = null;
 
-    public NetworkClass(Context context)
-    {
-        this.context = context;
+    private NetworkClass()
+    { }
+
+    public static NetworkClass getInstance(){
+
+        if(instance == null){
+            synchronized (NetworkClass.class){
+                if(instance == null){
+                    return instance = new NetworkClass();
+                }
+            }
+        }
+            return  instance;
+
     }
 
-    public boolean checkInternet() {
+    public boolean checkInternet(Context context) {
         ConnectivityManager connec =(ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
         if ( connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
                 connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||

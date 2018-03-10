@@ -42,7 +42,9 @@ import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
 import com.senzecit.iitiimshaadi.utils.ModalBottomSheet;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -489,6 +491,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         newRegistrationRequest.date_of_birth = sDateOfBirth;
         newRegistrationRequest.mob_no = sMobile;
 
+        if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(NewUserRegisterActivity.this);
         Call<NewRegistrationResponse> call = apiInterface.newUserRegistration(newRegistrationRequest);
         call.enqueue(new Callback<NewRegistrationResponse>() {
@@ -526,6 +530,10 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 //                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong! \n Try again!");
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
+        }
     }
 
     public void setPrefData(com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData response){

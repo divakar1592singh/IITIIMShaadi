@@ -16,6 +16,8 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequ
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -68,6 +70,12 @@ public class SplashActivity extends AppCompatActivity {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+
+                if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
+
+                }else {
+                    NetworkDialogHelper.getInstance().showDialog(SplashActivity.this);
+                }
 //***************************
    /*             try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);

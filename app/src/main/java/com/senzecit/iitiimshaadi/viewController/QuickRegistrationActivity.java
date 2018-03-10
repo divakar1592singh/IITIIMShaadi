@@ -36,7 +36,9 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegF
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.QuickRegStreamRequest;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import java.util.ArrayList;
@@ -411,6 +413,9 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         quickRegStreamRequest.gender = getGender();
         quickRegStreamRequest.courseId = courseId;
 
+
+        if(NetworkClass.getInstance().checkInternet(QuickRegistrationActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
         Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);
         call.enqueue(new Callback<QuickRegStreamResponse>() {
@@ -442,7 +447,9 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
             Toast.makeText(QuickRegistrationActivity.this, "Failed", Toast.LENGTH_SHORT).show();
         }
         });
-
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(QuickRegistrationActivity.this);
+        }
     }
 
     public void callWebServiceForInterNationalInstitution() {
@@ -450,6 +457,8 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         QuickRegStreamRequest quickRegStreamRequest = new QuickRegStreamRequest();
         quickRegStreamRequest.gender = getGender();
 
+        if(NetworkClass.getInstance().checkInternet(QuickRegistrationActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
         Call<QuickRegStreamResponse> call = apiInterface.fetchStreamData(quickRegStreamRequest);
         call.enqueue(new Callback<QuickRegStreamResponse>() {
@@ -481,6 +490,10 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
             Toast.makeText(QuickRegistrationActivity.this, "Failed", Toast.LENGTH_SHORT).show();
         }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(QuickRegistrationActivity.this);
+        }
 
     }
 
@@ -496,6 +509,8 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         quickRegFindCollegeRequest.email = sEmail;
         quickRegFindCollegeRequest.mobile = sMobile;
         quickRegFindCollegeRequest.college = sCollege;
+
+        if(NetworkClass.getInstance().checkInternet(QuickRegistrationActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(QuickRegistrationActivity.this);
         Call<FindCollegeResponse> call = apiInterface.quickRegFindCollege(quickRegFindCollegeRequest);
@@ -520,6 +535,10 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
                 Toast.makeText(QuickRegistrationActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(QuickRegistrationActivity.this);
+        }
 
     }
 

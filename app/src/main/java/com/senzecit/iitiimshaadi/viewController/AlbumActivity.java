@@ -40,7 +40,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.pic_response.SetProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -364,8 +366,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     }
                 }
             }
-
-
         }
 
     }
@@ -376,6 +376,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(AlbumActivity.this) == true){
 
         ProgressClass.getProgressInstance().showDialog(this);
         Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
@@ -420,13 +422,19 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(AlbumActivity.this);
+        }
     }
     public void callWebServiceForAllAlbumWithoutPrgs(){
 
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
+        if(NetworkClass.getInstance().checkInternet(AlbumActivity.this) == true){
+
+            Call<AllAlbumResponse> call = apiInterface.allAlbumist(token);
         call.enqueue(new Callback<AllAlbumResponse>() {
             @Override
             public void onResponse(Call<AllAlbumResponse> call, Response<AllAlbumResponse> response) {
@@ -459,6 +467,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 //                Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(AlbumActivity.this);
+    }
     }
 
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
@@ -475,10 +487,11 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 //      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
+        if(NetworkClass.getInstance().checkInternet(AlbumActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(AlbumActivity.this);
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> callUpload = apiInterface.imageUpload(fileToUpload, filename, token);
-
         callUpload.enqueue(new Callback<AddFolderResponse>() {
             @Override
             public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
@@ -500,6 +513,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(AlbumActivity.this);
+        }
     }
 
     public void reTryMethod(){
@@ -538,11 +554,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
+        if(NetworkClass.getInstance().checkInternet(AlbumActivity.this) == true){
+
         ProgressClass.getProgressInstance().showDialog(AlbumActivity.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<SetProfileResponse> callUpload = apiInterface.setProfileFromURI(fileToUpload, filename, token);
-
         callUpload.enqueue(new Callback<SetProfileResponse>() {
             @Override
             public void onResponse(Call<SetProfileResponse> call, Response<SetProfileResponse> response) {
@@ -573,6 +590,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Failed", "Something went wrong!");
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(AlbumActivity.this);
+        }
     }
 
 }
