@@ -33,11 +33,14 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.pic_response.SetProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AlbumActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -256,6 +259,8 @@ public class AlbumAdapter extends BaseAdapter {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        if(NetworkClass.getInstance().checkInternet(context) == true){
+
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.settingAlbum(token, album_id, privacy);
@@ -286,6 +291,10 @@ public class AlbumAdapter extends BaseAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(context);
+        }
     }
 
     public void callWebServiceForDelAlbum(String album_id, int position) {
@@ -293,6 +302,8 @@ public class AlbumAdapter extends BaseAdapter {
 //        String token = "1984afa022ab472e8438f115d0c5ee1b";
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(context) == true){
 
         ProgressClass.getProgressInstance().showDialog(context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -326,6 +337,10 @@ public class AlbumAdapter extends BaseAdapter {
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(context);
+        }
     }
 
 //    CROP IMAGE FROM URI

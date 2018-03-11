@@ -34,7 +34,7 @@ import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
 import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
-import com.senzecit.iitiimshaadi.viewController.ResultSearchPartnerActivity;
+import com.senzecit.iitiimshaadi.viewController.SearchPartnerActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionActivity;
@@ -176,7 +176,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 if(userType.equalsIgnoreCase("subscriber")) {
                     AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
                 }else {
-                    startActivity(new Intent(BaseNavActivity.this, ResultSearchPartnerActivity.class));
+                    startActivity(new Intent(BaseNavActivity.this, SearchPartnerActivity.class));
                 }
                 break;
             }

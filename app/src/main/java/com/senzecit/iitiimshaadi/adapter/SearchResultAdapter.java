@@ -25,10 +25,14 @@ import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderList
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +121,18 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
             }
         });
+
+        holder.mSearchpartnerIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = String.valueOf(queryList.get(position).getId());
+                if(userId.length()> 0){
+                    prefs.putString(CONSTANTS.OTHER_USERID, userId);
+                    Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -129,7 +145,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     private void callWebServiceForManipulatePartner(String typeOf, String friend, String folder)
     {
 
-        ProgressClass.getProgressInstance().showDialog(mContext);
+        if(NetworkClass.getInstance().checkInternet(mContext) == true){
+
+            ProgressClass.getProgressInstance().showDialog(mContext);
         Call<AddFolderResponse> call = callManipulationMethod(typeOf, friend, folder);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -156,6 +174,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(mContext);
+        }
+
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String s1, String s2)
     {
@@ -179,6 +201,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(NetworkClass.getInstance().checkInternet(mContext) == true){
 
         ProgressClass.getProgressInstance().showDialog(mContext);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -212,6 +235,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(mContext);
+    }
     }
 
     public void processMoveTo(String typeOf, String friend_id, List<MyMeta> myMetaList){

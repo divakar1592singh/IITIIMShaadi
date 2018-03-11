@@ -177,7 +177,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idSearchPartnerTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Search Partner", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ResultPaidSearchPartnerActivity.class));
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,PaidSearchPartnerActivity.class));
                 break;
             }
             case R.id.idPremServicesTV: {

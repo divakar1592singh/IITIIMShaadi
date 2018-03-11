@@ -53,9 +53,12 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,15 +122,12 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        //SetData - PreferedPartnerMinAge
                         editText.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
 
                         editText.addTextChangedListener(new TextWatcher() {
@@ -162,7 +162,6 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
                         //SetData - PreferedPartnerMaxAge
                         editText1.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
-
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -830,9 +829,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     public void saveChangesOfCase_0(){
 
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
         String Maximum_Age = ExpPartnerProfileModel.getInstance().getMaximum_Age();
         String Min_Height = ExpPartnerProfileModel.getInstance().getMin_Height();
@@ -850,11 +847,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         request.prefered_partner_height_max = Max_Height;
         request.prefered_partner_marital_status = Marital_StatusArr;
 
-/*
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForArrayClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.BASIC_LIFESTYLE_PT_PATH, request, methodName);
-*/
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
 
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -888,11 +881,13 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
     }
     public void saveChangesOfCase_1(){
 
-//        AppPrefs prefs = new AppPrefs(_context);
-//        String token = CONSTANTS.Temp_Token;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
@@ -910,7 +905,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         request.prefered_partner_caste = Preferred_CasteArr;
         request.prefered_partner_country = Preferred_CountryArr;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendPartnerReligionCountry(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -942,14 +939,15 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
             }
         });
 
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(_context);
+    }
+
     }
     public void saveChangesOfCase_2(){
 
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
-
         String[] Preferred_EducationArr = new String[1];
         Preferred_EducationArr[0] = Preferred_Education;
 
@@ -957,14 +955,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         request.token = token;
         request.prefered_partner_education = Preferred_EducationArr;
 
-/*
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.EDUCATION_CAREER_PT_PATH, request, methodName);
-*/
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
 
-
-        ProgressClass.getProgressInstance().showDialog(_context);
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendPartnerEduCareer(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -996,21 +989,24 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
 
 
     }
     public void saveChangesOfCase_3(){
 
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
-
         ChoiceOfGroomRequest request = new ChoiceOfGroomRequest();
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendPartnerGroom(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -1042,11 +1038,16 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
     }
 
     public void showCountry(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
 
         ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
@@ -1083,13 +1084,19 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                     }
                 });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
     }
 
     public void showCaste(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
                 .addBodyParameter("token", token)
                 .addBodyParameter("religion", preferred_Religion)
@@ -1125,6 +1132,10 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
 
     }
 

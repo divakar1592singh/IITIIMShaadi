@@ -671,7 +671,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setMyProfile(MyProfileResponse myProfileResponse){
 
-
         if(myProfileResponse.getBasicData() != null){
             String userId = String.valueOf(myProfileResponse.getEmailData().getId());
             String partUrl = myProfileResponse.getBasicData().getProfileImage();
@@ -696,10 +695,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         File   file = new File(fullPath);
         System.out.print(file);
 
-//        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-//        String token = "1cbaaa66e729e857a81979693fe2d125";
-
 
         if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
 

@@ -28,10 +28,15 @@ import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderList
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -174,7 +179,28 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                     }
                 });
+
+// ---
+                ((MyViewHolder)holder).mSearchPartnerIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String userId = String.valueOf(userDetail.getUserId());
+                        if(userId.length()> 0){
+                            prefs.putString(CONSTANTS.OTHER_USERID, userId);
+                            Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
+                        }
+                    }
+                });
+
             } else if (queryListKeyword != null) {
+
+                try {
+                    String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                    String partUrl = queryListKeyword.get(position).getProfileImage();
+                    Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(((MyViewHolder)holder).mSearchPartnerIV);
+                }catch (NullPointerException npe){
+                    Log.e("TAG", " #Error : "+npe, npe);
+                }
 
                 ((MyViewHolder)holder).mNameTxt.setText(queryListKeyword.get(position).getName());
                 ((MyViewHolder)holder).mDietTxt.setText(queryListKeyword.get(position).getDiet());
@@ -206,6 +232,19 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 });
 
+// ---
+                ((MyViewHolder)holder).mSearchPartnerIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                        if(userId.length()> 0){
+                            prefs.putString(CONSTANTS.OTHER_USERID, userId);
+                            Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
+                        }
+                    }
+                });
+
+
             } else {
 
             }
@@ -213,6 +252,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         }else if(holder instanceof FooterViewHolder){
 
         }
+
+
 
     }
 
@@ -266,6 +307,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     private void callWebServiceForManipulatePartner(String typeOf, String friend, String folder)
     {
 
+        if(NetworkClass.getInstance().checkInternet(mContext) == true){
+
         ProgressClass.getProgressInstance().showDialog(mContext);
         Call<AddFolderResponse> call = callManipulationMethod(typeOf, friend, folder);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -292,6 +335,9 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
             }
         });
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(mContext);
+        }
 
     }
     public Call<AddFolderResponse> callManipulationMethod(String typeOf, String s1, String s2)
@@ -316,7 +362,9 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 //        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        ProgressClass.getProgressInstance().showDialog(mContext);
+        if(NetworkClass.getInstance().checkInternet(mContext) == true){
+
+            ProgressClass.getProgressInstance().showDialog(mContext);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<FolderListModelResponse> call = apiInterface.customFolderList(token);
         call.enqueue(new Callback<FolderListModelResponse>() {
@@ -348,6 +396,9 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(mContext);
+    }
     }
 
     public void processMoveTo(String typeOf, String friend_id, List<MyMeta> myMetaList){
@@ -365,7 +416,6 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         ListView lv = (ListView) dialog.findViewById(R.id.lv);
 
-//        String[] foldername = {"ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, folderList);
         lv.setAdapter(adapter);
         dialog.setCancelable(true);
@@ -389,9 +439,6 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public static String getDate(String _Date){
 
-//        String _Date = "2010-09-29 08:45:22";
-//        String _Date = "2018-05-02T00:00:00+0000";
-
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -406,8 +453,6 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void formattedDate(TextView tv, String _date) {
-
-//        String _date = "1988-08-28";
 
         try {
 

@@ -1,40 +1,25 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
-import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 public class SubscriptionPlanActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener{
 
@@ -47,6 +32,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
             mLifetimeRB, mPaymentModeOneRB, mPaymentModeTwoRB;
 
     Button mPayBtn;
+    AppPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +40,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         getSupportActionBar().hide();
         setContentView(R.layout.activity_subscription_plan);
 
+        prefs = AppController.getInstance().getPrefs();
         init();
         handleView();
         mBack.setOnClickListener(this);
@@ -190,72 +177,41 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     }
 
+    public String getPaymentMode(){
+        if(mIndianRB.isChecked() == true ){
+            return "Indian";
+        }else if(mInterNationalRB.isChecked() == true ){
+            return "International";
+        }
+        return null;
+    }
+
+    public String getDuration(){
+
+        if( mOneMonthRB.isChecked() == true){
+            return "1 Month";
+        }else if( mSixMonthRB.isChecked() == true){
+            return "6 Month";
+        }else if( mTwelveMonthRB.isChecked() == true){
+            return "12 Month";
+        }else if( mLifetimeRB.isChecked() == true){
+            return "Lifetime";
+        }
+        return null;
+
+    }
+
     public void showPaymentAlert(){
 //        showDialogPayment();
 
         transactPayment();
     }
 
-/*
-    public Vector<Dialog> dialogs = new Vector<Dialog>();
-    private void showDialogPayment() {
-        int d_width = 100;
-        int d_height = 50;
-
-        final Dialog dialog = new Dialog(this, R.style.CustomDialog);//,R.style.CustomDialog
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
-
-        View view = getLayoutInflater().inflate(R.layout.toast_payment_layout, null);
-
-        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
-//		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        final CustomListAdapterDialog clad1 = new CustomListAdapterDialog(SubscriptionPlanActivity.this, null);
-        recyclerView.setAdapter(clad1);
-
-        dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(true);
-        dialogs.add(dialog);
-        dialog.show();
-
-        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        DisplayMetrics metrics = new DisplayMetrics();
-        display.getMetrics(metrics);
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-
-        Window window = dialog.getWindow();
-        window.setGravity(Gravity.RIGHT);
-        window.setLayout(width - d_width, height - d_height);
-
-        clad1.setOnItemClickListener(new CustomListAdapterDialog.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position, String id) {
-
-                dialog.dismiss();
-
-//				showDialog(130,50);
-            }
-        });
-    }
-*/
-
     private void alertPaymentSummary(){
 
-        final TextView mMessage;
+        final TextView mNameTV,mEmailTV,mMobileTV,mSubsAmountTV,mSubsDurationTV,mSubsTypeTV;
+
+        ;
         final Button mCloseBtn;
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -263,15 +219,36 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         final AlertDialog dialog = dialogBuilder.create();
         View dialogView = inflater.inflate(R.layout.toast_payment_layout,null);
 
-        mMessage = dialogView.findViewById(R.id.tvEmail);
+        mNameTV = dialogView.findViewById(R.id.idNameTV);
+        mEmailTV = dialogView.findViewById(R.id.idEmailTV);
+        mMobileTV = dialogView.findViewById(R.id.idMobileTV);
+        mSubsTypeTV = dialogView.findViewById(R.id.idSubsTypeTV);
+        mSubsDurationTV = dialogView.findViewById(R.id.idSubsDurationTV);
+        mSubsAmountTV = dialogView.findViewById(R.id.idSubsAmountTV);
+
         mCloseBtn = dialogView.findViewById(R.id.idCloseBtn);
 
-        mMessage.setText("Check Payment Detail");
+        mNameTV.setText(prefs.getString(CONSTANTS.LOGGED_USERNAME));
+        mEmailTV.setText(prefs.getString(CONSTANTS.LOGGED_EMAIL));
+        mMobileTV.setText(prefs.getString(CONSTANTS.LOGGED_MOB));
+
+        mSubsTypeTV.setText(getPaymentMode());
+        mSubsDurationTV.setText(getDuration());
+        if(getPaymentMode().equalsIgnoreCase("Indian")){
+            mSubsAmountTV.setText("");
+            mSubsAmountTV.setText(R.string.Rs);
+            mSubsAmountTV.append(" "+mTotalAmountTV.getText().toString());
+        }else if (getPaymentMode().equalsIgnoreCase("International")){
+            mSubsAmountTV.setText("");
+            mSubsAmountTV.append("$ "+mTotalAmountTV.getText().toString());
+        }
+
 
         mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                callWebServiceForEmailVerification();
+                transactPayment();
                 dialog.dismiss();
             }
         });

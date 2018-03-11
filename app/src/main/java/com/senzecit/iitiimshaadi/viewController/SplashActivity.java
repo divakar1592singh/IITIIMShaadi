@@ -40,13 +40,12 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-/*        prefs.putString(CONSTANTS.LOGGED_TOKEN, "33aae50424b1bc7d9fc3ae524ce673f2");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
         prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
-        */
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
@@ -65,18 +64,29 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
+        /*
+        *
+Image zoom on album
+
+Close other explistview
+
+Profile from search partner
+
+Search partner back*/
+
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
+                Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
-
+/*
                 if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
 
                 }else {
                     NetworkDialogHelper.getInstance().showDialog(SplashActivity.this);
-                }
+                }*/
+
 //***************************
 
              /*   try{

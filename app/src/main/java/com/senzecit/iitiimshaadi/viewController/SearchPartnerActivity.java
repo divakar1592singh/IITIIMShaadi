@@ -21,7 +21,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Qu
 
 import java.util.List;
 
-public class ResultSearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator {
+public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator {
 
     private static final String TAG = "ResultSearcPartner";
     Toolbar mToolbar;
@@ -52,6 +52,7 @@ public class ResultSearchPartnerActivity extends AppCompatActivity implements  S
         searchPartnerFragment.setSearchPartnerFragmentCommunicator(this);
 
         init();
+        handleView();
 
     }
 
@@ -78,10 +79,13 @@ public class ResultSearchPartnerActivity extends AppCompatActivity implements  S
 
 }
 
+    public void handleView(){
+        mTitle.setText("Search Partner");
+    }
+
     @Override
     public void saveSearchPartner(List<Query> queryList, List<String> profileList) {
-        mTitle.setText("Search Partner");
-//        mFragmentTransaction.remove(searchPartnerFragment);
+
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
 
@@ -106,13 +110,11 @@ public class ResultSearchPartnerActivity extends AppCompatActivity implements  S
         }catch (IndexOutOfBoundsException ioe){
             Log.e(TAG, " #Error : "+ioe, ioe);
         }
-//        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
+
     }
     private void setMatchedList(List<Query> queryList){
 
-//        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
-
-        SearchResultAdapter adapter = new SearchResultAdapter(ResultSearchPartnerActivity.this, queryList);
+        SearchResultAdapter adapter = new SearchResultAdapter(SearchPartnerActivity.this, queryList);
         mSearchResultRecyclerView.setAdapter(adapter);
 
     }

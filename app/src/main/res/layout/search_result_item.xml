@@ -68,14 +68,15 @@
                     android:text="Diet"
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
+
                 <TextView
                     android:id="@+id/idDietTV"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Non Vegetarian"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGrey"/>
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -89,14 +90,15 @@
                     android:text="Employment"
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
+
                 <TextView
                     android:id="@+id/idEmploymentTV"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Consultant"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGrey"/>
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -110,14 +112,15 @@
                     android:text="Company"
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
+
                 <TextView
                     android:id="@+id/idCompanyTV"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Deloitee Consulting US India Pvt Ltd."
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGrey"/>
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -131,14 +134,15 @@
                     android:text="Height"
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
+
                 <TextView
                     android:id="@+id/idHeightTV"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="5ft 10in(177cm)"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGrey"/>
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -152,14 +156,15 @@
                     android:text="Religion"
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
+
                 <TextView
                     android:id="@+id/idReligionTV"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Hindu/khatri"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGrey"/>
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14sp" />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -173,14 +178,15 @@
                     android:text="Education"
                     android:textSize="14sp"
                     android:textColor="@color/colorGrey"/>
+
                 <TextView
                     android:id="@+id/idEducationTV"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="MBA,IIM Lucknow,2015,B.E(InformationTechnology),NSIT,DU,2011"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorGrey"/>
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>

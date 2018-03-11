@@ -23,8 +23,10 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
@@ -157,6 +159,7 @@ public class ShortlistedFriendFragment extends Fragment {
         AppPrefs prefs = AppController.getInstance().getPrefs();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
 
         if(prefs.getInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB) != 1){
 
@@ -197,6 +200,10 @@ public class ShortlistedFriendFragment extends Fragment {
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
+
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(getActivity());
+    }
     }
 
     public void setDataToAdapter(List<AllShortlistedFriend> allFriendList){

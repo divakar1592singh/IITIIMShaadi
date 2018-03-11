@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.PaidSearchResultAdapter;
@@ -43,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ResultPaidSearchPartnerActivity extends AppCompatActivity implements PaidSearchPartnerFragment.PaidSearchPartnerFragmentCommunicator {
+public class PaidSearchPartnerActivity extends AppCompatActivity implements PaidSearchPartnerFragment.PaidSearchPartnerFragmentCommunicator {
 
     Toolbar mToolbar;
     TextView mTitle;
@@ -60,7 +59,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
     LinearLayoutManager layoutManager;
     PaidSearchResultAdapter adapter;
     Button mCurrentSearchBtn;
-    int pageCount = 1;
+    int pageCount = 10;
 
     List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList1;
     List<Query> queryList2;
@@ -153,7 +152,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                 super.onScrollStateChanged(recyclerView, newState);
 
                 int itemLastVisiblePosition = layoutManager.findLastVisibleItemPosition();
-//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Last Count : "+itemLastVisiblePosition, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PaidSearchPartnerActivity.this, "Last Count : "+itemLastVisiblePosition, Toast.LENGTH_SHORT).show();
 
                 if(itemLastVisiblePosition == adapter.getItemCount() - 1) {
 
@@ -226,7 +225,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         mContainerResLayout.setVisibility(View.VISIBLE);
         mCurrentSearchLayout.setVisibility(View.GONE);
 
-        adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, queryList, null, pageCount);
+        adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, queryList, null, pageCount);
         mSearchResultRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -249,7 +248,7 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
      }
 
-     adapter = new PaidSearchResultAdapter(ResultPaidSearchPartnerActivity.this, null, queryList, pageCount);
+     adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, null, queryList, pageCount);
         mSearchResultRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -262,10 +261,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String searchID = prefs.getString(CONSTANTS.SEARCH_ID) ;
 
-        if(NetworkClass.getInstance().checkInternet(ResultPaidSearchPartnerActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+        ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
         Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid1(token, searchID);
         call.enqueue(new Callback<PaidSubscriberResponse>() {
             @Override
@@ -278,10 +277,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
                             setPaidMatchedListID(queryList, pageCount);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-//                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", CONSTANTS.search_ptnr_err_msg);
+//                        AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", CONSTANTS.search_ptnr_err_msg);
                         reTryMethod(1, pageCount);;
                     }
                 }
@@ -290,14 +289,14 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onFailure(Call<PaidSubscriberResponse> call, Throwable t) {
                 call.cancel();
-//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
                 reTryMethod(1, pageCount);
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
         }
 
     }
@@ -308,10 +307,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String keyword = prefs.getString(CONSTANTS.SEARCH_KEYWORD) ;
 
-        if(NetworkClass.getInstance().checkInternet(ResultPaidSearchPartnerActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+        ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
         Call<SubsAdvanceSearchResponse> call = apiInterface.keywordSearchPaid(token, keyword);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
@@ -325,10 +324,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
 
                             setPaidMatchedListByKeyword(queryList, pageCount);
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-//                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
+//                        AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
                         reTryMethod(2, pageCount);
                     }
 
@@ -338,14 +337,14 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
                 call.cancel();
-//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
                 reTryMethod(2, pageCount);
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
         }
     }
     /** Advance Search */
@@ -392,10 +391,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
         searchRequest.min_height = sMinHeight;
         searchRequest.max_height = sMaxHeight;
 
-        if(NetworkClass.getInstance().checkInternet(ResultPaidSearchPartnerActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
             APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+        ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
@@ -411,10 +410,10 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
                             setPaidMatchedListByKeyword(queryList, pageCount);
 
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
-                        AlertDialogSingleClick.getInstance().showDialog(ResultPaidSearchPartnerActivity.this, "Search Partner", "Opps");
+                        AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
                         reTryMethod(3, pageCount);
                     }
 
@@ -424,21 +423,21 @@ public class ResultPaidSearchPartnerActivity extends AppCompatActivity implement
             @Override
             public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
                 call.cancel();
-//                Toast.makeText(ResultPaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
                 reTryMethod(3, pageCount);
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(ResultPaidSearchPartnerActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
         }
 
     }
 
     public void reTryMethod(int pos, int pageCount){
 
-        new AlertDialog.Builder(ResultPaidSearchPartnerActivity.this)
+        new AlertDialog.Builder(PaidSearchPartnerActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Alert")
                 .setMessage("Something went wrong!\n Please Try Again!")

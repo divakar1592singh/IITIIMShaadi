@@ -331,9 +331,16 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
-                    if(response.body() != null){
-                        setProfileData(response.body());
+                    if(response.body() != null) {
+                        if (response.body().getBasicData() != null)
+
+                            setProfileData(response.body());
                         setMyProfile(response.body());
+
+                    }else {
+
+
+
                     }
                 }
             }
@@ -344,6 +351,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                 ProgressClass.getProgressInstance().stopProgress();
                 reTryMethod();
 //                Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                reTryMethod();
             }
         });
 
@@ -365,11 +373,13 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
                         String userId = prefs.getString(CONSTANTS.OTHER_USERID);
                         callWebServiceForOtherProfile(userId);
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        finishActivity(0);
                         dialog.dismiss();
                     }
                 })

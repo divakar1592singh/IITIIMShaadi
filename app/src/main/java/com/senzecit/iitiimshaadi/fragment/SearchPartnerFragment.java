@@ -44,9 +44,12 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -234,6 +237,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         searchRequest.annual_income = annual_income;
 
 
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(getActivity());
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(searchRequest);
@@ -265,6 +270,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 reTryMethod();
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(getActivity());
+        }
+
     }
 
     /** Dialog */
@@ -463,11 +473,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+
         ProgressClass.getProgressInstance().showDialog(getActivity());
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
                 .addBodyParameter("token", token)
-//                .addBodyParameter("religion", preferred_Religion)
-//                .setTag("test")
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -503,6 +513,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     }
                 });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(getActivity());
+        }
     }
 
     public void showCity(final TextView textView){
@@ -511,7 +524,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         cityList.clear();
         String countryId = null;
 
-        if(countryListWithId != null) {
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+
+            if(countryListWithId != null) {
             String country = mPartnerCurrentCountryTV.getText().toString();
             for (int i = 0; i < countryListWithId.size(); i++) {
                 if (countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)) {
@@ -557,12 +572,20 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                         AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
                     }
                 });
+
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(getActivity());
+        }
     }
 
     public void showCaste(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = mSelectReligionTV.getText().toString();
+
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+
         ProgressClass.getProgressInstance().showDialog(getActivity());
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
                 .addBodyParameter("token", token)
@@ -601,6 +624,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     }
                 });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(getActivity());
+        }
     }
 
     public void reTryMethod(){

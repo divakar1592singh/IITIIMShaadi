@@ -48,6 +48,7 @@
                 android:background="@drawable/border_shape_grey"
                 />
             <TextView
+                android:id="@+id/idNameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="First Name"
@@ -73,6 +74,7 @@
                 android:background="@drawable/border_shape_grey"
                 />
             <TextView
+                android:id="@+id/idEmailTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="diwakar@senzecit.com"
@@ -98,6 +100,7 @@
                 android:background="@drawable/border_shape_grey"
                 />
             <TextView
+                android:id="@+id/idMobileTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+91 8860807707"
@@ -136,13 +139,14 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Plan"
+                android:text="Mode"
                 android:textSize="@dimen/dimen_16dp"
                 android:layout_column="0"
                 android:padding="@dimen/size_4_dp"
                 android:background="@drawable/border_shape_grey"
                 />
             <TextView
+                android:id="@+id/idSubsTypeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Indian"
@@ -168,6 +172,7 @@
                 android:background="@drawable/border_shape_grey"
                 />
             <TextView
+                android:id="@+id/idSubsDurationTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6 Month"
@@ -193,6 +198,7 @@
                 android:background="@drawable/border_shape_grey"
                 />
             <TextView
+                android:id="@+id/idSubsAmountTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="120"
@@ -223,6 +229,9 @@
             android:text="Confirm &amp; Pay"
             android:textSize="16sp"
             android:textAllCaps="false"
-            android:textColor="@color/colorMaroon"/>
+            android:textColor="@color/colorMaroon"
+            android:paddingLeft="@dimen/dimen_8dp"
+            android:paddingRight="@dimen/dimen_8dp"
+            />
     </RelativeLayout>
 </LinearLayout>

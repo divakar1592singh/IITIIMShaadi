@@ -22,8 +22,10 @@ import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.MyF
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
@@ -64,7 +66,12 @@ public class MyFriendsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        callWebServiceForMyFriend();
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+
+            callWebServiceForMyFriend();
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(getActivity());
+    }
 
     }
     @Override

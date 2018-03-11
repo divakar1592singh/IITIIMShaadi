@@ -127,8 +127,8 @@
         <activity
             android:name=".viewController.OtherProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".viewController.ResultSearchPartnerActivity" />
-        <activity android:name=".viewController.ResultPaidSearchPartnerActivity" />
+        <activity android:name=".viewController.SearchPartnerActivity" />
+        <activity android:name=".viewController.PaidSearchPartnerActivity" />
         <activity android:name=".viewController.CustomFoldersActivity" />
 
         <meta-data

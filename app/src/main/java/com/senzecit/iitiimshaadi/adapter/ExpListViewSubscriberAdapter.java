@@ -49,9 +49,12 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +74,7 @@ import retrofit2.Response;
  * Created by ravi on 8/11/17.
  */
 
-public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter implements RxNetworkingForObjectClass.CompletionHandler{
+public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     LayoutInflater layoutInflater;
@@ -90,8 +93,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         this._listDataChild = listChildData;
         prefs = AppController.getInstance().getPrefs();
 
-        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
-        rxNetworkingClass.setCompletionHandler(this);
     }
 
     @Override
@@ -124,7 +125,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        editText.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -665,13 +666,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     case 1:
                         LayoutInflater infalInflater1 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater1.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -830,13 +831,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     case 6:
                         LayoutInflater infalInflater6 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater6.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater6.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout6 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout6.setHint(childText);
 
                         EditText editText6 = convertView.findViewById(R.id.idlistitemET);
-                        editText6.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText6.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText6.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -939,8 +940,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-//                                showDialog(txtListChild9,100,50);
-//                                showState(txtListChild9);
                                 showCurrentState(txtListChild9);
                             }
                         });
@@ -996,13 +995,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     case 11:
                         LayoutInflater infalInflater11 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater11.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater11.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout11 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout11.setHint(childText);
 
                         EditText editText11 = convertView.findViewById(R.id.idlistitemET);
-                        editText11.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText11.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText11.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2193,6 +2192,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.drink = Drink;
         request.smoke = Smoke;
         request.interest = interestsArr;
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
 
         ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -2226,14 +2226,15 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
 
     }
 
     public void saveChangesOfCase_1() {
 
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         String Religion = ExpOwnProfileModel.getInstance().getReligion();
         String Caste = ExpOwnProfileModel.getInstance().getCaste();
         String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
@@ -2243,8 +2244,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.religion = Religion;
         request.caste = Caste;
         request.mother_tounge = Mother_Tongue;
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendReligiousBackground(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -2276,6 +2278,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
 
 
     }
@@ -2295,11 +2300,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Current_City = ExpOwnProfileModel.getInstance().getCurrent_City();
         String Zip_Code_Cur = ExpOwnProfileModel.getInstance().getZip_Code_Cur();
 
-//        Toast.makeText(_context, "Output : " + Alternate_Number, Toast.LENGTH_LONG).show();
-
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         ContactDetailsRequest request = new ContactDetailsRequest();
         request.token = token;
         request.mobile_no = Phone_Number;
@@ -2315,11 +2316,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.current_city = Current_City;
         request.current_zipcode = Zip_Code_Cur;
 
- /*       String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.CONTACT_DETAILS, request, methodName);
-*/
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendContactDetails(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -2351,6 +2350,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
             }
         });
 
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(_context);
+    }
 
     }
 
@@ -2363,9 +2365,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Details_Sisters = ExpOwnProfileModel.getInstance().getDetails_Sisters();
         String Details_Brothers = ExpOwnProfileModel.getInstance().getDetails_Brothers();
 
-//        Toast.makeText(_context, "Output : " + Father_Name, Toast.LENGTH_LONG).show();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         FamilyDetailRequest request = new FamilyDetailRequest();
         request.token = token;
         request.father_name = Father_Name;
@@ -2375,12 +2375,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.brother_detail = Details_Brothers;
         request.sister_detail = Details_Sisters;
 
-/*
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.FAMILY_DETAILS, request, methodName);
-*/
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendFamilyDetails(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -2412,6 +2409,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
 
     }
 
@@ -2432,9 +2432,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         String Annual_Income = ExpOwnProfileModel.getInstance().getAnnual_Income();
         String LinkdIn_Url = ExpOwnProfileModel.getInstance().getLinkdIn_Url();
 
-//        Toast.makeText(_context, "Output : " + Schooling, Toast.LENGTH_LONG).show();
-
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         EducationCareerRequest request = new EducationCareerRequest();
@@ -2453,12 +2450,9 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
 
-/*
-        String methodName = new Object() {}.getClass().getEnclosingMethod().getName();
-        prefs.putString(CONSTANTPREF.CALLED_METHOD, methodName);
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(_context, CONSTANTS.EDUCATION_CAREER, request, methodName);
-*/
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendEducationCareer(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -2490,22 +2484,23 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
 
     }
 
     public void saveChangesOfCase_5() {
 
         String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
-
-//        Toast.makeText(_context, "Output : " + About_you, Toast.LENGTH_LONG).show();
-
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         AboutMeRequest request = new AboutMeRequest();
         request.token = token;
         request.about_me = About_you;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.sendAboutMe(request);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -2537,13 +2532,18 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
             }
         });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
     }
 
     public void showCountry(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
 
-        ProgressClass.getProgressInstance().showDialog(_context);
+            ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
                 .addBodyParameter("token", token)
 //                .addBodyParameter("religion", preferred_Religion)
@@ -2578,12 +2578,18 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     }
                 });
 
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
     }
     public void showPermanentState(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getPermanent_Country();
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
                 .addBodyParameter("token", token)
                 .addBodyParameter("country", country)
@@ -2620,13 +2626,19 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                         AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                     }
                 });
+
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(_context);
+    }
 
     }
     public void showCurrentState(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String country = ExpOwnProfileModel.getInstance().getCurrent_Country();
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/states_acc_country.json")
                 .addBodyParameter("token", token)
                 .addBodyParameter("country", country)
@@ -2664,12 +2676,18 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                     }
                 });
 
+    }else {
+        NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
     }
     public void showCaste(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
-        ProgressClass.getProgressInstance().showDialog(_context);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
         AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
                 .addBodyParameter("token", token)
                 .addBodyParameter("religion", religion)
@@ -2701,23 +2719,10 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter impl
                         AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                     }
                 });
-    }
 
-    @Override
-    public void handle(JSONObject object, String methodName) {
-
-        String methodNameFromPref = prefs.getString(CONSTANTPREF.CALLED_METHOD);
-        if(methodNameFromPref.equalsIgnoreCase(methodName)){
-
-            try {
-                String success = object.getJSONObject("message").getString("success");
-                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", success);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Something went wrong!");
-            }
-
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
         }
     }
+
 }
