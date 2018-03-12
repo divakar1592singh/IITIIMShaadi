@@ -140,10 +140,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 if (bm != null) {
                     Glide.with(context)
                             .load(bm)
+                            .error(R.drawable.profile_img1)
                             .into(mProfileIV);
                 } else {
                     Glide.with(context)
                             .load(profileURL)
+                            .error(R.drawable.profile_img1)
                             .into(mProfileIV);
 
                     DownloadImageTask imgTask = new DownloadImageTask(cache, mProfileIV, 300, 300);//Since you are using it from `Activity` call second Constructor.

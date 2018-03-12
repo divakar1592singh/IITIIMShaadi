@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
@@ -40,8 +41,20 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "76c8c7f598ce3c60fc30d83f1d9010f5");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
+
+
+        prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
+        prefs.putString(CONSTANTS.OTHER_USERID, "30413");
+
+/*
+        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
+        prefs.putString(CONSTANTS.OTHER_USERID, "23593");
+*/
+
+
+
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
@@ -75,7 +88,7 @@ Profile from search partner
 Search partner back*/
 
 //                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -88,8 +101,8 @@ Search partner back*/
                 }*/
 
 //***************************
-
-             /*   try{
+/*
+                try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 

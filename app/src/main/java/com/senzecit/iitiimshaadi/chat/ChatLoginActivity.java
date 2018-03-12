@@ -25,7 +25,7 @@ public class ChatLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_login);
 
-        ChatApplication app = (ChatApplication) getApplication();
+        AppController app = (AppController) getApplication();
         prefs = AppController.getInstance().getPrefs();
 
         mSocket = app.getSocket();
@@ -49,7 +49,7 @@ public class ChatLoginActivity extends AppCompatActivity {
         JSONObject obj = new JSONObject();
         try {
 //            obj.put("userId", new SharedPrefClass(ChatLoginActivity.this).getLoginInfo());
-            obj.put("userId", prefs.getString(CONSTANTS.OTHER_USERID));
+            obj.put("userId", prefs.getString(CONSTANTS.LOGGED_USERID));
 
         }catch (JSONException e) {
             e.printStackTrace();

@@ -73,7 +73,7 @@ public class OtherAlbumAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return CONSTANTS.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl();
     }
 
     @Override

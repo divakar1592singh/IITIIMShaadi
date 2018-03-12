@@ -17,6 +17,9 @@ import com.senzecit.iitiimshaadi.payment.AppEnvironment;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import io.fabric.sdk.android.Fabric;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+
 import java.net.URISyntaxException;
 
 /**
@@ -85,5 +88,20 @@ public class AppController extends Application {
 
     public AppPrefs getPrefs() {
         return prefs;
+    }
+
+    //SOCKET
+
+
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(CONSTANTS.CHAT_SERVER_URL);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Socket getSocket() {
+        return mSocket;
     }
 }

@@ -11,7 +11,7 @@ public interface CONSTANTS {
     String IMAGE_BASE_URL = "https://iitiimshaadi.com/img/";
     String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/uploads/avatars/";
 //    CHAT
-    String CHAT_SERVER_URL = "http://35.154.217.225:1107";
+    String CHAT_SERVER_URL = "http://35.154.217.225:1109";
     String CHAT_HISTORY_URL = "http://35.154.217.225:1106/";
 
 //    RELATIVE URL
@@ -86,7 +86,7 @@ public interface CONSTANTS {
     String PLAN_STATUS = "subscription plan status";
 
 
-//    Error
+//    Message
     String edu_error_msg = "Select Education";
     String search_ptnr_err_msg = "No Match found";
     String country_error_msg = "Select Country";
@@ -97,6 +97,10 @@ public interface CONSTANTS {
     String city_not_found = "City Not Found";
     String album_not_found = "No Image Available";
     String unknown_err = "Something went wrong! \n Try again";
+
+    String tap_message = "Tap one more time";
+    String tap_twice_message = "Please, Tap on pic";
+
 
 
 }

@@ -139,7 +139,8 @@
             android:name=".payment.MakePaymentActivity"
             android:theme="@style/AppThemePay" />
         <activity android:name=".chat.ChatLoginActivity" />
-        <activity android:name=".chat.SocketSingleChatActivity" />
+        <activity android:name=".chat.SocketSingleChatActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".viewController.NotificationsActivity" />
         <activity android:name=".viewController.AllInterestActivity" />
         <activity android:name=".viewController.OtherAlbumActivity"></activity>

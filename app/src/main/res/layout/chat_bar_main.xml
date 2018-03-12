@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBlack">
+    android:background="@color/colorMaroon">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -14,6 +14,7 @@
             android:layout_height="44dp"
             android:layout_marginLeft="@dimen/activity_vertical_margin_small"
             android:layout_marginTop="2dp"
+            android:padding="@dimen/dimen_8dp"
             android:src="@drawable/back_img" />
 
         <TextView
@@ -21,11 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Group Name"
-            android:textColor="@color/colorYellow"
+            android:text="User Name"
+            android:textColor="@color/colorDarkYellow"
             android:textSize="24sp" />
 
-        <com.senzec.alfa.utils.CircleImageView
+        <com.senzecit.iitiimshaadi.utils.CircleImageView
             android:id="@+id/idProfileIV"
             android:layout_width="80dp"
             android:layout_height="80dp"

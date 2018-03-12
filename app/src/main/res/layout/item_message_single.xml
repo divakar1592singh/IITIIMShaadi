@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:paddingTop="@dimen/spacing">
 
-    <com.senzec.alfa.utils.CircleImageView
+    <com.senzecit.iitiimshaadi.utils.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="60dp"
         android:layout_height="60dp"

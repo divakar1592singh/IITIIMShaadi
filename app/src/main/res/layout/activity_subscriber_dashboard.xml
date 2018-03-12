@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/idScrlView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:scrollbars="none"
+    android:fillViewport="true"
     tools:context="com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity">
     <LinearLayout
         android:layout_width="match_parent"

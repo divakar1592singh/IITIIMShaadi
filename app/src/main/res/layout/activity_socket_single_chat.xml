@@ -3,11 +3,10 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".socket_chat.SocketGroupChatOldActivity"
     tools:ignore="MergeRootFrame">
 
     <fragment
-        class="com.senzec.alfa.chat.company_socket_single_chat.MainFragment"
+        class="com.senzecit.iitiimshaadi.chat.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </FrameLayout>

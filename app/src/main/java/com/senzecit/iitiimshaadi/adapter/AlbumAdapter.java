@@ -85,7 +85,7 @@ public class AlbumAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return CONSTANTS.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl();
     }
 
     @Override
@@ -111,12 +111,12 @@ public class AlbumAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        /*holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         holder.mSetProfileIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,44 +213,6 @@ public class AlbumAdapter extends BaseAdapter {
             mDeleteIV = (ImageView) convertView.findViewById(R.id.idDeleteIV);
 
         }
-    }
-
-    public void callWebServiceForSetProfile(String profile) {
-
-//        String token = "1984afa022ab472e8438f115d0c5ee1b";
-
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
-        ProgressClass.getProgressInstance().showDialog(context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.setProfileAlbum(token, profile);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse serverResponse = response.body();
-                    if (serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-                            AlertDialogSingleClick.getInstance().showDialog(context, "Info", "Deleted Successfully");
-
-                        } else {
-//                            Toast.makeText(context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
     }
 
     public void callWebServiceForSetting(String album_id, String privacy) {

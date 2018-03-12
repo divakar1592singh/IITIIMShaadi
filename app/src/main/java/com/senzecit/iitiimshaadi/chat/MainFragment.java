@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.socket.client.Socket;
@@ -83,13 +85,13 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
         setHasOptionsMenu(true);
         prefs = new AppPrefs(getActivity());
-        ChatApplication app = (ChatApplication) getActivity().getApplication();
+        AppController app = (AppController) getActivity().getApplication();
         mSocket = app.getSocket();
         mSocket.on(Socket.EVENT_CONNECT,onConnect);
         mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on("receiveMessageTocomany", onNewMessage);
+        mSocket.on("receiveMessage", onNewMessage);
         //mSocket.on("new message", onNewMessage);
         mSocket.on("user joined", onUserJoined);
         mSocket.on("user left", onUserLeft);
@@ -108,6 +110,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         //      addMessage("User", "This is test message");
         TextView tv_title = (TextView)view.findViewById(R.id.idUserNameTV) ;
 //        tv_title.setText(new SharedPrefClass(getActivity()).getChatReceiverName());
+        tv_title.setText(String.valueOf(prefs.getString(CONSTANTS.LOGGED_USERID)));
 
         ImageView mProfileIV =(ImageView)view.findViewById(R.id.idProfileIV);
         mProfileIV.setVisibility(View.GONE);
@@ -127,7 +130,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.off("receiveMessageTocomany", onNewMessage);
+        mSocket.off("receiveMessage", onNewMessage);
         //mSocket.off("new message", onNewMessage);
         mSocket.off("user joined", onUserJoined);
         mSocket.off("user left", onUserLeft);
@@ -337,15 +340,16 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
 //        System.out.println("ReciverId: "+receiverId+" ,SenderId: "+senderId);
         try {
-            obj.put("senderId", senderId);
-            if(senderImageUrl != null)
+            obj.put("from_user", senderId);
+       /*     if(senderImageUrl != null)
             {obj.put("senderImage", senderImageUrl);}else {
                 obj.put("senderImage", "http://www.vermeer.com.au/wp-content/uploads/2016/12/attachment-no-image-available-300x300.png");
             }
             obj.put("senderName", senderName);
-
-            obj.put("receiverId", receiverId);
-            obj.put("messages", message);
+*/
+            obj.put("to_user", receiverId);
+            obj.put("message", message);
+            obj.put("sent", new Date());
 
 
         }catch (JSONException e) {
@@ -355,7 +359,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         //mSocket.emit("initChat", new SharedPrefClass(LoginActivity.this).getLoginInfo());
         //      mSocket.emit("initChat", obj);
 
-        mSocket.emit("sendMessageToCompanyUsers", obj);
+        mSocket.emit("sendMessage", obj);
         //mSocket.emit("sendmessage", convertToJSON(message));
 
         //      mSocket.on("receiveMessage", onNewMessage);
@@ -451,14 +455,14 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                     String userId, userName, userImageUrl, message;
 
                     try {
-//                        Toast.makeText(getActivity(), "RECEIVING SAFAL HUA", Toast.LENGTH_SHORT).show();
-                        userId = data.getString("senderId");
+//                        Toast.makeText(getActivity(), "RECEIVING Data", Toast.LENGTH_LONG).show();
+                        /*userId = data.getString("senderId");
                         message = data.getString("message");
 
-                        /*userImageUrl = "sender_image";
-                        userName = "sender_name";*/
+                        *//*userImageUrl = "sender_image";
+                        userName = "sender_name";*//*
                         userImageUrl = data.getString("senderImage");
-                        userName = data.getString("senderName");
+                        userName = data.getString("senderName");*/
                         /*if(userId.length()>0){
                             new SharedPrefClass(getActivity()).setChatSenderId(username);
                         }
@@ -466,6 +470,9 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         //       Toast.makeText(getActivity(), "Received block", Toast.LENGTH_LONG).show();
                         //message = data.getString("message");
                         //         addMessage(mUsername, message);
+
+                        userId = data.getString("from_user");
+                        message = data.getString("message");
 
                     } catch (JSONException e) {
                         Log.e(TAG, e.getMessage());
@@ -476,8 +483,11 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         return;
                     }
 
-                    removeTyping(userName);
-                    addMessage(userImageUrl, userId, userName, message);
+//                    removeTyping(userName);
+//                    addMessage(userImageUrl, userId, userName, message);
+
+;                    addMessage("", userId, null, message);
+
                 }
             });
         }
