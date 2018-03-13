@@ -45,13 +45,16 @@ public class SplashActivity extends AppCompatActivity {
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
 
 
-/*
+
         prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
         prefs.putString(CONSTANTS.OTHER_USERID, "30413");
-*/
 
+
+
+/*
         prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
         prefs.putString(CONSTANTS.OTHER_USERID, "23593");
+*/
 
 
 
@@ -78,18 +81,15 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-        /*
-        *
+/*
 Image zoom on album
-
 Close other explistview
-
 Profile from search partner
+Search partner back
+*/
 
-Search partner back*/
-
-//                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+//              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+                Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

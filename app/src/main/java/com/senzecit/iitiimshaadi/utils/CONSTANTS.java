@@ -60,6 +60,8 @@ public interface CONSTANTS {
     String MAX_AGE = "max_age";
     String COUNTRY = "country";
     String CITY = "city";
+    String LOCATIONS = "locations";
+    String DETAILS = "details";
     String RELIGION = "religion";
     String CASTE = "caste";
     String MOTHER_TONGUE = "mother_tongue";

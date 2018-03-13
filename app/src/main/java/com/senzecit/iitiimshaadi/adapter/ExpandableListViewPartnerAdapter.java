@@ -535,14 +535,14 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         //Toast.makeText(_context, "3", //Toast.LENGTH_LONG).show();
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_thirdtype, null);
+                        convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
 
 //                        EditText textInputLayout = (EditText) convertView.findViewById(R.id.idTextInputLayout);
 //                        textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - ChoiceOfGroom
                         editText.setText(myProfileResponse.getPartnerBasicData().getChoiceOfGroom());

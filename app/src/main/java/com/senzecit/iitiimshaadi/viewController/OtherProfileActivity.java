@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ import retrofit2.Response;
 
 public class OtherProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "OtherProfileActivity";
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
@@ -134,19 +136,27 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
     public void setProfileData(OtherProfileResponse profileResponse){
 
-        String userId = String.valueOf(profileResponse.getBasicData().getUserId());
-        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+profileResponse.getBasicData().getProfileImage();
-        String userName = profileResponse.getBasicData().getName();
+        try {
+            String userId = String.valueOf(profileResponse.getBasicData().getUserId());
+            String profileUri = CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + profileResponse.getBasicData().getProfileImage();
+            String userName = profileResponse.getBasicData().getName();
 
-        if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(OtherProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
+            if (!TextUtils.isEmpty(profileUri)) {
+                Glide.with(OtherProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
+            }
+
+            String[] usernameAr = userName.split("\\s");
+            mTitle.setText(new StringBuilder("").append(usernameAr[0]));
+            mUsrNameTV.setText(new StringBuilder("@").append(userName));
+            mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
+        }catch (IllegalArgumentException e){
+            Log.e(TAG, " #Error :  "+e, e);
+        }catch (NullPointerException npe){
+            Log.e(TAG, " #Error :  "+npe, npe);
+        }catch (IndexOutOfBoundsException ioe){
+            Log.e(TAG, " #Error :  "+ioe, ioe);
         }
-
-        String[] usernameAr = userName.split("\\s");
-        mTitle.setText(new StringBuilder("" ).append(usernameAr[0]));
-        mUsrNameTV.setText(new StringBuilder("@").append(userName));
-        mUsrIdTV.setText(new StringBuilder("@").append(userId));
-
     }
 
     @Override

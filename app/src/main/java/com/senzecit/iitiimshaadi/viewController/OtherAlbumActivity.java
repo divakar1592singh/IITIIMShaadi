@@ -115,6 +115,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 
+//                Toast.makeText(OtherAlbumActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 if(count == 0) {
                     count++;
                     Toast.makeText(OtherAlbumActivity.this, CONSTANTS.tap_message, Toast.LENGTH_SHORT).show();

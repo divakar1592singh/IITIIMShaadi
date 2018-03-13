@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
@@ -33,9 +34,7 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
         this.models = models;
-
     }
-
 
     @Override
     public int getCount() {
@@ -55,9 +54,20 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.slider_dialog_checkbox_row, null);
+        LinearLayout layout = (LinearLayout)view.findViewById(R.id.idSelectableLayout) ;
         CheckBox mSliderCheck = (CheckBox)view.findViewById(R.id.idCheckbox);
         TextView mmSlidertext = (TextView)view.findViewById(R.id.idText);
 
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mSliderCheck.isChecked() == true){
+                    mSliderCheck.setChecked(false);
+                }else {
+                    mSliderCheck.setChecked(true);
+                }
+            }
+        });
         mmSlidertext.setText(models.get(position).getName());
 
         return view;

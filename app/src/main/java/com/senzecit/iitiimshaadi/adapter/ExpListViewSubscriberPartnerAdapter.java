@@ -498,10 +498,10 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_thirdtype, null);
+                        convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override

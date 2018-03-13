@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:text="Scroll Down to load more"
         android:gravity="center_horizontal"
+        android:visibility="gone"
         />
 
 </android.support.constraint.ConstraintLayout>

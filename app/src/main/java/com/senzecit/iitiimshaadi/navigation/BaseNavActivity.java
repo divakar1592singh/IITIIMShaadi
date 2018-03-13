@@ -191,11 +191,12 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
             }
             case R.id.idChatMessageNav: {
                 // Toast.makeText(getApplicationContext(), "Upload your document", // Toast.LENGTH_LONG).show();
-                if(userType.equalsIgnoreCase("subscriber")) {
+                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on it!");
+                /*if(userType.equalsIgnoreCase("subscriber")) {
                     AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
                 }else {
                     startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
-                }
+                }*/
                 break;
             }
             case R.id.idSubscriptionNav: {

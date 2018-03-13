@@ -51,7 +51,7 @@ import retrofit2.Response;
  * Created by ravi on 13/11/17.
  */
 
-public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     Context mContext;
@@ -67,7 +67,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
 
-    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey, int pageCount){
+    public PaidSearchResultAdapterBKP(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey, int pageCount){
         this.mContext = mContext;
         this.queryList = queryList;
         this.queryListKeyword = queryListKey;

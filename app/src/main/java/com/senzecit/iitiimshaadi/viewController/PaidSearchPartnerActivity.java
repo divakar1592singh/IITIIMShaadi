@@ -27,6 +27,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSu
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -116,7 +117,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         mMotherTongue = findViewById(R.id.motherTougeTV);
         mmaritalStatus = findViewById(R.id.maritalStatusTV);
         mIncome = findViewById(R.id.incomeTV);
-
 
     }
 
@@ -217,15 +217,15 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         }catch (IndexOutOfBoundsException ioe){
             Log.e("TAG", "#Error : "+ioe, ioe);
         }
-//        minage,maxage,country,city,religion,caste,mother_tounge,marital_status,course,annual_income
     }
+
     private void setPaidMatchedListID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, int pageCount){
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
         mCurrentSearchLayout.setVisibility(View.GONE);
 
-        adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, queryList, null, pageCount);
+        adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, queryList, null, 0);
         mSearchResultRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -255,7 +255,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     }
 
     /** API Integration */
-//    /** Search By ID */
+    /** Search By ID */
     public void callWebServiceForSubsIDSearch(int pageCount){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
@@ -265,7 +265,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
-        Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid1(token, searchID);
+        Call<PaidSubscriberResponse> call = apiInterface.idSearchPaid(token, searchID);
         call.enqueue(new Callback<PaidSubscriberResponse>() {
             @Override
             public void onResponse(Call<PaidSubscriberResponse> call, Response<PaidSubscriberResponse> response) {
@@ -358,6 +358,149 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
         String country = prefs.getString(CONSTANTS.COUNTRY) ;
         String city =  prefs.getString(CONSTANTS.CITY);
+        String[] cityArr = new String[1];
+        cityArr[0] = city;
+        String religion =  prefs.getString(CONSTANTS.RELIGION);
+        String caste = prefs.getString(CONSTANTS.CASTE);
+        String[] casteArr = new String[1];
+        casteArr[0] = caste;
+
+        String mother_tounge =  prefs.getString(CONSTANTS.MOTHER_TONGUE);
+        String[] mother_toungeArr = new String[1];
+        mother_toungeArr[0] = mother_tounge;
+
+        String marital_status =  prefs.getString(CONSTANTS.MARITAL_STATUS);
+        String[] marital_statusArr = new String[1];
+        marital_statusArr[0] = marital_status;
+
+        String course =  prefs.getString(CONSTANTS.COURSE);
+        String[] courseArr = new String[1];
+        courseArr[0] = course;
+
+        String annual_income =  prefs.getString(CONSTANTS.ANNUAL_INCOME);
+        String[] annual_incomeArr = new String[1];
+        annual_incomeArr[0] = annual_income;
+
+        String sPartnerLoc = prefs.getString(CONSTANTS.PARTNER_LOC);
+        String[] sPartnerLocArr = new String[1];
+        sPartnerLocArr[0] = sPartnerLoc;
+
+        String sMinHeight = prefs.getString(CONSTANTS.MIN_HEIGHT);
+        String sMaxHeight = prefs.getString(CONSTANTS.MAX_HEIGHT);
+
+        profileList.add(minage);profileList.add(maxage);profileList.add(country);
+        profileList.add(city);profileList.add(religion);profileList.add(caste);
+        profileList.add(mother_tounge);profileList.add(marital_status);
+        profileList.add(course);profileList.add(annual_income);
+        profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);
+
+        PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
+        searchRequest.token = token;
+        searchRequest.minage = minage;
+        searchRequest.maxage = maxage;
+        searchRequest.country = country;
+
+        searchRequest.city = cityArr;
+        searchRequest.religion = religion;
+        searchRequest.caste = casteArr;
+        searchRequest.mother_tounge = mother_toungeArr;
+        searchRequest.marital_status = marital_statusArr;
+        searchRequest.course = courseArr;
+        searchRequest.annual_income = annual_incomeArr;
+
+        searchRequest.location = sPartnerLocArr;
+//        searchRequest.details = ;
+
+        searchRequest.min_height = sMinHeight;
+        searchRequest.max_height = sMaxHeight;
+
+        if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
+
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
+        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+            @Override
+            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    try {
+                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            if (response.body().getQuery().size() > 0) {
+                                List<Query> queryList = response.body().getQuery();
+                                System.out.print(profileList);
+
+                                setPaidSearchedData(profileList);
+                                setPaidMatchedListByKeyword(queryList, pageCount);
+
+                            } else {
+                                AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
+                            }
+                        } else {
+                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
+                            reTryMethod(3, pageCount);
+                        }
+                    }catch(NullPointerException npe){
+                        Log.e("TAG", " #Error : "+npe, npe);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                call.cancel();
+//                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+                reTryMethod(3, pageCount);
+            }
+        });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
+        }
+
+
+    }
+
+    public void reTryMethod(int pos, int pageCount){
+
+        new AlertDialog.Builder(PaidSearchPartnerActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if(pos == 1){
+                            callWebServiceForSubsIDSearch(pageCount);
+                        }else if(pos == 2){
+                            callWebServiceForSubsKeywordSearch(pageCount);
+                        }else if(pos == 3){
+                            callWebServiceForSubsAdvanceSearch(pageCount);
+                        }
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
+ /*   public void callWebServiceForSubsAdvanceSearch(int pageCount){
+
+        List<String> profileList =new ArrayList<>();
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        String minage = prefs.getString(CONSTANTS.MIN_AGE) ;
+        String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
+        String country = prefs.getString(CONSTANTS.COUNTRY) ;
+        String city =  prefs.getString(CONSTANTS.CITY);
         String religion =  prefs.getString(CONSTANTS.RELIGION);
         String caste = prefs.getString(CONSTANTS.CASTE);
         String mother_tounge =  prefs.getString(CONSTANTS.MOTHER_TONGUE);
@@ -394,73 +537,45 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
             APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
-        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
-            @Override
-            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getQuery().size() > 0){
-                            List<Query> queryList = response.body().getQuery();
-                            System.out.print(profileList);
+            ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
+            Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
+            call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+                @Override
+                public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                            if(response.body().getQuery().size() > 0){
+                                List<Query> queryList = response.body().getQuery();
+                                System.out.print(profileList);
 
-                            setPaidSearchedData(profileList);
-                            setPaidMatchedListByKeyword(queryList, pageCount);
+                                setPaidSearchedData(profileList);
+                                setPaidMatchedListByKeyword(queryList, pageCount);
 
+                            }else {
+                                AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
+                            }
                         }else {
-                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
+                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
+                            reTryMethod(3, pageCount);
                         }
-                    }else {
-                        AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
-                        reTryMethod(3, pageCount);
+
                     }
-
                 }
-            }
 
-            @Override
-            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
-                call.cancel();
+                @Override
+                public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                    call.cancel();
 //                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod(3, pageCount);
-            }
-        });
+                    ProgressClass.getProgressInstance().stopProgress();
+                    reTryMethod(3, pageCount);
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
         }
 
     }
-
-    public void reTryMethod(int pos, int pageCount){
-
-        new AlertDialog.Builder(PaidSearchPartnerActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if(pos == 1){
-                            callWebServiceForSubsIDSearch(pageCount);
-                        }else if(pos == 2){
-                            callWebServiceForSubsKeywordSearch(pageCount);
-                        }else if(pos == 3){
-                            callWebServiceForSubsAdvanceSearch(pageCount);
-                        }
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
+    */
 }

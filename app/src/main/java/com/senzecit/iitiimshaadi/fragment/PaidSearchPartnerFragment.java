@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,6 +69,8 @@ import retrofit2.Response;
  */
 
 public class PaidSearchPartnerFragment extends Fragment implements View.OnClickListener {
+
+    private static final String TAG = "PaidSearchPartnerFrgmnt";
     View view;
     AppPrefs prefs;
     ImageView mSearchByIdIV,mSerchByKeywordIV,mAdvanceSearchIV;
@@ -339,7 +342,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String course = mEducationOccupationTV.getText().toString() ;
         String annual_income = mAnnualIncomeTV.getText().toString() ;
 
-
         String sPartnerLoc = mPartnerPermanentLocarionTV.getText().toString() ;
         String sMinHeight = mSelectHeightMinTV.getText().toString() ;
         String sMaxHeight = mSelectHeightMaxTV.getText().toString() ;
@@ -357,6 +359,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         prefs.putString(CONSTANTS.PARTNER_LOC, sPartnerLoc);
         prefs.putString(CONSTANTS.MIN_HEIGHT, sMinHeight);
         prefs.putString(CONSTANTS.MAX_HEIGHT, sMaxHeight);
+
 
         communicator.saveAndSearchPaidPartner();
 
@@ -503,7 +506,10 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                     }
 
                 }
-                txtListChild.setText(selectedQualification.toString());
+
+                String s = String.valueOf(selectedQualification.deleteCharAt(selectedQualification.length()-1));
+//                selectedQualification.toString()
+                txtListChild.setText(s);
                 dialog.dismiss();
 //             Toast.makeText(MainActivity.this, "Data is : "+slideText.getText(), Toast.LENGTH_SHORT).show();
 
@@ -535,13 +541,13 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         String[] ar = getActivity().getResources().getStringArray(R.array.mother_tongue_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
     public void showMaritalStatus(TextView textView){
 
         String[] ar = getActivity().getResources().getStringArray(R.array.marital_status_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
     public void showEducation(TextView textView){
 
@@ -553,7 +559,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         String[] ar = getActivity().getResources().getStringArray(R.array.ann_income_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
 
     public void showHeight(TextView textView){
@@ -639,7 +645,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                                 String city = object.getString("name");
                                 cityList.add(city);
                             }
-                            showDialog(cityList, textView);
+                            showSelectableDialog(cityList, textView);
                         /*}else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
@@ -691,43 +697,48 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         final List<String> cityList = new ArrayList<>();
         cityList.clear();
         String countryId = null;
-
-        String country = mPartnerCurrentCountryTV.getText().toString() ;
-        for(int i = 0; i < countryListWithId.size(); i++){
-            if(countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)){
-                countryId = countryListWithId.get(i).getCountryId();
+        try {
+            String country = mPartnerCurrentCountryTV.getText().toString();
+            for (int i = 0; i < countryListWithId.size(); i++) {
+                if (countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)) {
+                    countryId = countryListWithId.get(i).getCountryId();
+                }
             }
-        }
-        System.out.println(countryId);
+            System.out.println(countryId);
 
 //        String countryId = "1151";
 
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        call.enqueue(new Callback<CitiesAccCountryResponse>() {
-            @Override
-            public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<AllCity> rawCityList = response.body().getAllCities();
-                    for(int i = 0; i<rawCityList.size(); i++){
-                        if(rawCityList.get(i).getName() != null){
-                            cityList.add(rawCityList.get(i).getName());
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
+            ProgressClass.getProgressInstance().showDialog(getActivity());
+            call.enqueue(new Callback<CitiesAccCountryResponse>() {
+                @Override
+                public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
+                    if (response.isSuccessful()) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        List<AllCity> rawCityList = response.body().getAllCities();
+                        for (int i = 0; i < rawCityList.size(); i++) {
+                            if (rawCityList.get(i).getName() != null) {
+                                cityList.add(rawCityList.get(i).getName());
+                            }
                         }
+
+                        showSelectableDialog(cityList, textView);
                     }
-
-                    showDialog(cityList, textView);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }catch(NullPointerException npe){
+            Log.e(TAG, " #Error : "+npe,npe);
+            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
+        }
     }
     public void showCaste(final TextView textView) {
 
@@ -753,13 +764,13 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                                 String country = jsonArray.getString(i);
                                 casteList.add(country);
                             }
-                            showDialog(casteList, textView);
+                            showSelectableDialog(casteList, textView);
                         /*}else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);
                         }
 
                     }
@@ -767,7 +778,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.cast_not_found);
                     }
                 });
 

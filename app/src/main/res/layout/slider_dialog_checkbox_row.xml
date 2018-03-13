@@ -6,6 +6,7 @@
     android:padding="5dip">
 
     <LinearLayout
+        android:id="@+id/idSelectableLayout"
         android:orientation="horizontal"
         android:padding="10dp"
         android:gravity="center_vertical"

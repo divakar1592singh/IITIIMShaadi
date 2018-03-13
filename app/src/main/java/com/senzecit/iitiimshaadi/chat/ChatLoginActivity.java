@@ -12,6 +12,8 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
@@ -55,6 +57,7 @@ public class ChatLoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         mSocket.emit("initChat", obj);
+
     }
 
     private Emitter.Listener onLogin = new Emitter.Listener() {

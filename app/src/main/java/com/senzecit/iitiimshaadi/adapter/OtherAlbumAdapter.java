@@ -97,13 +97,13 @@ public class OtherAlbumAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+       /* holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
         return view;
     }
 

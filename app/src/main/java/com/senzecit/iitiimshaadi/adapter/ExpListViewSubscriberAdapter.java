@@ -47,14 +47,12 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -324,7 +322,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                                 ExpOwnProfileModel.getInstance().setMarital_Status(editable.toString());
                             }
                         });
-
 
                         break;
                     case 6:
@@ -1686,14 +1683,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_thirdtype, null);
+                        convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
 
 //                        EditText textInputLayout = (EditText) convertView.findViewById(R.id.idTextInputLayout);
 //                        textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say Something...");
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override

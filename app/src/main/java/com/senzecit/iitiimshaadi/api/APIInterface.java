@@ -70,6 +70,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -186,23 +187,34 @@ public interface APIInterface {
 
 
     /** ID Search - Paid Subs */
-    @FormUrlEncoded
-    @POST("api/search_by_id.json")
-    Call<SubsAdvanceSearchResponse> idSearchPaid(@Field("token")String token, @Field("user_id")String userId);
+    @GET("api/search_by_id.json?")
+    Call<PaidSubscriberResponse> idSearchPaid(@Query("token") String token, @Query("username") String username);
 
-    /** ID Search - Paid Subs */
+    /** Advance Search - Paid Subs */
+    @GET("api/advance_search.json")
+    Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Body PaidSubsAdvanceSearchRequest advanceSearchRequest);
+
+/*
+    */
+/** ID Search - Paid Subs *//*
+
     @FormUrlEncoded
     @POST("api/search_by_id.json")
     Call<PaidSubscriberResponse> idSearchPaid1(@Field("token")String token, @Field("user_id")String userId);
+*/
 
     /** Keyword Search - Paid Subs */
     @FormUrlEncoded
     @POST("api/search_by_keyword.json")
     Call<SubsAdvanceSearchResponse> keywordSearchPaid(@Field("token")String token, @Field("keyword")String keyword);
 
-    /** Advance Search - Paid Subs */
+/*
+    */
+/** Advance Search - Paid Subs *//*
+
     @POST("api/advance_search.json")
     Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Body PaidSubsAdvanceSearchRequest advanceSearchRequest);
+*/
 
     /** Custom Folder List */
     @FormUrlEncoded

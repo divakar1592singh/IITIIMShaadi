@@ -1840,11 +1840,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_thirdtype, null);
+                        convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say Something...");
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - AboutMe
                         editText.setText(myProfileResponse.getBasicData().getAboutMe());
@@ -2310,6 +2310,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         showDialog(list, textView);
     }
     public void showInterests(TextView textView){
+
         List<String> list = new ArrayList<>();
         list.add("Music");
         list.add("Books");
@@ -2324,7 +2325,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         showSelectableDialog(list, textView);
     }
     public void showReligion(TextView textView){
+
         List<String> list = new ArrayList<>();
+
         list.add("Hindu");
         list.add("Muslim");
         list.add("Christian");
@@ -2348,6 +2351,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         showDialog(list, textView);
     }
     public void showAnnualIncome(TextView textView){
+
         List<String> list = new ArrayList<>();
         list.add("less than 10 LPA");
         list.add("11-20 LPA");

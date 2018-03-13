@@ -179,12 +179,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(SubscriberDashboardActivity.this, "Profile", Toast.LENGTH_LONG).show();
-//                Navigator.getClassInstance().navigateToActivity(SubscriberDashboardActivity.this, ProfileActivity.class);
-                String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
-                String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
-
-                zoomImageFromThumb(mProfileCIV, profileUri);
-
+                Navigator.getClassInstance().navigateToActivity(SubscriberDashboardActivity.this, ProfileActivity.class);
             }
         });
 
@@ -232,7 +227,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         });
 //        EXP
 //        expListView, expListViewPartner
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+   /*     expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
 
@@ -244,7 +239,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 }
 
             }
-        });
+        });*/
 /*
 
         expListViewPartner.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
