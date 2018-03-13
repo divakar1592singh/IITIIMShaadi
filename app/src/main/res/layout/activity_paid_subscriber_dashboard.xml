@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:scrollbars="none"
     tools:context="com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"
+        tools:context="com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#d87570"
+            android:background="@color/colorMaroon"
             android:weightSum="10">
             // Profile Progress
             <LinearLayout
@@ -433,5 +440,14 @@
 
 
     </LinearLayout>
+
+        <ImageView
+            android:id="@+id/expanded_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:contentDescription="description_zoom_touch_close" />
+
+    </FrameLayout>
 
 </ScrollView>

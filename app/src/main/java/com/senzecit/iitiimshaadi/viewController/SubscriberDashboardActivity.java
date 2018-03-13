@@ -89,7 +89,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     ImageView mAlbumIV;
     CircleImageView mProfileCIV;
     ScrollView mScrollView;
-    private int lastExpandedPosition = -1;
+
     //
     TextView tvDoc1, tvDoc2, tvDoc3, tvDoc4, mBiodataTv;
     Button mDocBtn1, mDocBtn2, mDocBtn3, mDocBtn4 ;
@@ -101,6 +101,10 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     AppPrefs prefs;
     String typeOf;
     ProgressBar mProgress;
+    private int lastExpandedPosition = -1;
+//
+    private int mShortAnimationDuration;
+    private Animator mCurrentAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+
                 setListViewHeight(expandableListView, i);
                 return false;
             }
@@ -178,8 +183,16 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
                 String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
 
+                zoomImageFromThumb(mProfileCIV, profileUri);
+
             }
         });
+
+        // Retrieve and cache the system's default "short" animation time.
+        mShortAnimationDuration = getResources().getInteger(
+                android.R.integer.config_shortAnimTime);
+
+
         mAlbumIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,20 +232,19 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         });
 //        EXP
 //        expListView, expListViewPartner
-/*
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                setInitListViewHeight(expListView);
+
                 for (int g = 0; g < listAdapter.getGroupCount(); g++) {
                     if (g != groupPosition) {
                         expListView.collapseGroup(g);
                     }
-                    setListViewHeight(expListView, g);
+                    setCollapseListViewHeight(expListView, g);
                 }
 
             }
-        });*/
+        });
 /*
 
         expListViewPartner.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -512,6 +524,42 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         listView.requestLayout();
 
     }
+
+    private void setCollapseListViewHeight(ExpandableListView listView,int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }
+
 
     private void alertDialogEmail(){
 
@@ -1250,13 +1298,15 @@ private int onLayoutScrollByX = 0;
 
         try {
             ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-            Glide.with(SubscriberDashboardActivity.this).load(imageResId).error(R.drawable.ic_not_available)
+            Glide.with(SubscriberDashboardActivity.this).load(imageResId)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            ProgressClass.getProgressInstance().stopProgress();
                             if(e instanceof UnknownHostException)
 //                                progressBar.setVisibility(View.VISIBLE);
-                                ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+//                                ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+                                ProgressClass.getProgressInstance().stopProgress();
                             return false;
                         }
 
@@ -1267,6 +1317,7 @@ private int onLayoutScrollByX = 0;
                             return false;
                         }
                     })
+                    .error(R.drawable.profile_img1)
                     .into(expandedImageView);
         } catch (Exception e) {
             e.printStackTrace();

@@ -41,17 +41,17 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "76c8c7f598ce3c60fc30d83f1d9010f5");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "6b93c8d29b0d49e460db1a897e087aca");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
 
 
+/*
         prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
         prefs.putString(CONSTANTS.OTHER_USERID, "30413");
+*/
 
-/*
         prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
         prefs.putString(CONSTANTS.OTHER_USERID, "23593");
-*/
 
 
 
@@ -59,6 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
         prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
+        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1520594768CROP_1520594760668.jpg");
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");

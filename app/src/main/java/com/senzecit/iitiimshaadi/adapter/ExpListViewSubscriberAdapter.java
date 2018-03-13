@@ -2112,7 +2112,6 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
 
-        showDialog(list, textView);
     }
 
     public void showHeight(TextView textView) {
