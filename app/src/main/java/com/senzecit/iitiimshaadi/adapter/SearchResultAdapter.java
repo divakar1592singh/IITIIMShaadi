@@ -20,7 +20,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -48,10 +48,10 @@ import retrofit2.Response;
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.MyViewHolder> {
 
     Context mContext;
-    List<Query> queryList;
+    List<User> queryList;
     AppPrefs prefs;
 
-    public SearchResultAdapter(Context mContext, List<Query> queryList){
+    public SearchResultAdapter(Context mContext, List<User> queryList){
         this.mContext = mContext;
         this.queryList = queryList;
         prefs = AppController.getInstance().getPrefs();

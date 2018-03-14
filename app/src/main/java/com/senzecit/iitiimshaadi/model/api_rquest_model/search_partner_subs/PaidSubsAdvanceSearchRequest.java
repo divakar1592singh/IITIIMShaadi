@@ -19,7 +19,7 @@ public class PaidSubsAdvanceSearchRequest {
     public String max_height;
     public String course;
     public String annual_income;*/
-
+/*
     public String token;
     public String minage;
     public String maxage;
@@ -34,7 +34,9 @@ public class PaidSubsAdvanceSearchRequest {
     public String min_height;
     public String max_height;
     public String[] course;
-    public String[] annual_income;
+    public String[] annual_income;*/
+
+//    minage,maxage,country,details,city,location,religion,caste,mother_tounge,marital_status,min_height,max_height,course,annual_income
 
 
 }

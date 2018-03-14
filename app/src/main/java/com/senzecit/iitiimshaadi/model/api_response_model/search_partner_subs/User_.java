@@ -6,18 +6,18 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by senzec on 14/3/18.
  */
-public class Message {
+public class User_ {
 
-    @SerializedName("success")
+    @SerializedName("username")
     @Expose
-    private String success;
+    private String username;
 
-    public String getSuccess() {
-        return success;
+    public String getUsername() {
+        return username;
     }
 
-    public void setSuccess(String success) {
-        this.success = success;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }

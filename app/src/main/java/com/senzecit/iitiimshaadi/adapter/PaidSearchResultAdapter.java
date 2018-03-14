@@ -56,7 +56,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     Context mContext;
     List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList;
-    List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKeyword;
+    List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User> queryListKeyword;
     AppPrefs prefs;
     LayoutInflater inflater;
 
@@ -67,7 +67,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
 
-    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKey, int pageCount){
+    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User> queryListKey, int pageCount){
         this.mContext = mContext;
         this.queryList = queryList;
         this.queryListKeyword = queryListKey;

@@ -23,6 +23,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.UserDetail;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -47,16 +48,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-/**
- * Created by ravi on 13/11/17.
- */
 
-public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PaidSearchResultAdapterBKP { /*extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     Context mContext;
     List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList;
-    List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query> queryListKeyword;
+    List<User> queryListKeyword;
     AppPrefs prefs;
     LayoutInflater inflater;
 
@@ -112,9 +110,9 @@ public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-     /*   View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item_paid,parent,false);
+     *//*   View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item_paid,parent,false);
         return new MyViewHolder(itemView);
-*/
+*//*
         if (viewType == TYPE_ITEM) {
             View itemView = inflater.inflate(R.layout.search_result_item_paid, null);
             return new MyViewHolder(itemView);
@@ -282,7 +280,7 @@ public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-    /*
+    *//*
 
     @Override
     public void onClick(View view) {
@@ -298,10 +296,10 @@ public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerVie
 
         }
     }
-*/
+*//*
 
 
-    /** API - Friend Manipulation Task */
+    *//** API - Friend Manipulation Task *//*
     private void callWebServiceForManipulatePartner(String typeOf, String friend, String folder)
     {
 
@@ -354,7 +352,7 @@ public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-    /** Folder Title */
+    *//** Folder Title *//*
     public void callWebServiceForCustomFolder(String typeOf, String friend_id){
 
 //        String token = CONSTANTS.Token_Paid;
@@ -491,6 +489,6 @@ public class PaidSearchResultAdapterBKP extends RecyclerView.Adapter<RecyclerVie
 
     }
 
-
+*/
 
 }

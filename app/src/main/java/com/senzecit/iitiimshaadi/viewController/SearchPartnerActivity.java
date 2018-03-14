@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.SearchResultAdapter;
 import com.senzecit.iitiimshaadi.fragment.SearchPartnerFragment;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 
 import java.util.List;
 
@@ -84,7 +84,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     }
 
     @Override
-    public void saveSearchPartner(List<Query> queryList, List<String> profileList) {
+    public void saveSearchPartner(List<User> queryList, List<String> profileList) {
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
@@ -112,7 +112,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
         }
 
     }
-    private void setMatchedList(List<Query> queryList){
+    private void setMatchedList(List<User> queryList){
 
         SearchResultAdapter adapter = new SearchResultAdapter(SearchPartnerActivity.this, queryList);
         mSearchResultRecyclerView.setAdapter(adapter);

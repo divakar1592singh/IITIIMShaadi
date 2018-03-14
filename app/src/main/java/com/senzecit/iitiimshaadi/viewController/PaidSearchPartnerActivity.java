@@ -24,10 +24,9 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.fragment.PaidSearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -61,9 +60,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     PaidSearchResultAdapter adapter;
     Button mCurrentSearchBtn;
     int pageCount = 10;
-
-    List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList1;
-    List<Query> queryList2;
 
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
 
@@ -230,7 +226,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         adapter.notifyDataSetChanged();
 
     }
- private void setPaidMatchedListByKeyword(List<Query> queryList, int pageCount){
+ private void setPaidMatchedListByKeyword(List<User> queryList, int pageCount){
 
      String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
@@ -318,8 +314,8 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getQuery().size() > 0){
-                            List<Query> queryList = response.body().getQuery();
+                        if(response.body().getUsers().size() > 0){
+                            List<User> queryList = response.body().getUsers();
 //                            System.out.print(profileList);
 
                             setPaidMatchedListByKeyword(queryList, pageCount);
@@ -352,7 +348,9 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
         List<String> profileList =new ArrayList<>();
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        String token = "9c8e5cf4fad369c0ed33d166ddf0b0a2";
+//        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
 
         String minage = prefs.getString(CONSTANTS.MIN_AGE) ;
         String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
@@ -394,7 +392,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         profileList.add(course);profileList.add(annual_income);
         profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);
 
-        PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
+ /*       PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
         searchRequest.token = token;
         searchRequest.minage = minage;
         searchRequest.maxage = maxage;
@@ -413,12 +411,16 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
         searchRequest.min_height = sMinHeight;
         searchRequest.max_height = sMaxHeight;
+*/
+        String page = "1";
+
 
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
+
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
             public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
@@ -426,8 +428,8 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 if (response.isSuccessful()) {
                     try {
                         if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            if (response.body().getQuery().size() > 0) {
-                                List<Query> queryList = response.body().getQuery();
+                            if (response.body().getUsers().size() > 0) {
+                                List<User> queryList = response.body().getUsers();
                                 System.out.print(profileList);
 
                                 setPaidSearchedData(profileList);

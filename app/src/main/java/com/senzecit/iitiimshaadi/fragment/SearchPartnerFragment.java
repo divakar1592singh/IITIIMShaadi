@@ -26,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -36,8 +35,8 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Query;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
@@ -49,7 +48,6 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -195,7 +193,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     }
 
     public interface SearchPartnerFragmentCommunicator{
-        void saveSearchPartner(List<Query> queryList, List<String> profileList);
+        void saveSearchPartner(List<User> queryList, List<String> profileList);
     }
 
     /** API -  */
@@ -248,8 +246,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getQuery().size() > 0){
-                            List<Query> queryList = response.body().getQuery();
+                        if(response.body().getUsers().size() > 0){
+                            List<User> queryList = response.body().getUsers();
                             System.out.print(profileList);
                             communicator.saveSearchPartner(queryList, profileList);
                         }else {
