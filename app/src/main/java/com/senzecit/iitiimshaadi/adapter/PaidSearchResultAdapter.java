@@ -60,20 +60,18 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     AppPrefs prefs;
     LayoutInflater inflater;
 
-    int pageCount = 0;
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_FOOTER = 2;
 
 
 
-    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User> queryListKey, int pageCount){
+    public PaidSearchResultAdapter(Context mContext, List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, List<com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User> queryListKey){
         this.mContext = mContext;
         this.queryList = queryList;
         this.queryListKeyword = queryListKey;
         inflater = LayoutInflater.from(mContext);
         prefs  = AppController.getInstance().getPrefs();
-        this.pageCount = pageCount;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
@@ -150,7 +148,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((MyViewHolder)holder).mNameTxt.setText(userDetail.getName());
                 ((MyViewHolder)holder).mDietTxt.setText(userDetail.getDiet());
                 ((MyViewHolder)holder).mAgeTxt.setText(userDetail.getBirthDate());
-                formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate());
+//                formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate());
 //            ((MyViewHolder)holder).mAgeTxt.setText(formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate()));
                 ((MyViewHolder)holder).mEmploymentTxt.setText(userDetail.getWorkingAs());
                 ((MyViewHolder)holder).mCompanyTxt.setText(userDetail.getNameOfCompany());
@@ -203,7 +201,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((MyViewHolder)holder).mNameTxt.setText(queryListKeyword.get(position).getName());
                 ((MyViewHolder)holder).mDietTxt.setText(queryListKeyword.get(position).getDiet());
 //            holder.mAgeTxt.setText(queryListKeyword.get(position).getBirthDate());
-                formattedDate(((MyViewHolder)holder).mAgeTxt, queryListKeyword.get(position).getBirthDate());
+//                formattedDate(((MyViewHolder)holder).mAgeTxt, queryListKeyword.get(position).getBirthDate());
                 ((MyViewHolder)holder).mEmploymentTxt.setText(queryListKeyword.get(position).getWorkingAs());
                 ((MyViewHolder)holder).mCompanyTxt.setText(queryListKeyword.get(position).getNameOfCompany());
                 ((MyViewHolder)holder).mHeightTxt.setText(queryListKeyword.get(position).getHeight());
@@ -259,9 +257,9 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getItemCount() {
 //        return 10;
         if(queryList != null) {
-            return pageCount < queryList.size() ? pageCount + 2 : queryList.size() + 1;
+            return queryList.size();
         }else if(queryListKeyword != null) {
-            return pageCount < queryListKeyword.size() ? pageCount + 2 : queryListKeyword.size() + 1;
+            return queryListKeyword.size();
         }else {
             return 0;
         }
@@ -278,7 +276,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
     private boolean isPositionFooter(int position) {
 //        return position > list.size();
-        return position > pageCount;
+        return false;
 
     }
 

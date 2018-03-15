@@ -10,6 +10,9 @@ public class SubsAdvanceSearchResponse {
     @SerializedName("message")
     @Expose
     private Message message;
+    @SerializedName("totalCount")
+    @Expose
+    private Integer totalCount;
     @SerializedName("users")
     @Expose
     private List<User> users = null;
@@ -20,6 +23,14 @@ public class SubsAdvanceSearchResponse {
 
     public void setMessage(Message message) {
         this.message = message;
+    }
+
+    public Integer getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     public List<User> getUsers() {

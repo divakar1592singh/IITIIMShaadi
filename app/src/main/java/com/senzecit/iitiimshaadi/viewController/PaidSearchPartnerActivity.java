@@ -59,7 +59,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     LinearLayoutManager layoutManager;
     PaidSearchResultAdapter adapter;
     Button mCurrentSearchBtn;
-    int pageCount = 10;
+    LinearLayout mHorizontalLayout;
 
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
 
@@ -104,6 +104,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         mCurrentSearchLayout = (LinearLayout)findViewById(R.id.idCurrentSearchLayout);
 
         mSearchResultRecyclerView = (RecyclerView) findViewById(R.id.partnerSearchResulttRV);
+        mHorizontalLayout = (LinearLayout)findViewById(R.id.idHBarLayout);
 
         mAgeMin = findViewById(R.id.minAgeTV);
         mAgeMax = findViewById(R.id.maxAgeTV);
@@ -142,7 +143,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
 
-        mSearchResultRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      /*  mSearchResultRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -164,7 +165,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                   }
                 }
             }
-        });
+        });*/
 
     }
 
@@ -175,30 +176,17 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
         if(search_type.equalsIgnoreCase("id")){
             mCurrentSearchBtn.setText("CURRENT SEARCH");
-            callWebServiceForSubsIDSearch(pageCount);
+            callWebServiceForSubsIDSearch();
         }else if(search_type.equalsIgnoreCase("keyword")){
             mCurrentSearchBtn.setText("CURRENT SEARCH");
-            callWebServiceForSubsKeywordSearch(pageCount);
+            callWebServiceForSubsKeywordSearch();
         }else if(search_type.equalsIgnoreCase("advance")){
             mCurrentSearchBtn.setText("SHOW CURRENT SEARCH");
-            callWebServiceForSubsAdvanceSearch(pageCount);
+            callWebServiceForSubsAdvanceSearch();
         }
 
     }
 
-    public void paginateSearchPartner(int pageCount) {
-
-        String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
-
-        if(search_type.equalsIgnoreCase("id")){
-            callWebServiceForSubsIDSearch(pageCount);
-        }else if(search_type.equalsIgnoreCase("keyword")){
-            callWebServiceForSubsKeywordSearch(pageCount);
-        }else if(search_type.equalsIgnoreCase("advance")){
-            callWebServiceForSubsAdvanceSearch(pageCount);
-        }
-
-    }
 
     private void setPaidSearchedData(List<String> profileList){
         try {
@@ -215,18 +203,18 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         }
     }
 
-    private void setPaidMatchedListID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList, int pageCount){
+    private void setPaidMatchedListID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
 
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
         mCurrentSearchLayout.setVisibility(View.GONE);
 
-        adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, queryList, null, 0);
+        adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, queryList, null);
         mSearchResultRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
     }
- private void setPaidMatchedListByKeyword(List<User> queryList, int pageCount){
+ private void setPaidMatchedListByKeyword(List<User> queryList){
 
      String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
@@ -244,7 +232,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
      }
 
-     adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, null, queryList, pageCount);
+     adapter = new PaidSearchResultAdapter(PaidSearchPartnerActivity.this, null, queryList);
         mSearchResultRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -252,7 +240,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
     /** API Integration */
     /** Search By ID */
-    public void callWebServiceForSubsIDSearch(int pageCount){
+    public void callWebServiceForSubsIDSearch(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String searchID = prefs.getString(CONSTANTS.SEARCH_ID) ;
@@ -271,13 +259,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                         if(response.body().getQuery().size() > 0){
                             List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList = response.body().getQuery();
 
-                            setPaidMatchedListID(queryList, pageCount);
+                            setPaidMatchedListID(queryList);
                         }else {
                             AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
 //                        AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", CONSTANTS.search_ptnr_err_msg);
-                        reTryMethod(1, pageCount);;
+                        reTryMethod(1);;
                     }
                 }
             }
@@ -287,7 +275,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 call.cancel();
 //                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod(1, pageCount);
+                reTryMethod(1);
             }
         });
 
@@ -297,7 +285,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
     }
     /** Search By Keyword */
-    public void callWebServiceForSubsKeywordSearch(int pageCount){
+    public void callWebServiceForSubsKeywordSearch(){
 
 //        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
@@ -318,13 +306,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                             List<User> queryList = response.body().getUsers();
 //                            System.out.print(profileList);
 
-                            setPaidMatchedListByKeyword(queryList, pageCount);
+                            setPaidMatchedListByKeyword(queryList);
                         }else {
                             AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
                     }else {
 //                        AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
-                        reTryMethod(2, pageCount);
+                        reTryMethod(2);
                     }
 
                 }
@@ -335,7 +323,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 call.cancel();
 //                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod(2, pageCount);
+                reTryMethod(2);
             }
         });
 
@@ -344,7 +332,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         }
     }
     /** Advance Search */
-    public void callWebServiceForSubsAdvanceSearch(int pageCount){
+    public void callWebServiceForSubsAdvanceSearch(){
 
         List<String> profileList =new ArrayList<>();
 
@@ -429,18 +417,22 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                     try {
                         if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
                             if (response.body().getUsers().size() > 0) {
+
+                                int pageCount = response.body().getTotalCount();
+                                setupPageView(pageCount);
+
                                 List<User> queryList = response.body().getUsers();
                                 System.out.print(profileList);
 
                                 setPaidSearchedData(profileList);
-                                setPaidMatchedListByKeyword(queryList, pageCount);
+                                setPaidMatchedListByKeyword(queryList);
 
                             } else {
                                 AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
                             }
                         } else {
                             AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
-                            reTryMethod(3, pageCount);
+                            reTryMethod(3);
                         }
                     }catch(NullPointerException npe){
                         Log.e("TAG", " #Error : "+npe, npe);
@@ -453,7 +445,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 call.cancel();
 //                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod(3, pageCount);
+                reTryMethod(3);
             }
         });
 
@@ -464,7 +456,21 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
     }
 
-    public void reTryMethod(int pos, int pageCount){
+    private void setupPageView(int page){
+        int pages = 0;
+
+        TextView[] textViews = new TextView[10];
+        for(int i = 0; i< 10; i++){
+            textViews[i] = new TextView(PaidSearchPartnerActivity.this);
+            textViews[i].setLayoutParams(new LinearLayout.LayoutParams(48, 48));
+            textViews[i].setText(""+(i+1));
+            textViews[i].setPadding(4,4,4,4);
+            mHorizontalLayout.addView(textViews[i]);
+        }
+
+    }
+
+    public void reTryMethod(int pos){
 
         new AlertDialog.Builder(PaidSearchPartnerActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -475,11 +481,11 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                     public void onClick(DialogInterface dialog, int which) {
 
                         if(pos == 1){
-                            callWebServiceForSubsIDSearch(pageCount);
+                            callWebServiceForSubsIDSearch();
                         }else if(pos == 2){
-                            callWebServiceForSubsKeywordSearch(pageCount);
+                            callWebServiceForSubsKeywordSearch();
                         }else if(pos == 3){
-                            callWebServiceForSubsAdvanceSearch(pageCount);
+                            callWebServiceForSubsAdvanceSearch();
                         }
                     }
                 })
@@ -492,92 +498,4 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 .show();
     }
 
-
- /*   public void callWebServiceForSubsAdvanceSearch(int pageCount){
-
-        List<String> profileList =new ArrayList<>();
-
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
-        String minage = prefs.getString(CONSTANTS.MIN_AGE) ;
-        String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
-        String country = prefs.getString(CONSTANTS.COUNTRY) ;
-        String city =  prefs.getString(CONSTANTS.CITY);
-        String religion =  prefs.getString(CONSTANTS.RELIGION);
-        String caste = prefs.getString(CONSTANTS.CASTE);
-        String mother_tounge =  prefs.getString(CONSTANTS.MOTHER_TONGUE);
-        String marital_status =  prefs.getString(CONSTANTS.MARITAL_STATUS);
-        String course =  prefs.getString(CONSTANTS.COURSE);
-        String annual_income =  prefs.getString(CONSTANTS.ANNUAL_INCOME);
-
-        String sPartnerLoc = prefs.getString(CONSTANTS.PARTNER_LOC);
-        String sMinHeight = prefs.getString(CONSTANTS.MIN_HEIGHT);
-        String sMaxHeight = prefs.getString(CONSTANTS.MAX_HEIGHT);
-
-        profileList.add(minage);profileList.add(maxage);profileList.add(country);
-        profileList.add(city);profileList.add(religion);profileList.add(caste);
-        profileList.add(mother_tounge);profileList.add(marital_status);
-        profileList.add(course);profileList.add(annual_income);
-        profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);
-
-        PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
-        searchRequest.token = token;
-        searchRequest.minage = minage;
-        searchRequest.maxage = maxage;
-        searchRequest.country = country;
-        searchRequest.city = city;
-        searchRequest.religion = religion;
-        searchRequest.caste = caste;
-        searchRequest.mother_tounge = mother_tounge;
-        searchRequest.marital_status = marital_status;
-        searchRequest.course = course;
-        searchRequest.annual_income = annual_income;
-
-        searchRequest.min_height = sMinHeight;
-        searchRequest.max_height = sMaxHeight;
-
-        if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
-
-            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-            ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
-            Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(searchRequest);
-            call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
-                @Override
-                public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    if (response.isSuccessful()) {
-                        if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                            if(response.body().getQuery().size() > 0){
-                                List<Query> queryList = response.body().getQuery();
-                                System.out.print(profileList);
-
-                                setPaidSearchedData(profileList);
-                                setPaidMatchedListByKeyword(queryList, pageCount);
-
-                            }else {
-                                AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Alert", CONSTANTS.search_ptnr_err_msg);
-                            }
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(PaidSearchPartnerActivity.this, "Search Partner", "Opps");
-                            reTryMethod(3, pageCount);
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
-                    call.cancel();
-//                Toast.makeText(PaidSearchPartnerActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    reTryMethod(3, pageCount);
-                }
-            });
-
-        }else {
-            NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
-        }
-
-    }
-    */
 }
