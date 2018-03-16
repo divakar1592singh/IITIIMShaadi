@@ -203,8 +203,13 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
                     }
                 })
                 .show();
-
-
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 
 }

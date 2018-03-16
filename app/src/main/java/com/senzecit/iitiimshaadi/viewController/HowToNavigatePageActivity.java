@@ -66,4 +66,11 @@ public class HowToNavigatePageActivity extends AppCompatActivity implements View
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+
 }

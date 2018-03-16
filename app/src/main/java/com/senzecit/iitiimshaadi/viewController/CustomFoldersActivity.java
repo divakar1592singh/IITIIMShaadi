@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -270,7 +271,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 String selected = mFolderSpnr.getSelectedItem().toString();
-                Toast.makeText(CustomFoldersActivity.this, selected, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CustomFoldersActivity.this, selected, Toast.LENGTH_SHORT).show();
                 /*if(selected.equalsIgnoreCase("Delivered")){
                     holder.mCommentLayout.setVisibility(View.GONE);
                 }else {
@@ -398,18 +399,22 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    AddFolderResponse addResponse = response.body();
-                    if(addResponse.getMessage().getSuccess() != null) {
-                        if (addResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                            callWebServiceForCustomFolder();
+                    try {
+                        AddFolderResponse addResponse = response.body();
+                        if (addResponse.getMessage().getSuccess() != null) {
+                            if (addResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                                Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                callWebServiceForCustomFolder();
 //                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
 
+                            } else {
+//                            Toast.makeText(CustomFoldersActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(CustomFoldersActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomFoldersActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(CustomFoldersActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }catch (NullPointerException npe){
+                        Log.e("Custom Folder", "#Error : "+npe, npe );
                     }
                 }
             }
@@ -545,6 +550,12 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
 }

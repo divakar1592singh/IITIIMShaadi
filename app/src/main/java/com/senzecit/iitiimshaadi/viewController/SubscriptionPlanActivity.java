@@ -203,8 +203,6 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     public void showPaymentAlert(){
 //        showDialogPayment();
-
-        transactPayment();
     }
 
     private void alertPaymentSummary(){
@@ -243,7 +241,6 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
             mSubsAmountTV.append("$ "+mTotalAmountTV.getText().toString());
         }
 
-
         mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,5 +271,12 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         }
 
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 
 }

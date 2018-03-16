@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -212,8 +213,20 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                 prefs.remove(CONSTANTS.LOGGED_USERNAME);
                 prefs.remove(CONSTANTS.LOGGED_USERID);
                 prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                prefs.remove(CONSTANTS.LOGGED_USER_PIC);
                 prefs.remove(CONSTANTS.LOGGED_EMAIL);
-                Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, SplashActivity.class);
+                prefs.remove(CONSTANTS.LOGGED_MOB);
+                prefs.remove(CONSTANTS.OTHER_USERID);
+                prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
+                prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
+                prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
+
+                Intent intent = new Intent(PaidBaseActivity.this, SplashActivity.class);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+
                 break;
             }
 

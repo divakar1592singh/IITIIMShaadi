@@ -71,7 +71,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Search by id"
-                                        android:text="23593"
+                                        android:text=""
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -136,7 +136,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Search by random keyword"
-                                        android:text="alam"
                                         android:singleLine="true"
                                         />
                                 </android.support.design.widget.TextInputLayout>
@@ -221,7 +220,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Minimum"
-                                        android:text="26"
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -236,7 +234,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Maximum"
-                                        android:text="28"
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -274,7 +271,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="1151"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
 
@@ -315,7 +312,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="delhi"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -355,7 +352,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Delhi"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -400,7 +397,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Hindu"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -439,7 +436,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Aggarwal,Agrawal,Bania,Gupta,Kashyap"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -478,7 +475,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Any,Telugu"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -517,7 +514,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Never Married"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -562,7 +559,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="5 ft 9in (175cm)"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -602,7 +599,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="6 ft 3in (190 cm)"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -647,7 +644,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Management,Engineering/Architecture,Masters"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -686,7 +683,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="less than 10 LPA"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView

@@ -174,7 +174,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         mBack = (ImageView) findViewById(R.id.backIV);
         mAlbumLogo = (ImageView) findViewById(R.id.albumLogoIV);
         mBack.setVisibility(View.VISIBLE);
-        mAlbumLogo.setVisibility(View.VISIBLE);
+//        mAlbumLogo.setVisibility(View.VISIBLE);
         mTitle.setText("Album");
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
@@ -622,9 +622,17 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     try {
                         if (response.body().getMessage().getSuccess().equalsIgnoreCase("Your Profile picture has been saved.")) {
 
+                            try {
+                            String imageFullPath = response.body().getImageFullPath();
+                            String[] subString = imageFullPath.split("/");
+                            String realURL = subString[subString.length-1];
+                            prefs.putString(CONSTANTS.LOGGED_USER_PIC, realURL);
+                            }catch (NullPointerException npe){
+                                Log.e("TAG", "#Error : "+npe, npe);
+                            }
 //                            AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Alert", "Uploaded Succs");
-                            Toast.makeText(AlbumActivity.this, "Profile Changed", Toast.LENGTH_SHORT).show();
                             callWebServiceForAllAlbum();
+                            Toast.makeText(AlbumActivity.this, "Profile Changed", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(AlbumActivity.this, "Oops, Something went wrong!", Toast.LENGTH_LONG).show();
                         }
@@ -812,6 +820,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 mCurrentAnimator = set;
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
 }

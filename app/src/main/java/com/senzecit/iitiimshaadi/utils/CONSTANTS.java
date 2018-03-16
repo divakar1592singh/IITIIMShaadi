@@ -99,6 +99,7 @@ public interface CONSTANTS {
     String city_not_found = "City Not Found";
     String album_not_found = "No Image Available";
     String unknown_err = "Something went wrong! \n Try again";
+    String no_data = "No data found";
 
     String tap_message = "Tap one more time";
     String tap_twice_message = "Please, Tap on pic";

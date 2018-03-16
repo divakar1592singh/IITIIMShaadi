@@ -438,7 +438,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
     public void showReligion(TextView textView){
 
-        String[] ar = getActivity().getResources().getStringArray(R.array.ann_income_ar);
+        String[] ar = getActivity().getResources().getStringArray(R.array.religion_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }

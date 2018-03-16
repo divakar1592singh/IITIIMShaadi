@@ -39,20 +39,23 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Subscription");
+
+        mBack.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
-                Fragment home= mFragmentManager.findFragmentByTag("subscriptionFragment");
+                SubscriptionActivity.this.finish();
+               /* Fragment home= mFragmentManager.findFragmentByTag("subscriptionFragment");
                 if(home!=null){
                     if(home.isVisible()){
                         SubscriptionActivity.this.finish();
                     }else{
                         mFragmentManager.popBackStack("subscriptionPlanFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     }
-                }
+                }*/
                 super.onBackPressed();
                 break;
         }
@@ -116,4 +119,12 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
     public void upgradeSubscription() {
         subscriptionPlanFragment();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+
 }

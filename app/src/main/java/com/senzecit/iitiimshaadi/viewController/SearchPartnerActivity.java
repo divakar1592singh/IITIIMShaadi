@@ -21,7 +21,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Us
 
 import java.util.List;
 
-public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator {
+public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator, View.OnClickListener {
 
     private static final String TAG = "ResultSearcPartner";
     Toolbar mToolbar;
@@ -81,11 +81,13 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
     public void handleView(){
         mTitle.setText("Search Partner");
+        mBack.setOnClickListener(this);
     }
 
     @Override
     public void saveSearchPartner(List<User> queryList, List<String> profileList) {
 
+        mBack.setOnClickListener(this);
         mContainerFragLayout.setVisibility(View.GONE);
         mContainerResLayout.setVisibility(View.VISIBLE);
 
@@ -118,5 +120,21 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
         mSearchResultRecyclerView.setAdapter(adapter);
 
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.backIV:
+                SearchPartnerActivity.this.finish();
+                break;
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 
 }

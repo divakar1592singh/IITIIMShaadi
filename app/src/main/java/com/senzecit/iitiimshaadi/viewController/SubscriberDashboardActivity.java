@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -58,6 +60,7 @@ import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -101,10 +104,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     AppPrefs prefs;
     String typeOf;
     ProgressBar mProgress;
-    private int lastExpandedPosition = -1;
-//
-    private int mShortAnimationDuration;
-    private Animator mCurrentAnimator;
+    LinearLayout albumLayout;
+    AlertDialog dialogID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         prepareListData();
         prepareListDataPartner();
 
-        listAdapter = new ExpListViewSubscriberAdapter(this,listDataHeader,listDataChild);
+        listAdapter = new ExpListViewSubscriberAdapter(this,listDataHeader,listDataChild, null);
         expListView.setAdapter(listAdapter);
 
         partnerlistAdapter = new ExpListViewSubscriberPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner);
@@ -149,12 +150,15 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     protected void onStart() {
         super.onStart();
 
+        callWebServiceForSubscribeDashboard();
         mScrollView.smoothScrollTo(0, 0);
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
     }
 
-
     private void init(){
+
+        albumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
+
         mScrollView = (ScrollView)findViewById(R.id.idScrlView);
 
         mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
@@ -175,6 +179,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     }
     public void handleClick() {
 
+        albumLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubscriberDashboardActivity.this, AlbumActivity.class));
+            }
+        });
         mProfileCIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,19 +192,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 Navigator.getClassInstance().navigateToActivity(SubscriberDashboardActivity.this, ProfileActivity.class);
             }
         });
-
-        // Retrieve and cache the system's default "short" animation time.
-        mShortAnimationDuration = getResources().getInteger(
-                android.R.integer.config_shortAnimTime);
-
-
+/*
         mAlbumIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(SubscriberDashboardActivity.this, "Album", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(SubscriberDashboardActivity.this, AlbumActivity.class));
+
             }
-        });
+        });*/
 
         mEmailVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,7 +263,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
 //     Set Data
         setProfileData();
-        callWebServiceForSubscribeDashboard();
+
     }
 
     public  void  setProfileData(){
@@ -555,7 +560,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     }
 
-
     private void alertDialogEmail(){
 
         final TextView mMessage;
@@ -606,7 +610,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 if (TextUtils.isEmpty(otp)){
                      AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP", "OTP is empty");
                 }else {
-                    callWebServiceForOTPVerification(otp);
+                    callWebServiceForOTPVerification(otp, dialog);
                 }
 
             }
@@ -702,7 +706,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
-        final AlertDialog dialog = dialogBuilder.create();
+        dialogID = dialogBuilder.create();
         View dialogView = inflater.inflate(R.layout.popup_id_proof_layout,null);
 
         mBiodataTv= dialogView.findViewById(R.id.tvIDProof);
@@ -721,13 +725,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                dialogID.dismiss();
             }
         });
 
 
-        dialog.setView(dialogView);
-        dialog.show();
+        dialogID.setView(dialogView);
+        dialogID.show();
     }
     //    FILE
     private  void showStorage()
@@ -816,11 +820,17 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         return filePath.substring(filePath.lastIndexOf("/")+1);
     }
 
-    public void setSubsDashboardData(String username, int profileCompletion){
+    public void setSubsDashboardData(JSONObject jsonObject){
+
+        String username = jsonObject.optString("name");
+        int profileCompletion = jsonObject.optInt("profile_complition");
 
         mProgress.setProgress(profileCompletion);
         mProfilepercTV.setText(new StringBuilder(String.valueOf(profileCompletion)).append("%")); ;
         mUsrNameTV.setText(new StringBuilder("@").append(username));
+
+        callWebServiceForMyProfile();
+
     }
     /** API INTEGRATION */
 
@@ -828,7 +838,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     public void callWebServiceForSubscribeDashboard(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
@@ -846,12 +855,16 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                         ProgressClass.getProgressInstance().stopProgress();
 //                       System.out.println(response);
                         try {
-                            String username = response.getJSONObject("basicData").getString("name");
-                            int profileCompletionPerc = response.getJSONObject("basicData").getInt("profile_complition");
 
-                            setSubsDashboardData( username,  profileCompletionPerc);
+//                            setSubsDashboardData( username,  profileCompletionPerc);
+                            JSONObject jsonObject = response.getJSONObject("basicData");
+                            setSubsDashboardData( jsonObject);
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.no_data, Toast.LENGTH_SHORT).show();
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Alert", CONSTANTS.unknown_err);
                         }
 
                     }
@@ -947,6 +960,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         }
     }
 
+
     /** MOBILE */
     public void callWebServiceForResendOTP(){
 
@@ -997,7 +1011,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         }
     }
 
-    public void callWebServiceForOTPVerification(String otp){
+    public void callWebServiceForOTPVerification(String otp, AlertDialog dialog){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
@@ -1015,6 +1029,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
 
+                            dialog.dismiss();
                             showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
@@ -1039,7 +1054,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
         }
     }
-
     /* File Upload */
     public void callWebServiceForFileUpload(final File file)throws URISyntaxException {
 
@@ -1066,6 +1080,10 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
 
+                    if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
+
+                        dialogID.dismiss();
+                    }
                     showAlertMsg("Info", response.body().getMessage().getSuccess());
 //                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "" + response.body().getMessage().getSuccess());
                 } else {
@@ -1255,195 +1273,97 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
                 .show();
     }
 
-//
-private int onLayoutScrollByX = 0;
-    private int onLayoutScrollByY = 0;
+    /* Subscriber Dashboard*/
+    public void callWebServiceForMyProfile(){
 
-    public void planScrollBy(int x, int y) {
-        onLayoutScrollByX += x;
-        onLayoutScrollByY += y;
-    }
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
- /*   @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.lay(changed, l, t, r, b);
-        doPlannedScroll();
-    }*/
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-    public void doPlannedScroll() {
-        if (onLayoutScrollByX != 0 || onLayoutScrollByY != 0) {
-            planScrollBy(onLayoutScrollByX, onLayoutScrollByY);
-            onLayoutScrollByX = 0;
-            onLayoutScrollByY = 0;
-        }
-    }
-
-    //IMAGEZOOM
-    private void zoomImageFromThumb(final View thumbView, String imageResId) {
-        // If there's an animation in progress, cancel it
-        // immediately and proceed with this one.
-        if (mCurrentAnimator != null) {
-            mCurrentAnimator.cancel();
-        }
-
-        // Load the high-resolution "zoomed-in" image.
-        final ImageView expandedImageView = (ImageView) findViewById(
-                R.id.expanded_image);
-//        expandedImageView.setImageResource(imageResId);
-
-        try {
             ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-            Glide.with(SubscriberDashboardActivity.this).load(imageResId)
-                    .listener(new RequestListener<String, GlideDrawable>() {
+            AndroidNetworking.post("https://iitiimshaadi.com/api/my_profile.json")
+                    .addBodyParameter("token", token)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
                             ProgressClass.getProgressInstance().stopProgress();
-                            if(e instanceof UnknownHostException)
-//                                progressBar.setVisibility(View.VISIBLE);
-//                                ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-                                ProgressClass.getProgressInstance().stopProgress();
-                            return false;
+                            try {
+                                Log.i("Response", "I received some data!");
+                                JSONObject jsonObject = response.getJSONObject("basicData");
+
+                                listAdapter = new ExpListViewSubscriberAdapter(SubscriberDashboardActivity.this,listDataHeader,listDataChild, jsonObject);
+                                expListView.setAdapter(listAdapter);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                            progressBar.setVisibility(View.GONE);
+                        public void onError(ANError error) {
                             ProgressClass.getProgressInstance().stopProgress();
-                            return false;
+//                            reTryMethod();
                         }
-                    })
-                    .error(R.drawable.profile_img1)
-                    .into(expandedImageView);
-        } catch (Exception e) {
-            e.printStackTrace();
+                    });
+
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
         }
 
-        // Calculate the starting and ending bounds for the zoomed-in image.
-        // This step involves lots of math. Yay, math.
-        final Rect startBounds = new Rect();
-        final Rect finalBounds = new Rect();
-        final Point globalOffset = new Point();
 
-        // The start bounds are the global visible rectangle of the thumbnail,
-        // and the final bounds are the global visible rectangle of the container
-        // view. Also set the container view's offset as the origin for the
-        // bounds, since that's the origin for the positioning animation
-        // properties (X, Y).
-        thumbView.getGlobalVisibleRect(startBounds);
-        findViewById(R.id.container)
-                .getGlobalVisibleRect(finalBounds, globalOffset);
-        startBounds.offset(-globalOffset.x, -globalOffset.y);
-        finalBounds.offset(-globalOffset.x, -globalOffset.y);
-
-        // Adjust the start bounds to be the same aspect ratio as the final
-        // bounds using the "center crop" technique. This prevents undesirable
-        // stretching during the animation. Also calculate the start scaling
-        // factor (the end scaling factor is always 1.0).
-        float startScale;
-        if ((float) finalBounds.width() / finalBounds.height()
-                > (float) startBounds.width() / startBounds.height()) {
-            // Extend start bounds horizontally
-            startScale = (float) startBounds.height() / finalBounds.height();
-            float startWidth = startScale * finalBounds.width();
-            float deltaWidth = (startWidth - startBounds.width()) / 2;
-            startBounds.left -= deltaWidth;
-            startBounds.right += deltaWidth;
-        } else {
-            // Extend start bounds vertically
-            startScale = (float) startBounds.width() / finalBounds.width();
-            float startHeight = startScale * finalBounds.height();
-            float deltaHeight = (startHeight - startBounds.height()) / 2;
-            startBounds.top -= deltaHeight;
-            startBounds.bottom += deltaHeight;
-        }
-
-        // Hide the thumbnail and show the zoomed-in view. When the animation
-        // begins, it will position the zoomed-in view in the place of the
-        // thumbnail.
-        thumbView.setAlpha(0f);
-        expandedImageView.setVisibility(View.VISIBLE);
-
-        // Set the pivot point for SCALE_X and SCALE_Y transformations
-        // to the top-left corner of the zoomed-in view (the default
-        // is the center of the view).
-        expandedImageView.setPivotX(0f);
-        expandedImageView.setPivotY(0f);
-
-        // Construct and run the parallel animation of the four translation and
-        // scale properties (X, Y, SCALE_X, and SCALE_Y).
-        AnimatorSet set = new AnimatorSet();
-        set
-                .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
-                        startBounds.left, finalBounds.left))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
-                        startBounds.top, finalBounds.top))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
-                        startScale, 1f))
-                .with(ObjectAnimator.ofFloat(expandedImageView,
-                        View.SCALE_Y, startScale, 1f));
-        set.setDuration(mShortAnimationDuration);
-        set.setInterpolator(new DecelerateInterpolator());
-        set.addListener(new AnimatorListenerAdapter() {
+/*        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
+        call.enqueue(new Callback<SubscriberMainResponse>() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                mCurrentAnimator = null;
-            }
+            public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    SubscriberMainResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                mCurrentAnimator = null;
-            }
-        });
-        set.start();
-        mCurrentAnimator = set;
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
-        // Upon clicking the zoomed-in image, it should zoom back down
-        // to the original bounds and show the thumbnail instead of
-        // the expanded image.
-        final float startScaleFinal = startScale;
-        expandedImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mCurrentAnimator != null) {
-                    mCurrentAnimator.cancel();
+                            SubscriberMainResponse mainResponse = response.body();
+                            setSubsDashboardData(mainResponse);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", "Confuse");
+                        }
+                    }else {
+                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-
-                // Animate the four positioning/sizing properties in parallel,
-                // back to their original values.
-                AnimatorSet set = new AnimatorSet();
-                set.play(ObjectAnimator
-                        .ofFloat(expandedImageView, View.X, startBounds.left))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.Y,startBounds.top))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_X, startScaleFinal))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_Y, startScaleFinal));
-                set.setDuration(mShortAnimationDuration);
-                set.setInterpolator(new DecelerateInterpolator());
-                set.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        thumbView.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        mCurrentAnimator = null;
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        thumbView.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        mCurrentAnimator = null;
-                    }
-                });
-                set.start();
-                mCurrentAnimator = set;
             }
-        });
+
+            @Override
+            public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });*/
     }
 
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit!")
+                .setMessage("Are you sure?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        SubscriberDashboardActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
 
 }

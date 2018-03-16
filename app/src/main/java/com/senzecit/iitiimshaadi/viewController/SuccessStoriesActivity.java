@@ -240,4 +240,12 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
 
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+
 }

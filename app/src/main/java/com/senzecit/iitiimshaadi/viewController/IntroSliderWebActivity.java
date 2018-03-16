@@ -1,9 +1,11 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -156,4 +158,23 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
         IntroSliderWebActivity.this.finish();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit!")
+                .setMessage("Are you sure?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        IntroSliderWebActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
 }

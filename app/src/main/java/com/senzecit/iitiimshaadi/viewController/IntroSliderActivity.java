@@ -220,4 +220,5 @@ public class IntroSliderActivity extends AppCompatActivity implements View.OnCli
 
         }
     }
+
 }

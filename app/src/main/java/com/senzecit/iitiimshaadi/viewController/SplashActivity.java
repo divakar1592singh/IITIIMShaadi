@@ -1,7 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,28 +43,28 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "6b93c8d29b0d49e460db1a897e087aca");
+//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "6b93c8d29b0d49e460db1a897e087aca");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
 
 
 
+/*
         prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
         prefs.putString(CONSTANTS.OTHER_USERID, "30413");
+*/
 
 
 
 /*
         prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
         prefs.putString(CONSTANTS.OTHER_USERID, "23593");
-*/
-
-
 
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
         prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
         prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1520594768CROP_1520594760668.jpg");
+*/
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
@@ -81,28 +83,22 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-/*
-Image zoom on album
-Close other explistview
-Profile from search partner
-Search partner back
-*/
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-                Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);
+/*               Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                finish();
-/*
-                if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
+                finish();*/
+
+             /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
 
                 }else {
                     NetworkDialogHelper.getInstance().showDialog(SplashActivity.this);
                 }*/
 
 //***************************
-/*
+
                 try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
@@ -141,7 +137,7 @@ Search partner back
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                }*/
+                }
             }
         },SPLASH_DISPLAY_TIME);
     }
@@ -247,6 +243,12 @@ Search partner back
             finish();
         }
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
     }
 
 }

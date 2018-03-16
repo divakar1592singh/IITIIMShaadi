@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by senzec on 24/1/18.
  */
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class ResponseData {
 
     @SerializedName("username")
@@ -17,6 +20,12 @@ public class ResponseData {
     @SerializedName("token")
     @Expose
     private String token;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
+    @SerializedName("email")
+    @Expose
+    private String email;
     @SerializedName("profile_image")
     @Expose
     private String profileImage;
@@ -46,6 +55,22 @@ public class ResponseData {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getProfileImage() {

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -278,8 +279,14 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent1 = new Intent(OtherAlbumActivity.this, OtherProfileActivity.class);
+
+                        startActivity(intent1);
+                        finish();
                         dialog.dismiss();
                     }
+
                 })
                 .show();
     }
@@ -449,6 +456,11 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
 
     @Override
     protected void onStop() {

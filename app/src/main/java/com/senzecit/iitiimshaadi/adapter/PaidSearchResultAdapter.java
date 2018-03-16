@@ -148,7 +148,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((MyViewHolder)holder).mNameTxt.setText(userDetail.getName());
                 ((MyViewHolder)holder).mDietTxt.setText(userDetail.getDiet());
                 ((MyViewHolder)holder).mAgeTxt.setText(userDetail.getBirthDate());
-//                formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate());
+                formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate());
 //            ((MyViewHolder)holder).mAgeTxt.setText(formattedDate(((MyViewHolder)holder).mAgeTxt, userDetail.getBirthDate()));
                 ((MyViewHolder)holder).mEmploymentTxt.setText(userDetail.getWorkingAs());
                 ((MyViewHolder)holder).mCompanyTxt.setText(userDetail.getNameOfCompany());
@@ -201,7 +201,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 ((MyViewHolder)holder).mNameTxt.setText(queryListKeyword.get(position).getName());
                 ((MyViewHolder)holder).mDietTxt.setText(queryListKeyword.get(position).getDiet());
 //            holder.mAgeTxt.setText(queryListKeyword.get(position).getBirthDate());
-//                formattedDate(((MyViewHolder)holder).mAgeTxt, queryListKeyword.get(position).getBirthDate());
+                formattedDate(((MyViewHolder)holder).mAgeTxt, queryListKeyword.get(position).getBirthDate());
                 ((MyViewHolder)holder).mEmploymentTxt.setText(queryListKeyword.get(position).getWorkingAs());
                 ((MyViewHolder)holder).mCompanyTxt.setText(queryListKeyword.get(position).getNameOfCompany());
                 ((MyViewHolder)holder).mHeightTxt.setText(queryListKeyword.get(position).getHeight());

@@ -394,8 +394,12 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
                     }
                 })
                 .show();
+    }
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
 }

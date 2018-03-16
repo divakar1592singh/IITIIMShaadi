@@ -401,22 +401,39 @@
                     android:layout_height="1dp"
                     android:background="@color/colorGrey"/>
             </LinearLayout>
+                <ScrollView
+                    android:id="@+id/idResultScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
             <android.support.v7.widget.RecyclerView
                 android:layout_marginTop="8dp"
                 android:id="@+id/partnerSearchResulttRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/idHBarLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/colorMaroon"/>
+                    android:background="@color/colorMaroon"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:padding="@dimen/dimen_8dp"/>
+                    </HorizontalScrollView>
 
             </LinearLayout>
-
+                </ScrollView>
+            </LinearLayout>
         <!--</ScrollView>-->
     </FrameLayout>
+
 
 </LinearLayout>

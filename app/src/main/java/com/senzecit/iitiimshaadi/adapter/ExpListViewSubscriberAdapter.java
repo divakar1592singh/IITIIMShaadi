@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,8 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
@@ -58,8 +61,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -81,15 +87,18 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<String>> _listDataChild;
     AppPrefs prefs;
     RxNetworkingForObjectClass rxNetworkingClass;
+    JSONObject jsonObject;
 
 
     public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
-                                        HashMap<String, List<String>> listChildData) {
+                                        HashMap<String, List<String>> listChildData,
+                                        JSONObject jsonObject) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         prefs = AppController.getInstance().getPrefs();
+        this.jsonObject = jsonObject;
 
     }
 
@@ -148,7 +157,15 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
                         final TextView txtListChild = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
-                        txtListChild.setText(childText);
+//                        txtListChild.setText(childText);
+                        try {
+                            String profileCreatedFor = jsonObject.optString("profile_created_for");
+                            txtListChild.setText(profileCreatedFor);
+                        }catch (NullPointerException e){
+                            Log.e("SUbs Exp", "# Error"+e, e);
+                            txtListChild.setText(childText);
+                        }
+
 
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -179,7 +196,16 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
-                        txtListChild2.setText(childText);
+//                        txtListChild2.setText(childText);
+                        try {
+//                            *
+                            String _date = jsonObject.optString("birth_date");
+//                            txtListChild2.setText(profileCreatedFor);
+                            formattedDate(txtListChild2, _date);
+                        }catch (NullPointerException e){
+                            Log.e("SUbs Exp", "# Error"+e, e);
+                            txtListChild2.setText(childText);
+                        }
 
                         TextView txtListChildHeader2 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -254,7 +280,17 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
                         final TextView txtListChild4 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
-                        txtListChild4.setText(childText);
+//                        txtListChild4.setText(childText);
+
+                        try {
+//                            *
+                            String _date = jsonObject.optString("birth_date");
+                            txtListChild4.setText(getDate(_date));
+//                            formattedDate(txtListChild4, _date);
+                        }catch (NullPointerException e){
+                            Log.e("SUbs Exp", "# Error"+e, e);
+                            txtListChild4.setText(childText);
+                        }
 
                         TextView txtListChildHeader4 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -636,7 +672,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
                         final TextView txtListChild = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
-                        txtListChild.setText(childText);
+//                        txtListChild.setText(childText);
+                        txtListChild.setText(prefs.getString(CONSTANTS.LOGGED_MOB));
 
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -1267,13 +1304,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     case 1:
                         LayoutInflater infalInflater1 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater1.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1357,13 +1394,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     case 4:
                         LayoutInflater infalInflater4 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater4.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater4.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout4 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout4.setHint(childText);
 
                         EditText editText4 = convertView.findViewById(R.id.idlistitemET);
-                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText4.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1447,13 +1484,13 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                     case 7:
                         LayoutInflater infalInflater7 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater7.inflate(R.layout.list_item_secondtype, null);
+                        convertView = infalInflater7.inflate(R.layout.list_item_numbertype, null);
 
                         TextInputLayout textInputLayout7 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout7.setHint(childText);
 
                         EditText editText7 = convertView.findViewById(R.id.idlistitemET);
-                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         editText7.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2720,5 +2757,60 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
     }
+
+    public void formattedDate(TextView tv, String _date) {
+
+        try {
+
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
+//            ProgressClass.getProgressInstance().showDialog(mContext);
+            call.enqueue(new Callback<DateToAgeResponse>() {
+                @Override
+                public void onResponse(Call<DateToAgeResponse> call, Response<DateToAgeResponse> response) {
+                    if (response.isSuccessful()) {
+//                        ProgressClass.getProgressInstance().stopProgress();
+                        Message message = response.body().getMessage();
+                        try {
+                            if (message != null) {
+                                tv.setText(response.body().getAge());
+                            } else {
+//                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Check Religion selected!");
+                            }
+                        } catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+//                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", " Date Format not correct");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DateToAgeResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (NullPointerException npe) {
+            Log.e("TAG", "#Error : " + npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Religion not seletced");
+        }
+
+    }
+
+    public static String getDate(String _Date) {
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = fmt.parse(_Date);
+            return fmt2.format(date);
+        } catch (ParseException pe) {
+
+            return "Date";
+        }
+    }
+
 
 }

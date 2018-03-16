@@ -281,7 +281,12 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
                 AlertDialogSingleClick.getInstance().showDialog(ContactUsActivity.this, "Alert", "Something went wrong!");
             }
-
-
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 }

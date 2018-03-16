@@ -10,6 +10,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.Config;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 
 public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
@@ -59,9 +60,16 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
                                         YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
 
-            String VIDEO_CODE = getIntent().getExtras().getString("VideoCode");
-            player.cueVideo(VIDEO_CODE);
-            player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+
+            try {
+                String VIDEO_CODE = getIntent().getExtras().getString("VideoCode");
+                player.cueVideo(VIDEO_CODE);
+//                player.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+            }catch (NullPointerException npe){
+                Log.e("YoutubeActivity", " #Error : "+npe, npe);
+                Toast.makeText(YoutubeActivity.this, "No Video Available", Toast.LENGTH_LONG).show();
+                Navigator.getClassInstance().navigateToActivity(YoutubeActivity.this, HowToNavigatePageActivity.class);
+            }
 
         }
     }

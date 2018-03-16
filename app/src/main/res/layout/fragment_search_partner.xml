@@ -75,7 +75,7 @@
                                         android:hint="Minimum"
                                         android:inputType="numberDecimal"
                                         android:singleLine="true"
-                                        android:text="26" />
+                                      />
                                 </android.support.design.widget.TextInputLayout>
                                 <android.support.design.widget.TextInputLayout
                                     android:layout_width="100dp"
@@ -90,7 +90,7 @@
                                         android:hint="Maximum"
                                         android:inputType="numberDecimal"
                                         android:singleLine="true"
-                                        android:text="28" />
+                                        />
                                 </android.support.design.widget.TextInputLayout>
                             </RelativeLayout>
                         </LinearLayout>
@@ -124,7 +124,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="1151"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
 
@@ -165,7 +165,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Delhi"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -209,7 +209,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Hindu"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -248,7 +248,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Aggarwal,Agrawal,Bania,Gupta,Kashyap"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -287,7 +287,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Any,Telugu"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -326,7 +326,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Never Married"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -364,7 +364,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="Management,Engineering/Architecture,Masters"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView
@@ -403,7 +403,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/colorBlack"
-                                android:text="less than 10 LPA"
+                                android:text="--"
                                 android:textSize="14sp"/>
                         </LinearLayout>
                         <ImageView

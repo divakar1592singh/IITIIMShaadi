@@ -2,6 +2,7 @@ package com.senzecit.iitiimshaadi.viewController;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -559,5 +560,22 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(QuickRegistrationActivity.this, IntroSliderWebActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
     }
 }

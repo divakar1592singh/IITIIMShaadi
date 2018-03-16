@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
@@ -36,12 +38,14 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
     }
     class MyViewHolder extends RecyclerView.ViewHolder{
         LinearLayout mViewProfileLayout;
+        CircleImageView mImageView;
         Button mAcceptBtn, mCancelReqBtn, mUnshortlistedBtn;
         TextView mUserIDTV, mNameTV, mReligionTV, mEducationTV, mJobInfoTV;
         public MyViewHolder(View itemView) {
             super(itemView);
             mViewProfileLayout = itemView.findViewById(R.id.idViewProfileLayout);
 
+            mImageView = (CircleImageView)itemView.findViewById(R.id.idImageView);
             mUserIDTV = itemView.findViewById(R.id.idUserIDTV);
             mNameTV = itemView.findViewById(R.id.idNameTV);
             mReligionTV = itemView.findViewById(R.id.idReligionTV);
@@ -66,6 +70,16 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
 
         prefs = AppController.getInstance().getPrefs();
         try {
+
+
+            try {
+                String userId = String.valueOf(userList.get(position).getUserId());
+                String partUrl = userList.get(position).getProfileImage();
+                Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mImageView);
+            }catch (NullPointerException npe){
+                Log.e("TAG", " #Error : "+npe, npe);
+            }
+
             holder.mUserIDTV.setText(String.valueOf(userList.get(position).getUserId()));
             holder.mNameTV.setText(userList.get(position).getName());
             holder.mReligionTV.setText(userList.get(position).getReligion());
@@ -75,7 +89,7 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
             Log.e("RequestFriend", "# Error : "+npe, npe);
         }
 
-        holder.mViewProfileLayout.setOnClickListener(new View.OnClickListener() {
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userID = "";

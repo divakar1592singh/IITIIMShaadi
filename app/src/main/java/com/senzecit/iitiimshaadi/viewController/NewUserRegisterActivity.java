@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -162,8 +163,9 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 //                Navigator.getClassInstance().navigateToActivity(this, SubscriberDashboardActivity.class);
 //                startActivity(new Intent(NewUserRegisterActivity.this,SubscriberDashboardActivity.class));
 
-                validateDateOfBirth();
+//                validateDateOfBirth();
 //                callWebServiceForNewRegistration();
+                checkNewUserValidation();
 
                 break;
             case R.id.idProfileCreatedFor:
@@ -235,22 +237,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     }
 
-    public void validateDateOfBirth(){
-
-/*        List<String> monthList = new ArrayList<String>();
-        monthList.add("Month");
-        monthList.add("January");
-        monthList.add("February");
-        monthList.add("March");
-        monthList.add("April");
-        monthList.add("May");
-        monthList.add("June");
-        monthList.add("July");
-        monthList.add("August");
-        monthList.add("September");
-        monthList.add("October");
-        monthList.add("November");
-        monthList.add("December");*/
+    public boolean validateDateOfBirth(){
 
         String sDay = mDaySPN.getSelectedItem().toString();
         int posMonth = mMonthSPN.getSelectedItemPosition();
@@ -264,13 +251,16 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         if(statusDay == true &&statusMonth == true && statusYear == true ){
 
             if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
-                checkNewUserValidation();
+//                checkNewUserValidation();
+                return true;
             }else {
-                NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
+//                NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
+                return false;
             }
 
         }else {
-            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Check 'Day/Month/Year' is selected!");
+//            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Check 'Day/Month/Year' is selected!");
+            return false;
         }
 
 
@@ -422,6 +412,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                     if(!sProfile.startsWith("Select")){
                         if(!fullName.isEmpty()){
                             if(!sGender.startsWith("Select")){
+                                if(validateDateOfBirth() == true){
                                     if(isValidMobile(sMobile)){
                                         if(serverSideCaptcha.equals(userEnterCaptcha)){
                                             if(mTermCheck.getVisibility() == View.VISIBLE){
@@ -441,6 +432,9 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                                         mMobileET.requestFocus();
                                         AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Mobile no. not valid");
                                     }
+                                }else {
+                                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Check 'Day/Month/Year' is selected!");
+                                }
                             }else {
                                 AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Gender not selected");
                             }
@@ -478,12 +472,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String sDay = mDaySPN.getSelectedItem().toString();
         int posMonth = mMonthSPN.getSelectedItemPosition();
         String sYear = mYearSPN.getSelectedItem().toString();
-//        String sDateOfBirth = sDay+"/"+posMonth+"/"+sYear;
+
         String sDateOfBirth = sYear+"-"+posMonth+"-"+sDay;
-
-
-//        Toast.makeText(NewUserRegisterActivity.this, "Out-"+sDateOfBirth, Toast.LENGTH_LONG).show();
-
         NewRegistrationRequest newRegistrationRequest = new NewRegistrationRequest();
         newRegistrationRequest.username = sUsername;
         newRegistrationRequest.email = sEmail;
@@ -518,6 +508,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                     }
                 }catch (NullPointerException npe){
                     Log.e("TAG", "#Error : "+npe, npe);
+                    ProgressClass.getProgressInstance().stopProgress();
 //                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong!");
                     reTryMethod();
                 }
@@ -540,12 +531,15 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
         String email = response.getEmail();
+        String mob = response.getMobile();
+
 
         prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
         prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
         prefs.putString(CONSTANTS.LOGGED_USERID, userId);
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
         prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
+        prefs.putString(CONSTANTS.LOGGED_MOB, mob);
 
         prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
@@ -685,7 +679,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         new AlertDialog.Builder(NewUserRegisterActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
+                .setMessage("Something went wrong!\n Please Try Again! \n Help : \n 1. Check Internet \n 2. Try different Username or Email")
                 .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -707,5 +701,23 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         super.onStop();
         finish();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(NewUserRegisterActivity.this, QuickRegistrationActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+    }
+
 }
 

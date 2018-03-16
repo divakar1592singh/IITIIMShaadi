@@ -62,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     boolean generalSetting,notificationSetting,deactiveAccount = true;
     TextView mMemberSendTV, mMemberAddsTV;
     EditText mNameET, mPwdET, mConfirmPwdET;
+    TextView mEmailTV, mUserNameTV;
     Button mGeneralSaveBtn, mDeactivateSaveBtn ;
 
     RadioGroup mDeactivateRG;
@@ -104,6 +105,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mMemberAddsTV = (TextView) findViewById(R.id.idMemberAddsTV);
 
         mNameET = (EditText)findViewById(R.id.nameET) ;
+        mEmailTV = (TextView)findViewById(R.id.accountEmailTV);
+        mUserNameTV = (TextView)findViewById(R.id.userNameET);
         mPwdET = (EditText)findViewById(R.id.passwordET) ;
         mConfirmPwdET = (EditText)findViewById(R.id.confirmPasswordET) ;
         mGeneralSaveBtn = (Button)findViewById(R.id.generalSaveBtn);
@@ -128,6 +131,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mGeneralSaveBtn.setOnClickListener(this);
 
         mDeactivateSaveBtn.setOnClickListener(this);
+
+        String sEmail = prefs.getString(CONSTANTS.LOGGED_EMAIL);
+        String sName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
+
+        mEmailTV.setText(sEmail);
+        mUserNameTV.setText(sName);
     }
 
     @Override
@@ -448,8 +457,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     }
                 })
                 .show();
-
-
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 
 }

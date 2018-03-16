@@ -42,4 +42,11 @@ public class DisclaimerActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+
 }

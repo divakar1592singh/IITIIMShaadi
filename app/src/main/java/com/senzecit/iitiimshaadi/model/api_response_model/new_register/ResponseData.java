@@ -6,20 +6,27 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by senzec on 24/1/18.
  */
+
 public class ResponseData {
 
     @SerializedName("username")
     @Expose
     private String username;
-    @SerializedName("email")
-    @Expose
-    private String email;
-    @SerializedName("token")
-    @Expose
-    private String token;
     @SerializedName("userid")
     @Expose
     private Integer userid;
+    @SerializedName("token")
+    @Expose
+    private String token;
+    @SerializedName("mobile_no")
+    @Expose
+    private String mobile;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("profile_image")
+    @Expose
+    private String profileImage;
     @SerializedName("type_of_user")
     @Expose
     private String typeOfUser;
@@ -32,12 +39,12 @@ public class ResponseData {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 
     public String getToken() {
@@ -48,12 +55,28 @@ public class ResponseData {
         this.token = token;
     }
 
-    public Integer getUserid() {
-        return userid;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public String getTypeOfUser() {

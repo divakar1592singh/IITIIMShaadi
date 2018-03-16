@@ -39,4 +39,11 @@ public class FAQActivity extends AppCompatActivity implements View.OnClickListen
                 break;
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 }

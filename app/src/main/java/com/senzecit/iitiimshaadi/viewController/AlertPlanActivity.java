@@ -45,4 +45,11 @@ public class AlertPlanActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 }

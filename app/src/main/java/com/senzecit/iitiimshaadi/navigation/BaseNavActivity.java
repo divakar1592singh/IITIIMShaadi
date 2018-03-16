@@ -18,6 +18,7 @@ import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -31,6 +32,7 @@ import com.senzecit.iitiimshaadi.viewController.FAQActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.HowToNavigatePageActivity;
 import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
+import com.senzecit.iitiimshaadi.viewController.PaidSubscriberDashboardActivity;
 import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
@@ -291,9 +293,20 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 prefs.remove(CONSTANTS.LOGGED_USERNAME);
                 prefs.remove(CONSTANTS.LOGGED_USERID);
                 prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                prefs.remove(CONSTANTS.LOGGED_USER_PIC);
                 prefs.remove(CONSTANTS.LOGGED_EMAIL);
-                Navigator.getClassInstance().navigateToActivity(BaseNavActivity.this, SplashActivity.class);
+                prefs.remove(CONSTANTS.LOGGED_MOB);
+                prefs.remove(CONSTANTS.OTHER_USERID);
+                prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
+                prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
+                prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
 
+
+                Intent intent = new Intent(BaseNavActivity.this, SplashActivity.class);
+
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                        finish();
                 break;
 
         }

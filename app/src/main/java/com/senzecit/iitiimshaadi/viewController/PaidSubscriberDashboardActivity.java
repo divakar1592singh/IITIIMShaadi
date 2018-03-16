@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -63,7 +64,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     //
     private int mShortAnimationDuration;
     private Animator mCurrentAnimator;
-
+    LinearLayout mAlbumLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
         initView();
         handleClick();
-        callWebServiceForSubscribeDashboard();
+
     }
 
     @Override
@@ -82,11 +83,13 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         super.onStart();
 
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
+        callWebServiceForSubscribeDashboard();
 
     }
 
     public void initView(){
 
+        mAlbumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
         mProgress = (ProgressBar)findViewById(R.id.idprogress);
         mProfileCIV = (CircleImageView)findViewById(R.id.idProfileCIV);
         mUsrNameTV = (TextView) findViewById(R.id.idUserNameTV);
@@ -119,7 +122,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         mMyProfileTV.setOnClickListener(this);
         mProfileShowTV.setOnClickListener(this);
         mShowMessageTV.setOnClickListener(this);
-        mAlbumIV.setOnClickListener(this);
+        mAlbumLayout.setOnClickListener(this);
         mFriendsTV.setOnClickListener(this);
         mSearchPartnerTV.setOnClickListener(this);
         mPremServicesTV.setOnClickListener(this);
@@ -188,7 +191,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No message received");
                 break;
             }
-            case R.id.idAlbum: {
+            case R.id.idAlbumLayout: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Album", //Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(PaidSubscriberDashboardActivity.this,AlbumActivity.class));
                 break;
@@ -543,6 +546,28 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 mCurrentAnimator = set;
             }
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit!")
+                .setMessage("Are you sure?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        PaidSubscriberDashboardActivity.super.onBackPressed();
+
+                    }
+                }).create().show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
 

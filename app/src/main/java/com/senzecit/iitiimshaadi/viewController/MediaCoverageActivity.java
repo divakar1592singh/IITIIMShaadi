@@ -56,4 +56,10 @@ public class MediaCoverageActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
 }

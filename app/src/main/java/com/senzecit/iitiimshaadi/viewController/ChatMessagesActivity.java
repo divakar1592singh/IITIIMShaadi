@@ -69,6 +69,7 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
+                ChatMessagesActivity.this.finish();
                 break;
         }
     }
@@ -136,5 +137,11 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
         super.onStop();
 //        Toast.makeText(ChatMessagesActivity.this, "Stop click hua", Toast.LENGTH_LONG).show();
         ChatMessagesActivity.this.finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 }

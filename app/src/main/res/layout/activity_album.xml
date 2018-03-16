@@ -119,4 +119,5 @@
         android:visibility="invisible"
         android:contentDescription="description_zoom_touch_close" />
 
+
 </FrameLayout>

@@ -62,6 +62,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
     public void handleView(){
 
+        mTitle.setText("All Notification");
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerViewChatUser.setLayoutManager(layoutManager);
 
@@ -72,6 +73,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
+                NotificationsActivity.this.finish();
                 break;
         }
     }
@@ -125,6 +127,12 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         NotificationsAdapter adapter = new NotificationsAdapter(this, list);
         mRecyclerViewChatUser.setAdapter(adapter);
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
 /*    @Override

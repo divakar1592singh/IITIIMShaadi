@@ -660,7 +660,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onFailure(Call<MyProfileResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(ProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -765,6 +765,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 .show();
 
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
 }

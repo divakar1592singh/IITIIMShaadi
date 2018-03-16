@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlack"
                     android:text="@string/disclaimer"
-                    android:textSize="12dp"
+                    android:textSize="16dp"
                     android:padding="@dimen/activity_horizontal_margin_small"/>
             </LinearLayout>
         </LinearLayout>

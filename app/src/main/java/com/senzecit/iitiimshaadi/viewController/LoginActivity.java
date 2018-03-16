@@ -2,6 +2,7 @@ package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -192,6 +193,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String userName = response.getUsername();
         String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
+        String email = response.getEmail();
+        String mobile = response.getMobile();
         String profilePic = response.getProfileImage();
 
         prefs.putString(CONSTANTPREF.LOGIN_USERNAME, sUsername);
@@ -201,7 +204,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
         prefs.putString(CONSTANTS.LOGGED_USERID, userId);
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+        prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
+        prefs.putString(CONSTANTS.LOGGED_MOB, mobile);
         prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
+
 
         navigateUserToScreen(typeOfUser);
     }
@@ -341,4 +347,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStop();
         finish();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(LoginActivity.this, IntroSliderWebActivity.class);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+
+    }
+
 }
