@@ -71,7 +71,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Search by id"
-                                        android:text=""
+                                        android:text="22"
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -136,6 +136,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Search by random keyword"
+                                        android:text="25"
                                         android:singleLine="true"
                                         />
                                 </android.support.design.widget.TextInputLayout>

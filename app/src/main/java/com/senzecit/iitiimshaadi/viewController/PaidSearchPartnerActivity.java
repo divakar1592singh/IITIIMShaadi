@@ -40,6 +40,7 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,30 +152,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
 
-      /*  mSearchResultRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                int itemLastVisiblePosition = layoutManager.findLastVisibleItemPosition();
-//                Toast.makeText(PaidSearchPartnerActivity.this, "Last Count : "+itemLastVisiblePosition, Toast.LENGTH_SHORT).show();
-
-                if(itemLastVisiblePosition == adapter.getItemCount() - 1) {
-
-                         if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                           boolean canScrollDownMore = recyclerView.canScrollVertically(1);
-                         if (!canScrollDownMore) {
-
-//                         setPaidMatchedListByKeyword(queryList2, pageCount + 10);
-                             paginateSearchPartner(pageCount+10);
-
-                         onScrolled(recyclerView, 0, 1);
-                     }
-                  }
-                }
-            }
-        });*/
-
     }
 
     @Override
@@ -194,7 +171,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         }
 
     }
-
 
     private void setPaidSearchedData(List<String> profileList){
         try {
@@ -222,7 +198,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         adapter.notifyDataSetChanged();
 
     }
- private void setPaidMatchedListByKeyword(List<User> queryList){
+    private void setPaidMatchedListByKeyword(List<User> queryList){
 
      String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
@@ -301,12 +277,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 //        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String keyword = prefs.getString(CONSTANTS.SEARCH_KEYWORD) ;
+        String page = curPage ;
 
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
-        Call<SubsAdvanceSearchResponse> call = apiInterface.keywordSearchPaid(token, keyword);
+        Call<SubsAdvanceSearchResponse> call = apiInterface.keywordSearchPaid(token, page, keyword);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
             public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
@@ -314,6 +291,10 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 if (response.isSuccessful()) {
                     if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
                         if(response.body().getUsers().size() > 0){
+
+                            int pageCount = response.body().getTotalCount();
+                            setupPageView(pageCount);
+
                             List<User> queryList = response.body().getUsers();
 //                            System.out.print(profileList);
 
@@ -347,16 +328,15 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
         List<String> profileList =new ArrayList<>();
 
-//        String token = "9c8e5cf4fad369c0ed33d166ddf0b0a2";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
-
         String minage = prefs.getString(CONSTANTS.MIN_AGE) ;
         String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
         String country = prefs.getString(CONSTANTS.COUNTRY) ;
-        String city =  prefs.getString(CONSTANTS.CITY);
+
+        String city =  removeLastChar(prefs.getString(CONSTANTS.CITY));
         String[] cityArr = new String[1];
-        cityArr[0] = city;
+        cityArr = city.split(",");
+
         String religion =  prefs.getString(CONSTANTS.RELIGION);
         String caste = prefs.getString(CONSTANTS.CASTE);
         String[] casteArr = new String[1];
@@ -413,13 +393,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 */
         String page = curPage;
 
-
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
 
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country);
+//        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
             public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
@@ -559,6 +539,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    public static String removeLastChar(String s) {
+        if (s == null || s.length() == 0) {
+            return s;
+        }
+        return s.substring(0, s.length()-1);
     }
 
 

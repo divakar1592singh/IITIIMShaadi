@@ -190,13 +190,21 @@ public interface APIInterface {
     @GET("api/search_by_id.json?")
     Call<PaidSubscriberResponse> idSearchPaid(@Query("token") String token, @Query("username") String username);
 
+    /** Keyword Search - Paid Subs */
+    @GET("api/search_by_keyword.json")
+    Call<SubsAdvanceSearchResponse> keywordSearchPaid(@Query("token") String token, @Query("page")String page, @Query("keyword") String keyword);
+
     /** Advance Search - Paid Subs */
     @GET("api/advance_search.json")
     Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Query("token") String token, @Query("page")String page, @Query("minage")String minage,
-                                                      @Query("maxage")String maxage, @Query("country")String country, @Query("city")String[] city,
-                                                      @Query("location")String[] location, @Query("religion")String religion, @Query("caste")String[] caste,
-                                                      @Query("mother_tounge")String[] mother_tounge, @Query("marital_status")String[] marital_status, @Query("min_height")String min_height,
-                                                      @Query("max_height")String max_height, @Query("course")String[] course, @Query("annual_income")String[] annual_income);
+                                                      @Query("maxage")String maxage, @Query("country")String country);
+/*
+Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Query("token") String token, @Query("page")String page, @Query("minage")String minage,
+                                                      @Query("maxage")String maxage, @Query("country")String country, @Query("city[]")String[] city,
+                                                      @Query("location[]")String[] location, @Query("religion")String religion, @Query("caste[]")String[] caste,
+                                                      @Query("mother_tounge[]")String[] mother_tounge, @Query("marital_status[]")String[] marital_status, @Query("min_height")String min_height,
+                                                      @Query("max_height")String max_height, @Query("course[]")String[] course, @Query("annual_income[]")String[] annual_income);
+*/
 
 /*
     */
@@ -207,10 +215,14 @@ public interface APIInterface {
     Call<PaidSubscriberResponse> idSearchPaid1(@Field("token")String token, @Field("user_id")String userId);
 */
 
-    /** Keyword Search - Paid Subs */
+/*
+    */
+/** Keyword Search - Paid Subs */
+/*
     @FormUrlEncoded
     @POST("api/search_by_keyword.json")
     Call<SubsAdvanceSearchResponse> keywordSearchPaid(@Field("token")String token, @Field("keyword")String keyword);
+*/
 
 /*
     */

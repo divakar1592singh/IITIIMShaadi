@@ -116,7 +116,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         prefs = AppController.getInstance().getPrefs();
 
         init();
-        handleClick();
+
         prepareListData();
         prepareListDataPartner();
 
@@ -150,6 +150,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     protected void onStart() {
         super.onStart();
 
+        handleClick();
         callWebServiceForSubscribeDashboard();
         mScrollView.smoothScrollTo(0, 0);
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);

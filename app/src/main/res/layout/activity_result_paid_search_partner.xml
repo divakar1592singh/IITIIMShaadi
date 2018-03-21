@@ -426,7 +426,9 @@
                     android:orientation="horizontal"
                     android:background="@color/colorMaroon"
                     android:layout_marginTop="@dimen/dimen_16dp"
-                    android:padding="@dimen/dimen_8dp"/>
+                    android:padding="@dimen/dimen_8dp"
+                    android:visibility="visible"
+                    />
                     </HorizontalScrollView>
 
             </LinearLayout>

@@ -365,7 +365,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
     }
 
-
     public Vector<Dialog> dialogs = new Vector<Dialog>();
     private void showDialog(List<String> dataList, final TextView txtListChild) {
 
@@ -494,24 +493,34 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             @Override
             public void onClick(View view) {
 
-                for (int i = 0; i < models.size(); i++) {
+                try {
 
-                    parentListView[0] = getViewByPosition(i, listView);
-                    CheckBox checkBox = (CheckBox)parentListView[0].findViewById(R.id.idCheckbox);
-                    TextView textView = (TextView)parentListView[0].findViewById(R.id.idText);
+                    for (int i = 0; i < models.size(); i++) {
 
-                    if (checkBox.isChecked()){
+                        parentListView[0] = getViewByPosition(i, listView);
+                        CheckBox checkBox = (CheckBox) parentListView[0].findViewById(R.id.idCheckbox);
+                        TextView textView = (TextView) parentListView[0].findViewById(R.id.idText);
 
-                        selectedQualification.append(textView.getText().toString()+", ");
+                        if (checkBox.isChecked()) {
+
+                            selectedQualification.append(textView.getText().toString() + ", ");
+                        }
+
                     }
 
-                }
-
-                String s = String.valueOf(selectedQualification.deleteCharAt(selectedQualification.length()-1));
+                    String s = String.valueOf(selectedQualification.deleteCharAt(selectedQualification.length() - 1));
 //                selectedQualification.toString()
-                txtListChild.setText(s);
-                dialog.dismiss();
+                    txtListChild.setText(s);
+                    dialog.dismiss();
 //             Toast.makeText(MainActivity.this, "Data is : "+slideText.getText(), Toast.LENGTH_SHORT).show();
+
+                }catch (StringIndexOutOfBoundsException sioe){
+                    Log.e(TAG, " #Error : "+sioe, sioe);
+                }catch (NullPointerException npe){
+                    Log.e(TAG, " #Error : "+npe, npe);
+                }catch (IndexOutOfBoundsException ioe){
+                    Log.e(TAG, " #Error : "+ioe, ioe);
+                }
 
             }
         });
@@ -616,81 +625,58 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         cityList.clear();
         String countryId = null;
 
-        if(countryListWithId != null) {
-            String country = mPartnerCurrentCountryTV.getText().toString();
-            for (int i = 0; i < countryListWithId.size(); i++) {
-                if (countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)) {
-                    countryId = countryListWithId.get(i).getCountryId();
+        try {
+            if (countryListWithId != null) {
+                String country = mPartnerCurrentCountryTV.getText().toString();
+                for (int i = 0; i < countryListWithId.size(); i++) {
+                    if (countryListWithId.get(i).getCountryName().equalsIgnoreCase(country)) {
+                        countryId = countryListWithId.get(i).getCountryId();
+                    }
                 }
+                System.out.println(countryId);
             }
-            System.out.println(countryId);
-        }
 
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        AndroidNetworking.post("https://iitiimshaadi.com/api/cities.json")
-                .addBodyParameter("country_id", countryId)
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        ProgressClass.getProgressInstance().stopProgress();
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("allCities");
-                            List<String> cityList = new ArrayList<>();
+            ProgressClass.getProgressInstance().showDialog(getActivity());
+            AndroidNetworking.post("https://iitiimshaadi.com/api/cities.json")
+                    .addBodyParameter("country_id", countryId)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            ProgressClass.getProgressInstance().stopProgress();
+                            try {
+                                JSONArray jsonArray = response.getJSONArray("allCities");
+                                List<String> cityList = new ArrayList<>();
 //                            if(jsonArray.length() > 0){
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                String city = object.getString("name");
-                                cityList.add(city);
-                            }
-                            showSelectableDialog(cityList, textView);
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    String city = object.getString("name");
+                                    cityList.add(city);
+                                }
+                                showSelectableDialog(cityList, textView);
                         /*}else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.city_not_found);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.city_not_found);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(ANError error) {
-                        ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
-                    }
-                });
-
-
-//        String countryId = "1151";
-/*
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<CitiesAccCountryResponse> call = apiInterface.cityList(countryId);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        call.enqueue(new Callback<CitiesAccCountryResponse>() {
-            @Override
-            public void onResponse(Call<CitiesAccCountryResponse> call, Response<CitiesAccCountryResponse> response) {
-                if (response.isSuccessful()) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    List<AllCity> rawCityList = response.body().getAllCities();
-                    for(int i = 0; i<rawCityList.size(); i++){
-                        if(rawCityList.get(i).getName() != null){
-                            cityList.add(rawCityList.get(i).getName());
+                        @Override
+                        public void onError(ANError error) {
+                            ProgressClass.getProgressInstance().stopProgress();
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
                         }
-                    }
+                    });
 
-                    showDialog(cityList, textView);
-                }
-            }
+        }catch (NullPointerException npe){
+            Log.e(TAG, " #Error : "+npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
+        }
 
-            @Override
-            public void onFailure(Call<CitiesAccCountryResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
     public void showLocation(final TextView textView){
 
@@ -759,15 +745,11 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                         try {
                             JSONArray jsonArray = response.getJSONArray("allCastes");
                             List<String> casteList = new ArrayList<>();
-//                            if(jsonArray.length() > 0){
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 String country = jsonArray.getString(i);
                                 casteList.add(country);
                             }
                             showSelectableDialog(casteList, textView);
-                        /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
-                        }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
                             AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);

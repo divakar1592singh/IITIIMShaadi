@@ -446,13 +446,13 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         String[] ar = getActivity().getResources().getStringArray(R.array.mother_tongue_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
     public void showMaritalStatus(TextView textView){
 
         String[] ar = getActivity().getResources().getStringArray(R.array.marital_status_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
     public void showEducation(TextView textView){
 
@@ -464,7 +464,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         String[] ar = getActivity().getResources().getStringArray(R.array.ann_income_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
 
     public void showCountry(final TextView textView) {
@@ -553,7 +553,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                                 String city = object.getString("name");
                                 cityList.add(city);
                             }
-                            showDialog(cityList, textView);
+//                            showDialog(cityList, textView);
+                            showSelectableDialog(cityList, textView);
                         /*}else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/
@@ -604,7 +605,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                                 String country = jsonArray.getString(i);
                                 casteList.add(country);
                             }
-                            showDialog(casteList, textView);
+                            showSelectableDialog(casteList, textView);
                         /*}else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/

@@ -3,27 +3,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#404040"
     android:weightSum="4"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_weight=".5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
         android:background="@color/colorLightBlack">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorLightBlack">
 
         <TextView
             android:layout_marginLeft="20dp"
             android:id="@+id/txt_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:text="Choose"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/idSearchLayout"
             />
+        <LinearLayout
+            android:id="@+id/idSearchLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorDarkYellow"
+            app:layout_constraintStart_toEndOf="@id/txt_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="@dimen/size_4_dp"
+            android:visibility="invisible"
+            >
+            <EditText
+                android:id="@+id/idSearchET"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Search here..."
+                android:textColor="@color/colorWhite"
+                android:background="@null"
+                />
+            <ImageView
+                android:layout_width="@dimen/size_24_dp"
+                android:layout_height="@dimen/size_24_dp"
+                android:src="@drawable/ic_search_white_24dp"
+                />
+        </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
 
