@@ -71,7 +71,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Search by id"
-                                        android:text="22"
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -136,7 +135,6 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Search by random keyword"
-                                        android:text="25"
                                         android:singleLine="true"
                                         />
                                 </android.support.design.widget.TextInputLayout>
@@ -221,6 +219,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Minimum"
+                                        android:text="22"
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -235,6 +234,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:hint="Maximum"
+                                        android:text="25"
                                         android:singleLine="true"
                                         android:inputType="numberDecimal"/>
                                 </android.support.design.widget.TextInputLayout>
@@ -274,6 +274,11 @@
                                 android:textColor="@color/colorBlack"
                                 android:text="--"
                                 android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/idCountryID"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                         <ImageView
@@ -315,6 +320,11 @@
                                 android:textColor="@color/colorBlack"
                                 android:text="--"
                                 android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/idCityID"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"/>
                         </LinearLayout>
                         <ImageView
                             android:layout_centerInParent="true"

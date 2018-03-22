@@ -337,33 +337,34 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String[] cityArr = new String[1];
         cityArr = city.split(",");
 
-        String religion =  prefs.getString(CONSTANTS.RELIGION);
-        String caste = prefs.getString(CONSTANTS.CASTE);
+        String religion =  returnEmpty(prefs.getString(CONSTANTS.RELIGION));
+
+        String caste = removeLastChar(prefs.getString(CONSTANTS.CASTE));
         String[] casteArr = new String[1];
-        casteArr[0] = caste;
+        casteArr = caste.split(",");
 
-        String mother_tounge =  prefs.getString(CONSTANTS.MOTHER_TONGUE);
+        String mother_tounge =  removeLastChar(prefs.getString(CONSTANTS.MOTHER_TONGUE));
         String[] mother_toungeArr = new String[1];
-        mother_toungeArr[0] = mother_tounge;
+        mother_toungeArr = mother_tounge.split(",");
 
-        String marital_status =  prefs.getString(CONSTANTS.MARITAL_STATUS);
+        String marital_status =  removeLastChar(prefs.getString(CONSTANTS.MARITAL_STATUS));
         String[] marital_statusArr = new String[1];
-        marital_statusArr[0] = marital_status;
+        marital_statusArr = marital_status.split(",");
 
-        String course =  prefs.getString(CONSTANTS.COURSE);
+        String course =  removeLastChar(prefs.getString(CONSTANTS.COURSE));
         String[] courseArr = new String[1];
-        courseArr[0] = course;
+        courseArr = course.split(",");
 
-        String annual_income =  prefs.getString(CONSTANTS.ANNUAL_INCOME);
+        String annual_income =  removeLastChar(prefs.getString(CONSTANTS.ANNUAL_INCOME));
         String[] annual_incomeArr = new String[1];
-        annual_incomeArr[0] = annual_income;
+        annual_incomeArr = annual_income.split(",");
 
-        String sPartnerLoc = prefs.getString(CONSTANTS.PARTNER_LOC);
+        String sPartnerLoc = removeLastChar(prefs.getString(CONSTANTS.PARTNER_LOC));
         String[] sPartnerLocArr = new String[1];
-        sPartnerLocArr[0] = sPartnerLoc;
+        sPartnerLocArr = sPartnerLoc.split(",");
 
-        String sMinHeight = prefs.getString(CONSTANTS.MIN_HEIGHT);
-        String sMaxHeight = prefs.getString(CONSTANTS.MAX_HEIGHT);
+        String sMinHeight = removeWhiteSpace(prefs.getString(CONSTANTS.MIN_HEIGHT));
+        String sMaxHeight = removeWhiteSpace(prefs.getString(CONSTANTS.MAX_HEIGHT));
 
         profileList.add(minage);profileList.add(maxage);profileList.add(country);
         profileList.add(city);profileList.add(religion);profileList.add(caste);
@@ -371,26 +372,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         profileList.add(course);profileList.add(annual_income);
         profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);
 
- /*       PaidSubsAdvanceSearchRequest searchRequest = new PaidSubsAdvanceSearchRequest();
-        searchRequest.token = token;
-        searchRequest.minage = minage;
-        searchRequest.maxage = maxage;
-        searchRequest.country = country;
-
-        searchRequest.city = cityArr;
-        searchRequest.religion = religion;
-        searchRequest.caste = casteArr;
-        searchRequest.mother_tounge = mother_toungeArr;
-        searchRequest.marital_status = marital_statusArr;
-        searchRequest.course = courseArr;
-        searchRequest.annual_income = annual_incomeArr;
-
-        searchRequest.location = sPartnerLocArr;
-//        searchRequest.details = ;
-
-        searchRequest.min_height = sMinHeight;
-        searchRequest.max_height = sMaxHeight;
-*/
         String page = curPage;
 
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
@@ -398,8 +379,9 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
 
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country);
-//        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
+
+
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
             public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
@@ -542,10 +524,29 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     }
 
     public static String removeLastChar(String s) {
-        if (s == null || s.length() == 0) {
-            return s;
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return s = "";
         }
-        return s.substring(0, s.length()-1);
+        String rawString = s.substring(0, s.length()-1);
+        return rawString.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
+    }
+
+    public static String removeWhiteSpace(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--")) {
+            return s = "[]";
+        }
+        return s.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
+    }
+
+
+    public static String returnEmpty(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--")) {
+            return s = "";
+        }
+        return s;
+//        st = st.replaceAll("\\s+","")
     }
 
 

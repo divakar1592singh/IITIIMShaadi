@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
         prefs = AppController.getInstance().getPrefs();
 //
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "6b93c8d29b0d49e460db1a897e087aca");
-//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "7974cd4db32ddea76fe9cfa1f397d9f3"); swati
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "a05e22d25590c21124f72e189947b03e"); // swati
 
 
 
@@ -52,8 +52,6 @@ public class SplashActivity extends AppCompatActivity {
         prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
         prefs.putString(CONSTANTS.OTHER_USERID, "30413");
 */
-
-
 
 /*
         prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
@@ -86,7 +84,8 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, ContactUsActivity.class);
+               Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);
+//                Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);Intent intent = new Intent(SplashActivity.this, PaidSearchPartnerActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

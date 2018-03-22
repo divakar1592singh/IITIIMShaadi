@@ -69,6 +69,7 @@ public class SliderDialogListLayoutAdapter extends RecyclerView.Adapter<SliderDi
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         SliderDialogListLayoutModel movie = listData.get(position);
         holder.title.setText(movie.getName());
 

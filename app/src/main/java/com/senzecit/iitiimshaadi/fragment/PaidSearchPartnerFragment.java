@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -38,6 +40,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.CityModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
@@ -78,6 +81,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     LinearLayout mlinearLayoutAdvanceSearch;
     boolean idSearch,keywordSearch,advanceSearch = true;
     Button mSearchPartner;
+    TextView mCountryID, mCityID;
 
     CountryModel countryResponse;
     List<CountryModel> countryListWithId;
@@ -92,7 +96,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV,
             mPartnerPermanentLocarionTV, mSelectHeightMinTV, mSelectHeightMaxTV;
 
-
+    List<CityModel> cityWithIdList = null;
     public void setPaidSearchPartnerFragmentCommunicator(PaidSearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
     }
@@ -179,7 +183,61 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         mSelectHeightMinTV = (TextView)view.findViewById(R.id.selectHeightMinTV) ;
         mSelectHeightMaxTV = (TextView)view.findViewById(R.id.selectHeightMaxTV) ;
 
+        //
+        mCountryID  = (TextView)view.findViewById(R.id.idCountryID);
+        mCityID  = (TextView)view.findViewById(R.id.idCityID);
+
+        mPartnerCurrentCountryTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String country = s.toString();
+                showCountryId(country);
+            }
+        });
+        mPartnerCurrentCityIV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String city = removeLastChar(s.toString());
+                String[] cityArr = city.split(",");
+                mCityID.setText("");
+                for(String city1 : cityArr){
+                    showCityId(city1);
+                }
+            }
+        });
+
+
     }
+
+    public static String removeLastChar(String s) {
+        if (s == null || s.length() == 0) {
+            return s;
+        }
+        String rawString = s.substring(0, s.length()-1);
+        return rawString.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -333,8 +391,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
-        String country = mPartnerCurrentCountryTV.getText().toString() ;
-        String city = mPartnerCurrentCityIV.getText().toString() ;
+        String country = mCountryID.getText().toString() ;
+        String city = mCityID.getText().toString() ;
         String religion = mSelectReligionTV.getText().toString() ;
         String caste = mSelectCastTV.getText().toString() ;
         String mother_tounge = mSelectMotherToungeTV.getText().toString() ;
@@ -619,9 +677,59 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 });
 
     }
+
+    public void showCountryId(String countryName) {
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                .addBodyParameter("token", token)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCountries");
+                            countryListWithId = new ArrayList<>();
+                            List<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject countryObject = jsonArray.getJSONObject(i);
+                                String countryId = countryObject.getString("old_value");
+                                String country = countryObject.getString("name");
+
+                                if(country.equalsIgnoreCase(countryName)){
+                                    mCountryID.setText(countryObject.getString("old_value"));
+                                }
+
+                                countryList.add(country);
+                                CountryModel countryModel = new CountryModel(countryId, country);
+                                countryListWithId.add(countryModel);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
+                    }
+                });
+
+    }
+
     public void showCity(final TextView textView){
 
         final List<String> cityList = new ArrayList<>();
+        cityWithIdList = new ArrayList<>();
+
         cityList.clear();
         String countryId = null;
 
@@ -653,7 +761,10 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject object = jsonArray.getJSONObject(i);
                                     String city = object.getString("name");
+                                    String cityId = object.getString("old_value");
                                     cityList.add(city);
+                                    CityModel cityModel = new CityModel(city, cityId);
+                                    cityWithIdList.add(cityModel);
                                 }
                                 showSelectableDialog(cityList, textView);
                         /*}else {
@@ -678,6 +789,15 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         }
 
     }
+    public void showCityId(String cityName){
+        for (int i = 0; i < cityWithIdList.size(); i++){
+            if(cityName.equalsIgnoreCase(cityWithIdList.get(i).getCityName())){
+                mCityID.append(cityWithIdList.get(i).getCityId()+", ");
+            }
+        }
+    }
+
+
     public void showLocation(final TextView textView){
 
         final List<String> cityList = new ArrayList<>();

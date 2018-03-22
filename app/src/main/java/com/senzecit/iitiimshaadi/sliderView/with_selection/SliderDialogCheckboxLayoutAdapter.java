@@ -15,8 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by senzec on 30/11/17.
@@ -29,6 +31,8 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
     Context mContext;
     LayoutInflater inflater;
     ArrayList<SliderDialogCheckboxLayoutModel> models = new ArrayList<SliderDialogCheckboxLayoutModel>();
+    List<SliderCheckModel> sliderCheckList = new ArrayList<>();
+    SliderCheckModel checkModel = null;
 
     public SliderDialogCheckboxLayoutAdapter(Context mContext, ArrayList<SliderDialogCheckboxLayoutModel> models){
         this.mContext = mContext;
@@ -53,6 +57,7 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
+
         view = inflater.inflate(R.layout.slider_dialog_checkbox_row, null);
         LinearLayout layout = (LinearLayout)view.findViewById(R.id.idSelectableLayout) ;
         CheckBox mSliderCheck = (CheckBox)view.findViewById(R.id.idCheckbox);
@@ -61,15 +66,28 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("****************Pos : "+position);
+
                 if(mSliderCheck.isChecked() == true){
                     mSliderCheck.setChecked(false);
+                    checkModel = new SliderCheckModel(position, false);
+                    sliderCheckList.add(checkModel);
                 }else {
                     mSliderCheck.setChecked(true);
+                    checkModel = new SliderCheckModel(position, true);
+                    sliderCheckList.add(checkModel);
                 }
             }
         });
         mmSlidertext.setText(models.get(position).getName());
+try {
+    if(sliderCheckList.get(position).isChecked() == true){
 
+        mSliderCheck.setChecked(sliderCheckList.get(position).isChecked());
+    }
+}catch (IndexOutOfBoundsException iobe){
+
+}
         return view;
     }
 }
