@@ -1,14 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.Rect;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -18,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
@@ -33,12 +27,8 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberPartnerAdapter;
@@ -59,18 +49,13 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -83,7 +68,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
 
     private static final String TAG = SubscriptionActivity.class.getSimpleName();
 
-    ExpListViewSubscriberAdapter listAdapter, listAdapterPartner;
+    ExpListViewSubscriberAdapter listAdapter;
     ExpListViewSubscriberPartnerAdapter partnerlistAdapter;
     ExpandableListView expListView, expListViewPartner;
     List<String> listDataHeader, listDataHeaderPartner;
@@ -961,7 +946,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         }
     }
 
-
     /** MOBILE */
     public void callWebServiceForResendOTP(){
 
@@ -1055,7 +1039,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
         }
     }
-    /* File Upload */
+    /** File Upload */
     public void callWebServiceForFileUpload(final File file)throws URISyntaxException {
 
         System.out.print(file);

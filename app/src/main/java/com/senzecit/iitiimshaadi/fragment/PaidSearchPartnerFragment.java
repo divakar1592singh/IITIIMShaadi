@@ -42,11 +42,12 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CityModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -67,9 +68,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by ravi on 13/11/17.
- */
 
 public class PaidSearchPartnerFragment extends Fragment implements View.OnClickListener {
 
@@ -97,6 +95,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             mPartnerPermanentLocarionTV, mSelectHeightMinTV, mSelectHeightMaxTV;
 
     List<CityModel> cityWithIdList = null;
+
+    private List<SliderCheckModel> sliderCheckList;
+
     public void setPaidSearchPartnerFragmentCommunicator(PaidSearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
     }
@@ -113,6 +114,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_paid_search_partner,container,false);
         mDialogInflator = LayoutInflater.from(view.getContext());
+        sliderCheckList = new ArrayList<>();
         return view;
     }
 
@@ -498,6 +500,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild)
     {
+        sliderCheckList = new ArrayList<>();
+        sliderCheckList.clear();
         int d_width = 100;
         int d_height = 50;
         final StringBuilder selectedQualification = new StringBuilder();
@@ -508,12 +512,14 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName("senzecit " + i);
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }
 
@@ -527,7 +533,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         Button doneBtn = (Button)view.findViewById(R.id.button_done);
 
 
-        SliderDialogCheckboxLayoutAdapter clad1 = new SliderDialogCheckboxLayoutAdapter(getContext(), models);
+        SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(getContext(), models, sliderCheckList);
+
+        //        listView.invalidate();
         listView.setAdapter(clad1);
 
 

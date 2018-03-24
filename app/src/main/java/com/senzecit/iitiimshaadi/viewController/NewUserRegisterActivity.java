@@ -1,10 +1,12 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -94,6 +96,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         init();
         handleview();
 
+//        reTryMethod();
     }
 
     private void init(){
@@ -460,6 +463,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     /** Check API Section */
     public void callWebServiceForNewRegistration() {
 
+        if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
+
         String sUsername = mUserNameET.getText().toString().trim();
         String sEmail = mEmailET.getText().toString().trim();
         String sPassword = mPasswordET.getText().toString().trim();
@@ -517,11 +522,17 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             @Override
             public void onFailure(Call<NewRegistrationResponse> call, Throwable t) {
                 call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
                 reTryMethod();
 //                Toast.makeText(NewUserRegisterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
 //                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong! \n Try again!");
             }
         });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
+        }
+
 
     }
 
@@ -674,27 +685,45 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     }
 
+
     public void reTryMethod(){
 
-        new AlertDialog.Builder(NewUserRegisterActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again! \n Help : \n 1. Check Internet \n 2. Try different Username or Email")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \nHelp : Try different Username or Email.\n";
 
-                        callWebServiceForNewRegistration();
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+        final Dialog dialog = new Dialog(NewUserRegisterActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Cancel" ,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
+//                dialog.cancel();
+                callWebServiceForNewRegistration();
+            }
+        });
+
+        dialog.show();
     }
+
 
     @Override
     protected void onStop() {

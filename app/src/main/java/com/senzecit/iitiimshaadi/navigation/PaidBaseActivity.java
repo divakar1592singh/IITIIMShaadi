@@ -1,10 +1,12 @@
 package com.senzecit.iitiimshaadi.navigation;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -22,6 +24,7 @@ import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
+import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
 import com.senzecit.iitiimshaadi.viewController.ContactUsActivity;
 import com.senzecit.iitiimshaadi.viewController.DisclaimerActivity;
 import com.senzecit.iitiimshaadi.viewController.FAQActivity;
@@ -196,8 +199,8 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
             }
             case R.id.idChat:
-            AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
-//                startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
+//            AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
+                startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
             break;
             case R.id.idMyFriends:
             startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
@@ -208,7 +211,18 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
             break;
             case R.id.idLogoutNav: {
                 // Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
-                AppPrefs prefs = AppController.getInstance().getPrefs();
+
+
+                new AlertDialog.Builder(PaidBaseActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Logout Alert")
+                        .setMessage("are you sure?")
+                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                                AppPrefs prefs = AppController.getInstance().getPrefs();
                 prefs.remove(CONSTANTS.LOGGED_TOKEN);
                 prefs.remove(CONSTANTS.LOGGED_USERNAME);
                 prefs.remove(CONSTANTS.LOGGED_USERID);
@@ -226,6 +240,18 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+
+
+                            }
+                        })
+                        .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
 
                 break;
             }

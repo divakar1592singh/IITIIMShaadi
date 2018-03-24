@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="330dp"
-    android:layout_height="160dp"
+    android:layout_height="wrap_content"
     android:background="#00555555"
     android:orientation="vertical"
     android:padding="5dp"
@@ -88,7 +88,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="40"
                 android:orientation="horizontal"
-                android:weightSum="100">
+                android:weightSum="100"
+                android:padding="@dimen/size_4_dp">
 
 
                 <LinearLayout

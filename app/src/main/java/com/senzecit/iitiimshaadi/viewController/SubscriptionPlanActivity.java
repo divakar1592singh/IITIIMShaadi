@@ -100,7 +100,12 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
                 if(NetworkClass.getInstance().checkInternet(SubscriptionPlanActivity.this) == true){
 //                    showPaymentAlert();
-                    alertPaymentSummary();
+                    if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
+
+                        alertPaymentSummary();
+                    }else if(mInterNationalRB.isChecked() == true) {
+
+                    }
                 }else {
                     NetworkDialogHelper.getInstance().showDialog(SubscriptionPlanActivity.this);
                 }
@@ -257,18 +262,12 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     public void transactPayment(){
 
-        if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
-
 //            Toast.makeText(SubscriptionPlanActivity.this, mTotalAmountTV.getText().toString(), Toast.LENGTH_LONG).show();
             boolean status = true;
             Intent intent = new Intent(SubscriptionPlanActivity.this, MakePaymentActivity.class);
             intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());
             intent.putExtra(CONSTANTS.PLAN_STATUS, status);
             startActivity(intent);
-
-        }else if(mInterNationalRB.isChecked() == true) {
-
-        }
 
     }
 

@@ -131,7 +131,8 @@
                 android:textSize="18sp"
                 android:textColor="@color/colorWhite"
                 android:textAllCaps="false"
-               />
+               android:visibility="gone"
+                />
 
         </LinearLayout>
     </ScrollView>

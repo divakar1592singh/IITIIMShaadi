@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,7 +70,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_custom_folders);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -80,12 +83,31 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.refresh_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                callWebServiceForCustomFolder();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     private void init(){
         mToolbar= (Toolbar) findViewById(R.id.toolbar);
         mTitle = (TextView) findViewById(R.id.toolbar_title);
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
-        mTitle.setText("Custom Folders");
+        mTitle.setText("      Custom Folders");
 
         mTabLayout = (TabLayout) findViewById(R.id.tab);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -111,6 +133,9 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
     }
 
     private void handle(){
+
+        setSupportActionBar(mToolbar);
+
         mBack.setOnClickListener(this);
         mAddFolderIV.setOnClickListener(this);
         mEditFolderIV.setOnClickListener(this);
@@ -146,11 +171,9 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.idAddFolder:
                 checkAddValid();
-
                 break;
             case R.id.idEditFolder:
                 checkRenameValid();
-
                 break;
             case R.id.idDeleteFolder:
                 checkDeleteAlert();

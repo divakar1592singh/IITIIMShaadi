@@ -35,12 +35,14 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -83,6 +85,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     EditText mAgeMinET, mAgeMaxET;
     TextView mPartnerCurrentCountryTV, mPartnerCurrentCityIV, mSelectReligionTV, mSelectCastTV,
             mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV;
+    private List<SliderCheckModel> sliderCheckList;
 
     public void setSearchPartnerFragmentCommunicator(SearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
@@ -99,6 +102,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search_partner,container,false);
         mDialogInflator = LayoutInflater.from(view.getContext());
+        sliderCheckList = new ArrayList<>();
         return view;
     }
 
@@ -351,6 +355,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild)
     {
+        sliderCheckList = new ArrayList<>();
+        sliderCheckList.clear();
         int d_width = 100;
         int d_height = 50;
         final StringBuilder selectedQualification = new StringBuilder();
@@ -361,12 +367,14 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName("senzecit " + i);
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }
 
@@ -380,7 +388,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         Button doneBtn = (Button)view.findViewById(R.id.button_done);
 
 
-        SliderDialogCheckboxLayoutAdapter clad1 = new SliderDialogCheckboxLayoutAdapter(getContext(), models);
+        SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(getContext(), models, sliderCheckList);
         listView.setAdapter(clad1);
 
 

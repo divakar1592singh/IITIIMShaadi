@@ -35,6 +35,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
@@ -55,6 +56,7 @@ import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -94,6 +96,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     MyProfileResponse myProfileResponse;
     AppPrefs prefs;
     RxNetworkingForObjectClass rxNetworkingClass;
+    private List<SliderCheckModel> sliderCheckList;
 
     public ExpandableListViewAdapter(Context context, List<String> listDataHeader,
                                         HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
@@ -386,7 +389,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         });
 
                         //SetData - MaritalStatus
-                        txtListChild6.setText(myProfileResponse.getBasicData().getMaritalStatus());
+                        txtListChild6.setText(myProfileResponse.getBasicData().getDrink());
 
                         txtListChild6.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -450,27 +453,57 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                     case 8:
                         LayoutInflater infalInflater8 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater8.inflate(R.layout.list_item, null);
+                        convertView = infalInflater8.inflate(R.layout.list_item_secondtype, null);
 
-                        final TextView txtListChild8 = (TextView) convertView
+                        TextInputLayout textInputLayout8 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        textInputLayout8.setHint(childText);
+
+                        EditText editText8 = convertView.findViewById(R.id.idlistitemET);
+                        editText8.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        //SetData - Name
+                        editText8.setText(myProfileResponse.getBasicData().getHealthIssue());
+                        editText8.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                ExpOwnProfileModel.getInstance().setName(editable.toString());
+                            }
+                        });
+
+                        break;
+                    case 9:
+                        LayoutInflater infalInflater9 = (LayoutInflater) this._context
+                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        convertView = infalInflater9.inflate(R.layout.list_item, null);
+
+                        final TextView txtListChild9 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
-                        txtListChild8.setText(childText);
+                        txtListChild9.setText(childText);
 
                         //SetData - Height
-                        txtListChild8.setText(myProfileResponse.getBasicData().getHeight());
+                        txtListChild9.setText(myProfileResponse.getBasicData().getHeight());
 
-                        TextView txtListChildHeader8 = (TextView) convertView
+                        TextView txtListChildHeader9 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader8.setText(childText);
+                        txtListChildHeader9.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild8,100,50);
-                                showHeight(txtListChild8);
+                                showHeight(txtListChild9);
                             }
                         });
 
-                        txtListChild8.addTextChangedListener(new TextWatcher() {
+                        txtListChild9.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -488,34 +521,34 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         });
 
                         break;
-                    case 9:
-                        LayoutInflater infalInflater9 = (LayoutInflater) this._context
+                    case 10:
+                        LayoutInflater infalInflater10 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater9.inflate(R.layout.list_item, null);
+                        convertView = infalInflater10.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild9 = (TextView) convertView
+                        final TextView txtListChild10 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
-                        txtListChild9.setText(childText);
+                        txtListChild10.setText(childText);
 
                         //SetData - Interest
                         if(myProfileResponse.getBasicData().getInterest() != null) {
                             String interest1 = myProfileResponse.getBasicData().getInterest().toString().replace("[", "");
                             String interestNet = interest1.replace("]", "");
-                            txtListChild9.setText(interestNet);
+                            txtListChild10.setText(interestNet);
                         }
 
-                        TextView txtListChildHeader9 = (TextView) convertView
+                        TextView txtListChildHeader10 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader9.setText(childText);
+                        txtListChildHeader10.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 //                                showSelectableDialog(txtListChild9,100,50);
-                                showInterests(txtListChild9);
+                                showInterests(txtListChild10);
                             }
                         });
 
-                        txtListChild9.addTextChangedListener(new TextWatcher() {
+                        txtListChild10.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -533,10 +566,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         });
 
                         break;
-                    case 10:
-                        LayoutInflater infalInflater10 = (LayoutInflater) this._context
+                    case 11:
+                        LayoutInflater infalInflater11 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater10.inflate(R.layout.submit_data_button, null);
+                        convertView = infalInflater11.inflate(R.layout.submit_data_button, null);
                         Button saveChanges = convertView.findViewById(R.id.save_changes_button);
                         saveChanges.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -966,7 +999,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             @Override
                             public void afterTextChanged(Editable editable) {
-                                ExpOwnProfileModel.getInstance().setPermanent_Address(editable.toString());
+                                ExpOwnProfileModel.getInstance().setCurrent_Address(editable.toString());
 
                             }
                         });
@@ -1095,7 +1128,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout11.setHint(childText);
 
                         EditText editText11 = convertView.findViewById(R.id.idlistitemET);
-//                        editText11.setText(myProfileResponse.getBasicData().getCurrentZipcode());
+                        editText11.setText(myProfileResponse.getBasicData().getCurrentZipcode());
 
                         editText11.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2152,6 +2185,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild)
     {
+        sliderCheckList = new ArrayList<>();
+        sliderCheckList.clear();
+
         int d_width = 100;
         int d_height = 50;
         final StringBuilder selectedQualification = new StringBuilder();
@@ -2162,12 +2198,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName("senzecit " + i);
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }
 
@@ -2181,9 +2219,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         Button doneBtn = (Button)view.findViewById(R.id.button_done);
 
 
-        SliderDialogCheckboxLayoutAdapter clad1 = new SliderDialogCheckboxLayoutAdapter(_context, models);
+        SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(_context, models, sliderCheckList);
         listView.setAdapter(clad1);
-
 
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
@@ -2652,6 +2689,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.job_location = Work_Location;
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
+        request.linked_in = LinkdIn_Url;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 

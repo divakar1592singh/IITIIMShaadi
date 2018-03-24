@@ -31,6 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.socket.Result;
+import com.senzecit.iitiimshaadi.model.api_response_model.socket.SingleChatHistoryModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -44,6 +48,9 @@ import java.util.List;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A chat fragment containing messages view and input form.
@@ -100,7 +107,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         mSocket.connect();
 
         startSignIn();
-//        previousChatWebApi();
+        previousChatWebApi();
     }
 
     @Override
@@ -110,7 +117,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         //      addMessage("User", "This is test message");
         TextView tv_title = (TextView)view.findViewById(R.id.idUserNameTV) ;
 //        tv_title.setText(new SharedPrefClass(getActivity()).getChatReceiverName());
-        tv_title.setText(String.valueOf(prefs.getString(CONSTANTS.LOGGED_USERID)));
+        tv_title.setText(String.valueOf(prefs.getString(CONSTANTS.OTHER_USERNAME)));
 
         ImageView mProfileIV =(ImageView)view.findViewById(R.id.idProfileIV);
         mProfileIV.setVisibility(View.GONE);
@@ -224,13 +231,14 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
-  /*  private void previousChatWebApi(){
-        ApiInterface apiInterface;
-        SingleChatPostRequest chatPostRequest = new SingleChatPostRequest();
-        chatPostRequest.senderId = new SharedPrefClass(getActivity()).getLoginInfo();
-        chatPostRequest.receiverId = new SharedPrefClass(getActivity()).getReceiverID();
 
-        apiInterface = ApiClient.getClient(CONSTANTS.CHAT_HISTORY_URL).create(ApiInterface.class);
+    private void previousChatWebApi(){
+        APIInterface apiInterface;
+        SingleChatPostRequest chatPostRequest = new SingleChatPostRequest();
+        chatPostRequest.from_user = prefs.getString(CONSTANTS.LOGGED_USERID);
+        chatPostRequest.to_user = prefs.getString(CONSTANTS.OTHER_USERID);
+
+        apiInterface = APIClient.getClient(CONSTANTS.CHAT_HISTORY_URL).create(APIInterface.class);
         Call<SingleChatHistoryModel> call1 = apiInterface.singleChatPreviousHistory(chatPostRequest);
         call1.enqueue(new Callback<SingleChatHistoryModel>() {
             @Override
@@ -247,12 +255,15 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
                             for(int i = 0; i<chatList.size(); i++) {
 
-                                profileUrl = chatList.get(i).getSenderImage();
-                                userId = chatList.get(i).getSenderId();
-                                userName = chatList.get(i).getSenderName();
+                                profileUrl = chatList.get(i).getProfileImage();
+                                userId = chatList.get(i).getToUser();
+                                userName = chatList.get(i).getFirstName();
+
                                 message = chatList.get(i).getMessage();
 
-                                addMessage( profileUrl, userId, userName, message);
+                                String netProfileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+profileUrl;
+
+                                addMessage( netProfileUri, userId, userName, message);
                             }
                         }else {
 //                            Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -274,7 +285,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         });
 
     }
-*/
+
+
     private void addLog(String message) {
         mMessages.add(new Message.Builder(Message.TYPE_LOG)
                 .message(message).build());
@@ -336,17 +348,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         String senderName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
         String senderImageUrl = prefs.getString(CONSTANTS.LOGGED_USER_PIC);
 
-//        String currentReceiver = "";
-
-//        System.out.println("ReciverId: "+receiverId+" ,SenderId: "+senderId);
         try {
             obj.put("from_user", senderId);
-       /*     if(senderImageUrl != null)
-            {obj.put("senderImage", senderImageUrl);}else {
-                obj.put("senderImage", "http://www.vermeer.com.au/wp-content/uploads/2016/12/attachment-no-image-available-300x300.png");
-            }
-            obj.put("senderName", senderName);
-*/
             obj.put("to_user", receiverId);
             obj.put("message", message);
             obj.put("sent", new Date());
@@ -421,7 +424,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i(TAG, "diconnected");
+                    Log.i(TAG, "dsiconnected");
                     isConnected = false;
 //                    Toast.makeText(getActivity().getApplicationContext(),
 //                            R.string.disconnect, Toast.LENGTH_LONG).show();
@@ -452,7 +455,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-                    String userId, userName, userImageUrl, message;
+                    String userId, userName, message, profileUri;
 
                     try {
 //                        Toast.makeText(getActivity(), "RECEIVING Data", Toast.LENGTH_LONG).show();
@@ -470,7 +473,9 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                         //       Toast.makeText(getActivity(), "Received block", Toast.LENGTH_LONG).show();
                         //message = data.getString("message");
                         //         addMessage(mUsername, message);
+                        String userImageUrl = data.getString("profile_pic");
 
+                        profileUri = CONSTANTS.IMAGE_AVATAR_URL+prefs.getString(CONSTANTS.OTHER_USERID)+"/"+userImageUrl;
                         userId = data.getString("from_user");
                         message = data.getString("message");
 
@@ -486,7 +491,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 //                    removeTyping(userName);
 //                    addMessage(userImageUrl, userId, userName, message);
 
-;                    addMessage("", userId, null, message);
+;                    addMessage(profileUri, userId, null, message);
 
                 }
             });

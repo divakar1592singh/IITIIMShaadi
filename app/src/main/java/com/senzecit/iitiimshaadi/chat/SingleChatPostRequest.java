@@ -5,6 +5,6 @@ package com.senzecit.iitiimshaadi.chat;
  */
 
 public class SingleChatPostRequest {
-    String senderId;
-    String receiverId;
+    public String from_user;
+    public String to_user;
 }

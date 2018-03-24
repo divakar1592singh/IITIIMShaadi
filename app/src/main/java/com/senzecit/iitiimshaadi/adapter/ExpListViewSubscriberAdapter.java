@@ -35,6 +35,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
@@ -48,6 +49,7 @@ import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -88,6 +90,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     AppPrefs prefs;
     RxNetworkingForObjectClass rxNetworkingClass;
     JSONObject jsonObject;
+    private List<SliderCheckModel> sliderCheckList;
 
 
     public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
@@ -2032,6 +2035,10 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild) {
+
+        sliderCheckList = new ArrayList<>();
+        sliderCheckList.clear();
+
         int d_width = 100;
         int d_height = 50;
         final StringBuilder selectedQualification = new StringBuilder();
@@ -2042,12 +2049,14 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         } else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName("senzecit " + i);
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }
 
@@ -2061,9 +2070,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
         Button doneBtn = (Button) view.findViewById(R.id.button_done);
 
 
-        SliderDialogCheckboxLayoutAdapter clad1 = new SliderDialogCheckboxLayoutAdapter(_context, models);
+        SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(_context, models, sliderCheckList);
         listView.setAdapter(clad1);
-
 
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);

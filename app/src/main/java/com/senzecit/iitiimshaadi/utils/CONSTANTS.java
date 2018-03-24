@@ -12,7 +12,7 @@ public interface CONSTANTS {
     String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/uploads/avatars/";
 //    CHAT
     String CHAT_SERVER_URL = "http://35.154.217.225:1109";
-    String CHAT_HISTORY_URL = "http://35.154.217.225:1106/";
+    String CHAT_HISTORY_URL = "http://35.154.217.225:1110/";
 
 //    RELATIVE URL
     String BASIC_LIFESTYLE = "api/basic_lifestyle.json";
@@ -43,6 +43,7 @@ public interface CONSTANTS {
     String LOGGED_EMAIL = "email";
     String LOGGED_MOB = "mobile";
     String OTHER_USERID = "other_userid";
+    String OTHER_USERNAME = "other_username";
 
 //    Viewer Type
     String VIEWER_TYPE_1 = "paid_subscriber_viewer";

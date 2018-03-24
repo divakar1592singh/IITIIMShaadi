@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForArrayClass;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
@@ -49,6 +51,7 @@ import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
+import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -87,6 +90,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     MyProfileResponse myProfileResponse;
+    private List<SliderCheckModel> sliderCheckList;
 
     public ExpandableListViewPartnerAdapter(Context context, List<String> listDataHeader,
                                                HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
@@ -413,42 +417,50 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
+                        TextView txtListChildHeader2 = (TextView) convertView
+                                .findViewById(R.id.childItemTVheader);
+                        txtListChildHeader2.setText(childText);
+
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        //SetData - PreferedPartnerCountry
-                        String country1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCountry().toString().replace("[", "");
-                        String country = country1.replace("]","");
-                        txtListChild2.setText(country);
+                        try {
+                            //SetData - PreferedPartnerCountry
+                            String country1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCountry().toString().replace("[", "");
+                            String country = country1.replace("]", "");
+                            txtListChild2.setText(country);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader2.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                        }catch (NullPointerException npe){
+                            Log.e("TAG", " #Error : "+npe, npe );
+                        }
+
+                            convertView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
 //                                showDialog(txtListChild2,100,50);
-                                showCountry(txtListChild2);
-                            }
-                        });
+                                    showCountry(txtListChild2);
+                                }
+                            });
 
-                        txtListChild2.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            txtListChild2.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                @Override
+                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            }
+                                }
 
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setPreferred_Country(editable.toString());
-                            }
-                        });
+                                @Override
+                                public void afterTextChanged(Editable editable) {
+                                    ExpPartnerProfileModel.getInstance().setPreferred_Country(editable.toString());
+                                }
+                            });
+
+
 
                         break;
                     case 3:
@@ -712,6 +724,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild)
     {
+        sliderCheckList = new ArrayList<>();
+        sliderCheckList.clear();
+
         int d_width = 100;
         int d_height = 50;
         final StringBuilder selectedQualification = new StringBuilder();
@@ -722,12 +737,14 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName(dataList.get(i));
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }else {
             for (int i = 0; i < 20; i++) {
                 SliderDialogCheckboxLayoutModel model = new SliderDialogCheckboxLayoutModel();
                 model.setName("senzecit " + i);
                 models.add(model);
+                sliderCheckList.add(new SliderCheckModel(i, false));
             }
         }
 
@@ -741,7 +758,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         Button doneBtn = (Button)view.findViewById(R.id.button_done);
 
 
-        SliderDialogCheckboxLayoutAdapter clad1 = new SliderDialogCheckboxLayoutAdapter(_context, models);
+        SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(_context, models, sliderCheckList);
         listView.setAdapter(clad1);
 
 

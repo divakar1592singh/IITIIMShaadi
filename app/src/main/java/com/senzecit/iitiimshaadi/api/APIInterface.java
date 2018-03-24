@@ -1,6 +1,9 @@
 package com.senzecit.iitiimshaadi.api;
 
+import com.senzecit.iitiimshaadi.chat.ChatUserListRequest;
+import com.senzecit.iitiimshaadi.chat.SingleChatPostRequest;
 import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.ChatUserListModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.rename_folder.RenameFolderResponse;
@@ -24,6 +27,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.find_co
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_institution.QuickRegInstitutionResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.quick_register.pkg_stream.QuickRegStreamResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.socket.SingleChatHistoryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
@@ -386,6 +390,13 @@ Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Query("token") String token, 
     @FormUrlEncoded
     @POST("api/date_to_age.json")
     Call<DateToAgeResponse> dateToAge(@Field("birth_date")String birth_date);
+
+    //CHAT
+    @POST("viewChatHistory")
+    Call<SingleChatHistoryModel> singleChatPreviousHistory(@Body SingleChatPostRequest chatPostRequest);
+
+    @POST("viewUserList")
+    Call<ChatUserListModel> singleChatUserList(@Body SingleChatPostRequest chatPostRequest);
 
 
 }

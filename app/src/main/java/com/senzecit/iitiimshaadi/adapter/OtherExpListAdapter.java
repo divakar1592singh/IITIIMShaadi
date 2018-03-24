@@ -669,6 +669,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
 
                         //SetData - SchoolingYear
                         txtListChild1.setText(String.valueOf(myProfileResponse.getBasicData().getSchoolingYear()));
+                        break;
 
                     case 2:
                         LayoutInflater infalInflater2 = (LayoutInflater) this._context

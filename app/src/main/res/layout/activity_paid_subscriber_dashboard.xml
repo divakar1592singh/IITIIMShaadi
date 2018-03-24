@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/colorMaroon"
+            android:background="#d87570"
             android:weightSum="10">
             // Profile Progress
             <LinearLayout
@@ -447,7 +447,7 @@
             android:id="@+id/expanded_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:contentDescription="description_zoom_touch_close" />
 
 

@@ -103,34 +103,47 @@
         <activity
             android:name=".viewController.ChatMessagesActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".viewController.IntroSliderActivity" />
-        <activity android:name=".customdialog.MainActivity" />
+        <activity android:name=".viewController.IntroSliderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".customdialog.MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".viewController.YoutubeActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".viewController.AlertPlanActivity" />
         <activity
             android:name=".viewController.PrivacyActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".viewController.DisclaimerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".viewController.HowToNavigatePageActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".viewController.IntroSliderWebActivity" />
-        <activity android:name=".viewController.SubscriptionPlanActivity" />
+        <activity android:name=".viewController.IntroSliderWebActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".viewController.SubscriptionPlanActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".viewController.OtherProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".viewController.SearchPartnerActivity" />
-        <activity android:name=".viewController.PaidSearchPartnerActivity" />
-        <activity android:name=".viewController.CustomFoldersActivity" />
+        <activity android:name=".viewController.SearchPartnerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".viewController.PaidSearchPartnerActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".viewController.CustomFoldersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -138,13 +151,19 @@
 
         <activity
             android:name=".payment.MakePaymentActivity"
-            android:theme="@style/AppThemePay" />
-        <activity android:name=".chat.ChatLoginActivity" />
+            android:theme="@style/AppThemePay"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".chat.ChatLoginActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".chat.SocketSingleChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".viewController.NotificationsActivity" />
-        <activity android:name=".viewController.AllInterestActivity" />
-        <activity android:name=".viewController.OtherAlbumActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".viewController.NotificationsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".viewController.AllInterestActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".viewController.OtherAlbumActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

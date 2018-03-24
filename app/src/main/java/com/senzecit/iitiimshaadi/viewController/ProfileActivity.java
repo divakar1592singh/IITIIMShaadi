@@ -517,6 +517,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         basicsLifestyle.add("Drink");
         basicsLifestyle.add("Smoke");
         basicsLifestyle.add("Height");
+        basicsLifestyle.add("Health");
         basicsLifestyle.add("Interests");
         basicsLifestyle.add("Save Changes");
 

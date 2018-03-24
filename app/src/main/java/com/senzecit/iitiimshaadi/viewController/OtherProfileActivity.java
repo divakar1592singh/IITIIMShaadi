@@ -25,6 +25,7 @@ import com.senzecit.iitiimshaadi.adapter.OtherExpListAdapter;
 import com.senzecit.iitiimshaadi.adapter.OtherExpListPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -78,7 +79,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mMyProfile.setOnClickListener(this);
         mPartnerProfile.setOnClickListener(this);
         mBack.setOnClickListener(this);
-        mTitle.setOnClickListener(this);
+//        mTitle.setOnClickListener(this);
 
         String userId = prefs.getString(CONSTANTS.OTHER_USERID);
         callWebServiceForOtherProfile(userId);
@@ -101,6 +102,11 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.idChat:
+
+                Navigator.getClassInstance().navigateToActivity(OtherProfileActivity.this, SocketSingleChatActivity.class);
+//                Toast.makeText(OtherProfileActivity.this, "Album", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.idAlbum:
 
                 Navigator.getClassInstance().navigateToActivity(OtherProfileActivity.this, OtherAlbumActivity.class);
@@ -118,7 +124,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         mTitle = (TextView) findViewById(R.id.toolbar_title);
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
-        mTitle.setText("Other Profile");
+        mTitle.setText("");
 
         mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
         mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
@@ -146,9 +152,11 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
             }
 
             String[] usernameAr = userName.split("\\s");
-            mTitle.setText(new StringBuilder("").append(usernameAr[0]));
+//            mTitle.setText(new StringBuilder("").append(usernameAr[0]));
             mUsrNameTV.setText(new StringBuilder("@").append(userName));
             mUsrIdTV.setText(new StringBuilder("@").append(userId));
+
+            prefs.putString(CONSTANTS.OTHER_USERNAME, usernameAr[0]);
 
         }catch (IllegalArgumentException e){
             Log.e(TAG, " #Error :  "+e, e);
@@ -265,7 +273,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         educationCareer.add("LinkdIn Url");
 
         List<String> aboutMe = new ArrayList<String>();
-        aboutMe.add("Write something about you");
+        aboutMe.add("About you");
 
 
         listDataChild.put(listDataHeader.get(0), basicsLifestyle); // Header, Child data

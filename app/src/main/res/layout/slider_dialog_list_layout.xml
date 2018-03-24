@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#404040"
+    android:background="@color/colorSliderList"
     android:weightSum="4"
     android:orientation="vertical"
     >
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
-        android:background="@color/colorLightBlack">
+        android:background="@color/colorMaroon">
 
         <TextView
             android:id="@+id/txt_title"

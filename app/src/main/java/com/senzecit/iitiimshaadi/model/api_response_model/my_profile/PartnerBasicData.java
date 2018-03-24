@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PartnerBasicData {
 
-    @SerializedName("choice_of_groom")
+    @SerializedName("choice_of_partner")
     @Expose
     private String choiceOfGroom;
     @SerializedName("prefered_partner_education")

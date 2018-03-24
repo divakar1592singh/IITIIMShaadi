@@ -53,5 +53,8 @@
     <color name="blue_btn_bg_pressed_color">#d49e42</color>
     <color name="button_text_color">#000000</color>
 
+    <color name="colorSliderHeader">#7f171f</color>
+    <color name="colorSliderList">#444444</color>
+
 
 </resources>

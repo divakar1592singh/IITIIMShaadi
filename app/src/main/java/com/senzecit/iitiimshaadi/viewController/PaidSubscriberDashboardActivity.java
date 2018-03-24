@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,12 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.adapter.ChatUserAdapter;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SingleChatPostRequest;
+import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.ChatUserListModel;
+import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.Result;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -48,10 +55,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.UnknownHostException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
+    private static final String TAG = "PaidSubscriberDashboard";
     ScrollView mScrollView;
     CircleImageView mProfileCIV;
     ImageView mAlbumIV;
@@ -75,7 +88,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
         initView();
         handleClick();
-
     }
 
     @Override
@@ -137,7 +149,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
     }
 
-
     public  void  setProfileData(){
 
         String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
@@ -187,8 +198,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idShowMessageTV: {
 //                //Toast.makeText(PaidSubscriberDashboardActivity.this,"Show com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.Message", //Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
-                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No message received");
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
+//                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No message received");
                 break;
             }
             case R.id.idAlbumLayout: {
@@ -213,8 +224,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idChatMessageTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Chat/com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.Message", //Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
-                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "Working on Chat");
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
+//                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "Working on Chat");
 
                 break;
             }
@@ -263,8 +274,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
                 .addBodyParameter("token", token)
-//                .addBodyParameter("religion", preferred_Religion)
-                .setTag("test")
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -274,6 +283,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                         ProgressClass.getProgressInstance().stopProgress();
 //                            setSubsDashboardData( username,  profileCompletionPerc);
                             setPaidSubs(response);
+
+                        chatUserWebApi();
                     }
 
                     @Override
@@ -287,40 +298,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
         }
 
-
-/*
-        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<PaidDashboardResponse> call = apiInterface.subscribeDashoardPaid(token);
-        call.enqueue(new Callback<PaidDashboardResponse>() {
-            @Override
-            public void onResponse(Call<PaidDashboardResponse> call, Response<PaidDashboardResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    PaidDashboardResponse serverResponse = response.body();
-                    if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-                            Toast.makeText(PaidSubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
-                            setPaidSubs(serverResponse);
-
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "OTP Alert", "Confuse");
-                        }
-                    }else {
-                        Toast.makeText(PaidSubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PaidDashboardResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(PaidSubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });*/
     }
 
     public void setPaidSubs(JSONObject jsonObject){
@@ -569,6 +546,51 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
+    private void chatUserWebApi(){
+        APIInterface apiInterface;
+        String from_user = prefs.getString(CONSTANTS.LOGGED_USERID);
+        SingleChatPostRequest request = new SingleChatPostRequest();
+        request.from_user = from_user;
+
+        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        apiInterface = APIClient.getClient(CONSTANTS.CHAT_HISTORY_URL).create(APIInterface.class);
+        Call<ChatUserListModel> call1 = apiInterface.singleChatUserList(request);
+        call1.enqueue(new Callback<ChatUserListModel>() {
+            @Override
+            public void onResponse(Call<ChatUserListModel> call, Response<ChatUserListModel> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if(response.isSuccessful()&&response.code()==200) {
+                    try{
+                        if(response.body().getResponseCode() == 200) {
+//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+
+                            List<Result> chatList = response.body().getResult();
+
+                            mChatReceivedTV.setText("("+chatList.size()+")");
+
+                        }else {
+//                            Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (NullPointerException npe){
+                        Log.e(TAG, "#Error : "+npe, npe);
+                    }
+                } else {
+//                    Toast.makeText(getActivity(), "Confused", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatUserListModel> call, Throwable t) {
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                Toast.makeText(PaidSubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                //    ProgressClass.getProgressInstance().stopProgress();
+            }
+        });
+
+    }
+
 
 
 }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#404040"
+    android:background="@color/colorSliderList"
     android:weightSum="4"
     android:orientation="vertical">
 
@@ -14,14 +14,14 @@
         android:layout_height="0dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:background="@color/colorLightBlack">
+        android:background="@color/colorMaroon">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:background="@color/colorLightBlack">
+            android:background="@color/colorMaroon">
 
         <TextView
             android:layout_marginLeft="20dp"

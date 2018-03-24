@@ -6,13 +6,11 @@ package com.senzecit.iitiimshaadi.sliderView.with_selection;
 
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
@@ -26,7 +24,7 @@ import java.util.List;
  */
 
 
-public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
+public class SliderDialogCheckboxLayoutAdapter2 extends BaseAdapter {
 
     private static final String TAG = "SliderDialogCheckboxLayoutAdapter";
     Context mContext;
@@ -35,10 +33,11 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
     List<SliderCheckModel> sliderCheckList;
 
 
-    public SliderDialogCheckboxLayoutAdapter(Context mContext, ArrayList<SliderDialogCheckboxLayoutModel> models, int i ){
+    public SliderDialogCheckboxLayoutAdapter2(Context mContext, ArrayList<SliderDialogCheckboxLayoutModel> models, List<SliderCheckModel> sliderCheckList){
         this.mContext = mContext;
         inflater = LayoutInflater.from(mContext);
         this.models = models;
+        this.sliderCheckList = sliderCheckList;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
-        sliderCheckList = new ArrayList<>();
+//        sliderCheckList = new ArrayList<>();
         // TODO Auto-generated method stub
         View row = null;
         row = View.inflate(mContext, R.layout.slider_dialog_checkbox_row, null);

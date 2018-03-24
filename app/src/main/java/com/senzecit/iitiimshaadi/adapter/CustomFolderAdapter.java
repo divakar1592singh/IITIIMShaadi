@@ -9,18 +9,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.APIClient;
+import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.UserDetail;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.Navigator;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ravi on 15/11/17.
@@ -100,6 +114,35 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
                 }
             }
         });
+
+        holder.mAcceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String userId = String.valueOf(userList.get(position).getUserId());
+                callWebServiceForManipulateFriend(UserDefinedKeyword.ADD.toString(), userId);
+
+            }
+        });
+        holder.mCancelReqBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String userId = String.valueOf(userList.get(position).getUserId());
+                callWebServiceForManipulateFriend(UserDefinedKeyword.CANCEL.toString(), userId);
+
+            }
+        });
+        holder.mUnshortlistedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String userId = String.valueOf(userList.get(position).getUserId());
+                callWebServiceForManipulateFriend(UserDefinedKeyword.UNSHORTLIST.toString(), userId);
+
+            }
+        });
+
     }
 
     @Override
@@ -114,6 +157,66 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
         }else {
             return userList.get(position).getGraduation()+", "+userList.get(position).getGraduationCollege();
         }
+    }
+
+    //
+
+    /** API - Friend Manipulation Task */
+    private void callWebServiceForManipulateFriend(String typeOf, String otherUserID)
+    {
+        if(NetworkClass.getInstance().checkInternet(mContext) == true){
+
+            ProgressClass.getProgressInstance().showDialog(mContext);
+            Call<AddFolderResponse> call = callManipulationMethod(typeOf, otherUserID);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    try {
+                        if (response.isSuccessful()) {
+                            if(response.body().getMessage().getSuccess().length() > 0){
+                                String msg = response.body().getMessage().getSuccess();
+                                AlertDialogSingleClick.getInstance().showDialog(mContext, "Friend Alert", msg);
+                            }
+                        }
+                    }catch (NullPointerException npe)
+                    {
+                        Log.e("TAG", "Error : "+npe, npe);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(mContext);
+        }
+    }
+    public Call<AddFolderResponse> callManipulationMethod(String typeOf, String friend_user)
+    {
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+
+        if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
+            return apiInterface.serviceAddAsFriend(token, friend_user);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.REMOVE.toString())){
+            return apiInterface.serviceRemoveFriend(token, friend_user);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.CANCEL.toString())){
+            return apiInterface.serviceCancelFriend(token, friend_user);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.SHORTLIST.toString())){
+            return apiInterface.serviceShortlistFriend(token, friend_user);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.UNSHORTLIST.toString())){
+            return apiInterface.serviceUnShortlistFriend(token, friend_user);
+        }else {
+//            Toast.makeText(FriendsActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
     }
 
 }

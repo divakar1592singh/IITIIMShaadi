@@ -1,11 +1,13 @@
 package com.senzecit.iitiimshaadi.navigation;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -192,9 +194,10 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.idChatMessageNav: {
+                startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
                 // Toast.makeText(getApplicationContext(), "Upload your document", // Toast.LENGTH_LONG).show();
-                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on it!");
-                /*if(userType.equalsIgnoreCase("subscriber")) {
+//                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on it!");
+ /*               if(userType.equalsIgnoreCase("subscriber")) {
                     AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
                 }else {
                     startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
@@ -282,31 +285,51 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.idChat:
-                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on Chat");
-//                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
+//                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on Chat");
+                startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
                 break;
             case R.id.idLogoutNav:
 //                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "LogOut");
-//                startActivity(new Intent(BaseNavActivity.this, AlertPlanActivity.class));
-                AppPrefs prefs = AppController.getInstance().getPrefs();
-                prefs.remove(CONSTANTS.LOGGED_TOKEN);
-                prefs.remove(CONSTANTS.LOGGED_USERNAME);
-                prefs.remove(CONSTANTS.LOGGED_USERID);
-                prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
-                prefs.remove(CONSTANTS.LOGGED_USER_PIC);
-                prefs.remove(CONSTANTS.LOGGED_EMAIL);
-                prefs.remove(CONSTANTS.LOGGED_MOB);
-                prefs.remove(CONSTANTS.OTHER_USERID);
-                prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
-                prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
-                prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
+
+                new AlertDialog.Builder(BaseNavActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Logout Alert")
+                        .setMessage("are you sure?")
+                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                AppPrefs prefs = AppController.getInstance().getPrefs();
+                                prefs.remove(CONSTANTS.LOGGED_TOKEN);
+                                prefs.remove(CONSTANTS.LOGGED_USERNAME);
+                                prefs.remove(CONSTANTS.LOGGED_USERID);
+                                prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                                prefs.remove(CONSTANTS.LOGGED_USER_PIC);
+                                prefs.remove(CONSTANTS.LOGGED_EMAIL);
+                                prefs.remove(CONSTANTS.LOGGED_MOB);
+                                prefs.remove(CONSTANTS.OTHER_USERID);
+                                prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
+                                prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
+                                prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
 
 
-                Intent intent = new Intent(BaseNavActivity.this, SplashActivity.class);
+                                Intent intent = new Intent(BaseNavActivity.this, SplashActivity.class);
 
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                        finish();
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        })
+                        .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
                 break;
 
         }
