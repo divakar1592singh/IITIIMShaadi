@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ import com.senzecit.iitiimshaadi.api.RxNetworkingForArrayClass;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.groom.ChoiceOfGroomResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_basic_profile.ParnerBasicProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.pt_education.PtrEduCareerResponse;
@@ -87,14 +89,16 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     private HashMap<String, List<String>> _listDataChild;
     AppPrefs prefs;
     private List<SliderCheckModel> sliderCheckList;
+    MyProfileResponse myProfileResponse;
 
     public ExpListViewSubscriberPartnerAdapter(Context context, List<String> listDataHeader,
-                                               HashMap<String, List<String>> listChildData) {
+                                               HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         prefs = AppController.getInstance().getPrefs();
+        this.myProfileResponse = myProfileResponse;
 
     }
 
@@ -109,6 +113,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
     }
+
+
+
 
     @Override
     public View getChildView(int groupPosition, final int childPosition,
@@ -129,6 +136,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
+                        editText.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -152,14 +160,16 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                     case 1:
                         LayoutInflater infalInflater1 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item_numbertype, null);
+                        convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
 
                         TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
+                        //SetData - PreferedPartnerMaxAge
+                        editText1.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -187,6 +197,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
+
+                        //SetData - PreferedPartnerHeightMin
+                        txtListChild2.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMin());
 
                         TextView txtListChildHeader2 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -226,6 +239,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
+                        //SetData - PreferedPartnerHeightMax
+                        txtListChild3.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMax());
+
                         TextView txtListChildHeader3 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
@@ -263,6 +279,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         final TextView txtListChild4 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
+
+                        //SetData - PreferedPartnerMaritalStatus
+                        String marital1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerMaritalStatus().toString().replace("[", "");
+                        String maritalNet = marital1.replace("]", "");
+                        txtListChild4.setText(maritalNet);
 
                         TextView txtListChildHeader4 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -302,7 +323,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                             @Override
                             public void onClick(View view) {
                                 //do somethings.
-                                saveChangesOfCase_pt0();
+                                saveChangesOfCase_0();
                             }
                         });
                         break;
@@ -311,7 +332,6 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
 
                 break;
             case 1:
-                //Toast.makeText(_context, "1", //Toast.LENGTH_LONG).show();
                 switch (childPosition){
                     case 0:
                         LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -321,6 +341,9 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         final TextView txtListChild = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
+
+                        //SetData - PreferedPartnerReligion
+                        txtListChild.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerReligion());
 
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -360,6 +383,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
+                        //SetData - PreferedPartnerCaste
+                        String caste1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCaste().toString().replace("[", "");
+                        String caste = caste1.replace("]","");
+                        txtListChild1.setText(caste);
+
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
@@ -393,13 +421,24 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
+                        TextView txtListChildHeader2 = (TextView) convertView
+                                .findViewById(R.id.childItemTVheader);
+                        txtListChildHeader2.setText(childText);
+
                         final TextView txtListChild2 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader2.setText(childText);
+                        try {
+                            //SetData - PreferedPartnerCountry
+                            String country1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCountry().toString().replace("[", "");
+                            String country = country1.replace("]", "");
+                            txtListChild2.setText(country);
+
+                        }catch (NullPointerException npe){
+                            Log.e("TAG", " #Error : "+npe, npe );
+                        }
+
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -424,6 +463,8 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                                 ExpPartnerProfileModel.getInstance().setPreferred_Country(editable.toString());
                             }
                         });
+
+
 
                         break;
                     case 3:
@@ -453,6 +494,11 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
+                        //SetData - PreferedPartnerEducation
+                        String education1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerEducation().toString().replace("[", "");
+                        String education = education1.replace("]","");
+                        txtListChild.setText(education);
+
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
@@ -467,10 +513,12 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                         txtListChild.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                             }
 
                             @Override
                             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                             }
 
                             @Override
@@ -493,29 +541,43 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                             }
                         });
                         break;
+
                 }
                 break;
             case 3:
 
                 switch (childPosition){
                     case 0:
+                        //Toast.makeText(_context, "3", //Toast.LENGTH_LONG).show();
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
+
+//                        EditText textInputLayout = (EditText) convertView.findViewById(R.id.idTextInputLayout);
+//                        textInputLayout.setHint(childText);
+
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
 //                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
+                        //SetData - ChoiceOfGroom
+                        editText.setText(myProfileResponse.getPartnerBasicData().getChoiceOfGroom());
+
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                             }
+
                             @Override
                             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                             }
+
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpPartnerProfileModel.getInstance().setChoice_of_Groom(editable.toString());
+
                             }
                         });
 
@@ -533,12 +595,16 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
                             }
                         });
                         break;
+
                 }
                 break;
         }
 
         return convertView;
     }
+
+
+
 
     @Override
     public int getChildrenCount(int groupPosition) {
@@ -783,7 +849,7 @@ public class ExpListViewSubscriberPartnerAdapter extends BaseExpandableListAdapt
     }
 
     /** Network Operation */
-    public void saveChangesOfCase_pt0(){
+    public void saveChangesOfCase_0(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 

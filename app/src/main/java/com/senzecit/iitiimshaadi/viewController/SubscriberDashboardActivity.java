@@ -32,9 +32,12 @@ import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubscriberPartnerAdapter;
+import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
+import com.senzecit.iitiimshaadi.adapter.ExpandableListViewPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
 import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
@@ -108,7 +111,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         listAdapter = new ExpListViewSubscriberAdapter(this,listDataHeader,listDataChild, null);
         expListView.setAdapter(listAdapter);
 
-        partnerlistAdapter = new ExpListViewSubscriberPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner);
+        partnerlistAdapter = new ExpListViewSubscriberPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner, null);
         expListViewPartner.setAdapter(partnerlistAdapter);
 
         setInitListViewHeight(expListView);
@@ -136,7 +139,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         super.onStart();
 
         handleClick();
-        callWebServiceForSubscribeDashboard();
+//        callWebServiceForSubscribeDashboard();
+        callWebServiceMyProfile();
         mScrollView.smoothScrollTo(0, 0);
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
     }
@@ -174,80 +178,35 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mProfileCIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(SubscriberDashboardActivity.this, "Profile", Toast.LENGTH_LONG).show();
                 Navigator.getClassInstance().navigateToActivity(SubscriberDashboardActivity.this, ProfileActivity.class);
             }
         });
-/*
-        mAlbumIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Toast.makeText(SubscriberDashboardActivity.this, "Album", Toast.LENGTH_LONG).show();
-
-            }
-        });*/
 
         mEmailVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(SubscriberDashboardActivity.this, "Email", Toast.LENGTH_LONG).show();
-
                 alertDialogEmail();
             }
         });
         mMobVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(SubscriberDashboardActivity.this, "Mobile", Toast.LENGTH_LONG).show();
                 alertDialogMobile();
             }
         });
         mDocumentsVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(SubscriberDashboardActivity.this, "Documents", Toast.LENGTH_LONG).show();
                 alertDialogDocuments();
             }
         });
         mProofVerifyTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(SubscriberDashboardActivity.this, "ID Proof", Toast.LENGTH_LONG).show();
                 alertDialogIDProof();
             }
         });
-//        EXP
-//        expListView, expListViewPartner
-   /*     expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
 
-                for (int g = 0; g < listAdapter.getGroupCount(); g++) {
-                    if (g != groupPosition) {
-                        expListView.collapseGroup(g);
-                    }
-                    setCollapseListViewHeight(expListView, g);
-                }
-
-            }
-        });*/
-/*
-
-        expListViewPartner.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    expListViewPartner.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
-            }
-        });
-*/
-
-
-//     Set Data
         setProfileData();
 
     }
@@ -815,7 +774,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
         mProfilepercTV.setText(new StringBuilder(String.valueOf(profileCompletion)).append("%")); ;
         mUsrNameTV.setText(new StringBuilder("@").append(username));
 
-        callWebServiceForMyProfile();
+        callWebServiceMyProfile();
 
     }
     /** API INTEGRATION */
@@ -1259,83 +1218,53 @@ public class SubscriberDashboardActivity extends BaseNavActivity {
     }
 
     /* Subscriber Dashboard*/
-    public void callWebServiceForMyProfile(){
+
+    private void callWebServiceMyProfile(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        final List<String> countryList = new ArrayList<>();
+        countryList.clear();
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
             ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-            AndroidNetworking.post("https://iitiimshaadi.com/api/my_profile.json")
-                    .addBodyParameter("token", token)
-                    .setPriority(Priority.MEDIUM)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // do anything with response
-                            ProgressClass.getProgressInstance().stopProgress();
-                            try {
-                                Log.i("Response", "I received some data!");
-                                JSONObject jsonObject = response.getJSONObject("basicData");
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<MyProfileResponse> call = apiInterface.myProfileData(token);
+            call.enqueue(new Callback<MyProfileResponse>() {
+                @Override
+                public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
 
-                                listAdapter = new ExpListViewSubscriberAdapter(SubscriberDashboardActivity.this,listDataHeader,listDataChild, jsonObject);
-                                expListView.setAdapter(listAdapter);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
+                        if(response.body() != null){
+                            setMyProfile(response.body());
                         }
+                    }
+                }
 
-                        @Override
-                        public void onError(ANError error) {
-                            ProgressClass.getProgressInstance().stopProgress();
-//                            reTryMethod();
-                        }
-                    });
-
+                @Override
+                public void onFailure(Call<MyProfileResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
         }
-
-
-/*        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
-        call.enqueue(new Callback<SubscriberMainResponse>() {
-            @Override
-            public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    SubscriberMainResponse serverResponse = response.body();
-                    if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-//                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
-//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
-
-                            SubscriberMainResponse mainResponse = response.body();
-                            setSubsDashboardData(mainResponse);
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", "Confuse");
-                        }
-                    }else {
-                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });*/
     }
 
+    private void setMyProfile(MyProfileResponse myProfileResponse){
+
+        listAdapter = new ExpListViewSubscriberAdapter(this,listDataHeader,listDataChild, myProfileResponse);
+        expListView.setAdapter(listAdapter);
+
+        partnerlistAdapter = new ExpListViewSubscriberPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner, myProfileResponse);
+        expListViewPartner.setAdapter(partnerlistAdapter);
+
+    }
 
     @Override
     public void onBackPressed() {

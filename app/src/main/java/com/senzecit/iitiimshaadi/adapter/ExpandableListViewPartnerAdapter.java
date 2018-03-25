@@ -113,6 +113,8 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         return childPosition;
     }
 
+
+
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
@@ -598,6 +600,8 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
         return convertView;
     }
+
+
 
     @Override
     public int getChildrenCount(int groupPosition) {
