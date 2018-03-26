@@ -1,11 +1,8 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,13 +11,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +27,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
+import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
@@ -40,14 +41,18 @@ import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -62,18 +67,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubscriberDashboardActivity extends BaseNavActivity implements ExpListViewSubsAdapter.OnExpLvSubsItemClickListener {
+public class SubscriberDashboardActivity2 extends BaseNavActivity {
 
     private static final String TAG = SubscriptionActivity.class.getSimpleName();
 
     ExpListViewSubsAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    ExpListViewSubsPartnerAdapter partnerlistAdapter;
+    ExpandableListView expListView, expListViewPartner;
+    List<String> listDataHeader, listDataHeaderPartner;
+    HashMap<String, List<String>> listDataChild, listDataChildPartner;
+    TextView mEmailVerifyTV, mMobVerifyTV, mDocumentsVerifyTV, mProofVerifyTV, mUsrNameTV, mUsrIdTV, mProfilepercTV;
+    ImageView mAlbumIV;
+    CircleImageView mProfileCIV;
+    ScrollView mScrollView;
 
+    //
     TextView tvDoc1, tvDoc2, tvDoc3, tvDoc4, mBiodataTv;
     Button mDocBtn1, mDocBtn2, mDocBtn3, mDocBtn4 ;
-
     private static final int READ_FILE_REQUEST_CODE = 101;
     int btnChooserCount = 0;
 //    ProgressBar mProgress;
@@ -82,8 +92,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     AppPrefs prefs;
     String typeOf;
     ProgressBar mProgress;
+    LinearLayout albumLayout;
     AlertDialog dialogID = null;
-    int lastExpandedPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,18 +106,30 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         init();
 
         prepareListData();
+        prepareListDataPartner();
 
         listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, null);
         expListView.setAdapter(listAdapter);
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
+        partnerlistAdapter = new ExpListViewSubsPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner, null);
+        expListViewPartner.setAdapter(partnerlistAdapter);
+
+        setInitListViewHeight(expListView);
+        expListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    expListView.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+
+                setListViewHeight(expandableListView, i);
+                return false;
+            }
+        });
+        //Partner
+        setInitListViewHeight(expListViewPartner);
+        expListViewPartner.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                setListViewHeight(expandableListView, i);
+                return false;
             }
         });
     }
@@ -119,25 +141,71 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         handleClick();
 //        callWebServiceForSubscribeDashboard();
         callWebServiceMyProfile();
+        mScrollView.smoothScrollTo(0, 0);
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
     }
 
     private void init(){
 
-//        albumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
+        albumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
+
+        mScrollView = (ScrollView)findViewById(R.id.idScrlView);
+
+        mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
+        mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
+        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
+        mProgress = (ProgressBar)findViewById(R.id.idprogress);
+        mProfilepercTV = (TextView)findViewById(R.id.idProfilePercTV);
+
+        mAlbumIV = (ImageView)findViewById(R.id.idAlbum);
+
+        mEmailVerifyTV = (TextView)findViewById(R.id.idEmailVerify);
+        mMobVerifyTV = (TextView)findViewById(R.id.idMobVerify);
+        mDocumentsVerifyTV = (TextView)findViewById(R.id.idDocumentsVerify);
+        mProofVerifyTV = (TextView)findViewById(R.id.idProofVerify);
 
         expListView = (ExpandableListView) findViewById(R.id.expandableLV);
+        expListViewPartner = (ExpandableListView) findViewById(R.id.partnerPrefExpLV);
     }
     public void handleClick() {
 
-/*
         albumLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SubscriberDashboardActivity.this, AlbumActivity.class));
+                startActivity(new Intent(SubscriberDashboardActivity2.this, AlbumActivity.class));
             }
         });
-*/
+        mProfileCIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigator.getClassInstance().navigateToActivity(SubscriberDashboardActivity2.this, ProfileActivity.class);
+            }
+        });
+
+        mEmailVerifyTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialogEmail();
+            }
+        });
+        mMobVerifyTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialogMobile();
+            }
+        });
+        mDocumentsVerifyTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialogDocuments();
+            }
+        });
+        mProofVerifyTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialogIDProof();
+            }
+        });
 
         setProfileData();
 
@@ -150,21 +218,21 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-//            Glide.with(SubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
+            Glide.with(SubscriberDashboardActivity2.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
         }
 
-//        mUsrNameTV.setText(new StringBuilder("@").append(userName));
-//        mUsrIdTV.setText(new StringBuilder("@").append(userId));
+        mUsrNameTV.setText(new StringBuilder("@").append(userName));
+        mUsrIdTV.setText(new StringBuilder("@").append(userId));
 
         try{
             String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
             if(userType.equalsIgnoreCase("subscriber_viewer")) {
 
-//                setVerificationStatus(true, true, true, true, true);
+                setVerificationStatus(true, true, true, true, true);
 
             }else if(userType.equalsIgnoreCase("subscriber")){
 
-//                setVerificationStatus(false, false, false, false, false);
+                setVerificationStatus(false, false, false, false, false);
                 callApiForDocStatus();
             }
 
@@ -175,27 +243,18 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     }
 
     private void prepareListData() {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<>();
-        List<String> blankList = new ArrayList<String>();
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
 
         //Group
-        listDataHeader.add("Header1");
-        listDataHeader.add("Header2");
         listDataHeader.add("Basics & Lifestyle");
         listDataHeader.add("Religious Background");
         listDataHeader.add("Contact Details");
         listDataHeader.add("Family Details");
         listDataHeader.add("Education & Career");
         listDataHeader.add("About Me");
-        /** SEARCH PARTNER*/
-        // Adding child data
-        listDataHeader.add("Partner Preferences");
-
-        listDataHeader.add("Basics & LifestylePT");
-        listDataHeader.add("Religious and Country PreferencesPT");
-        listDataHeader.add("Education & CareerPT");
-        listDataHeader.add("Choice of GroomPT");
+//        listDataHeader.add("Acquaintances");
+//        listDataHeader.add("Video");
 
         // Adding child data
         List<String> basicsLifestyle = new ArrayList<String>();
@@ -207,7 +266,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         basicsLifestyle.add("Marital Status");
         basicsLifestyle.add("Drink");
         basicsLifestyle.add("Smoke");
-        basicsLifestyle.add("Health");
         basicsLifestyle.add("Height");
         basicsLifestyle.add("Interests");
         basicsLifestyle.add("Save Changes");
@@ -266,46 +324,184 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         aboutMe.add("Write something about you");
         aboutMe.add("Save Changes");
 
-        /** PARTNER */
+/*
+        List<String> acquiantances = new ArrayList<String>();
+        acquiantances.add("1.Acquaintance Name");
+        acquiantances.add("1.Acquaintance Remark");
+        acquiantances.add("2.Acquaintance Name");
+        acquiantances.add("2.Acquaintance Remark");
+        acquiantances.add("3.Acquaintance Name");
+        acquiantances.add("3.Acquaintance Remark");
+        acquiantances.add("4.Acquaintance Name");
+        acquiantances.add("4.Acquaintance Remark");
+        acquiantances.add("5.Acquaintance Name");
+        acquiantances.add("5.Acquaintance Remark");
+        acquiantances.add("Save Changes");
+*/
+
+//        List<String> video = new ArrayList<String>();
+//        video.add("My Video");
+
+        listDataChild.put(listDataHeader.get(0), basicsLifestyle); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), religiousBackgroung);
+        listDataChild.put(listDataHeader.get(2), contactDetail);
+        listDataChild.put(listDataHeader.get(3), familyDetails);
+        listDataChild.put(listDataHeader.get(4), educationCareer);
+        listDataChild.put(listDataHeader.get(5), aboutMe);
+//        listDataChild.put(listDataHeader.get(6), acquiantances);
+//        listDataChild.put(listDataHeader.get(7), video);
+    }
+
+    private void prepareListDataPartner() {
+        listDataHeaderPartner = new ArrayList<String>();
+        listDataChildPartner = new HashMap<String, List<String>>();
+
         // Adding child data
-        List<String> basicsLifestylePT = new ArrayList<String>();
-        basicsLifestylePT.add("Minimum Age");
-        basicsLifestylePT.add("Maximum Age");
-        basicsLifestylePT.add("Min Height");
-        basicsLifestylePT.add("Max Height");
-        basicsLifestylePT.add("Marital Status");
-        basicsLifestylePT.add("Save Changes");
+        listDataHeaderPartner.add("Basics & Lifestyle");
+        listDataHeaderPartner.add("Religious and Country Preference");
+        listDataHeaderPartner.add("Education & Career");
+        listDataHeaderPartner.add("Groom");
 
-        List<String> religiousBackgroungPT = new ArrayList<String>();
-        religiousBackgroungPT.add("Preferred Religion");
-        religiousBackgroungPT.add("Preferred Caste");
-        religiousBackgroungPT.add("Preferred Country");
-        religiousBackgroungPT.add("Save Changes");
+//        listDataHeaderPartner.add("Video");
+
+        // Adding child data
+        List<String> basicsLifestyle = new ArrayList<String>();
+        basicsLifestyle.add("Minimum Age");
+        basicsLifestyle.add("Maximum Age");
+        basicsLifestyle.add("Min Height");
+        basicsLifestyle.add("Max Height");
+        basicsLifestyle.add("Marital Status");
+        basicsLifestyle.add("Save Changes");
+
+        List<String> religiousBackgroung = new ArrayList<String>();
+        religiousBackgroung.add("Preferred Religion");
+        religiousBackgroung.add("Preferred Caste");
+        religiousBackgroung.add("Preferred Country");
+        religiousBackgroung.add("Save Changes");
 
 
-        List<String> educationCareerPT = new ArrayList<String>();
-        educationCareerPT.add("Preferred Education");
-        educationCareerPT.add("Save Changes");
+        List<String> educationCareer = new ArrayList<String>();
+        educationCareer.add("Preferred Education");
+        educationCareer.add("Save Changes");
 
-        List<String> aboutMePT = new ArrayList<String>();
-        aboutMePT.add("Choice of Groom");
-        aboutMePT.add("Save Changes");
+        List<String> aboutMe = new ArrayList<String>();
+        aboutMe.add("Choice of Groom");
+        aboutMe.add("Save Changes");
 
-        listDataChild.put(listDataHeader.get(0), blankList); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), blankList);
-        listDataChild.put(listDataHeader.get(2), basicsLifestyle); // Header, Child data
-        listDataChild.put(listDataHeader.get(3), religiousBackgroung);
-        listDataChild.put(listDataHeader.get(4), contactDetail);
-        listDataChild.put(listDataHeader.get(5), familyDetails);
-        listDataChild.put(listDataHeader.get(6), educationCareer);
-        listDataChild.put(listDataHeader.get(7), aboutMe);
+//        List<String> video = new ArrayList<String>();
+//        video.add("Partner Preference Video");
 
-        listDataChild.put(listDataHeader.get(8), blankList);
+        listDataChildPartner.put(listDataHeaderPartner.get(0), basicsLifestyle); // Header, Child data
+        listDataChildPartner.put(listDataHeaderPartner.get(1), religiousBackgroung);
+        listDataChildPartner.put(listDataHeaderPartner.get(2), educationCareer);
+        listDataChildPartner.put(listDataHeaderPartner.get(3), aboutMe);
+//        listDataChildPartner.put(listDataHeaderPartner.get(4), video);
 
-        listDataChild.put(listDataHeader.get(9), basicsLifestylePT);
-        listDataChild.put(listDataHeader.get(10), religiousBackgroungPT);
-        listDataChild.put(listDataHeader.get(11), educationCareerPT);
-        listDataChild.put(listDataHeader.get(12), aboutMePT);
+
+    }
+
+    private void setInitListViewHeight(ExpandableListView listView) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            /*if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }*/
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }
+
+    private void setListViewHeight(ExpandableListView listView,int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+
+    }
+
+    private void setCollapseListViewHeight(ExpandableListView listView,int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
 
     }
 
@@ -357,7 +553,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
                 String otp = mOtpET.getText().toString().trim();
                 if (TextUtils.isEmpty(otp)){
-                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP", "OTP is empty");
+                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity2.this, "OTP", "OTP is empty");
                 }else {
                     callWebServiceForOTPVerification(otp, dialog);
                 }
@@ -520,7 +716,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         }
     }
 
-
     public void configureButtonToUpload(Uri uri)throws URISyntaxException{
 
         String fullPath = Commons.getPath(uri, this);
@@ -543,10 +738,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         }
     }
 
-
     public void showUploadAlert(String title, File filePath){
-        new AlertDialog.Builder(SubscriberDashboardActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+        new AlertDialog.Builder(SubscriberDashboardActivity2.this)
                 .setTitle(title+" Upload")
                 .setMessage("are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -562,7 +755,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+
                     }
                 })
                 .show();
@@ -576,7 +769,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         String username = jsonObject.optString("name");
         int profileCompletion = jsonObject.optInt("profile_complition");
+
         mProgress.setProgress(profileCompletion);
+        mProfilepercTV.setText(new StringBuilder(String.valueOf(profileCompletion)).append("%")); ;
+        mUsrNameTV.setText(new StringBuilder("@").append(username));
+
         callWebServiceMyProfile();
 
     }
@@ -586,10 +783,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     public void callWebServiceForSubscribeDashboard(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
+
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity2.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/subscriber_dashboard.json")
                 .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
                 .setTag("test")
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -600,23 +800,66 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                         ProgressClass.getProgressInstance().stopProgress();
 //                       System.out.println(response);
                         try {
+
+//                            setSubsDashboardData( username,  profileCompletionPerc);
                             JSONObject jsonObject = response.getJSONObject("basicData");
                             setSubsDashboardData( jsonObject);
 
+
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.no_data, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SubscriberDashboardActivity2.this, CONSTANTS.no_data, Toast.LENGTH_SHORT).show();
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Alert", CONSTANTS.unknown_err);
                         }
+
                     }
+
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
                         reTryMethod();
                     }
                 });
+
+
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
+
+
+/*        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
+        call.enqueue(new Callback<SubscriberMainResponse>() {
+            @Override
+            public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
+                if (response.isSuccessful()) {
+                    SubscriberMainResponse serverResponse = response.body();
+                    if(serverResponse.getMessage().getSuccess() != null) {
+                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+
+                            SubscriberMainResponse mainResponse = response.body();
+                            setSubsDashboardData(mainResponse);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", "Confuse");
+                        }
+                    }else {
+                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                ProgressClass.getProgressInstance().stopProgress();
+            }
+        });*/
     }
 
     public void callWebServiceForEmailVerification(){
@@ -626,9 +869,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         emailVerirequest.token = token;
 
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity2.this);
         Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
         call.enqueue(new Callback<AddFolderResponse>() {
             @Override
@@ -652,13 +895,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             @Override
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubscriberDashboardActivity2.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
     }
 
@@ -669,9 +912,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity2.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.resendOTP(token);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -694,7 +937,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", msg1);
                         }
                     }else {
-                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubscriberDashboardActivity2.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -702,13 +945,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             @Override
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubscriberDashboardActivity2.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
     }
 
@@ -716,9 +959,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity2.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> call = apiInterface.verifiyOTP(token, otp);
         call.enqueue(new Callback<AddFolderResponse>() {
@@ -735,10 +978,10 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
                         } else {
-                            Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SubscriberDashboardActivity2.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubscriberDashboardActivity2.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -746,13 +989,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             @Override
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubscriberDashboardActivity2.this, "Failed", Toast.LENGTH_SHORT).show();
                 ProgressClass.getProgressInstance().stopProgress();
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
     }
     /** File Upload */
@@ -762,14 +1005,16 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         Call<IdVerificationResponse> callUpload = null;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+//        Toast.makeText(SubscriberDashboardActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData(typeOf, file.getName(), requestBody);
+//      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity2.this);
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         callUpload = callManipulationMethod(fileToUpload, filename, token);
 
@@ -790,17 +1035,20 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                         showAlertMsg("Alert", CONSTANTS.unknown_err);
 //                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "Confuse");
                 }
+
             }
+
             @Override
             public void onFailure(Call<IdVerificationResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
                 showAlertMsg("Alert", CONSTANTS.unknown_err);
-           }
+//                AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Oops");
+            }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
     }
 
@@ -828,7 +1076,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
 
             AndroidNetworking.post("https://iitiimshaadi.com/api/status_report.json")
                     .addBodyParameter("token", token)
@@ -854,7 +1102,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                                 boolean doc = doc_verified == 1?true:false;
                                 boolean idProof = idProof_verified == 1?true:false;
 
-//                                setVerificationStatus(email, mob, bioData, doc, idProof);
+                                setVerificationStatus(email, mob, bioData, doc, idProof);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -870,12 +1118,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                     });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
 
         }
 
- /*   public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
+    public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
 
 
             if(email == true){
@@ -919,8 +1167,57 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             }
 
         }
-*/
 
+//        EXTRA
+    public void showSnackBar(){
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
+                .setAction("CLOSE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
+    }
+
+    public void showAlertMsg(String title, String msg){
+        new AlertDialog.Builder(SubscriberDashboardActivity2.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+    public void reTryMethod(){
+
+        new AlertDialog.Builder(SubscriberDashboardActivity2.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Alert")
+                .setMessage("Something went wrong!\n Please Try Again!")
+                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callWebServiceForSubscribeDashboard();
+                    }
+                })
+                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    /* Subscriber Dashboard*/
 
     private void callWebServiceMyProfile(){
 
@@ -929,9 +1226,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity2.this) == true){
 
-            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity2.this);
             APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
             Call<MyProfileResponse> call = apiInterface.myProfileData(token);
             call.enqueue(new Callback<MyProfileResponse>() {
@@ -950,18 +1247,22 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 public void onFailure(Call<MyProfileResponse> call, Throwable t) {
                     call.cancel();
                     ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SubscriberDashboardActivity2.this, "No Data Found", Toast.LENGTH_SHORT).show();
                 }
             });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity2.this);
         }
     }
+
     private void setMyProfile(MyProfileResponse myProfileResponse){
 
         listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, myProfileResponse);
         expListView.setAdapter(listAdapter);
+
+        partnerlistAdapter = new ExpListViewSubsPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner, myProfileResponse);
+        expListViewPartner.setAdapter(partnerlistAdapter);
 
     }
 
@@ -974,83 +1275,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        SubscriberDashboardActivity.super.onBackPressed();
+                        SubscriberDashboardActivity2.super.onBackPressed();
                     }
                 }).create().show();
-    }
-
-    @Override
-    public void verifiyEmail() {
-        alertDialogEmail();
-    }
-
-    @Override
-    public void verifiyMob() {
-        alertDialogMobile();
-    }
-
-    @Override
-    public void verifiyDoc() {
-        alertDialogDocuments();
-    }
-
-    @Override
-    public void verifiyIDProof() {
-        alertDialogIDProof();
-    }
-
-    //        EXTRA
-    public void showSnackBar(){
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
-                .setAction("CLOSE", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                })
-                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
-                .show();
-    }
-
-    public void showAlertMsg(String title, String msg){
-        AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, title, msg);
-    }
-
-    public void reTryMethod(){
-
-        String title = "Alert";
-        String msg = "Oops. Please Try Again! \nHelp : Try different Username or Email.\n";
-
-        final Dialog dialog = new Dialog(SubscriberDashboardActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.alert_dialog_two_click);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
-        titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
-        msgTxt.setText(msg);
-
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
-        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
-        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callWebServiceForSubscribeDashboard();
-//                dialog.cancel();
-            }
-        });
-
-        dialog.show();
     }
 
 }

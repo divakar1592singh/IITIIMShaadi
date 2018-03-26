@@ -60,13 +60,14 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
-/*
+        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
+
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
         prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
         prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
-        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1520594768CROP_1520594760668.jpg");
-*/
+        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1521821548CROP_1523981481474.jpg");
+
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
 /*

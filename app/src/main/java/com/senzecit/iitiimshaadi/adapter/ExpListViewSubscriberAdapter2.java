@@ -49,7 +49,6 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.Rel
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -81,7 +80,7 @@ import retrofit2.Response;
  * Created by ravi on 8/11/17.
  */
 
-public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
+public class ExpListViewSubscriberAdapter2 extends BaseExpandableListAdapter {
 
     private Context _context;
     LayoutInflater layoutInflater;
@@ -95,8 +94,8 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
     MyProfileResponse myProfileResponse;
 
 
-    public ExpListViewSubscriberAdapter(Context context, List<String> listDataHeader,
-                                        HashMap<String, List<String>> listChildData,
+    public ExpListViewSubscriberAdapter2(Context context, List<String> listDataHeader,
+                                         HashMap<String, List<String>> listChildData,
                                          MyProfileResponse myProfileResponse) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
@@ -2354,7 +2353,7 @@ public class ExpListViewSubscriberAdapter extends BaseExpandableListAdapter {
 
     public void saveChangesOfCase_0() {
 
-//        ExpListViewSubscriberAdapter.this.notifyDataSetChanged();
+//        ExpListViewSubsAdapter.this.notifyDataSetChanged();
 //        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
