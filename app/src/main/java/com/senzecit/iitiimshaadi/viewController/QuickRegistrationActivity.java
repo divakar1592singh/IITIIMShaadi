@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,11 +59,11 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     Button mbuttonContinue, mSubmitFindEduBtn;
     ImageView mBoySelect,mBoyUnSelect,mGirlSelect,mGirlUnSelect;
     TextView mEducationTV, mStreamTV, mInstitutionTV;
-    RelativeLayout mEducationRL, mStreamRL, mInstitutionRL;
+    RelativeLayout mEducationRL, mInstitutionRL;
+    LinearLayout mStreamRL ;
     EditText mUserNameET, mEmailET, mMobileET, mCollegeNameET;
     //Network
     APIInterface apiInterface;
-
     List<String> streamList;
     List<Integer> idList;
 
@@ -96,7 +97,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         mInstitutionTV = (TextView) findViewById(R.id.idInstitutionTV);
 
         mEducationRL = (RelativeLayout) findViewById(R.id.id_educationRL);
-        mStreamRL = (RelativeLayout) findViewById(R.id.id_streamRL);
+        mStreamRL = (LinearLayout) findViewById(R.id.id_streamRL);
         mInstitutionRL = (RelativeLayout) findViewById(R.id.id_institutionRL);
 
         mUserNameET = (EditText) findViewById(R.id.userNameET);
@@ -156,8 +157,10 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
                 String type = s.toString();
                 if(type.equalsIgnoreCase("Indian")){
                     mStreamRL.setEnabled(true);
+                    mStreamRL.setVisibility(View.VISIBLE);
                 }else if(type.equalsIgnoreCase("International")){
                     mStreamRL.setEnabled(false);
+                    mStreamRL.setVisibility(View.GONE);
                 }
             }
         });

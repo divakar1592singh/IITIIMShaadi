@@ -93,6 +93,14 @@
                                         />
                                 </android.support.design.widget.TextInputLayout>
                             </RelativeLayout>
+                            <TextView
+                                android:id="@+id/idAgeCautionTV"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/age_limit"
+                                android:textSize="@dimen/dimen_10dp"
+                                android:textColor="@color/red"
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                     <View

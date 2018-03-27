@@ -10,6 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
@@ -84,7 +87,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     LayoutInflater mDialogInflator;
     EditText mAgeMinET, mAgeMaxET;
     TextView mPartnerCurrentCountryTV, mPartnerCurrentCityIV, mSelectReligionTV, mSelectCastTV,
-            mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV;
+            mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV, mAgeCautionTV;
     private List<SliderCheckModel> sliderCheckList;
 
     public void setSearchPartnerFragmentCommunicator(SearchPartnerFragmentCommunicator communicator){
@@ -140,6 +143,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         mAgeMinET = (EditText)view.findViewById(R.id.ageMinET) ;
         mAgeMaxET = (EditText)view.findViewById(R.id.ageMaxET) ;
+        mAgeCautionTV = (TextView)view.findViewById(R.id.idAgeCautionTV) ;
 
         mPartnerCurrentCountryTV = (TextView)view.findViewById(R.id.partnerCurrentCountryTV) ;
         mPartnerCurrentCityIV = (TextView)view.findViewById(R.id.partnerCurrentCityTV) ;
@@ -150,7 +154,77 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         mEducationOccupationTV = (TextView)view.findViewById(R.id.educationOccupationTV) ;
         mAnnualIncomeTV = (TextView)view.findViewById(R.id.annualIncomeTV) ;
 
+        textEventListner();
     }
+
+    public void textEventListner(){
+
+        mAgeMinET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String sMinAge = mAgeMinET.getText().toString().trim();
+                String sMaxAge = mAgeMaxET.getText().toString();
+
+                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                    int minimumAge = Integer.parseInt(sMinAge);
+                    int maximumAge = Integer.parseInt(sMaxAge);
+
+                    if ((maximumAge - minimumAge) <= 5) {
+                        mAgeCautionTV.setVisibility(View.GONE);
+                    } else {
+                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mAgeMaxET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                String sMinAge = mAgeMinET.getText().toString();
+                String sMaxAge = mAgeMaxET.getText().toString();
+
+                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                    int minimumAge = Integer.parseInt(sMinAge);
+                    int maximumAge = Integer.parseInt(sMaxAge);
+
+                    if ((maximumAge - minimumAge) <= 5) {
+                        mAgeCautionTV.setVisibility(View.GONE);
+                    } else {
+                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
 
     @Override
     public void onClick(View view) {

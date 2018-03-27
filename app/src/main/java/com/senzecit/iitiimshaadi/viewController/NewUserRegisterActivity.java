@@ -514,8 +514,11 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                 }catch (NullPointerException npe){
                     Log.e("TAG", "#Error : "+npe, npe);
                     ProgressClass.getProgressInstance().stopProgress();
-//                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong!");
-                    reTryMethod();
+
+                    String title = "Alert";
+                    String msg = "Oops. Please Try Again! \nHelp : Try different Username or Email.\n";
+                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, title, msg);
+//                    reTryMethod();
                 }
             }
 
@@ -714,6 +717,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 //                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
 //                dialog.cancel();
                 callWebServiceForNewRegistration();
+                dialog.dismiss();
             }
         });
 

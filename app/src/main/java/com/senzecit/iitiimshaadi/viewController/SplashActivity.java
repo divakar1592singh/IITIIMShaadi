@@ -89,16 +89,10 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-
-
-
-               Intent intent = new Intent(SplashActivity.this, SearchPartnerActivity.class);
+               Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
-
-
-
 
 
              /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
@@ -150,7 +144,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }*/
 
-                callWebServiceForSignin();
+//                callWebServiceForSignin();
 
             }
         },SPLASH_DISPLAY_TIME);
@@ -183,7 +177,8 @@ public class SplashActivity extends AppCompatActivity {
                                     setPrefData(responseData);
                                 }
                             } else {
-                                Toast.makeText(SplashActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SplashActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                                Navigator.getClassInstance().navigateToActivity(SplashActivity.this, IntroSliderWebActivity.class);
                             }
 
                             }catch (NullPointerException npe){

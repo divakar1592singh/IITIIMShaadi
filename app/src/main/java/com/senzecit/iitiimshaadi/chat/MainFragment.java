@@ -42,9 +42,12 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -256,7 +259,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                             for(int i = 0; i<chatList.size(); i++) {
 
                                 profileUrl = chatList.get(i).getProfileImage();
-                                userId = chatList.get(i).getToUser();
+                                userId = chatList.get(i).getFromUser();
                                 userName = chatList.get(i).getFirstName();
 
                                 message = chatList.get(i).getMessage();
@@ -348,11 +351,19 @@ public class MainFragment extends Fragment implements View.OnClickListener{
         String senderName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
         String senderImageUrl = prefs.getString(CONSTANTS.LOGGED_USER_PIC);
 
+        Date date = new Date();
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+0530"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        date = cal.getTime();
+        System.out.println(date);
+        String currentDate = String.valueOf(date);
+
+
         try {
             obj.put("from_user", senderId);
             obj.put("to_user", receiverId);
             obj.put("message", message);
-            obj.put("sent", new Date());
+            obj.put("sent", currentDate);
 
 
         }catch (JSONException e) {

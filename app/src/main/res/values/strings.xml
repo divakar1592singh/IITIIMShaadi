@@ -266,4 +266,7 @@
 3. Upload here directly\n
 </string>
 
+    //EROR
+    <string name="age_limit">Age difference not more than 5year.</string>
+
 </resources>

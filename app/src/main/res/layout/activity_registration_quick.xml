@@ -141,8 +141,12 @@
                 android:layout_height="1dp"
                 android:background="@color/colorDarkYellow"/>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/id_streamRL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <RelativeLayout
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -179,6 +183,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorDarkYellow"/>
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/id_institutionRL"

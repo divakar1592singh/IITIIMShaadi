@@ -92,7 +92,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     EditText mAgeMinET, mAgeMaxET, mSearchByIdET, mRandomKeywordET;
     TextView mPartnerCurrentCountryTV, mPartnerCurrentCityIV, mSelectReligionTV, mSelectCastTV,
             mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV,
-            mPartnerPermanentLocarionTV, mSelectHeightMinTV, mSelectHeightMaxTV;
+            mPartnerPermanentLocarionTV, mSelectHeightMinTV, mSelectHeightMaxTV, mAgeCautionTV;
 
     List<CityModel> cityWithIdList = null;
 
@@ -171,6 +171,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         mRandomKeywordET = (EditText)view.findViewById(R.id.randomKeywordET) ;
         mAgeMinET = (EditText)view.findViewById(R.id.ageMinET) ;
         mAgeMaxET = (EditText)view.findViewById(R.id.ageMaxET) ;
+        mAgeCautionTV = (TextView)view.findViewById(R.id.idAgeCautionTV) ;
 
         mPartnerCurrentCountryTV = (TextView)view.findViewById(R.id.partnerCurrentCountryTV) ;
         mPartnerCurrentCityIV = (TextView)view.findViewById(R.id.partnerCurrentCityTV) ;
@@ -188,6 +189,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         //
         mCountryID  = (TextView)view.findViewById(R.id.idCountryID);
         mCityID  = (TextView)view.findViewById(R.id.idCityID);
+
 
         mPartnerCurrentCountryTV.addTextChangedListener(new TextWatcher() {
             @Override
@@ -228,6 +230,74 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
 
+        textEventListner();
+    }
+
+    public void textEventListner(){
+
+        mAgeMinET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String sMinAge = mAgeMinET.getText().toString().trim();
+                String sMaxAge = mAgeMaxET.getText().toString();
+
+                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                    int minimumAge = Integer.parseInt(sMinAge);
+                    int maximumAge = Integer.parseInt(sMaxAge);
+
+                    if ((maximumAge - minimumAge) <= 5) {
+                        mAgeCautionTV.setVisibility(View.GONE);
+                    } else {
+                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mAgeMaxET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+                String sMinAge = mAgeMinET.getText().toString();
+                String sMaxAge = mAgeMaxET.getText().toString();
+
+                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                    int minimumAge = Integer.parseInt(sMinAge);
+                    int maximumAge = Integer.parseInt(sMaxAge);
+
+                    if ((maximumAge - minimumAge) <= 5) {
+                        mAgeCautionTV.setVisibility(View.GONE);
+                    } else {
+                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
     }
 

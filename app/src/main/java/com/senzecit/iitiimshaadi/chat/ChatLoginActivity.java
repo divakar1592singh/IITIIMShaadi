@@ -51,7 +51,9 @@ public class ChatLoginActivity extends AppCompatActivity {
         JSONObject obj = new JSONObject();
         try {
 //            obj.put("userId", new SharedPrefClass(ChatLoginActivity.this).getLoginInfo());
-            obj.put("userId", prefs.getString(CONSTANTS.LOGGED_USERID));
+            obj.put("from_user", prefs.getString(CONSTANTS.LOGGED_USERID));
+//            obj.put("to_user", prefs.getString(CONSTANTS.OTHER_USERID));
+
 
         }catch (JSONException e) {
             e.printStackTrace();

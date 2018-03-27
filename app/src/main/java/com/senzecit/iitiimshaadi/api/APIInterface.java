@@ -200,7 +200,6 @@ public interface APIInterface {
 
     /** Advance Search - Paid Subs */
 
-
 @GET("api/advance_search.json")
 Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Query("token") String token, @Query("page")String page, @Query("minage")String minage,
                                                       @Query("maxage")String maxage, @Query("country")String country, @Query("city[]")String[] city,
