@@ -4,10 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +19,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -262,33 +266,46 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
                 })
                 .show();
     }
+
     public void reTryMethod(){
 
-        new AlertDialog.Builder(OtherAlbumActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
 
-                        String userId = prefs.getString(CONSTANTS.OTHER_USERID);
-                        callWebServiceForOtherProfile(userId);
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        final Dialog dialog = new Dialog(OtherAlbumActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-                        Intent intent1 = new Intent(OtherAlbumActivity.this, OtherProfileActivity.class);
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
 
-                        startActivity(intent1);
-                        finish();
-                        dialog.dismiss();
-                    }
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(OtherAlbumActivity.this, OtherProfileActivity.class);
 
-                })
-                .show();
+                startActivity(intent1);
+                finish();
+                dialog.dismiss();
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = prefs.getString(CONSTANTS.OTHER_USERID);
+                callWebServiceForOtherProfile(userId);
+            }
+        });
+
+        dialog.show();
     }
 
 

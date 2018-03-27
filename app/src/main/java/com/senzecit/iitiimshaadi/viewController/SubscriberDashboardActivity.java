@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -84,6 +84,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     ProgressBar mProgress;
     AlertDialog dialogID = null;
     int lastExpandedPosition = -1;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         prefs = AppController.getInstance().getPrefs();
 
         init();
-
+//        callWebServiceMyProfile();
         prepareListData();
 
         listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, null);
@@ -116,7 +117,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     protected void onStart() {
         super.onStart();
 
-        handleClick();
 //        callWebServiceForSubscribeDashboard();
         callWebServiceMyProfile();
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
@@ -125,36 +125,23 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     private void init(){
 
 //        albumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
-
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idRefreshLayout);
         expListView = (ExpandableListView) findViewById(R.id.expandableLV);
     }
     public void handleClick() {
 
-/*
-        albumLayout.setOnClickListener(new View.OnClickListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SubscriberDashboardActivity.this, AlbumActivity.class));
+            public void onRefresh() {
+                callWebServiceMyProfileRefresh();
             }
         });
-*/
 
         setProfileData();
 
     }
 
     public  void  setProfileData(){
-
-        String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
-        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
-        String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
-
-        if(!TextUtils.isEmpty(profileUri)){
-//            Glide.with(SubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
-        }
-
-//        mUsrNameTV.setText(new StringBuilder("@").append(userName));
-//        mUsrIdTV.setText(new StringBuilder("@").append(userId));
 
         try{
             String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
@@ -520,7 +507,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         }
     }
 
-
     public void configureButtonToUpload(Uri uri)throws URISyntaxException{
 
         String fullPath = Commons.getPath(uri, this);
@@ -542,7 +528,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             showUploadAlert("ID", file);
         }
     }
-
 
     public void showUploadAlert(String title, File filePath){
         new AlertDialog.Builder(SubscriberDashboardActivity.this)
@@ -818,7 +803,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.post_graduate.toString())){
                 return apiInterface.postGradCertUpload(fileToUpload, filename, token);
             }else {
-//                Toast.makeText(SubscriberDashboardActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
                 return null;
             }
 
@@ -875,7 +859,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         }
 
- /*   public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
+ /*
+
+ public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
 
 
             if(email == true){
@@ -919,6 +905,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             }
 
         }
+
 */
 
 
@@ -958,12 +945,54 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
         }
     }
+    private void callWebServiceMyProfileRefresh(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        final List<String> countryList = new ArrayList<>();
+        countryList.clear();
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+
+            if(!mSwipeRefreshLayout.isRefreshing())
+                ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<MyProfileResponse> call = apiInterface.myProfileData(token);
+            call.enqueue(new Callback<MyProfileResponse>() {
+                @Override
+                public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {
+                    if(!mSwipeRefreshLayout.isRefreshing())
+                        ProgressClass.getProgressInstance().stopProgress();
+                    else mSwipeRefreshLayout.setRefreshing(false);
+                    if (response.isSuccessful()) {
+
+                        if(response.body() != null){
+                            setMyProfile(response.body());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MyProfileResponse> call, Throwable t) {
+                    call.cancel();
+                    if(!mSwipeRefreshLayout.isRefreshing())
+                        ProgressClass.getProgressInstance().stopProgress();
+                    else mSwipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
+    }
     private void setMyProfile(MyProfileResponse myProfileResponse){
 
         listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, myProfileResponse);
         expListView.setAdapter(listAdapter);
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -1020,7 +1049,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     public void reTryMethod(){
 
         String title = "Alert";
-        String msg = "Oops. Please Try Again! \nHelp : Try different Username or Email.\n";
+        String msg = "Oops. Please Try Again! \n";
 
         final Dialog dialog = new Dialog(SubscriberDashboardActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

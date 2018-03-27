@@ -433,7 +433,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                                         }
                                     }else {
                                         mMobileET.requestFocus();
-                                        AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Mobile no. not valid");
+                                        AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Mobile No. not valid");
                                     }
                                 }else {
                                     AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Check 'Day/Month/Year' is selected!");
@@ -443,7 +443,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                             }
                         }else {
                             mFullNameET.requestFocus();
-                            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "FullName Can't Empty");
+                            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "FullName can't be empty");
                         }
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Profile Created For not selected");
@@ -455,7 +455,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             }
         }else {
             mUserNameET.requestFocus();
-            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Username Can't Empty");
+            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Username can't be Empty");
         }
 
     }
@@ -591,13 +591,13 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             }else {
                 mRePasswordET.requestFocus();
                 status = false;
-                AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Re-Type Password can't empty");
+                AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Re-Type Password can't be empty");
             }
         }else {
             mPasswordET.setText("");
             mRePasswordET.setText("");
             status = false;
-            AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password can't empty");
+            AlertDialogSingleClick.getInstance().showDialog(this, "Alert!", "Password can't be empty");
         }
 
         return status;
@@ -672,10 +672,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             }
         }
         ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, R.layout.row_spinner_layout, R.id.idSpnTV, yearList);
-//        dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mYearSPN.setAdapter(dataAdapter2);
-
-
 
     }
     public void funcTermCondition(View view){
@@ -684,7 +681,6 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         modalBottomSheet.show(getSupportFragmentManager(), "Terms and Conditions");
 
     }
-
 
     public void reTryMethod(){
 

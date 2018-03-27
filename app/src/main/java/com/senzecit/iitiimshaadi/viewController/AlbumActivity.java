@@ -5,11 +5,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -28,6 +30,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -574,27 +577,40 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     public void reTryMethod(){
 
-        new AlertDialog.Builder(AlbumActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
 
-                        callWebServiceForAllAlbum();
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+        final Dialog dialog = new Dialog(AlbumActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
 
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callWebServiceForAllAlbum();
+//                dialog.cancel();
+            }
+        });
+
+        dialog.show();
     }
+
 
     public void callWebServiceForSetProfile(final Uri uri)throws URISyntaxException {
 

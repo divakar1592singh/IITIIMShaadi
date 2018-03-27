@@ -6,13 +6,17 @@
     android:orientation="vertical"
     tools:context="com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity">
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/idRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        // Expandible Listview
         <ExpandableListView
             android:id="@+id/expandableLV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:groupIndicator="@null"/>
 
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

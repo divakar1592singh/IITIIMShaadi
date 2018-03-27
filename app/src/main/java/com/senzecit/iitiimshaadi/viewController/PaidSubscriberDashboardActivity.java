@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,7 +19,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -75,6 +80,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     ProgressBar mProgress;
 
     //
+    SwipeRefreshLayout mSwipeRefreshLayout;
     private int mShortAnimationDuration;
     private Animator mCurrentAnimator;
     LinearLayout mAlbumLayout;
@@ -95,12 +101,13 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         super.onStart();
 
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
-        callWebServiceForSubscribeDashboard();
+        callWebServiceForPaidSubs();
 
     }
 
     public void initView(){
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idSwipeRefreshLayout);
         mAlbumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
         mProgress = (ProgressBar)findViewById(R.id.idprogress);
         mProfileCIV = (CircleImageView)findViewById(R.id.idProfileCIV);
@@ -130,6 +137,14 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
     }
     public void handleClick(){
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                callWebServiceForPaidSubsRefresh();
+            }
+        });
+
         mProfileCIV.setOnClickListener(this);
         mMyProfileTV.setOnClickListener(this);
         mProfileShowTV.setOnClickListener(this);
@@ -264,9 +279,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     /** API INTEGRATION */
 
     /* Subscriber Dashboard*/
-    public void callWebServiceForSubscribeDashboard(){
+    public void callWebServiceForPaidSubs(){
 
-//        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
@@ -281,12 +295,9 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                     public void onResponse(JSONObject response) {
                         // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
-//                            setSubsDashboardData( username,  profileCompletionPerc);
                             setPaidSubs(response);
-
                         chatUserWebApi();
                     }
-
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
@@ -298,6 +309,34 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
         }
 
+    }
+    public void callWebServiceForPaidSubsRefresh(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+            AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
+                    .addBodyParameter("token", token)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+//                            setSubsDashboardData( username,  profileCompletionPerc);
+                            setPaidSubs(response);
+                            chatUserWebApi();
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            reTryMethod();
+                        }
+                    });
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
     }
 
     public void setPaidSubs(JSONObject jsonObject){
@@ -317,46 +356,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         }
     }
 
-    public void reTryMethod(){
-
-        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        callWebServiceForSubscribeDashboard();
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
-    public void showToast(String msg){
-
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_dialog,
-                (ViewGroup) findViewById(R.id.toast_layout_root));
-
-        ImageView image = (ImageView) layout.findViewById(R.id.image);
-        image.setImageResource(R.drawable.logo_main);
-        TextView text = (TextView) layout.findViewById(R.id.text);
-        text.setText(msg);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-
-    }
 
     //IMAGEZOOM
     private void zoomImageFromThumb(final View thumbView, String imageResId) {
@@ -553,20 +552,18 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         SingleChatPostRequest request = new SingleChatPostRequest();
         request.from_user = from_user;
 
-        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+//        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
         apiInterface = APIClient.getClient(CONSTANTS.CHAT_HISTORY_URL).create(APIInterface.class);
         Call<ChatUserListModel> call1 = apiInterface.singleChatUserList(request);
         call1.enqueue(new Callback<ChatUserListModel>() {
             @Override
             public void onResponse(Call<ChatUserListModel> call, Response<ChatUserListModel> response) {
-                ProgressClass.getProgressInstance().stopProgress();
+//                ProgressClass.getProgressInstance().stopProgress();
                 if(response.isSuccessful()&&response.code()==200) {
                     try{
                         if(response.body().getResponseCode() == 200) {
-//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 
                             List<Result> chatList = response.body().getResult();
-
                             mChatReceivedTV.setText("("+chatList.size()+")");
 
                         }else {
@@ -583,14 +580,48 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             @Override
             public void onFailure(Call<ChatUserListModel> call, Throwable t) {
                 call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(PaidSubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-                //    ProgressClass.getProgressInstance().stopProgress();
+//                ProgressClass.getProgressInstance().stopProgress();
+//                Toast.makeText(PaidSubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    public void reTryMethod(){
+
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
+
+        final Dialog dialog = new Dialog(PaidSubscriberDashboardActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callWebServiceForPaidSubs();
+//                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
 
 
 }

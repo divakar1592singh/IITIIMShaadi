@@ -48,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
         prefs = AppController.getInstance().getPrefs();
 //
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "06225eacf67149c4652ee25ea2109930");
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
+//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
@@ -60,13 +60,13 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
-        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
-
-        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
-        prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
-        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
-        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
-        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1521821548CROP_1523981481474.jpg");
+//        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
+//
+//        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
+//        prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
+//        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
+//        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
+//        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1521821548CROP_1523981481474.jpg");
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
@@ -92,7 +92,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-               Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+               Intent intent = new Intent(SplashActivity.this, SearchPartnerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
@@ -150,7 +150,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }*/
 
-//                callWebServiceForSignin();
+                callWebServiceForSignin();
 
             }
         },SPLASH_DISPLAY_TIME);

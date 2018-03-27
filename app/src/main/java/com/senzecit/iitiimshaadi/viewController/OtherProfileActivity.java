@@ -1,6 +1,8 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -381,28 +384,43 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
     public void reTryMethod(){
 
-        new AlertDialog.Builder(OtherProfileActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
 
-                        String userId = prefs.getString(CONSTANTS.OTHER_USERID);
-                        callWebServiceForOtherProfile(userId);
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishActivity(0);
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+        final Dialog dialog = new Dialog(OtherProfileActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishActivity(0);
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String userId = prefs.getString(CONSTANTS.OTHER_USERID);
+                callWebServiceForOtherProfile(userId);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
+
 
     @Override
     public void finish() {

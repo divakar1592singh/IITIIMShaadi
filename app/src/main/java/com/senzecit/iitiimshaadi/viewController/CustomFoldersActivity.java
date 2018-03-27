@@ -1,7 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -16,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -555,25 +559,40 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
     public void reTryMethod(){
 
-        new AlertDialog.Builder(CustomFoldersActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Alert")
-                .setMessage("Something went wrong!\n Please Try Again!")
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
 
-                        callWebServiceForAdd();
-                    }
-                })
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
+        final Dialog dialog = new Dialog(CustomFoldersActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callWebServiceForAdd();
+//                dialog.cancel();
+            }
+        });
+
+        dialog.show();
     }
+
 
     @Override
     public void finish() {

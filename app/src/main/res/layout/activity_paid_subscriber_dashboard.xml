@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/idSwipeRefreshLayout"
+    tools:context="com.senzecit.iitiimshaadi.viewController.SubscriberDashboardActivity">
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
@@ -454,3 +460,5 @@
     </FrameLayout>
 
 </ScrollView>
+
+</android.support.v4.widget.SwipeRefreshLayout>

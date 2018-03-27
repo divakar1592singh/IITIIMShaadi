@@ -2213,7 +2213,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild1,100,50);
-                                showCaste(txtListChild1);
+                                showCastePt(txtListChild1);
                             }
                         });
 
@@ -3334,7 +3334,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
     }
 
-
     public void showCountry(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
@@ -3482,6 +3481,49 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = ExpOwnProfileModel.getInstance().getReligion();
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
+                .addBodyParameter("token", token)
+                .addBodyParameter("religion", religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCastes");
+                            List<String> casteList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                String country = jsonArray.getString(i);
+                                casteList.add(country);
+                            }
+                            showDialog(casteList, textView);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
+                    }
+                });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+    }
+   public void showCastePt(final TextView textView) {
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        String religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);

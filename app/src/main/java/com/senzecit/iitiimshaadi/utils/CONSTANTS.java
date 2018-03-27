@@ -105,6 +105,8 @@ public interface CONSTANTS {
     String tap_message = "Tap one more time";
     String tap_twice_message = "Please, Tap on pic";
 
-
+    //TYPE
+    String BASIC_TYPE = "basic_type";
+    String PARTNER_TYPE = "partner_type";
 
 }
