@@ -497,7 +497,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                             @Override
                             public void afterTextChanged(Editable editable) {
-                                ExpOwnProfileModel.getInstance().setName(editable.toString());
+                                ExpOwnProfileModel.getInstance().setHealth_Issue(editable.toString());
                             }
                         });
 
@@ -2754,11 +2754,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
         String[] marital_statusArr = new String[1];
         marital_statusArr[0] = Marital_Status;
-
         String Drink = ExpOwnProfileModel.getInstance().getDrink();
         String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
+        String Health = ExpOwnProfileModel.getInstance().getHealth_Issue();
         String Height = ExpOwnProfileModel.getInstance().getHeight();
-
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
         String[] interestsArr = new String[1];
         interestsArr[0] = Interests;
@@ -2768,7 +2767,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
         request.name = name;
-        request.health = "";
+        request.health_issue = "";
         request.height = Height;
         request.diet = Diet;
         request.marital_status = marital_statusArr;
@@ -2952,8 +2951,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         request.father_occupation = Father_Occupation;
         request.mother_name = Mother_Name;
         request.mother_occupation = Mother_Occupation;
-        request.brother_detail = Details_Brothers;
-        request.sister_detail = Details_Sisters;
+        request.brother = Details_Brothers;
+        request.sister = Details_Sisters;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 

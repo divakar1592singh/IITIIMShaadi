@@ -83,6 +83,13 @@ public class ExpOwnProfileModel {
         Smoke = smoke;
     }
 
+    public String getHealth_Issue() {
+        return Health_Issue;
+    }
+
+    public void setHealth_Issue(String health_Issue) {
+        Health_Issue = health_Issue;
+    }
     public String getHeight() {
         return Height;
     }
@@ -397,6 +404,8 @@ public class ExpOwnProfileModel {
     public String Marital_Status;
     public String Drink;
     public String Smoke;
+
+    public String Health_Issue;
     public String Height;
     public String Interests;
 

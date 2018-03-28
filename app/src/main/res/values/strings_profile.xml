@@ -77,13 +77,75 @@
     </array>
 
     <array name="mother_tongue_ar">
+            <item>Any</item>
             <item>Assamese</item>
             <item>Bengali</item>
             <item>English</item>
             <item>Gujarati</item>
             <item>Hindi</item>
+            <item>Kannada</item>
+            <item>Konkani</item>
+            <item>Malayalam</item>
+            <item>Marathi</item>
+            <item>Marwari</item>
+            <item>Oriya</item>
+            <item>Punjabi</item>
+            <item>Sindhi</item>
+            <item>Tamil</item>
+            <item>Telugu</item>
+            <item>Urdu</item>
+            <item>Aka</item>
+            <item>Arabic</item>
+            <item>Arunachali</item>
+            <item>Awadhi</item>
+            <item>Baluchi</item>
+            <item>Bhojpuri</item>
+            <item>Bhutia</item>
+            <item>Brahui</item>
+            <item>Brij</item>
+            <item>Burmese</item>
+            <item>Chattisgarhi</item>
+            <item>Chinese</item>
+            <item>Coorgi</item>
+            <item>Dogri</item>
+            <item>French</item>
+            <item>Garhwali</item>
+            <item>Garo</item>
+            <item>Haryanavi</item>
+            <item>Himachali/Pahari</item>
+            <item>Hindko</item>
+            <item>Kakbarak</item>
+            <item>Kanauji</item>
+            <item>Kashmiri</item>
+            <item>Khandesi</item>
+            <item>Khasi</item>
+            <item>Koshali</item>
+            <item>Kumaoni</item>
+            <item>Kutchi</item>
+            <item>Ladakhi</item>
+            <item>Lepcha</item>
+            <item>Magahi</item>
+            <item>Matihili</item>
+            <item>Malay</item>
+            <item>Manipuri</item>
+            <item>Miji</item>
+            <item>Mizo</item>
+            <item>Monpa</item>
+            <item>Nepali</item>
+            <item>Pashto</item>
+            <item>Persian</item>
+            <item>Rajasthani</item>
+            <item>Russian</item>
+            <item>Sanskrit</item>
+            <item>Santhali</item>
+            <item>Seraiki</item>
+            <item>Sinhala</item>
+            <item>Sourashtra</item>
+            <item>Spanish</item>
+            <item>Swedish</item>
+            <item>Tagalog</item>
     </array>
-    
+
     <array name="ann_income_ar">
         <item>Any</item>
         <item>less than 10 LPA</item>

@@ -39,6 +39,7 @@ public interface CONSTANTS {
     String LOGGED_USERNAME = "username";
     String LOGGED_USERID = "userid";
     String LOGGED_USER_TYPE = "user_type";
+    String GENDER_TYPE = "gender_type";
     String LOGGED_USER_PIC = "user_pic";
     String LOGGED_EMAIL = "email";
     String LOGGED_MOB = "mobile";

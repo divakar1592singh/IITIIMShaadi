@@ -43,6 +43,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileRe
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
@@ -200,11 +201,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public  void  setProfileData(){
 
         String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
-        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
+        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/}"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(ProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
+            Glide.with(ProfileActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));

@@ -476,7 +476,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             @Override
                             public void afterTextChanged(Editable editable) {
-                                ExpOwnProfileModel.getInstance().setName(editable.toString());
+                                ExpOwnProfileModel.getInstance().setHealth_Issue(editable.toString());
                             }
                         });
 
@@ -2421,6 +2421,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Drink = ExpOwnProfileModel.getInstance().getDrink();
         String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
         String Height = ExpOwnProfileModel.getInstance().getHeight();
+        String Health = ExpOwnProfileModel.getInstance().getHealth_Issue();
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
         String[] interestsArr = new String[1];
         interestsArr[0] = Interests;
@@ -2430,7 +2431,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
         request.name = name;
-        request.health = "";
+        request.health_issue = Health;
         request.height = Height;
         request.diet = Diet;
         request.marital_status = marital_statusArr;
@@ -2616,8 +2617,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.father_occupation = Father_Occupation;
         request.mother_name= Mother_Name;
         request.mother_occupation = Mother_Occupation;
-        request.brother_detail = Details_Brothers;
-        request.sister_detail = Details_Sisters;
+        request.brother = Details_Brothers;
+        request.sister = Details_Sisters;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 

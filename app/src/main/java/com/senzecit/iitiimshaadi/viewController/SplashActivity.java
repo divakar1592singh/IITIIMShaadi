@@ -69,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
 //        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1521821548CROP_1523981481474.jpg");
 
 
-//        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
+        prefs.putString(CONSTANTS.GENDER_TYPE, "male");
 /*
         prefs.putString(CONSTANTS.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "divakar1591@gmail.com");
@@ -89,10 +89,11 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
+               Intent intent = new Intent(SplashActivity.this, NewUserRegisterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+
 
 
              /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){

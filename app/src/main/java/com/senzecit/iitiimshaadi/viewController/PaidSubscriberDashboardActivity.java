@@ -49,6 +49,7 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
@@ -171,7 +172,9 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
+//            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
+            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(PaidSubscriberDashboardActivity.this)).into(mProfileCIV);
+
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));

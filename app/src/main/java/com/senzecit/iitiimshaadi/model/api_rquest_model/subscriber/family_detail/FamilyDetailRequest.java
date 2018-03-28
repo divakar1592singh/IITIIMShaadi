@@ -11,7 +11,7 @@ public class FamilyDetailRequest {
     public String father_occupation;
     public String mother_name;
     public String mother_occupation;
-    public String brother_detail;
-    public String sister_detail;
+    public String brother;
+    public String sister;
 
 }

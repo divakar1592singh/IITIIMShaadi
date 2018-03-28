@@ -2380,7 +2380,7 @@ public class ExpListViewSubscriberAdapter2 extends BaseExpandableListAdapter {
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
         request.name = name;
-        request.health = "";
+        request.health_issue = "";
         request.height = Height;
         request.diet = Diet;
         request.marital_status = marital_statusArr;
@@ -2567,8 +2567,8 @@ public class ExpListViewSubscriberAdapter2 extends BaseExpandableListAdapter {
         request.father_occupation = Father_Occupation;
         request.mother_name = Mother_Name;
         request.mother_occupation = Mother_Occupation;
-        request.brother_detail = Details_Brothers;
-        request.sister_detail = Details_Sisters;
+        request.brother = Details_Brothers;
+        request.sister = Details_Sisters;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
