@@ -3,17 +3,15 @@ package com.senzecit.iitiimshaadi.viewController;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.test.mock.MockPackageManager;
 import android.text.TextUtils;
@@ -49,8 +47,6 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,9 +66,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity2 extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = ProfileActivity.class.getSimpleName();
+    private static final String TAG = ProfileActivity2.class.getSimpleName();
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
@@ -84,11 +80,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     List<String> listDataHeader,listDataHeaderPartner;
     HashMap<String, List<String>> listDataChild,listDataChildPartner;
     ScrollView mScrollView;
+    private Uri mCropImagedUri;
+    private final int CROP_IMAGE = 101;
+    boolean userProfile = true;
+    boolean partnerPrefrence =true;
     AppPrefs prefs;
 
     CircleImageView mProfileCIV;
     TextView mUsrNameTV, mUsrIdTV;
     APIInterface apiInterface;
+
+    /*Profile Image*/
+    private Uri fileUri; // file url to store image/video
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 51;
+    private static final int READ_FILE_REQUEST_CODE = 52;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    String mPermission1 = Manifest.permission.ACCESS_COARSE_LOCATION;
+    String mPermission2 = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    String mPermission3 = Manifest.permission.READ_EXTERNAL_STORAGE;
+    String mPermission4 = Manifest.permission.CAMERA;
+    private static final String EXTRA_FILE_PATH = "EXTRA_FILE_PATH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +124,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onStart() {
         super.onStart();
+
+        try {
+            if (ActivityCompat.checkSelfPermission(this, mPermission)
+                    != MockPackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this, new String[]{mPermission,mPermission1,mPermission2,mPermission3,mPermission4},
+                        REQUEST_CODE_PERMISSION);
+                // If any permission above not allowed by user, this condition will
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -165,7 +191,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mPartnerProfile.setOnClickListener(this);
         mBack.setOnClickListener(this);
         mTitle.setOnClickListener(this);
-        mUploadIv.setOnClickListener(this::startCrop);
+        mUploadIv.setOnClickListener(this::showMediaChooser);
 
     }
 
@@ -176,7 +202,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(ProfileActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
+            Glide.with(ProfileActivity2.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity2.this)).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
@@ -210,13 +236,262 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.backIV:
-                ProfileActivity.this.finish();
+                ProfileActivity2.this.finish();
                 break;
             case R.id.toolbar_title:
 //                startActivity(new Intent(ProfileActivity.this,SearchPartnerPaidActivity.class));
                 break;
         }
     }
+
+    /** Image Upload */
+    public void showMediaChooser(View view){
+        PopupMenu popupMenu = new PopupMenu(ProfileActivity2.this, view);
+        popupMenu.inflate(R.menu.menu);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.camera:
+                        captureImage();
+                        break;
+                    case R.id.storage:
+                        showStorage();
+                        break;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+
+    /**
+     * Launching camera app to capture image
+     */
+    private void captureImage() {
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+    }
+    private  void showStorage()
+    {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, READ_FILE_REQUEST_CODE);
+    }
+    /**
+     * Creating file uri to store image
+     */
+    public Uri getOutputMediaFileUri(int type) {
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+    /**
+     * returning image
+     */
+    private static File getOutputMediaFile(int type) {
+        String dir = "Alpha";
+        // External sdcard location
+        File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                dir);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "Oops! Failed create "
+                        + dir + " directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale.getDefault()).format(new Date());
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator
+                    + "IMG_" + timeStamp + ".jpg");
+        } else {
+            return null;
+        }
+        return mediaFile;
+    }
+    private boolean isDeviceSupportCamera() {
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("file_uri", fileUri);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+
+            // if the result is capturing Image
+            if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+                if (resultCode == RESULT_OK) {
+                    try {
+//                        callWebServiceForFileUpload(fileUri);
+                        launchUploadActivity(fileUri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else if (resultCode == RESULT_CANCELED) {
+
+                    // user cancelled Image capture
+                    Toast.makeText(getApplicationContext(),
+                            "User cancelled image capture", Toast.LENGTH_SHORT)
+                            .show();
+
+                } else {
+                    // failed to capture image
+                    Toast.makeText(getApplicationContext(),
+                            "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
+                            .show();
+                }
+
+            }
+            if(requestCode == READ_FILE_REQUEST_CODE){
+                Uri uri = null;
+                if (data != null) {
+                    uri = data.getData();
+
+                    Log.i(TAG, "Uri: " + uri.toString());
+                    try {
+//                        uploadCvFile(uri);
+//                        show(uri);
+                        launchUploadActivity1(uri);
+//                        callWebServiceForFileUpload(uri);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else if (resultCode == RESULT_CANCELED) {
+                    // user cancelled recording
+                    Toast.makeText(getApplicationContext(),"User cancelled selection", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Sorry! Failed to get file", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+    /**IMAGE CROPPING */
+            if(requestCode==CROP_IMAGE) {
+                if (data != null) {
+                    try {
+                        callWebServiceForFileUpload(data.getData());
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private void launchUploadActivity(Uri uri) throws URISyntaxException {
+        performCropImage(uri);
+    }
+    private void launchUploadActivity1(Uri uri) throws URISyntaxException {
+        performCropImage(uri);
+    }
+
+    // ----------------------CROP--------------------------
+    /**Crop the image
+     * @Crop if crop supports by the device,otherwise false*/
+    private boolean performCropImage(Uri mFinalImageUri){
+        try {
+            if(mFinalImageUri!=null){
+                //call the standard crop action intent (the user device may not support it)
+                Intent cropIntent = new Intent("com.android.camera.action.CROP");
+                //indicate image type and Uri
+                cropIntent.setDataAndType(mFinalImageUri, "image/*");
+                //set crop properties
+                cropIntent.putExtra("crop", "true");
+                //indicate aspect of desired crop
+                /*cropIntent.putExtra("aspectX", 3);
+                cropIntent.putExtra("aspectY", 2);*/
+                cropIntent.putExtra("scale", true);
+                //indicate output X and Y
+                      cropIntent.putExtra("outputX", 349);
+                      cropIntent.putExtra("outputY", 349);
+                //retrieve data on return
+                cropIntent.putExtra("return-data", false);
+
+                File f = createNewFile("CROP_");
+                try {
+                    f.createNewFile();
+                } catch (IOException ex) {
+                    Log.e("io", ex.getMessage());
+                }
+
+                mCropImagedUri = Uri.fromFile(f);
+                cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCropImagedUri);
+                //start the activity - we handle returning in onActivityResult
+                startActivityForResult(cropIntent, CROP_IMAGE);
+                return true;
+            }
+        }
+        catch(ActivityNotFoundException anfe){
+            //display an error message
+            String errorMessage = "Whoops - your device doesn't support the crop action!";
+            Toast toast = Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        return false;
+    }
+
+    private File createNewFile(String prefix){
+        if(prefix==null || "".equalsIgnoreCase(prefix)){
+            prefix="IMG_";
+        }
+        File newDirectory = new File(Environment.getExternalStorageDirectory()+"/mypics/");
+        if(!newDirectory.exists()){
+            if(newDirectory.mkdir()){
+                Log.d("MyProfileActivity", newDirectory.getAbsolutePath()+" directory created");
+            }
+        }
+        File file = new File(newDirectory,(prefix+System.currentTimeMillis()+".jpg"));
+        if(file.exists()){
+            //this wont be executed
+            file.delete();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return file;
+    }
+    // ------------------------------------------------------
 
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
@@ -366,9 +641,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
-        if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(ProfileActivity2.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
+        ProgressClass.getProgressInstance().showDialog(ProfileActivity2.this);
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<MyProfileResponse> call = apiInterface.myProfileData(token);
         call.enqueue(new Callback<MyProfileResponse>() {
@@ -387,12 +662,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onFailure(Call<MyProfileResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(ProfileActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity2.this, "No Data Found", Toast.LENGTH_SHORT).show();
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(ProfileActivity2.this);
         }
     }
 
@@ -402,7 +677,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             String userId = String.valueOf(myProfileResponse.getEmailData().getId());
             String partUrl = myProfileResponse.getBasicData().getProfileImage();
             prefs.putString(CONSTANTS.LOGGED_USER_PIC, partUrl);
-            Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.profile_img1).into(mProfileCIV);
+            Glide.with(ProfileActivity2.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.profile_img1).into(mProfileCIV);
 
         }
 
@@ -416,33 +691,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    /** -----> IMAGE CROPPING */
-
-    private void startCrop(View view){
-
-        // start picker to get image for cropping and then use the image in cropping activity
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                try {
-                    callWebServiceForFileUpload(resultUri);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
-    }
-
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
 
 //        String fullPath = Commons.getPath(uri, this);
@@ -453,13 +701,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
+        if(NetworkClass.getInstance().checkInternet(ProfileActivity2.this) == true){
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
-        ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
+        ProgressClass.getProgressInstance().showDialog(ProfileActivity2.this);
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> callUpload = apiInterface.profileImageUpload(fileToUpload, filename, token);
 
@@ -471,10 +719,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     try {
                         if (response.body().getMessage().getSuccess().equalsIgnoreCase("Your Profile picture has been saved.")) {
 
-                            Toast.makeText(ProfileActivity.this, "Image Upload Successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProfileActivity2.this, "Image Upload Successful", Toast.LENGTH_LONG).show();
                             callWebServiceMyProfile();
                         } else {
-                            Toast.makeText(ProfileActivity.this, "Oops, Something went wrong!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ProfileActivity2.this, "Oops, Something went wrong!", Toast.LENGTH_LONG).show();
                         }
                     }catch (NullPointerException npe){
                         Log.e(TAG, "#Error : "+npe, npe);
@@ -482,7 +730,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 //                    callWebServiceForAllAlbum();
                 } else {
-                    AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "ID", "Confuse");
+                    AlertDialogSingleClick.getInstance().showDialog(ProfileActivity2.this, "ID", "Confuse");
                 }
             }
 
@@ -490,23 +738,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "ID", "Oops");
+                AlertDialogSingleClick.getInstance().showDialog(ProfileActivity2.this, "ID", "Oops");
             }
         });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
+            NetworkDialogHelper.getInstance().showDialog(ProfileActivity2.this);
         }
     }
 
 
-//    EXTRAS
     public void reTryMethod(){
 
         String title = "Alert";
         String msg = "Oops. Please Try Again! \n";
 
-        final Dialog dialog = new Dialog(ProfileActivity.this);
+        final Dialog dialog = new Dialog(ProfileActivity2.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.alert_dialog_two_click);
@@ -536,6 +783,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         dialog.show();
     }
+
+
     @Override
     public void finish() {
         super.finish();

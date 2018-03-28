@@ -54,7 +54,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -509,7 +508,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
     public void configureButtonToUpload(Uri uri)throws URISyntaxException{
 
-        String fullPath = Commons.getPath(uri, this);
+//        String fullPath = Commons.getPath(uri, this);
+        String fullPath = "";
+
         File file = new File(fullPath);
         if (btnChooserCount == 1){
             tvDoc1.setText(getFileName(file.getPath()));

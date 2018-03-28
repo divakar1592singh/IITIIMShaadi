@@ -10,7 +10,7 @@ public class BasicProfileRequest {
     public String name;
     public String height;
     public String diet;
-    public String marital_status[];
+    public String marital_status;
     public String drink;
     public String smoke;
     public String health_issue;

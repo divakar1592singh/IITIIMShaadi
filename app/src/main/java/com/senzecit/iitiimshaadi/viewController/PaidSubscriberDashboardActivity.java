@@ -5,12 +5,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -22,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,6 +48,9 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.chat.SingleChatPostRequest;
 import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.ChatUserListModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.Result;
+import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -51,6 +58,7 @@ import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -60,9 +68,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,6 +92,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     TextView mInterestReceivedTV, mChatReceivedTV;
     AppPrefs prefs;
     ProgressBar mProgress;
+    TextView mEmailVerifyTV, mMobVerifyTV, mDocumentsVerifyTV, mProofVerifyTV;
 
     //
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -86,11 +100,21 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     private Animator mCurrentAnimator;
     LinearLayout mAlbumLayout;
 
+    //VERIFICATION BUTTON LIST
+    AlertDialog dialogID = null;
+    int btnChooserCount = 0;
+    String typeOf;
+    TextView tvDoc1, tvDoc2, tvDoc3, tvDoc4, mBiodataTv;
+    Button mDocBtn1, mDocBtn2, mDocBtn3, mDocBtn4 ;
+    private static final int READ_FILE_REQUEST_CODE = 101;
+    APIInterface apiInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paid_subscriber_dashboard);
 
+        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
 
         initView();
@@ -115,10 +139,16 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         mUsrNameTV = (TextView) findViewById(R.id.idUserNameTV);
         mUsrIdTV = (TextView) findViewById(R.id.idUserId);
         mProfilePercTV = (TextView)  findViewById(R.id.idProfilePercTV);
-        mMyProfileTV = (TextView)findViewById(R.id.idMyProfileTV);
+//        mMyProfileTV = (TextView)findViewById(R.id.idMyProfileTV);
 
         mProfileShowTV = (TextView)findViewById(R.id.idProfileShowTV) ;
         mShowMessageTV = (TextView)findViewById(R.id.idShowMessageTV);
+//        BUTTON LIST
+
+        mEmailVerifyTV = (TextView)findViewById(R.id.idEmailVerify);
+        mMobVerifyTV = (TextView)findViewById(R.id.idMobVerify);
+        mDocumentsVerifyTV = (TextView)findViewById(R.id.idDocumentsVerify);
+        mProofVerifyTV = (TextView)findViewById(R.id.idProofVerify);
 
         mInterestReceivedTV = (TextView)findViewById(R.id.idInterestReceivedTV) ;
         mChatReceivedTV = (TextView)findViewById(R.id.idChatReceivedTV);
@@ -147,10 +177,16 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         });
 
         mProfileCIV.setOnClickListener(this);
-        mMyProfileTV.setOnClickListener(this);
+//        mMyProfileTV.setOnClickListener(this);
         mProfileShowTV.setOnClickListener(this);
         mShowMessageTV.setOnClickListener(this);
         mAlbumLayout.setOnClickListener(this);
+
+        mEmailVerifyTV.setOnClickListener(this);
+        mMobVerifyTV.setOnClickListener(this);
+        mDocumentsVerifyTV.setOnClickListener(this);
+        mProofVerifyTV.setOnClickListener(this);
+
         mFriendsTV.setOnClickListener(this);
         mSearchPartnerTV.setOnClickListener(this);
         mPremServicesTV.setOnClickListener(this);
@@ -197,11 +233,24 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
                 break;
             }
-            case R.id.idMyProfileTV: {
-                //Toast.makeText(PaidSubscriberDashboardActivity.this,"My Profile", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ProfileActivity.class));
+           case R.id.idEmailVerify: {
+                alertDialogEmail();
                 break;
             }
+           case R.id.idMobVerify: {
+                alertDialogMobile();
+                break;
+            }
+           case R.id.idDocumentsVerify: {
+                alertDialogDocuments();
+                break;
+            }
+           case R.id.idProofVerify: {
+                alertDialogIDProof();
+                break;
+            }
+
+
             case R.id.idProfileShowTV: {
 //                Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
 
@@ -527,6 +576,579 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         });
     }
 
+    private void alertDialogEmail(){
+
+        final TextView mMessage;
+        final Button mCloseBtn;
+        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        final AlertDialog dialog = dialogBuilder.create();
+        View dialogView = inflater.inflate(R.layout.popup_email_layout,null);
+
+        mMessage = dialogView.findViewById(R.id.tvEmail);
+        mCloseBtn = dialogView.findViewById(R.id.idCloseBtn);
+
+        mMessage.setText("Press 'Resend' to send verificatin mail");
+
+        mCloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callWebServiceForEmailVerification();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setView(dialogView);
+        dialog.show();
+    }
+    private void alertDialogMobile(){
+
+        final Button mConfirm,mResend;
+        final ImageView mCloseIV;
+        final EditText mOtpET;
+        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        final AlertDialog dialog = dialogBuilder.create();
+        View dialogView = inflater.inflate(R.layout.popup_mobile_layout,null);
+
+        mOtpET = dialogView.findViewById(R.id.idOtpTV);
+        mConfirm = dialogView.findViewById(R.id.confirmBtn);
+        mResend = dialogView.findViewById(R.id.resendFPLBtn);
+        mCloseIV = dialogView.findViewById(R.id.idCloseIV);
+
+        mConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String otp = mOtpET.getText().toString().trim();
+                if (TextUtils.isEmpty(otp)){
+                    AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "OTP", "OTP is empty");
+                }else {
+                    callWebServiceForOTPVerification(otp, dialog);
+                }
+
+            }
+        });
+
+        mResend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callWebServiceForResendOTP();
+            }
+        });
+
+        mCloseIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setView(dialogView);
+        dialog.show();
+    }
+    private void alertDialogDocuments(){
+
+        Button mClose ;
+        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        final AlertDialog dialog = dialogBuilder.create();
+        View dialogView = inflater.inflate(R.layout.popup_doc_layout,null);
+
+        tvDoc1 = dialogView.findViewById(R.id.idDocTv1);
+        tvDoc2 = dialogView.findViewById(R.id.idDocTv2);
+        tvDoc3 = dialogView.findViewById(R.id.idDocTv3);
+        tvDoc4 = dialogView.findViewById(R.id.idDocTv4);
+
+        mDocBtn1 = dialogView.findViewById(R.id.idDocBtn1);
+        mDocBtn2 = dialogView.findViewById(R.id.idDocBtn2);
+        mDocBtn3 = dialogView.findViewById(R.id.idDocBtn3);
+        mDocBtn4 = dialogView.findViewById(R.id.idDocBtn4);
+
+
+        mClose = dialogView.findViewById(R.id.confirmBtn);
+
+        mDocBtn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnChooserCount = 1;
+                typeOf = UserDefinedKeyword.bioData.toString();
+                showStorage();
+            }
+        });
+        mDocBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnChooserCount = 2;
+                typeOf = UserDefinedKeyword.higher_document.toString();
+                showStorage();
+            }
+        });
+        mDocBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnChooserCount = 3;
+                typeOf = UserDefinedKeyword.under_graduate.toString();
+                showStorage();
+            }
+        });
+        mDocBtn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnChooserCount = 4;
+                typeOf = UserDefinedKeyword.post_graduate.toString();
+                showStorage();
+            }
+        });
+
+        mClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*mConfirm.setBackground(getResources().getDrawable(R.drawable.button_shape_select_forgot));
+                mConfirm.setTextColor(getResources().getColor(R.color.colorWhite));*/
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.setView(dialogView);
+        dialog.show();
+    }
+    private void alertDialogIDProof(){
+
+        final Button mBrowse, mCancel;
+        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        dialogID = dialogBuilder.create();
+        View dialogView = inflater.inflate(R.layout.popup_id_proof_layout,null);
+
+        mBiodataTv= dialogView.findViewById(R.id.tvIDProof);
+        mBrowse = dialogView.findViewById(R.id.idBiodataUpload);
+        mCancel = dialogView.findViewById(R.id.idCancelBtn);
+
+        mBrowse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnChooserCount = 5;
+                typeOf = UserDefinedKeyword.id_proof.toString();
+                showStorage();
+            }
+        });
+
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogID.dismiss();
+            }
+        });
+
+
+        dialogID.setView(dialogView);
+        dialogID.show();
+    }
+
+    //    FILE
+    private  void showStorage()
+    {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        intent = Intent.createChooser(intent, "Choose a file");
+        startActivityForResult(intent, READ_FILE_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+
+            if(requestCode == READ_FILE_REQUEST_CODE){
+                Uri uri = null;
+                if (data != null) {
+                    uri = data.getData();
+
+                    Log.i(TAG, "Uri: " + uri.toString());
+                    try {
+//                        uploadCvFile(uri);
+                        configureButtonToUpload(uri);
+
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else if (resultCode == RESULT_CANCELED) {
+                    // user cancelled recording
+                    Toast.makeText(getApplicationContext(),"User cancelled selection", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                }
+            }
+        }
+    }
+
+    public void configureButtonToUpload(Uri uri)throws URISyntaxException{
+
+//        String fullPath = Commons.getPath(uri, this);
+        String fullPath = "";
+
+        File file = new File(fullPath);
+        if (btnChooserCount == 1){
+            tvDoc1.setText(getFileName(file.getPath()));
+            showUploadAlert("Biodata", file);
+        }else if (btnChooserCount == 2){
+            tvDoc2.setText(getFileName(file.getPath()));
+            showUploadAlert("Higher Ed.",file);
+        }else if (btnChooserCount == 3){
+            tvDoc3.setText(getFileName(file.getPath()));
+            showUploadAlert("Under Grad.", file);
+        }else if (btnChooserCount == 4){
+            tvDoc4.setText(getFileName(file.getPath()));
+            showUploadAlert("Post Grad.",file);
+        }else if (btnChooserCount == 5){
+            mBiodataTv.setText(getFileName(file.getPath()));
+            showUploadAlert("ID", file);
+        }
+    }
+
+    public void showUploadAlert(String title, File filePath){
+        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
+                .setTitle(title+" Upload")
+                .setMessage("are you sure?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            callWebServiceForFileUpload(filePath);
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
+    }
+
+    private String getFileName(String filePath){
+        return filePath.substring(filePath.lastIndexOf("/")+1);
+    }
+
+    public void callWebServiceForEmailVerification(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        EmailVerificationRequest emailVerirequest = new EmailVerificationRequest();
+        emailVerirequest.token = token;
+
+
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+
+            ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+            Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    try {
+                        if (response.isSuccessful()) {
+
+                            if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                                showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
+                            }
+                        }
+                    }catch (NullPointerException npe){
+                        Log.e(TAG, "#Error : "+npe, npe);
+                        showSnackBar();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(PaidSubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
+    }
+
+    /** MOBILE */
+    public void callWebServiceForResendOTP(){
+
+//        String token = CONSTANTS.Own_Token;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+
+            ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.resendOTP(token);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    String msg1 = "We have sent you a new OTP. In case, you don’t receive it, please send \\\"Verify\\\" message to our mobile number 07042947312.";
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
+//                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
+
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+                                showAlertMsg("Info", msg1);
+
+                            }else {
+                                showAlertMsg("Info", msg1);
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", msg1);
+                            }
+                        }else {
+                            Toast.makeText(PaidSubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(PaidSubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
+    }
+
+    public void callWebServiceForOTPVerification(String otp, AlertDialog dialog){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+
+            ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.verifiyOTP(token, otp);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
+
+                                dialog.dismiss();
+                                showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
+//                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
+
+                            } else {
+                                Toast.makeText(PaidSubscriberDashboardActivity.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(PaidSubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(PaidSubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
+    }
+    /** File Upload */
+    public void callWebServiceForFileUpload(final File file)throws URISyntaxException {
+
+        System.out.print(file);
+
+        Call<IdVerificationResponse> callUpload = null;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+//        Toast.makeText(SubscriberDashboardActivity.this, "Method : "+typeOf, Toast.LENGTH_LONG).show();
+
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+
+            final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData(typeOf, file.getName(), requestBody);
+//      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
+            RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
+
+            ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
+            apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            callUpload = callManipulationMethod(fileToUpload, filename, token);
+
+            callUpload.enqueue(new Callback<IdVerificationResponse>() {
+                @Override
+                public void onResponse(Call<IdVerificationResponse> call, Response<IdVerificationResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+
+                        if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
+
+                            dialogID.dismiss();
+                        }
+                        showAlertMsg("Info", response.body().getMessage().getSuccess());
+//                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "" + response.body().getMessage().getSuccess());
+                    } else {
+
+                        showAlertMsg("Alert", CONSTANTS.unknown_err);
+//                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "Confuse");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<IdVerificationResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    showAlertMsg("Alert", CONSTANTS.unknown_err);
+//                AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "ID", "Oops");
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
+    }
+
+    public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
+    {
+
+        if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
+            return apiInterface.idVerification(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.bioData.toString())){
+            return apiInterface.biodataUpload(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.higher_document.toString())){
+            return apiInterface.highestEduUpload(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.under_graduate.toString())){
+            return apiInterface.underGradCertUpload(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.post_graduate.toString())){
+            return apiInterface.postGradCertUpload(fileToUpload, filename, token);
+        }else {
+//                Toast.makeText(SubscriberDashboardActivity.this, "Default Called", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+    }
+
+    public void callApiForDocStatus(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
+
+            AndroidNetworking.post("https://iitiimshaadi.com/api/status_report.json")
+                    .addBodyParameter("token", token)
+                    .setTag("test")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                JSONObject verifiedObject = response.getJSONObject("verificationData");
+
+                                String email_verified = verifiedObject.getString("emailStatus");
+                                int mob_verified = verifiedObject.getInt("mobileStatus");
+                                int biodata_verified = verifiedObject.getInt("biodata_status");
+                                int doc_verified = verifiedObject.getInt("document_verified");
+                                int idProof_verified = verifiedObject.getInt("identity_proof_verified");
+
+                                boolean email = email_verified.equalsIgnoreCase("Yes")?true:false;
+                                boolean mob = mob_verified == 1?true:false;
+                                boolean bioData = biodata_verified == 1?true:false;
+                                boolean doc = doc_verified == 1?true:false;
+                                boolean idProof = idProof_verified == 1?true:false;
+
+                                setVerificationStatus(email, mob, bioData, doc, idProof);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        @Override
+                        public void onError(ANError error) {
+                            // handle error
+//                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Failed!", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+        }
+
+    }
+
+    public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
+
+
+        if(email == true){
+            mEmailVerifyTV.setText("Email Verified");
+            mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mEmailVerifyTV.setEnabled(false);
+        }else if (email == false){
+            mEmailVerifyTV.setText("Email Unverified");
+            mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mEmailVerifyTV.setEnabled(true);
+        }
+
+        if(mob == true){
+            mMobVerifyTV.setText("Mobile Verified");
+            mMobVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mMobVerifyTV.setEnabled(false);
+        }else if (mob == false){
+            mMobVerifyTV.setText("Mobile Unverified");
+            mMobVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mMobVerifyTV.setEnabled(true);
+        }
+
+        if(doc == true){
+            mDocumentsVerifyTV.setText("Doc Verified");
+            mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mDocumentsVerifyTV.setEnabled(false);
+        }else if (doc == false){
+            mDocumentsVerifyTV.setText("Doc Unverified");
+            mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mDocumentsVerifyTV.setEnabled(true);
+        }
+
+        if(idProof == true){
+            mProofVerifyTV.setText("ID Proof Verified");
+            mProofVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mProofVerifyTV.setEnabled(false);
+        }else if (idProof == false){
+            mProofVerifyTV.setText("ID Proof Unverified");
+            mProofVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mProofVerifyTV.setEnabled(true);
+        }
+
+    }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -624,6 +1246,33 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         });
 
         dialog.show();
+    }
+
+    //        EXTRA
+    public void showSnackBar(){
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
+                .setAction("CLOSE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
+    }
+    public void showAlertMsg(String title, String msg){
+        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
 

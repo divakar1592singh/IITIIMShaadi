@@ -52,10 +52,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import in.gauriinfotech.commons.Commons;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

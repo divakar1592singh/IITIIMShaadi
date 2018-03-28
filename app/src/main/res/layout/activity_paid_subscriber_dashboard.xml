@@ -165,17 +165,46 @@
                 android:gravity="center"
                 android:background="@color/colorMaroon"
                 android:padding="8dp"
-                android:layout_weight="2.5">
+                android:layout_weight="2.8">
                 <TextView
-                    android:id="@+id/idMyProfileTV"
+                    android:id="@+id/idEmailVerify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="My Profile"
+                    android:text="Email Unverified"
                     android:textColor="@color/colorWhite"
-                    android:textSize="16sp"
-                    android:textStyle="normal"
+                    android:textSize="10dp"
                     android:gravity="center_horizontal"
-                    />
+                    android:background="@drawable/round_view_yellow_border"/>
+                <TextView
+                    android:id="@+id/idMobVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile Unverified"
+                    android:textSize="10dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/round_view_yellow_border"/>
+                <TextView
+                    android:id="@+id/idDocumentsVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Doc Unverified"
+                    android:textSize="10dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/round_view_yellow_border"/>
+                <TextView
+                    android:id="@+id/idProofVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ID Proof Unverified"
+                    android:textSize="10dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/round_view_yellow_border"/>
             </LinearLayout>
 
         </LinearLayout>

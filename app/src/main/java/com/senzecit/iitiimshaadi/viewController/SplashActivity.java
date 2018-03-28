@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "06225eacf67149c4652ee25ea2109930");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "c0c5b85d14eb9d5ffc45172c094a1512");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
 
 
@@ -89,7 +89,7 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, NewUserRegisterActivity.class);
+               Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

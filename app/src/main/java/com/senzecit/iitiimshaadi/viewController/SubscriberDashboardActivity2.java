@@ -59,7 +59,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import in.gauriinfotech.commons.Commons;
+//import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -718,7 +718,9 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
 
     public void configureButtonToUpload(Uri uri)throws URISyntaxException{
 
-        String fullPath = Commons.getPath(uri, this);
+//        String fullPath = Commons.getPath(uri, this);
+        String fullPath = "";
+
         File file = new File(fullPath);
         if (btnChooserCount == 1){
             tvDoc1.setText(getFileName(file.getPath()));
@@ -1181,7 +1183,6 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
                 .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
                 .show();
     }
-
     public void showAlertMsg(String title, String msg){
         new AlertDialog.Builder(SubscriberDashboardActivity2.this)
                 .setIcon(android.R.drawable.ic_dialog_info)

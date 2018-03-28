@@ -2767,10 +2767,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
         request.name = name;
-        request.health_issue = "";
+        request.health_issue = Health;
         request.height = Height;
         request.diet = Diet;
-        request.marital_status = marital_statusArr;
+        request.marital_status = Marital_Status;
         request.drink = Drink;
         request.smoke = Smoke;
         request.interest = interestsArr;

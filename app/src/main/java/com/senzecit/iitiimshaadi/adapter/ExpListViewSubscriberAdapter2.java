@@ -2383,7 +2383,7 @@ public class ExpListViewSubscriberAdapter2 extends BaseExpandableListAdapter {
         request.health_issue = "";
         request.height = Height;
         request.diet = Diet;
-        request.marital_status = marital_statusArr;
+        request.marital_status = Marital_Status;
         request.drink = Drink;
         request.smoke = Smoke;
         request.interest = interestsArr;

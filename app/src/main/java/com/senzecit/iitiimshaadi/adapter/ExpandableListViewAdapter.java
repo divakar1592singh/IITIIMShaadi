@@ -2415,8 +2415,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Diet = ExpOwnProfileModel.getInstance().getDiet();
         String Date_Of_Birth = ExpOwnProfileModel.getInstance().getDate_Of_Birth();
         String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
-        String[] marital_statusArr = new String[1];
-        marital_statusArr[0] = Marital_Status;
+//        String[] marital_statusArr = new String[1];
+//        marital_statusArr[0] = Marital_Status;
 
         String Drink = ExpOwnProfileModel.getInstance().getDrink();
         String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
@@ -2434,7 +2434,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.health_issue = Health;
         request.height = Height;
         request.diet = Diet;
-        request.marital_status = marital_statusArr;
+        request.marital_status = Marital_Status;
         request.drink = Drink;
         request.smoke = Smoke;
         request.interest = interestsArr;
