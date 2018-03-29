@@ -2437,7 +2437,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.marital_status = Marital_Status;
         request.drink = Drink;
         request.smoke = Smoke;
-        request.interest = interestsArr;
+        request.interest = Interests;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 

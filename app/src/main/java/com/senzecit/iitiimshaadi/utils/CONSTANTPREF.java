@@ -15,5 +15,5 @@ public interface CONSTANTPREF {
     String CALLED_METHOD = "data_for";
     String PROGRESS_STATUS_FOR_TAB = "constant status for tab";
 
-
+    String CHAT_USER_COUNT = "chat_user-count";
 }

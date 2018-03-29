@@ -14,6 +14,6 @@ public class BasicProfileRequest {
     public String drink;
     public String smoke;
     public String health_issue;
-    public String interest[];
+    public String interest;
 
 }

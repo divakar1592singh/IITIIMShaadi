@@ -47,7 +47,8 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "c0c5b85d14eb9d5ffc45172c094a1512");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "74053145bd2dae2df95ec6c6e9cc553a");
+//        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
 
 
@@ -60,16 +61,16 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
-//        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
+        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
 //
-//        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber_viewer");
+//        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
 //        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
 //        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1521821548CROP_1523981481474.jpg");
 
 
-        prefs.putString(CONSTANTS.GENDER_TYPE, "male");
+        prefs.putString(CONSTANTS.GENDER_TYPE, "female");
 /*
         prefs.putString(CONSTANTS.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "divakar1591@gmail.com");
@@ -89,7 +90,7 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
+               Intent intent = new Intent(SplashActivity.this, NewUserRegisterActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

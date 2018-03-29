@@ -38,6 +38,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.CustomArrayAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
@@ -70,7 +71,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewUserRegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewUserRegisterActivity extends AppCompatActivity implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler  {
 
     Toolbar mToolbar;
     TextView mTitle, mProfileCreatedForTV, mGenderTV, mDateOfBirthTV, mTermsCoondition;
@@ -81,6 +82,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     Spinner mCountryCodeSPN;
     Spinner mDaySPN, mMonthSPN, mYearSPN;
     int mDay, mMonth, mYear;
+    RxNetworkingForObjectClass rxNetworkingClass;
     AppPrefs prefs;
 
     /** NETWORK */
@@ -94,6 +96,9 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = new AppPrefs(NewUserRegisterActivity.this);
+
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
 
         init();
         handleview();
@@ -156,37 +161,27 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     public void textEventHandler(){
 
-        mUserNameET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+        mUserNameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+//                    validateInput(v);
+                    Toast.makeText(NewUserRegisterActivity.this, "mUserNameET", Toast.LENGTH_SHORT).show();
 
-            }
+                    RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ContactUsActivity.this, CONSTANTS.CONTACT_US_PATH, request, null);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                }
             }
         });
-
-        mEmailET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+        mEmailET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+//                    validateInput(v);
+                    Toast.makeText(NewUserRegisterActivity.this, "mEmailET", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -789,5 +784,9 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     }
 
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+    }
 }
 

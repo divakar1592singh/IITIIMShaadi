@@ -50,11 +50,13 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
     DrawerLayout drawer;
     FrameLayout frameLayout;
     String userType;
+    AppPrefs prefs;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
 
+        prefs = AppController.getInstance().getPrefs();
         drawer = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
 
         FrameLayout activityContainer = (FrameLayout) drawer.findViewById(R.id.activity_content);
@@ -76,8 +78,6 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         toggle.setDrawerIndicatorEnabled(false);
-
-
 
         rightToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -194,63 +194,51 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.idChatMessageNav: {
-                startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
-                // Toast.makeText(getApplicationContext(), "Upload your document", // Toast.LENGTH_LONG).show();
-//                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on it!");
- /*               if(userType.equalsIgnoreCase("subscriber")) {
-                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
-                }else {
+                int chatPerc = prefs.getInt(CONSTANTPREF.CHAT_USER_COUNT);
+                if(chatPerc > 0){
                     startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
-                }*/
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "No Chat user found");
+                }
                 break;
             }
             case R.id.idSubscriptionNav: {
-                // Toast.makeText(getApplicationContext(), "Subscription", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this, SubscriptionActivity.class));
                 break;
             }
             case R.id.idPremierServiceNav: {
-                // Toast.makeText(getApplicationContext(), "Premier Services", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,PremierServicesActivity.class));
                 break;
             }
             case R.id.idAboutNav: {
-                // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,AboutUsActivity.class));
                 break;
             }
             case R.id.idMediaCoverageNav: {
-                // Toast.makeText(getApplicationContext(), "Media Coverage", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,MediaCoverageActivity.class));
                 break;
             }
             case R.id.idSuccessStoryNav: {
-                // Toast.makeText(getApplicationContext(), "Success Story", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,SuccessStoriesActivity.class));
                 break;
             }
             case R.id.idHowToNav: {
-                // Toast.makeText(getApplicationContext(), "How To Navigate", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this, HowToNavigatePageActivity.class));
                 break;
             }
             case R.id.idPrivacyPolicyNav: {
-                // Toast.makeText(getApplicationContext(), "Privacy Policy", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this, PrivacyActivity.class));
                 break;
             }
             case R.id.idContactUsNav: {
-                // Toast.makeText(getApplicationContext(), "Contact Us", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,ContactUsActivity.class));
                 break;
             }
             case R.id.idFAQNav: {
-                // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,FAQActivity.class));
                 break;
             }
             case R.id.idDisclaimerNav: {
-                // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(BaseNavActivity.this,DisclaimerActivity.class));
                 break;
             }

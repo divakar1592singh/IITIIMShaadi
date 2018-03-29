@@ -82,12 +82,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
     /** API Integration*/
     public void callServiceForAllNotific(){
-
-//        String token = CONSTANTS.Token_Paid;
-
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
-
         if(NetworkClass.getInstance().checkInternet(NotificationsActivity.this) == true){
 
         retrofit2.Call<AllNotificationRespnse> call = apiInterface.allNotificationService(token);

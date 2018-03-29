@@ -1259,8 +1259,8 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
 
     private void setMyProfile(MyProfileResponse myProfileResponse){
 
-        listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, myProfileResponse);
-        expListView.setAdapter(listAdapter);
+//        listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, myProfileResponse);
+//        expListView.setAdapter(listAdapter);
 
         partnerlistAdapter = new ExpListViewSubsPartnerAdapter(this,listDataHeaderPartner,listDataChildPartner, myProfileResponse);
         expListViewPartner.setAdapter(partnerlistAdapter);

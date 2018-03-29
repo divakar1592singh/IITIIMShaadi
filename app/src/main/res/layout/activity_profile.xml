@@ -38,7 +38,7 @@
                         android:layout_marginLeft="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/profile_img1"/>
+                        android:src="@drawable/ic_male_default"/>
                 </FrameLayout>
 
             </RelativeLayout>

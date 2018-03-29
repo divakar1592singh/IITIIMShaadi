@@ -40,7 +40,21 @@ public class DataHandlingClass {
 
         String gender = prefs.getString(CONSTANTS.GENDER_TYPE);
 
-        if(gender.equalsIgnoreCase("male")){
+        if(gender.equalsIgnoreCase("Male")){
+            return R.drawable.ic_male_default;
+        }else {
+            return R.drawable.ic_female_default;
+        }
+
+
+    }
+
+    public int getProfilePicName(Context activity){
+        prefs = AppController.getInstance().getPrefs();
+
+        String gender = prefs.getString(CONSTANTS.GENDER_TYPE);
+
+        if(gender.equalsIgnoreCase("Male")){
             return R.drawable.ic_male_default;
         }else {
             return R.drawable.ic_female_default;
@@ -52,4 +66,5 @@ public class DataHandlingClass {
 
 
 
-    }
+
+}

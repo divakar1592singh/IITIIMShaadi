@@ -197,6 +197,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         mUploadVideoTV.setOnClickListener(this);
         mReferFrndTV.setOnClickListener(this);
 
+        setVerificationStatus(true, true, true, true, true);
         setProfileData();
 
     }
@@ -249,24 +250,21 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 alertDialogIDProof();
                 break;
             }
-
-
             case R.id.idProfileShowTV: {
-//                Toast.makeText(PaidSubscriberDashboardActivity.this,"Profile Show", //Toast.LENGTH_SHORT).show();
-
                 if(mInterestReceivedTV.getText().toString().equalsIgnoreCase("(0)")){
                     AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
                 }else {
                 startActivity(new Intent(PaidSubscriberDashboardActivity.this,AllInterestActivity.class));
                 }
-//                showToast("No interest received");
-//                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
                 break;
             }
             case R.id.idShowMessageTV: {
-//                //Toast.makeText(PaidSubscriberDashboardActivity.this,"Show com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.Message", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
-//                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No message received");
+
+                if(mChatReceivedTV.getText().toString().equalsIgnoreCase("(0)")){
+                    AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "No interest received");
+                }else {
+                    startActivity(new Intent(PaidSubscriberDashboardActivity.this, ChatMessagesActivity.class));
+                }
                 break;
             }
             case R.id.idAlbumLayout: {
@@ -348,7 +346,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                         // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
                             setPaidSubs(response);
-                        chatUserWebApi();
                     }
                     @Override
                     public void onError(ANError error) {
@@ -375,9 +372,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             mSwipeRefreshLayout.setRefreshing(false);
-//                            setSubsDashboardData( username,  profileCompletionPerc);
                             setPaidSubs(response);
-                            chatUserWebApi();
                         }
 
                         @Override
@@ -395,13 +390,14 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
         try {
             String username = jsonObject.getJSONObject("basicData").getString("name");
-            int profileCompletionPerc = jsonObject.getJSONObject("basicData").getInt("profile_complition");
+            int profileCompletionPerc = jsonObject.getJSONObject("basicData").optInt("profile_complition");
             JSONArray jsonArray = jsonObject.getJSONArray("allInterestReceived");
 
         mProfilePercTV.setText(new StringBuilder(String.valueOf(profileCompletionPerc)).append("%"));
         mProgress.setProgress(profileCompletionPerc);
-//        List<AllInterestReceived> list = serverResponse.getAllInterestReceived();
         mInterestReceivedTV.setText("("+String.valueOf(jsonArray.length())+")");
+            mChatReceivedTV.setText("");
+        mChatReceivedTV.setText("("+jsonObject.getInt("chatUserCount")+")");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -575,6 +571,137 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
         });
     }
+
+    public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
+
+
+        if(email == true){
+            mEmailVerifyTV.setText("Email Verified");
+            mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mEmailVerifyTV.setEnabled(false);
+        }else if (email == false){
+            mEmailVerifyTV.setText("Email Unverified");
+            mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mEmailVerifyTV.setEnabled(true);
+        }
+
+        if(mob == true){
+            mMobVerifyTV.setText("Mobile Verified");
+            mMobVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mMobVerifyTV.setEnabled(false);
+        }else if (mob == false){
+            mMobVerifyTV.setText("Mobile Unverified");
+            mMobVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mMobVerifyTV.setEnabled(true);
+        }
+
+        if(doc == true){
+            mDocumentsVerifyTV.setText("Doc Verified");
+            mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mDocumentsVerifyTV.setEnabled(false);
+        }else if (doc == false){
+            mDocumentsVerifyTV.setText("Doc Unverified");
+            mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mDocumentsVerifyTV.setEnabled(true);
+        }
+
+        if(idProof == true){
+            mProofVerifyTV.setText("ID Proof Verified");
+            mProofVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
+            mProofVerifyTV.setEnabled(false);
+        }else if (idProof == false){
+            mProofVerifyTV.setText("ID Proof Unverified");
+            mProofVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
+            mProofVerifyTV.setEnabled(true);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit!")
+                .setMessage("Are you sure?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        PaidSubscriberDashboardActivity.super.onBackPressed();
+
+                    }
+                }).create().show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    public void reTryMethod(){
+
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
+
+        final Dialog dialog = new Dialog(PaidSubscriberDashboardActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callWebServiceForPaidSubs();
+//                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
+    //        EXTRA
+    public void showSnackBar(){
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
+                .setAction("CLOSE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
+    }
+    public void showAlertMsg(String title, String msg){
+        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle(title)
+                .setMessage(msg)
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    /** ******** GARBAGE ******** */
 
     private void alertDialogEmail(){
 
@@ -881,7 +1008,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
         }
     }
-
     /** MOBILE */
     public void callWebServiceForResendOTP(){
 
@@ -1048,232 +1174,5 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         }
 
     }
-
-    public void callApiForDocStatus(){
-
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
-        if(NetworkClass.getInstance().checkInternet(PaidSubscriberDashboardActivity.this) == true){
-
-            AndroidNetworking.post("https://iitiimshaadi.com/api/status_report.json")
-                    .addBodyParameter("token", token)
-                    .setTag("test")
-                    .setPriority(Priority.MEDIUM)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            try {
-                                JSONObject verifiedObject = response.getJSONObject("verificationData");
-
-                                String email_verified = verifiedObject.getString("emailStatus");
-                                int mob_verified = verifiedObject.getInt("mobileStatus");
-                                int biodata_verified = verifiedObject.getInt("biodata_status");
-                                int doc_verified = verifiedObject.getInt("document_verified");
-                                int idProof_verified = verifiedObject.getInt("identity_proof_verified");
-
-                                boolean email = email_verified.equalsIgnoreCase("Yes")?true:false;
-                                boolean mob = mob_verified == 1?true:false;
-                                boolean bioData = biodata_verified == 1?true:false;
-                                boolean doc = doc_verified == 1?true:false;
-                                boolean idProof = idProof_verified == 1?true:false;
-
-                                setVerificationStatus(email, mob, bioData, doc, idProof);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                        @Override
-                        public void onError(ANError error) {
-                            // handle error
-//                            Toast.makeText(SubscriberDashboardActivity.this, "Verification Failed!", Toast.LENGTH_LONG).show();
-
-                        }
-                    });
-
-        }else {
-            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
-        }
-
-    }
-
-    public void setVerificationStatus(boolean email, boolean mob, boolean bioData, boolean doc, boolean idProof){
-
-
-        if(email == true){
-            mEmailVerifyTV.setText("Email Verified");
-            mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-            mEmailVerifyTV.setEnabled(false);
-        }else if (email == false){
-            mEmailVerifyTV.setText("Email Unverified");
-            mEmailVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-            mEmailVerifyTV.setEnabled(true);
-        }
-
-        if(mob == true){
-            mMobVerifyTV.setText("Mobile Verified");
-            mMobVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-            mMobVerifyTV.setEnabled(false);
-        }else if (mob == false){
-            mMobVerifyTV.setText("Mobile Unverified");
-            mMobVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-            mMobVerifyTV.setEnabled(true);
-        }
-
-        if(doc == true){
-            mDocumentsVerifyTV.setText("Doc Verified");
-            mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-            mDocumentsVerifyTV.setEnabled(false);
-        }else if (doc == false){
-            mDocumentsVerifyTV.setText("Doc Unverified");
-            mDocumentsVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-            mDocumentsVerifyTV.setEnabled(true);
-        }
-
-        if(idProof == true){
-            mProofVerifyTV.setText("ID Proof Verified");
-            mProofVerifyTV.setBackgroundResource(R.drawable.round_view_green_border);
-            mProofVerifyTV.setEnabled(false);
-        }else if (idProof == false){
-            mProofVerifyTV.setText("ID Proof Unverified");
-            mProofVerifyTV.setBackgroundResource(R.drawable.round_view_yellow_border);
-            mProofVerifyTV.setEnabled(true);
-        }
-
-    }
-
-
-
-
-
-
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit!")
-                .setMessage("Are you sure?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        PaidSubscriberDashboardActivity.super.onBackPressed();
-
-                    }
-                }).create().show();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(0, android.R.anim.slide_out_right);
-    }
-
-    private void chatUserWebApi(){
-        APIInterface apiInterface;
-        String from_user = prefs.getString(CONSTANTS.LOGGED_USERID);
-        SingleChatPostRequest request = new SingleChatPostRequest();
-        request.from_user = from_user;
-
-//        ProgressClass.getProgressInstance().showDialog(PaidSubscriberDashboardActivity.this);
-        apiInterface = APIClient.getClient(CONSTANTS.CHAT_HISTORY_URL).create(APIInterface.class);
-        Call<ChatUserListModel> call1 = apiInterface.singleChatUserList(request);
-        call1.enqueue(new Callback<ChatUserListModel>() {
-            @Override
-            public void onResponse(Call<ChatUserListModel> call, Response<ChatUserListModel> response) {
-//                ProgressClass.getProgressInstance().stopProgress();
-                if(response.isSuccessful()&&response.code()==200) {
-                    try{
-                        if(response.body().getResponseCode() == 200) {
-
-                            List<Result> chatList = response.body().getResult();
-                            mChatReceivedTV.setText("("+chatList.size()+")");
-
-                        }else {
-//                            Toast.makeText(getActivity(), "Something went wrong!", Toast.LENGTH_SHORT).show();
-                        }
-                    }catch (NullPointerException npe){
-                        Log.e(TAG, "#Error : "+npe, npe);
-                    }
-                } else {
-//                    Toast.makeText(getActivity(), "Confused", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ChatUserListModel> call, Throwable t) {
-                call.cancel();
-//                ProgressClass.getProgressInstance().stopProgress();
-//                Toast.makeText(PaidSubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    public void reTryMethod(){
-
-        String title = "Alert";
-        String msg = "Oops. Please Try Again! \n";
-
-        final Dialog dialog = new Dialog(PaidSubscriberDashboardActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.alert_dialog_two_click);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
-        titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
-        msgTxt.setText(msg);
-
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
-        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
-        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callWebServiceForPaidSubs();
-//                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }
-
-    //        EXTRA
-    public void showSnackBar(){
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
-                .setAction("CLOSE", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                })
-                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
-                .show();
-    }
-    public void showAlertMsg(String title, String msg){
-        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setTitle(title)
-                .setMessage(msg)
-                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
 
 }

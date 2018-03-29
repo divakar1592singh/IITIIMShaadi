@@ -3,12 +3,11 @@ package com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by senzec on 21/2/18.
- */import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
+/**
+ * Created by senzec on 29/3/18.
+ */
 public class PartnerBasicData {
 
     @SerializedName("prefered_partner_education")

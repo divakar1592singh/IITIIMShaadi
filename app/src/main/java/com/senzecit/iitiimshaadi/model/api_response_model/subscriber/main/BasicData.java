@@ -3,14 +3,18 @@ package com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
- * Created by senzec on 21/2/18.
- */
-public class BasicData {
+ * Created by senzec on 29/3/18.
+ */public class BasicData {
 
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("birth_date")
+    @Expose
+    private String birthDate;
     @SerializedName("health_issue")
     @Expose
     private String healthIssue;
@@ -31,10 +35,16 @@ public class BasicData {
     private String smoke;
     @SerializedName("interest")
     @Expose
-    private Object interest;
+    private List<String> interest = null;
     @SerializedName("religion")
     @Expose
     private String religion;
+    @SerializedName("profile_image")
+    @Expose
+    private String profileImage;
+    @SerializedName("profile_created_for")
+    @Expose
+    private String profileCreatedFor;
     @SerializedName("caste")
     @Expose
     private String caste;
@@ -152,6 +162,14 @@ public class BasicData {
         this.name = name;
     }
 
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public String getHealthIssue() {
         return healthIssue;
     }
@@ -200,11 +218,11 @@ public class BasicData {
         this.smoke = smoke;
     }
 
-    public Object getInterest() {
+    public List<String> getInterest() {
         return interest;
     }
 
-    public void setInterest(Object interest) {
+    public void setInterest(List<String> interest) {
         this.interest = interest;
     }
 
@@ -214,6 +232,22 @@ public class BasicData {
 
     public void setReligion(String religion) {
         this.religion = religion;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getProfileCreatedFor() {
+        return profileCreatedFor;
+    }
+
+    public void setProfileCreatedFor(String profileCreatedFor) {
+        this.profileCreatedFor = profileCreatedFor;
     }
 
     public String getCaste() {

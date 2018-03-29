@@ -784,7 +784,6 @@ public class ProfileActivity2 extends AppCompatActivity implements View.OnClickL
         dialog.show();
     }
 
-
     @Override
     public void finish() {
         super.finish();
