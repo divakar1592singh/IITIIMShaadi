@@ -62,6 +62,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -445,8 +446,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
 
-//        String fullPath = Commons.getPath(uri, this);
-        String fullPath = "";
+        String fullPath = Commons.getPath(uri, this);
 
         File   file = new File(fullPath);
         System.out.print(file);
