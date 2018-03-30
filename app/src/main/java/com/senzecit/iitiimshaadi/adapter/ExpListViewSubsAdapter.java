@@ -3,11 +3,13 @@ package com.senzecit.iitiimshaadi.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.icu.lang.UCharacter;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -107,6 +109,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     SubscriberMainResponse subsResponse;
     OnExpLvSubsItemClickListener communicator;
     TextView mEmailVerifyTV, mMobVerifyTV, mDocumentsVerifyTV, mProofVerifyTV;
+    CircleImageView mProfileCIV;
 
 
     public ExpListViewSubsAdapter(Context context, List<String> listDataHeader,
@@ -161,6 +164,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         //SetData - Name
                         editText.setText(subsResponse.getBasicData().getName());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getName()))
+                        editText.setText(ExpOwnProfileModel.getInstance().getName());
+
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -224,16 +231,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
-                        //SetData - Age
-//                        txtListChildHeader.setText(subsResponse.getBasicData().getDiet());
-//                        txtListChild2.setText(formattedDate());3
                         formattedDate(txtListChild2, subsResponse.getBasicData().getBirthDate());
-                       /* convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showDialog(txtListChild2,100,50);
-                            }
-                        });*/
+
+
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -276,6 +276,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDiet()))
+                            txtListChild3.setText(ExpOwnProfileModel.getInstance().getDiet());
+
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -317,12 +320,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         }
 
 
-                        /*convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showDialog(txtListChild4,100,50);
-                            }
-                        });*/
                         txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -366,6 +363,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - MaritalStatus
                         txtListChild5.setText(subsResponse.getBasicData().getMaritalStatus());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMarital_Status()))
+                            txtListChild5.setText(ExpOwnProfileModel.getInstance().getMarital_Status());
 
                         txtListChild5.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -411,6 +411,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - MaritalStatus
                         txtListChild6.setText(subsResponse.getBasicData().getDrink());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDrink()))
+                            txtListChild6.setText(ExpOwnProfileModel.getInstance().getDrink());
+
                         txtListChild6.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -452,6 +455,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSmoke()))
+                            txtListChild7.setText(ExpOwnProfileModel.getInstance().getSmoke());
+
                         txtListChild7.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -482,6 +488,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         editText8.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         //SetData - Name
                         editText8.setText(subsResponse.getBasicData().getHealthIssue());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getHealth_Issue()))
+                            editText8.setText(ExpOwnProfileModel.getInstance().getHealth_Issue());
+
                         editText8.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -515,6 +525,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         TextView txtListChildHeader9 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader9.setText(childText);
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getHeight()))
+                            txtListChild9.setText(ExpOwnProfileModel.getInstance().getHeight());
+
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -567,6 +581,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showInterests(txtListChild10);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getInterests()))
+                            txtListChild10.setText(ExpOwnProfileModel.getInstance().getInterests());
 
                         txtListChild10.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -627,6 +644,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getReligion()))
+                            txtListChild1.setText(ExpOwnProfileModel.getInstance().getReligion());
+
                         txtListChild1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -668,6 +688,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCaste()))
+                            txtListChild2.setText(ExpOwnProfileModel.getInstance().getCaste());
+
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -708,6 +731,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showMotherTongue(txtListChild3);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMother_Tongue()))
+                            txtListChild3.setText(ExpOwnProfileModel.getInstance().getMother_Name());
 
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -789,10 +815,12 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - AlternateNo
                         editText1.setText(subsResponse.getBasicData().getAlternateNo());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAlternate_Number()))
+                            editText1.setText(ExpOwnProfileModel.getInstance().getAlternate_Number());
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -825,6 +853,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - PermanentAddress
                         editText2.setText(subsResponse.getBasicData().getPermanentAddress());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_Address()))
+                            editText2.setText(ExpOwnProfileModel.getInstance().getPermanent_Address());
 
                         editText2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -868,6 +899,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_Country()))
+                            txtListChild3.setText(ExpOwnProfileModel.getInstance().getPermanent_Country());
+
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -909,6 +943,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_State()))
+                            txtListChild4.setText(ExpOwnProfileModel.getInstance().getPermanent_State());
+
                         txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -941,6 +978,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - PermanentCity
                         editText5.setText(subsResponse.getBasicData().getPermanentCity());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_City()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getPermanent_City());
+
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -968,10 +1008,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         textInputLayout6.setHint(childText);
 
                         EditText editText6 = convertView.findViewById(R.id.idlistitemET);
-//                        editText6.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
                         //SetData - PermanentZipcode
                         editText6.setText(subsResponse.getBasicData().getPermanentZipcode());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getZip_Code_Perm()))
+                            editText6.setText(ExpOwnProfileModel.getInstance().getZip_Code_Perm());
 
                         editText6.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1005,6 +1046,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - CurrentAddress
                         editText7.setText(subsResponse.getBasicData().getCurrentAddress());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_Address()))
+                            editText7.setText(ExpOwnProfileModel.getInstance().getCurrent_Address());
 
                         editText7.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1047,6 +1091,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_Country()))
+                            txtListChild8.setText(ExpOwnProfileModel.getInstance().getCurrent_Country());
+
                         txtListChild8.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1088,6 +1135,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_State()))
+                            txtListChild9.setText(ExpOwnProfileModel.getInstance().getCurrent_State());
+
                         txtListChild9.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1120,6 +1170,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - CurrentCity
                         editText10.setText(subsResponse.getBasicData().getCurrentCity());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_City()))
+                            editText10.setText(ExpOwnProfileModel.getInstance().getCurrent_City());
+
                         editText10.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1149,6 +1202,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         EditText editText11 = convertView.findViewById(R.id.idlistitemET);
                         editText11.setText(subsResponse.getBasicData().getCurrentZipcode());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getZip_Code_Cur()))
+                            editText11.setText(ExpOwnProfileModel.getInstance().getZip_Code_Cur());
 
                         editText11.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1201,6 +1257,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - FatherName
                         editText.setText(subsResponse.getBasicData().getFatherName());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getFather_Name()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getFather_Name());
+
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1234,6 +1293,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - FatherOccupation
                         editText1.setText(subsResponse.getBasicData().getFatherOccupation());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getFather_Occupation()))
+                            editText1.setText(ExpOwnProfileModel.getInstance().getFather_Occupation());
+
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1265,6 +1327,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - MotherName
                         editText2.setText(subsResponse.getBasicData().getMotherName());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMother_Name()))
+                            editText2.setText(ExpOwnProfileModel.getInstance().getMother_Name());
 
                         editText2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1299,6 +1364,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - MotherOccupation
                         editText3.setText(subsResponse.getBasicData().getMotherOccupation());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMother_Occupation()))
+                            editText3.setText(ExpOwnProfileModel.getInstance().getMother_Occupation());
+
                         editText3.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1332,6 +1400,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - Sister
                         editText4.setText(subsResponse.getBasicData().getSister());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDetails_Sisters()))
+                            editText4.setText(ExpOwnProfileModel.getInstance().getDetails_Sisters());
+
                         editText4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1364,6 +1435,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - Brother
                         editText5.setText(subsResponse.getBasicData().getBrother());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDetails_Brothers()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getDetails_Brothers());
 
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1416,6 +1490,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - Schooling
                         editText.setText(subsResponse.getBasicData().getSchooling());
 
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getSchooling());
+
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1444,10 +1522,17 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+                        InputFilter[] FilterArray = new InputFilter[1];
+                        FilterArray[0] = new InputFilter.LengthFilter(4);
+                        editText1.setFilters(FilterArray);
 
                         //SetData - SchoolingYear
                         editText1.setText(String.valueOf(subsResponse.getBasicData().getSchoolingYear()));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
+                            editText1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1482,6 +1567,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - Graduation
                         editText2.setText(subsResponse.getBasicData().getGraduation());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation()))
+                            editText2.setText(ExpOwnProfileModel.getInstance().getGraduation());
+
                         editText2.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1515,6 +1603,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - GraduationCollege
                         editText3.setText(subsResponse.getBasicData().getGraduationCollege());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_College()))
+                            editText3.setText(ExpOwnProfileModel.getInstance().getGraduation_College());
+
                         editText3.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1543,10 +1634,18 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         textInputLayout4.setHint(childText);
 
                         EditText editText4 = convertView.findViewById(R.id.idlistitemET);
+                        editText4.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+                        InputFilter[] FilterArray1 = new InputFilter[1];
+                        FilterArray1[0] = new InputFilter.LengthFilter(4);
+                        editText4.setFilters(FilterArray1);
 //                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - GraduationYear
                         editText4.setText(String.valueOf(subsResponse.getBasicData().getGraduationYear()));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
+                            editText4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
 
                         editText4.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1581,6 +1680,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - PostGraduation
                         editText5.setText(subsResponse.getBasicData().getPostGraduation());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
+
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1614,6 +1716,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - PostGraduationCollege
                         editText6.setText(subsResponse.getBasicData().getPostGraduationCollege());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_College()))
+                            editText6.setText(ExpOwnProfileModel.getInstance().getPost_Graduation());
+
                         editText6.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1646,6 +1751,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - PostGraduationYear
                         editText7.setText(String.valueOf(subsResponse.getBasicData().getPostGraduationYear()));
+                        editText7.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+                        InputFilter[] FilterArray2 = new InputFilter[1];
+                        FilterArray2[0] = new InputFilter.LengthFilter(4);
+                        editText7.setFilters(FilterArray2);
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
+                            editText7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
 
                         editText7.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1680,6 +1793,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - HighestEducation
                         editText8.setText(subsResponse.getBasicData().getHighestEducation());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getHighest_Education()))
+                            editText8.setText(ExpOwnProfileModel.getInstance().getHighest_Education());
+
                         editText8.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1712,6 +1828,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - WorkingWith
                         editText9.setText(subsResponse.getBasicData().getNameOfCompany());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getWorking_With()))
+                            editText9.setText(ExpOwnProfileModel.getInstance().getWorking_With());
 
                         editText9.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1746,6 +1865,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - WorkingAs
                         editText10.setText(subsResponse.getBasicData().getWorkingAs());
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getWorking_As()))
+                            editText10.setText(ExpOwnProfileModel.getInstance().getWorking_As());
+
                         editText10.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1778,6 +1900,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - WorkingLocation
                         editText11.setText(subsResponse.getBasicData().getJobLocation());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getWork_Location()))
+                            editText11.setText(ExpOwnProfileModel.getInstance().getWork_Location());
 
                         editText11.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1821,6 +1946,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAnnual_Income()))
+                            txtListChild12.setText(ExpOwnProfileModel.getInstance().getAnnual_Income());
+
                         txtListChild12.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1852,6 +1980,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - LinkedIn
                         editText13.setText(subsResponse.getBasicData().getLinkedIn());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getLinkdIn_Url()))
+                            editText13.setText(ExpOwnProfileModel.getInstance().getLinkdIn_Url());
 
                         editText13.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1901,6 +2032,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - AboutMe
                         editText.setText(subsResponse.getBasicData().getAboutMe());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAbout_you()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getAbout_you());
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1954,6 +2088,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setText(String.valueOf(subsResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
 
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMinimum_Age()))
+                            editText.setText(ExpPartnerProfileModel.getInstance().getMinimum_Age());
+
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1986,6 +2123,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - PreferedPartnerMaxAge
                         editText1.setText(String.valueOf(subsResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMaximum_Age()))
+                            editText1.setText(ExpPartnerProfileModel.getInstance().getMaximum_Age());
+
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -2028,6 +2169,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMin_Height()))
+                            txtListChild2.setText(ExpPartnerProfileModel.getInstance().getMin_Height());
+
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -2068,6 +2212,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showHeight(txtListChild3);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMax_Height()))
+                            txtListChild3.setText(ExpPartnerProfileModel.getInstance().getMax_Height());
 
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2111,6 +2258,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showMaritalStatus(txtListChild4);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMarital_Status()))
+                            txtListChild4.setText(ExpPartnerProfileModel.getInstance().getMarital_Status());
 
                         txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2172,6 +2322,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Religion()))
+                            txtListChild.setText(ExpPartnerProfileModel.getInstance().getPreferred_Religion());
+
                         txtListChild.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -2214,6 +2367,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showCastePt(txtListChild1);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Caste()))
+                            txtListChild1.setText(ExpPartnerProfileModel.getInstance().getPreferred_Caste());
 
                         txtListChild1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2262,6 +2418,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showCountry(txtListChild2);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Country()))
+                            txtListChild2.setText(ExpPartnerProfileModel.getInstance().getPreferred_Country());
 
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2318,6 +2477,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Education()))
+                            txtListChild.setText(ExpPartnerProfileModel.getInstance().getPreferred_Education());
+
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -2368,15 +2531,15 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
 
-//                        EditText textInputLayout = (EditText) convertView.findViewById(R.id.idTextInputLayout);
-//                        textInputLayout.setHint(childText);
-
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
 //                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - ChoiceOfGroom
                         editText.setText(subsResponse.getPartnerBasicData().getChoiceOfPartner());
+
+                        if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getChoice_of_Groom()))
+                            editText.setText(ExpPartnerProfileModel.getInstance().getChoice_of_Groom());
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2445,6 +2608,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
 
 //        switch (groupPosition){
+
             if(groupPosition == 0) {
 
                 LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -2452,6 +2616,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                 convertView = infalInflater.inflate(R.layout.row_subscriber_top, null);
 
                 handleHeaderData(convertView);
+                Glide.with(_context).load(DataHandlingClass.getInstance().getProfilePicName(_context)).into(mProfileCIV);
+
 
                 return convertView;
             }
@@ -2787,7 +2953,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
-//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_0();
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
 
                         } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -2838,7 +3006,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
-//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_1();
 
                         } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -2910,6 +3079,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_2();
 
                         } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -2968,6 +3138,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_3();
 
                         } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -3042,6 +3213,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_4();
 
                         } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -3089,6 +3261,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_5();
 
                         } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
@@ -3643,7 +3816,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     public void handleHeaderData(View convertView){
 
         //INIT SECTION
-        CircleImageView mProfileCIV = (CircleImageView)convertView.findViewById(R.id.idProfileCIV);
+        mProfileCIV = (CircleImageView)convertView.findViewById(R.id.idProfileCIV);
         TextView mUsrNameTV = (TextView)convertView.findViewById(R.id.idUserNameTV) ;
         TextView mUsrIdTV = (TextView)convertView.findViewById(R.id.idUserId) ;
         ProgressBar mProgress = (ProgressBar)convertView.findViewById(R.id.idprogress);
@@ -3662,11 +3835,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
 //        String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+prefs.getString(CONSTANTS.LOGGED_USER_PIC);
         try {
-            if( subsResponse.getBasicData().getProfileComplition() != null){
+
                 int profileCompletion = subsResponse.getBasicData().getProfileComplition();
                 mProgress.setProgress(profileCompletion);
                 mProfilepercTV.setText(String.valueOf(profileCompletion)+"%");
-            }
+
 
             String profileUri = CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + subsResponse.getBasicData().getProfileImage();
             if (!TextUtils.isEmpty(profileUri)) {
@@ -3807,7 +3980,18 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         void verifiyMob();
         void verifiyDoc();
         void verifiyIDProof();
-
+/*
+         void saveChangesOfCaseI_0();
+         void saveChangesOfCaseI_1();
+         void saveChangesOfCaseI_2();
+         void saveChangesOfCaseI_3();
+         void saveChangesOfCaseI_4();
+         void saveChangesOfCaseI_5();
+        void saveChangesOfCasePtI_0();
+         void saveChangesOfCasePtI_1();
+         void saveChangesOfCasePtI_2();
+         void saveChangesOfCasePtI_3();
+*/
     }
 
 }

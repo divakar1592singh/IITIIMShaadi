@@ -40,6 +40,15 @@
                     android:hint="Username"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idUsernameStatus"
+                android:text="Username Status"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/size_8_dp"
+                android:visibility="gone"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_marginTop="20dp"
@@ -55,6 +64,16 @@
                     android:singleLine="true"
                     android:inputType="textEmailAddress"/>
             </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/idEmailStatus"
+                android:text="Email Status"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/dimen_10dp"
+                android:paddingLeft="@dimen/size_8_dp"
+                android:visibility="gone"/>
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_marginTop="20dp"

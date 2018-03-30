@@ -27,7 +27,7 @@ public interface CONSTANTS {
     String CHOICE_OF_PARTNER_PATH = "api/choiceof_partner.json";
 
     String CONTACT_US_PATH = "api/contact_us.json";
-
+    String CHECK_DUPLICATE = "api/check_duplicate.json";
 
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";

@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "74053145bd2dae2df95ec6c6e9cc553a");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "544ac53b70aebae3c5ca447e70c2649f");
 //        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
 
@@ -63,7 +63,7 @@ public class SplashActivity extends AppCompatActivity {
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
         prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
 //
-//        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
+        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
 //        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
@@ -90,7 +90,7 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, NewUserRegisterActivity.class);
+               Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

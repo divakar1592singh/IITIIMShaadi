@@ -43,6 +43,7 @@ import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
 import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
+import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.UserValidationRequest;
 import com.senzecit.iitiimshaadi.model.commons.CountryCodeModel;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
@@ -75,6 +76,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     Toolbar mToolbar;
     TextView mTitle, mProfileCreatedForTV, mGenderTV, mDateOfBirthTV, mTermsCoondition;
+    TextView mUserNameStatus, mEmailStatus;
     ImageView mTermCheck,mTermUnCheck, mRefreshIV;
     Button mUserRegister, mCaptchaBtn;
     RelativeLayout mProfileCreatedRL, mGenderRL, mDOBRL;
@@ -139,6 +141,10 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         mMonthSPN = (Spinner)findViewById(R.id.idMonthSpnr) ;
         mYearSPN = (Spinner)findViewById(R.id.idYearSpnr) ;
 
+        mUserNameStatus = (TextView)findViewById(R.id.idUsernameStatus);
+        mEmailStatus = (TextView)findViewById(R.id.idEmailStatus);
+
+
     }
 
     public void handleview(){
@@ -166,10 +172,13 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-//                    validateInput(v);
-                    Toast.makeText(NewUserRegisterActivity.this, "mUserNameET", Toast.LENGTH_SHORT).show();
 
-                    RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ContactUsActivity.this, CONSTANTS.CONTACT_US_PATH, request, null);
+                    UserValidationRequest validationRequest = new UserValidationRequest();
+                    validationRequest.str = mUserNameET.getText().toString().trim();
+                    validationRequest.type = 1;
+
+                    if(!TextUtils.isEmpty(mUserNameET.getText().toString().trim()))
+                    RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.CHECK_DUPLICATE, validationRequest, "Username");
 
                 }
             }
@@ -179,9 +188,61 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-//                    validateInput(v);
-                    Toast.makeText(NewUserRegisterActivity.this, "mEmailET", Toast.LENGTH_SHORT).show();
+
+                    UserValidationRequest validationRequest = new UserValidationRequest();
+                    validationRequest.str = mEmailET.getText().toString().trim();
+                    validationRequest.type = 2;
+
+                    if (!TextUtils.isEmpty(mEmailET.getText().toString().trim())){
+                        if (isValidEmail(mEmailET.getText().toString().trim())) {
+                            RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.CHECK_DUPLICATE, validationRequest, "Email");
+                        }else {
+                            mEmailStatus.setVisibility(View.VISIBLE);
+                            mEmailStatus.setText("Email Not Valid");
+                            mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
+
+                        }
+                    }
+
                 }
+            }
+        });
+
+        mUserNameET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(TextUtils.isEmpty(mUserNameET.getText().toString().trim())){
+                    mUserNameStatus.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mEmailET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(TextUtils.isEmpty(mEmailET.getText().toString().trim())){
+                    mEmailStatus.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -786,6 +847,50 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     @Override
     public void handle(JSONObject object, String methodName) {
+
+        if(methodName.equalsIgnoreCase("Username")){
+
+            System.out.println(object);
+            try {
+                int counter = object.getInt("counter");
+                boolean status = counter == 1 ? true : false;
+                if(status == true){
+                    mUserNameStatus.setVisibility(View.VISIBLE);
+                    mUserNameStatus.setText("Username Not Available");
+                    mUserNameStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
+
+                }else if( status == false) {
+                    mUserNameStatus.setVisibility(View.VISIBLE);
+                    mUserNameStatus.setText("Username Available");
+                    mUserNameStatus.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else if(methodName.equalsIgnoreCase("Email")){
+
+            System.out.println(object);
+            try {
+                int counter = object.getInt("counter");
+                boolean status = counter == 1 ? true : false;
+                if(status == true){
+                    mEmailStatus.setVisibility(View.VISIBLE);
+                    mEmailStatus.setText("Email Not Available");
+                    mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
+
+                }else if( status == false) {
+                    mEmailStatus.setVisibility(View.VISIBLE);
+                    mEmailStatus.setText("Email Available");
+                    mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }

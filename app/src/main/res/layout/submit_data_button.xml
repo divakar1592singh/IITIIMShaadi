@@ -16,5 +16,6 @@
         android:textSize="18sp"
         android:textColor="@color/colorMaroon"
         android:textAllCaps="false"
+        android:focusable="false"
         />
 </RelativeLayout>

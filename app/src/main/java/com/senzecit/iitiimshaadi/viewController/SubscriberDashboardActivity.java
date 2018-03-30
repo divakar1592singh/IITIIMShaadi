@@ -823,6 +823,76 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     public void verifiyIDProof() {
         alertDialogIDProof();
     }
+/*
+    @Override
+    public void saveChangesOfCaseI_0() {
+        expListView.collapseGroup(0);
+        expListView.expandGroup(1);
+
+    }
+
+    @Override
+    public void saveChangesOfCaseI_1() {
+        expListView.collapseGroup(1);
+        expListView.expandGroup(2);
+
+    }
+
+    @Override
+    public void saveChangesOfCaseI_2() {
+        expListView.collapseGroup(2);
+        expListView.expandGroup(3);
+
+    }
+
+    @Override
+    public void saveChangesOfCaseI_3() {
+        expListView.collapseGroup(3);
+        expListView.expandGroup(4);
+
+    }
+
+    @Override
+    public void saveChangesOfCaseI_4() {
+        expListView.collapseGroup(4);
+        expListView.expandGroup(5);
+
+    }
+
+    @Override
+    public void saveChangesOfCaseI_5() {
+        expListView.collapseGroup(5);
+        expListView.expandGroup(6);
+
+    }
+
+    @Override
+    public void saveChangesOfCasePtI_0() {
+        expListView.collapseGroup(6);
+        expListView.expandGroup(7);
+
+    }
+
+    @Override
+    public void saveChangesOfCasePtI_1() {
+        expListView.collapseGroup(7);
+        expListView.expandGroup(8);
+
+    }
+
+    @Override
+    public void saveChangesOfCasePtI_2() {
+        expListView.collapseGroup(8);
+        expListView.expandGroup(9);
+
+    }
+
+    @Override
+    public void saveChangesOfCasePtI_3() {
+
+    }
+    */
+
 
     //        EXTRA
     public void showSnackBar(){

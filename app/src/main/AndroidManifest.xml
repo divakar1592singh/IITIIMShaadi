@@ -53,6 +53,8 @@
         <activity
             android:name=".viewController.ProfileActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:descendantFocusability="afterDescendants"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".viewController.PaidSubscriberDashboardActivity"
@@ -61,6 +63,8 @@
         <activity
             android:name=".viewController.SubscriberDashboardActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+            android:descendantFocusability="afterDescendants"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".navigation.PaidBaseActivity"

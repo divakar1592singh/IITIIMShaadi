@@ -7,6 +7,6 @@ package com.senzecit.iitiimshaadi.model.api_rquest_model.register_login;
 public class UserValidationRequest {
 
     public String str;
-    public String type;
+    public int type;
 
 }
