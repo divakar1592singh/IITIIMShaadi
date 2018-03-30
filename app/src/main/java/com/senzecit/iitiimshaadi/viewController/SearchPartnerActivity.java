@@ -40,6 +40,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_result_search_partner);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         getSupportActionBar().hide();
 

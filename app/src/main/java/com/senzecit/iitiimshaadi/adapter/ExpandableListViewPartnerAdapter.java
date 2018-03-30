@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -134,6 +135,12 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
+
+                        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray = new InputFilter[1];
+                        FilterArray[0] = new InputFilter.LengthFilter(2);
+                        editText.setFilters(FilterArray);
+
                         editText.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
 
                         editText.addTextChangedListener(new TextWatcher() {
@@ -164,7 +171,10 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray2 = new InputFilter[1];
+                        FilterArray2[0] = new InputFilter.LengthFilter(2);
+                        editText1.setFilters(FilterArray2);
 
                         //SetData - PreferedPartnerMaxAge
                         editText1.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
@@ -799,6 +809,8 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
                 }
                 txtListChild.setText(selectedQualification.toString());
+                String rawStr = txtListChild.getText().toString().trim();
+                txtListChild.setText(removeLastChar(rawStr));
                 dialog.dismiss();
 //             Toast.makeText(MainActivity.this, "Data is : "+slideText.getText(), Toast.LENGTH_SHORT).show();
 
@@ -1160,5 +1172,12 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     }
 
+    public static String removeLastChar(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return s = "";
+        }
+        String rawString = s.substring(0, s.length()-1);
+        return rawString.replaceAll("\\s+","");
+    }
 
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 
 /**
  * Created by senzec on 1/12/17.
@@ -44,7 +45,7 @@ public class ProgressClass {
 
             ImageView progressImage = (ImageView) dialog.findViewById(R.id.idPregress);
             Glide.with(activity)
-                    .load(R.drawable.gif_progress1)
+                    .load(DataHandlingClass.getInstance().getProgressId())
                     .into(progressImage);
 
             dialog.show();
@@ -59,7 +60,7 @@ public class ProgressClass {
 
         ImageView progressImage = (ImageView) dialog.findViewById(R.id.idPregress);
         Glide.with(activity)
-                .load(R.drawable.gif_progress1)
+                .load(DataHandlingClass.getInstance().getProgressId())
                 .into(progressImage);
 
         dialog.show();

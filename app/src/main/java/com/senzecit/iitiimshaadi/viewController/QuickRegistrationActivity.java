@@ -72,6 +72,7 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_registration_quick);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
 

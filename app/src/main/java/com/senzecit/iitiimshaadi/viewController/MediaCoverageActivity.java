@@ -26,6 +26,9 @@ public class MediaCoverageActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_media_coverage);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
         init();
         mBack.setOnClickListener(this);
 

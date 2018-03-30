@@ -57,6 +57,25 @@
                 />
 
             <TextView
+                android:id="@+id/idMyProfilePaidNav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Profile"
+                android:gravity="center"
+                android:textColor="@color/colorWhite" />
+            <!--<View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDarkYellow"
+                />-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/side_line"
+                />
+
+
+            <TextView
                 android:id="@+id/idMediaCoverageNav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -95,6 +95,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_new_user_regiater);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = new AppPrefs(NewUserRegisterActivity.this);
@@ -642,7 +643,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
         String email = response.getEmail();
-        String mob = response.getMobile();
+        String mob = response.getMobileNo();
+        String gender = response.getGender();
 
 
         prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
@@ -651,6 +653,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
         prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
         prefs.putString(CONSTANTS.LOGGED_MOB, mob);
+        prefs.putString(CONSTANTS.GENDER_TYPE, gender);
+
 
         prefs.getString(CONSTANTS.LOGGED_TOKEN);
 

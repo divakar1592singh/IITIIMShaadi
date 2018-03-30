@@ -49,6 +49,7 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_chat_messages);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = new AppPrefs(ChatMessagesActivity.this);
 

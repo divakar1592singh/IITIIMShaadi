@@ -41,6 +41,8 @@ public class IntroSliderActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_intro_slider);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         init();
         addBottomDots(0);
 

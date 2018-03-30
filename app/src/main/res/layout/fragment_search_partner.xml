@@ -134,6 +134,11 @@
                                 android:textColor="@color/colorBlack"
                                 android:text="--"
                                 android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/idCountryID"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"/>
                         </LinearLayout>
 
                         <ImageView
@@ -175,6 +180,11 @@
                                 android:textColor="@color/colorBlack"
                                 android:text="--"
                                 android:textSize="14sp"/>
+                            <TextView
+                                android:id="@+id/idCityID"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"/>
                         </LinearLayout>
                         <ImageView
                             android:layout_centerInParent="true"

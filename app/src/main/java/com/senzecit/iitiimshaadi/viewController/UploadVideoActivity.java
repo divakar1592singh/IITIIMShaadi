@@ -18,8 +18,9 @@ public class UploadVideoActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_upload_video);
-        init();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+        init();
         mBack.setOnClickListener(this);
     }
 

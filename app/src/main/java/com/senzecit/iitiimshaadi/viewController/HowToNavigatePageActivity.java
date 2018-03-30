@@ -31,6 +31,7 @@ public class HowToNavigatePageActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_how_to_navigate_page);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         mYoutubeList = (ListView)findViewById(R.id.idYoutubeList);
 

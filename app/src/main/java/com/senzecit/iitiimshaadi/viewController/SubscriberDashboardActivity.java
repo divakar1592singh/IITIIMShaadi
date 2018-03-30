@@ -20,23 +20,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -47,14 +43,11 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -90,6 +83,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscriber_dashboard);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
@@ -110,6 +104,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                     expListView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
+                expListView.setSelectionFromTop(groupPosition, 0);
             }
         });
     }
@@ -129,12 +124,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     }
     public void handleClick() {
 
-
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
-                callWebServiceForSubscribeDashboard();
+                resetModel();
+                callWebServiceForSubsDashboardRefresh();
             }
         });
     }
@@ -172,7 +167,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         basicsLifestyle.add("Marital Status");
         basicsLifestyle.add("Drink");
         basicsLifestyle.add("Smoke");
-        basicsLifestyle.add("Health");
+        basicsLifestyle.add("Health Issue");
         basicsLifestyle.add("Height");
         basicsLifestyle.add("Interests");
         basicsLifestyle.add("Save Changes");
@@ -554,6 +549,43 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 @Override
                 public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
                     ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        if(response.body() != null){
+
+                            SubscriberMainResponse subsResponse = response.body();
+                            setMyProfile(subsResponse);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            networkDialog();
+//            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+        }
+    }
+
+    private void callWebServiceForSubsDashboardRefresh(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        final List<String> countryList = new ArrayList<>();
+        countryList.clear();
+
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
+            call.enqueue(new Callback<SubscriberMainResponse>() {
+                @Override
+                public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
                     mSwipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         if(response.body() != null){
@@ -568,15 +600,16 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
                     call.cancel();
                     mSwipeRefreshLayout.setRefreshing(false);
-                    ProgressClass.getProgressInstance().stopProgress();
                     Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
                 }
             });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+            networkDialog();
+//            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
         }
     }
+
     /** Email */
     public void callWebServiceForEmailVerification(){
 
@@ -598,6 +631,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
                         if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
+                            callWebServiceForSubscribeDashboard();
                             showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
                         }
@@ -640,6 +674,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
 //                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
+                            callWebServiceForSubscribeDashboard();
 //                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
                             showAlertMsg("Info", msg1);
@@ -685,6 +720,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
 
                             dialog.dismiss();
+                            callWebServiceForSubscribeDashboard();
                             showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
@@ -823,6 +859,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     public void verifiyIDProof() {
         alertDialogIDProof();
     }
+
+    @Override
+    public void refreshPage() {
+        callWebServiceForSubscribeDashboard();
+    }
 /*
     @Override
     public void saveChangesOfCaseI_0() {
@@ -893,6 +934,79 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     }
     */
 
+    public void resetModel(){
+
+        ExpOwnProfileModel.getInstance().setName("");
+        ExpOwnProfileModel.getInstance().setProfile("");
+        ExpOwnProfileModel.getInstance().setAge("");
+        ExpOwnProfileModel.getInstance().setDiet("");
+        ExpOwnProfileModel.getInstance().setDate_Of_Birth("");
+
+        ExpOwnProfileModel.getInstance().setMarital_Status("");
+        ExpOwnProfileModel.getInstance().setDrink("");
+        ExpOwnProfileModel.getInstance().setSmoke("");
+        ExpOwnProfileModel.getInstance().setHealth_Issue("");
+        ExpOwnProfileModel.getInstance().setHeight("");
+        ExpOwnProfileModel.getInstance().setInterests("");
+
+        ExpOwnProfileModel.getInstance().setReligion("");
+        ExpOwnProfileModel.getInstance().setCaste("");
+        ExpOwnProfileModel.getInstance().setMother_Tongue("");
+
+        ExpOwnProfileModel.getInstance().setPhone_Number("");
+        ExpOwnProfileModel.getInstance().setAlternate_Number("");
+        ExpOwnProfileModel.getInstance().setPermanent_Address("");
+        ExpOwnProfileModel.getInstance().setPermanent_Country("");
+        ExpOwnProfileModel.getInstance().setPermanent_State("");
+        ExpOwnProfileModel.getInstance().setPermanent_City("");
+        ExpOwnProfileModel.getInstance().setZip_Code_Perm("");
+        ExpOwnProfileModel.getInstance().setCurrent_Address("");
+        ExpOwnProfileModel.getInstance().setCurrent_Country("");
+        ExpOwnProfileModel.getInstance().setCurrent_State("");
+        ExpOwnProfileModel.getInstance().setCurrent_City("");
+        ExpOwnProfileModel.getInstance().setZip_Code_Cur("");
+
+        ExpOwnProfileModel.getInstance().setFather_Name("");
+        ExpOwnProfileModel.getInstance().setFather_Occupation("");
+        ExpOwnProfileModel.getInstance().setMother_Name("");
+        ExpOwnProfileModel.getInstance().setMother_Occupation("");
+        ExpOwnProfileModel.getInstance().setDetails_Sisters("");
+        ExpOwnProfileModel.getInstance().setDetails_Brothers("");
+
+        ExpOwnProfileModel.getInstance().setSchooling("");
+        ExpOwnProfileModel.getInstance().setSchooling_Year("");
+        ExpOwnProfileModel.getInstance().setGraduation("");
+        ExpOwnProfileModel.getInstance().setGraduation_College("");
+        ExpOwnProfileModel.getInstance().setGraduation_Year("");
+        ExpOwnProfileModel.getInstance().setPost_Graduation("");
+        ExpOwnProfileModel.getInstance().setPost_Graduation_College("");
+        ExpOwnProfileModel.getInstance().setPost_Graduation_Year("");
+        ExpOwnProfileModel.getInstance().setHighest_Education("");
+        ExpOwnProfileModel.getInstance().setWorking_With("");
+        ExpOwnProfileModel.getInstance().setWorking_As("");
+        ExpOwnProfileModel.getInstance().setWork_Location("");
+        ExpOwnProfileModel.getInstance().setAnnual_Income("");
+        ExpOwnProfileModel.getInstance().setLinkdIn_Url("");
+
+        ExpOwnProfileModel.getInstance().setAbout_you("");
+
+        ExpPartnerProfileModel.getInstance().setMinimum_Age("");
+        ExpPartnerProfileModel.getInstance().setMaximum_Age("");
+        ExpPartnerProfileModel.getInstance().setMin_Height("");
+        ExpPartnerProfileModel.getInstance().setMax_Height("");
+        ExpPartnerProfileModel.getInstance().setMarital_Status("");
+
+        ExpPartnerProfileModel.getInstance().setPreferred_Religion("");
+        ExpPartnerProfileModel.getInstance().setPreferred_Caste("");
+        ExpPartnerProfileModel.getInstance().setPreferred_Country("");
+
+        ExpPartnerProfileModel.getInstance().setPreferred_Education("");
+
+        ExpPartnerProfileModel.getInstance().setChoice_of_Groom("");
+
+
+    }
+
 
     //        EXTRA
     public void showSnackBar(){
@@ -946,6 +1060,23 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         });
 
         dialog.show();
+    }
+
+    public void networkDialog(){
+        new AlertDialog.Builder(SubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("No Network")
+                .setMessage("Check Your Internet")
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        finishActivity(0);
+                        dialog.dismiss();
+                    }
+
+                })
+                .show();
     }
 
 }

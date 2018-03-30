@@ -70,6 +70,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_profile);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = AppController.getInstance().getPrefs();
 

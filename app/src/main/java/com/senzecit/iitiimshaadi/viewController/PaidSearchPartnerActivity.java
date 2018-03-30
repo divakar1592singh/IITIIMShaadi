@@ -75,6 +75,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_result_paid_search_partner);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         getSupportActionBar().hide();
         prefs = AppController.getInstance().getPrefs();

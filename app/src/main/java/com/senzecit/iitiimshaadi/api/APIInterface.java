@@ -178,9 +178,9 @@ public interface APIInterface {
     @POST("api/other_profile.json")
     Call<OtherProfileResponse> otherProfileData(@Field("token")String token, @Field("other_user")String other_user);
 
-    /** Advance Search - Subs */
-    @POST("api/advance_search.json")
-    Call<SubsAdvanceSearchResponse> advanceSearch(@Body SubsAdvanceSearchRequest advanceSearchRequest);
+//    /** Advance Search - Subs */
+//    @POST("api/advance_search.json")
+//    Call<SubsAdvanceSearchResponse> advanceSearch(@Body SubsAdvanceSearchRequest advanceSearchRequest);
 
     /*Move To*/
     @FormUrlEncoded
@@ -206,6 +206,14 @@ Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Query("token") String token, 
                                                       @Query("location[]")String[] location, @Query("religion")String religion, @Query("caste[]")String[] caste,
                                                       @Query("mother_tounge[]")String[] mother_tounge, @Query("marital_status[]")String[] marital_status, @Query("min_height")String min_height,
                                                       @Query("max_height")String max_height, @Query("course[]")String[] course, @Query("annual_income[]")String[] annual_income);
+
+/** Subscriber */
+@GET("api/advance_search.json")
+Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Query("page")String page, @Query("minage")String minage,
+                                                      @Query("maxage")String maxage, @Query("country")String country, @Query("city[]")String[] city,
+                                                      @Query("religion")String religion, @Query("caste[]")String[] caste,
+                                                      @Query("mother_tounge[]")String[] mother_tounge, @Query("marital_status[]")String[] marital_status,
+                                              @Query("course[]")String[] course, @Query("annual_income[]")String[] annual_income);
 
 
 /*

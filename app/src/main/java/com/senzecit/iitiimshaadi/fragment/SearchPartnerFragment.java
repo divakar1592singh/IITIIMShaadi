@@ -11,6 +11,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -37,6 +39,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.model.api_response_model.common.CityModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
@@ -89,6 +92,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     TextView mPartnerCurrentCountryTV, mPartnerCurrentCityIV, mSelectReligionTV, mSelectCastTV,
             mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV, mAgeCautionTV;
     private List<SliderCheckModel> sliderCheckList;
+    TextView mCountryID, mCityID;
+    List<CityModel> cityWithIdList = null;
 
     public void setSearchPartnerFragmentCommunicator(SearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
@@ -154,10 +159,22 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         mEducationOccupationTV = (TextView)view.findViewById(R.id.educationOccupationTV) ;
         mAnnualIncomeTV = (TextView)view.findViewById(R.id.annualIncomeTV) ;
 
+        //
+        mCountryID  = (TextView)view.findViewById(R.id.idCountryID);
+        mCityID  = (TextView)view.findViewById(R.id.idCityID);
+
         textEventListner();
     }
 
     public void textEventListner(){
+
+        InputFilter[] FilterArray = new InputFilter[1];
+        FilterArray[0] = new InputFilter.LengthFilter(2);
+        mAgeMinET.setFilters(FilterArray);
+        mAgeMinET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        mAgeMaxET.setFilters(FilterArray);
+        mAgeMaxET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
 
         mAgeMinET.addTextChangedListener(new TextWatcher() {
             @Override
@@ -223,6 +240,36 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             }
         });
 
+        mPartnerCurrentCountryTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String country = s.toString();
+                showCountryId(country);
+            }
+        });
+        mPartnerCurrentCityIV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String city = removeLastChar(s.toString());
+                String[] cityArr = city.split(",");
+                mCityID.setText("");
+                for(String city1 : cityArr){
+                    showCityId(city1);
+                }
+            }
+        });
     }
 
 
@@ -285,39 +332,43 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         String minage = mAgeMinET.getText().toString() ;
         String maxage = mAgeMaxET.getText().toString() ;
-        String country = mPartnerCurrentCountryTV.getText().toString() ;
-        String city = mPartnerCurrentCityIV.getText().toString() ;
-        String religion = mSelectReligionTV.getText().toString() ;
-        String caste = mSelectCastTV.getText().toString() ;
-        String mother_tounge = mSelectMotherToungeTV.getText().toString() ;
-        String marital_status = mMaritalStatusTV.getText().toString() ;
-        String course = mEducationOccupationTV.getText().toString() ;
-        String annual_income = mAnnualIncomeTV.getText().toString() ;
+        String country = mCountryID.getText().toString() ;
 
-        profileList.add(minage);profileList.add(maxage);profileList.add(country);
-        profileList.add(city);profileList.add(religion);profileList.add(caste);
+        String city =  removeLastChar(mCityID.getText().toString());
+        String[] cityArr = new String[1];
+        cityArr = city.split(",");
+
+        String religion = mSelectReligionTV.getText().toString() ;
+        String caste = removeLastChar(mSelectCastTV.getText().toString());
+        String[] casteArr = new String[1];
+        casteArr = caste.split(",");
+
+        String mother_tounge =  removeLastChar(mSelectMotherToungeTV.getText().toString());
+        String[] mother_toungeArr = new String[1];
+        mother_toungeArr = mother_tounge.split(",");
+
+        String marital_status =  removeLastChar(mMaritalStatusTV.getText().toString());
+        String[] marital_statusArr = new String[1];
+        marital_statusArr = marital_status.split(",");
+
+        String course =  removeLastChar(mEducationOccupationTV.getText().toString());
+        String[] courseArr = new String[1];
+        courseArr = course.split(",");
+
+        String annual_income =  removeLastChar(mAnnualIncomeTV.getText().toString());
+        String[] annual_incomeArr = new String[1];
+        annual_incomeArr = annual_income.split(",");
+
+        profileList.add(minage);profileList.add(maxage);profileList.add(mPartnerCurrentCountryTV.getText().toString());
+        profileList.add(mPartnerCurrentCityIV.getText().toString());profileList.add(religion);profileList.add(caste);
         profileList.add(mother_tounge);profileList.add(marital_status);
         profileList.add(course);profileList.add(annual_income);
-
-        SubsAdvanceSearchRequest searchRequest = new SubsAdvanceSearchRequest();
-        searchRequest.token = token;
-        searchRequest.minage = minage;
-        searchRequest.maxage = maxage;
-        searchRequest.country = country;
-        searchRequest.city = city;
-        searchRequest.religion = religion;
-        searchRequest.caste = caste;
-        searchRequest.mother_tounge = mother_tounge;
-        searchRequest.marital_status = marital_status;
-        searchRequest.course = course;
-        searchRequest.annual_income = annual_income;
-
 
         if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(getActivity());
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(searchRequest);
+        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(token, "1", minage, maxage, country, cityArr,religion,casteArr,mother_toungeArr,marital_statusArr,courseArr,annual_incomeArr);
         call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
             @Override
             public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
@@ -598,6 +649,53 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         }
     }
 
+    public void showCountryId(String countryName) {
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        ProgressClass.getProgressInstance().showDialog(getActivity());
+        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                .addBodyParameter("token", token)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCountries");
+                            countryListWithId = new ArrayList<>();
+                            List<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject countryObject = jsonArray.getJSONObject(i);
+                                String countryId = countryObject.getString("old_value");
+                                String country = countryObject.getString("name");
+
+                                if(country.equalsIgnoreCase(countryName)){
+                                    mCountryID.setText(countryObject.getString("old_value"));
+                                }
+
+                                countryList.add(country);
+                                CountryModel countryModel = new CountryModel(countryId, country);
+                                countryListWithId.add(countryModel);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_not_found);
+                    }
+                });
+
+    }
+
     public void showCity(final TextView textView){
 
         final List<String> cityList = new ArrayList<>();
@@ -659,6 +757,15 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             NetworkDialogHelper.getInstance().showDialog(getActivity());
         }
     }
+    public void showCityId(String cityName){
+        cityWithIdList = new ArrayList<>();
+        for (int i = 0; i < cityWithIdList.size(); i++){
+            if(cityName.equalsIgnoreCase(cityWithIdList.get(i).getCityName())){
+                mCityID.append(cityWithIdList.get(i).getCityId()+", ");
+            }
+        }
+    }
+
 
     public void showCaste(final TextView textView) {
 
@@ -688,12 +795,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                                 casteList.add(country);
                             }
                             showSelectableDialog(casteList, textView);
-                        /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
-                        }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);
                         }
 
                     }
@@ -701,10 +805,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.cast_not_found);
                     }
                 });
-
         }else {
             NetworkDialogHelper.getInstance().showDialog(getActivity());
         }
@@ -730,6 +833,23 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     }
                 })
                 .show();
+    }
+
+    public static String removeLastChar(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return s = "";
+        }
+        String rawString = s.substring(0, s.length()-1);
+        return rawString.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
+    }
+
+    public static String removeWhiteSpace(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--")) {
+            return s = "[]";
+        }
+        return s.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
     }
 
 }

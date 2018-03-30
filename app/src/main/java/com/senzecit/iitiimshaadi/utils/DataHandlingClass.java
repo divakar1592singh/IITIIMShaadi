@@ -45,8 +45,6 @@ public class DataHandlingClass {
         }else {
             return R.drawable.ic_female_default;
         }
-
-
     }
 
     public int getProfilePicName(Context activity){
@@ -62,6 +60,35 @@ public class DataHandlingClass {
 
 
     }
+
+    public int getOtherProfile(String gender){
+
+        if(gender.equalsIgnoreCase("Male")){
+            return R.drawable.ic_male_default;
+        }else {
+            return R.drawable.ic_female_default;
+        }
+    }
+
+
+    public int getProgressId(){
+        return R.drawable.progress4;
+    }
+
+    public String checkNullString(String input){
+        try{
+            if(input != null){
+                return input;
+            }else {
+                return "";
+            }
+
+        }catch (NullPointerException npe){
+            Log.e("Null Error : ", "# ERR : "+npe, npe);
+            return "";
+        }
+    }
+
 
 
 

@@ -1,7 +1,6 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -60,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = new AppPrefs(LoginActivity.this);
@@ -166,7 +167,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 setPrefData(responseData);
                             }
                         } else {
-                            Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
                     } catch (NullPointerException npe) {
                         Log.e(TAG, " #Error" + npe, npe);
@@ -196,6 +197,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = response.getEmail();
         String mobile = response.getMobile();
         String profilePic = response.getProfileImage();
+        String gender = response.getGender();
+
 
         prefs.putString(CONSTANTPREF.LOGIN_USERNAME, sUsername);
         prefs.putString(CONSTANTPREF.LOGIN_PASSWORD, sPassword);
@@ -207,6 +210,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
         prefs.putString(CONSTANTS.LOGGED_MOB, mobile);
         prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
+        prefs.putString(CONSTANTS.GENDER_TYPE, gender);
 
 
         navigateUserToScreen(typeOfUser);

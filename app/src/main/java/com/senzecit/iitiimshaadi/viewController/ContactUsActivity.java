@@ -69,6 +69,8 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_contact_us);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         init();
         handleView();
         mBack.setOnClickListener(this);

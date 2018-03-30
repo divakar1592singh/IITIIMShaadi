@@ -1,10 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
-import android.provider.ContactsContract;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +12,6 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
@@ -44,10 +40,11 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = AppController.getInstance().getPrefs();
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "544ac53b70aebae3c5ca447e70c2649f");
+//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "0609fa18198d8dabb3f2f613a1d4b9fc");
 //        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
 
@@ -61,16 +58,16 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
-        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
+//        prefs.putString(CONSTANTS.LOGGED_USERID, "9798");
 //
-        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
+//        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_EMAIL, "diwakar@senzecit.com");
 //        prefs.putString(CONSTANTS.LOGGED_USERNAME, "diwakar");
 //        prefs.putString(CONSTANTS.LOGGED_MOB, "8860807707");
 //        prefs.putString(CONSTANTS.LOGGED_USER_PIC, "1521821548CROP_1523981481474.jpg");
 
 
-        prefs.putString(CONSTANTS.GENDER_TYPE, "female");
+//        prefs.putString(CONSTANTS.GENDER_TYPE, "female");
 /*
         prefs.putString(CONSTANTS.LOGGED_TOKEN, "e0e3d00067f8c0ed7e2f93739c4dbe6c");
         prefs.putString(CONSTANTS.LOGGED_EMAIL, "divakar1591@gmail.com");
@@ -87,13 +84,14 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+
+               Intent intent = new Intent(SplashActivity.this, SearchPartnerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+
 
 
 
@@ -104,8 +102,8 @@ public class SplashActivity extends AppCompatActivity {
                 }*/
 
 //***************************
-/*
 
+/*
                 try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
@@ -144,8 +142,8 @@ public class SplashActivity extends AppCompatActivity {
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                }*/
-
+                }
+*/
 //                callWebServiceForSignin();
 
             }
@@ -214,6 +212,8 @@ public class SplashActivity extends AppCompatActivity {
         String userId = String.valueOf(response.getUserid());
         String typeOfUser = response.getTypeOfUser();
         String profilePic = response.getProfileImage();
+        String gender = response.getGender();
+
 
         prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
         prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);

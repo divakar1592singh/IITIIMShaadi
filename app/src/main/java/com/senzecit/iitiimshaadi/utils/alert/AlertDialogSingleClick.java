@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ public class AlertDialogSingleClick {
     }
 
     public void showDialog(Activity activity, String title, String msg){
+
             dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
@@ -63,8 +66,8 @@ public class AlertDialogSingleClick {
                     dialog.cancel();
                 }
             });
+        dialog.show();
 
-            dialog.show();
         }
 
     public void showDialog(Context activity, String title, String msg){

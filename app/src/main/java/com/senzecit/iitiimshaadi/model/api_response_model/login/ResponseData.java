@@ -4,11 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by senzec on 24/1/18.
+ * Created by senzec on 30/3/18.
  */
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class ResponseData {
 
     @SerializedName("username")
@@ -32,6 +29,18 @@ public class ResponseData {
     @SerializedName("type_of_user")
     @Expose
     private String typeOfUser;
+    @SerializedName("profile_created_for")
+    @Expose
+    private String profileCreatedFor;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+    @SerializedName("birth_date")
+    @Expose
+    private String birthDate;
 
     public String getUsername() {
         return username;
@@ -87,6 +96,38 @@ public class ResponseData {
 
     public void setTypeOfUser(String typeOfUser) {
         this.typeOfUser = typeOfUser;
+    }
+
+    public String getProfileCreatedFor() {
+        return profileCreatedFor;
+    }
+
+    public void setProfileCreatedFor(String profileCreatedFor) {
+        this.profileCreatedFor = profileCreatedFor;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
     }
 
 }

@@ -4,6 +4,7 @@ package com.senzecit.iitiimshaadi.model.api_response_model.login;
  * Created by senzec on 30/12/17.
  */
 
+
         import com.google.gson.annotations.Expose;
         import com.google.gson.annotations.SerializedName;
 

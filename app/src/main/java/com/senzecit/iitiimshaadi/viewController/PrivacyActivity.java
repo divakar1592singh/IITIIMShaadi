@@ -54,6 +54,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         init();
         mBack.setOnClickListener(PrivacyActivity.this);

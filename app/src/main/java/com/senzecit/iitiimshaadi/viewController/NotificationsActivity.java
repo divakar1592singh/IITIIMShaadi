@@ -41,6 +41,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_chat_messages);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();

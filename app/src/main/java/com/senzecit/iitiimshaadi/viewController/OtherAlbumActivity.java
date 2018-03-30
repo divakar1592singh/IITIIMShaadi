@@ -76,6 +76,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_other_album);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();

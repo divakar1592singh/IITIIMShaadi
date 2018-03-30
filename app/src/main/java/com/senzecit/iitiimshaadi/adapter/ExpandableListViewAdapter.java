@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -205,16 +206,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
-                        //SetData - Age
-//                        txtListChildHeader.setText(myProfileResponse.getBasicData().getDiet());
-//                        txtListChild2.setText(formattedDate());3
                         formattedDate(txtListChild2, myProfileResponse.getBasicData().getBirthDate());
-                       /* convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showDialog(txtListChild2,100,50);
-                            }
-                        });*/
+
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -297,13 +290,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             txtListChild4.setText(getDate(dateOfBirth));
                         }
 
-
-                        /*convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showDialog(txtListChild4,100,50);
-                            }
-                        });*/
                         txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -327,9 +313,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item, null);
 
-                        /*maritalStatusTV= (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        maritalStatusTV.setText(childText);*/
                         final TextView txtListChild5 = (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild5.setText(childText);
@@ -596,6 +579,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                         //SetData - Religion
                         txtListChild1.setText(myProfileResponse.getBasicData().getReligion());
+                        ExpOwnProfileModel.getInstance().setReligion(myProfileResponse.getBasicData().getReligion());
 
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -611,14 +595,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                             }
-
                             @Override
                             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                             }
-
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpOwnProfileModel.getInstance().setReligion(txtListChild1.getText().toString());
@@ -770,7 +750,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - AlternateNo
                         editText1.setText(myProfileResponse.getBasicData().getAlternateNo());
@@ -1425,7 +1404,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-//                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                       editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray = new InputFilter[1];
+                        FilterArray[0] = new InputFilter.LengthFilter(4);
+                        editText1.setFilters(FilterArray);
 
                         //SetData - SchoolingYear
                         editText1.setText(String.valueOf(myProfileResponse.getBasicData().getSchoolingYear()));
@@ -1524,6 +1506,13 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout4.setHint(childText);
 
                         EditText editText4 = convertView.findViewById(R.id.idlistitemET);
+
+                        editText4.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray4 = new InputFilter[1];
+                        FilterArray4[0] = new InputFilter.LengthFilter(4);
+                        editText4.setFilters(FilterArray4);
+
+
 //                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - GraduationYear
@@ -1623,6 +1612,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout7.setHint(childText);
 
                         EditText editText7 = convertView.findViewById(R.id.idlistitemET);
+                        editText7.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray7 = new InputFilter[1];
+                        FilterArray7[0] = new InputFilter.LengthFilter(4);
+                        editText7.setFilters(FilterArray7);
+
 //                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - PostGraduationYear
@@ -2258,6 +2252,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                 }
                 txtListChild.setText(selectedQualification.toString());
+                String rawStr = txtListChild.getText().toString().trim();
+                txtListChild.setText(removeLastChar(rawStr));
                 dialog.dismiss();
 //             Toast.makeText(MainActivity.this, "Data is : "+slideText.getText(), Toast.LENGTH_SHORT).show();
 
@@ -3037,5 +3033,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         }
 
     }
+
+    public static String removeLastChar(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return s = "";
+        }
+        String rawString = s.substring(0, s.length()-1);
+        return rawString.replaceAll("\\s+","");
+    }
+
 
 }

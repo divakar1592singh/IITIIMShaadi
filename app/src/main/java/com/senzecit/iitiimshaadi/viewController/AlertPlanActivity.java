@@ -19,6 +19,9 @@ public class AlertPlanActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_alert_plan);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+
         init();
         mBack.setOnClickListener(this);
         mUpgrade.setOnClickListener(this);

@@ -13,7 +13,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -23,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +40,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -106,6 +110,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     String typeOf;
     TextView tvDoc1, tvDoc2, tvDoc3, tvDoc4, mBiodataTv;
     Button mDocBtn1, mDocBtn2, mDocBtn3, mDocBtn4 ;
+    LinearLayout mButtonLayout;
     private static final int READ_FILE_REQUEST_CODE = 101;
     APIInterface apiInterface;
 
@@ -113,6 +118,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paid_subscriber_dashboard);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
@@ -131,6 +137,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     }
 
     public void initView(){
+
+        mButtonLayout = (LinearLayout) findViewById(R.id.idBtnLayout);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idSwipeRefreshLayout);
         mAlbumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
@@ -327,7 +335,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     }
 
     /** API INTEGRATION */
-
     /* Subscriber Dashboard*/
     public void callWebServiceForPaidSubs(){
 
@@ -355,7 +362,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 });
 
         }else {
-            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+            networkDialog();
+//            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
         }
 
     }
@@ -382,7 +390,8 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                         }
                     });
         }else {
-            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
+            networkDialog();
+//            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
         }
     }
 
@@ -439,7 +448,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                             return false;
                         }
                     })
-                    .error(R.drawable.profile_img1)
+                    .error(DataHandlingClass.getInstance().getProfilePicName(PaidSubscriberDashboardActivity.this))
                     .into(expandedImageView);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1174,5 +1183,23 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         }
 
     }
+
+    public void networkDialog(){
+        new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("No Network")
+                .setMessage("Check Your Internet")
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        finishActivity(0);
+                        dialog.dismiss();
+                    }
+
+                })
+                .show();
+    }
+
 
 }

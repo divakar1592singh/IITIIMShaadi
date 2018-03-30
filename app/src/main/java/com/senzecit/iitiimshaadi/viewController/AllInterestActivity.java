@@ -48,6 +48,7 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_chat_messages);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = AppController.getInstance().getPrefs();
 

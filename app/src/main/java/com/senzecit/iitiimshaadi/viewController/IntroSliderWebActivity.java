@@ -29,7 +29,7 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_intro_slider_web);
-
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

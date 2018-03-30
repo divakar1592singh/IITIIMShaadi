@@ -45,6 +45,8 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_success_stories);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         init();
         mBack.setOnClickListener(this);
 

@@ -19,6 +19,7 @@ public class DisclaimerActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disclaimer);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         init();
     }

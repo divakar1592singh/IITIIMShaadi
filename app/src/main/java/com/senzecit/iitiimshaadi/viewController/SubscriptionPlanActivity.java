@@ -39,6 +39,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_subscription_plan);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = AppController.getInstance().getPrefs();
         init();

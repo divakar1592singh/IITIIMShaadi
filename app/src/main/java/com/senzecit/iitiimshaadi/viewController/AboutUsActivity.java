@@ -18,6 +18,8 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_about_us);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         init();
         mBack.setOnClickListener(this);
     }

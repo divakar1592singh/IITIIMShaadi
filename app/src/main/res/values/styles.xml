@@ -259,5 +259,12 @@
         <item name="android:layout_weight">1</item>
     </style>
 
+    <!--ANIM-->
+
+    <style name="CustomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/bottom_up</item>
+        <item name="android:windowExitAnimation">@anim/bottom_down</item>
+    </style>
+
 
 </resources>

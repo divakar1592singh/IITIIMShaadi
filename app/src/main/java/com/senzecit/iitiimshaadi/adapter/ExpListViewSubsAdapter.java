@@ -632,6 +632,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - Religion
                         txtListChild1.setText(subsResponse.getBasicData().getReligion());
+                        ExpOwnProfileModel.getInstance().setReligion(subsResponse.getBasicData().getReligion());
 
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -2086,6 +2087,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
+
+                        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray = new InputFilter[1];
+                        FilterArray[0] = new InputFilter.LengthFilter(2);
+                        editText.setFilters(FilterArray);
+
+
                         editText.setText(String.valueOf(subsResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
 
                         if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMinimum_Age()))
@@ -2119,7 +2127,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+
+                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        InputFilter[] FilterArray2 = new InputFilter[1];
+                        FilterArray2[0] = new InputFilter.LengthFilter(2);
+                        editText1.setFilters(FilterArray2);
 
                         //SetData - PreferedPartnerMaxAge
                         editText1.setText(String.valueOf(subsResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
@@ -2812,6 +2824,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                 }
                 txtListChild.setText(selectedQualification.toString());
+                String rawStr = txtListChild.getText().toString().trim();
+                txtListChild.setText(removeLastChar(rawStr));
                 dialog.dismiss();
 //             Toast.makeText(MainActivity.this, "Data is : "+slideText.getText(), Toast.LENGTH_SHORT).show();
 
@@ -2905,8 +2919,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
     public void saveChangesOfCase_0() {
 
-//        ExpListViewSubsAdapter.this.notifyDataSetChanged();
-//        AppPrefs prefs = new AppPrefs(_context);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String name = ExpOwnProfileModel.getInstance().getName();
@@ -2954,7 +2966,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            communicator.saveChangesOfCaseI_0();
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
 
                         } else {
@@ -3006,7 +3018,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
-                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 //                            communicator.saveChangesOfCaseI_1();
 
                         } else {
@@ -3196,6 +3208,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         request.job_location = Work_Location;
         request.name_of_company = Working_With;
         request.annual_income = Annual_Income;
+        request.linked_in = LinkdIn_Url;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
@@ -3877,7 +3890,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                 setVerificationStatus(email, mob, doc, idProof);
 
 
-                setVerificationStatus(false, false, false, false);
+                setVerificationStatus(email, mob, doc, false);
             }
 
         }catch (NullPointerException npe){
@@ -3980,6 +3993,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         void verifiyMob();
         void verifiyDoc();
         void verifiyIDProof();
+        void refreshPage();
 /*
          void saveChangesOfCaseI_0();
          void saveChangesOfCaseI_1();
@@ -3992,6 +4006,24 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
          void saveChangesOfCasePtI_2();
          void saveChangesOfCasePtI_3();
 */
+    }
+
+
+    public static String removeLastChar(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return s = "";
+        }
+        String rawString = s.substring(0, s.length()-1);
+        return rawString.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
+    }
+
+    public static String removeWhiteSpace(String s) {
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--")) {
+            return s = "[]";
+        }
+        return s.replaceAll("\\s+","");
+//        st = st.replaceAll("\\s+","")
     }
 
 }

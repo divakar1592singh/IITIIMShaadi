@@ -18,6 +18,8 @@ public class FAQActivity extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_faq);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         init();
         mBack.setOnClickListener(this);
     }

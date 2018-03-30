@@ -33,6 +33,7 @@ import com.senzecit.iitiimshaadi.viewController.HowToNavigatePageActivity;
 import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
 import com.senzecit.iitiimshaadi.viewController.NotificationsActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
+import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 import com.senzecit.iitiimshaadi.viewController.SettingsActivity;
 import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 import com.senzecit.iitiimshaadi.viewController.SuccessStoriesActivity;
@@ -100,6 +101,7 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
         View headerview = navigationView.getHeaderView(0);
 
         TextView mAboutBtn = (TextView)headerview.findViewById(R.id.idAboutNav);
+        TextView mProfileBtn = (TextView)headerview.findViewById(R.id.idMyProfilePaidNav);
         TextView mMediaCovBtn = (TextView)headerview.findViewById(R.id.idMediaCoverageNav);
         TextView mSuccessStoryBtn = (TextView)headerview.findViewById(R.id.idSuccessStoryNav);
         TextView mHowToNavBtn = (TextView)headerview.findViewById(R.id.idHowToNav);
@@ -112,6 +114,7 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
 
         mAboutBtn.setOnClickListener(PaidBaseActivity.this);
+        mProfileBtn.setOnClickListener(PaidBaseActivity.this);
         mMediaCovBtn.setOnClickListener(PaidBaseActivity.this);
         mSuccessStoryBtn.setOnClickListener(PaidBaseActivity.this);
         mHowToNavBtn.setOnClickListener(PaidBaseActivity.this);
@@ -155,6 +158,12 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
                 // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
                 startActivity(new Intent(PaidBaseActivity.this, AboutUsActivity.class));
+                break;
+            }
+            case R.id.idMyProfilePaidNav: {
+
+                // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
+                startActivity(new Intent(PaidBaseActivity.this, ProfileActivity.class));
                 break;
             }
             case R.id.idMediaCoverageNav: {

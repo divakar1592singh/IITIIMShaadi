@@ -12,6 +12,8 @@ public class PremierServicesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_premier_services);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
     }
 
 

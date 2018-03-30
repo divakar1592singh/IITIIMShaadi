@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,15 +54,11 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -87,15 +84,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     ScrollView mScrollView;
     AppPrefs prefs;
 
+    int lastExpandedPosition = -1;
+    int lastExpandedPositionPT = -1;
+
     CircleImageView mProfileCIV;
     TextView mUsrNameTV, mUsrIdTV;
     APIInterface apiInterface;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getSupportActionBar().hide();
         setContentView(R.layout.activity_profile);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
@@ -114,6 +116,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -131,6 +134,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 return super.onOptionsItemSelected(item);
         }
     }
+*/
 
 
     private void init(){
@@ -141,6 +145,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mBack = (ImageView) findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Profile");
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idRefreshLayout);
 
         mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
         mUploadIv = (ImageView)findViewById(R.id.idUploadBtn);
@@ -158,6 +164,43 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void handleView(){
 
         setSupportActionBar(mToolbar);
+        Glide.with(ProfileActivity.this).load(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                callWebServiceMyProfileRefresh();
+            }
+        });
+
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    expListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+                expListView.setSelectionFromTop(groupPosition, 0);
+            }
+        });
+
+        expListViewPartner.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPositionPT != -1
+                        && groupPosition != lastExpandedPositionPT) {
+                    expListViewPartner.collapseGroup(lastExpandedPositionPT);
+                }
+                lastExpandedPositionPT = groupPosition;
+                expListViewPartner.setSelectionFromTop(groupPosition, 0);
+            }
+        });
+
+
         mScrollView.smoothScrollTo(0,0);
         mScrollView.setFocusableInTouchMode(true);
         mScrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
@@ -397,13 +440,50 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    private void callWebServiceMyProfileRefresh(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        final List<String> countryList = new ArrayList<>();
+        countryList.clear();
+
+        if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
+
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<MyProfileResponse> call = apiInterface.myProfileData(token);
+            call.enqueue(new Callback<MyProfileResponse>() {
+                @Override
+                public void onResponse(Call<MyProfileResponse> call, Response<MyProfileResponse> response) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    if (response.isSuccessful()) {
+
+                        if(response.body() != null){
+                            setMyProfile(response.body());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MyProfileResponse> call, Throwable t) {
+                    call.cancel();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(ProfileActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
+        }
+    }
+
+
     private void setMyProfile(MyProfileResponse myProfileResponse){
 
         if(myProfileResponse.getBasicData() != null){
             String userId = String.valueOf(myProfileResponse.getEmailData().getId());
             String partUrl = myProfileResponse.getBasicData().getProfileImage();
             prefs.putString(CONSTANTS.LOGGED_USER_PIC, partUrl);
-            Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(R.drawable.profile_img1).into(mProfileCIV);
+            Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
 
         }
 
@@ -482,7 +562,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 //                    callWebServiceForAllAlbum();
                 } else {
-                    AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "ID", "Confuse");
+//                    AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "ID", "Confuse");
                 }
             }
 
@@ -490,7 +570,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "ID", "Oops");
+                AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "Alert", "Oops, Something went wrong!");
             }
         });
 

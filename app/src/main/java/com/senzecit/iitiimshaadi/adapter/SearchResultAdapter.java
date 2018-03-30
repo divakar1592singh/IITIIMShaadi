@@ -25,6 +25,7 @@ import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderList
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
@@ -87,17 +88,18 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        holder.mDietTxt.setText(queryList.get(position).getDiet());
-        holder.mEmploymentTxt.setText(queryList.get(position).getWorkingAs());
-        holder.mCompanyTxt.setText(queryList.get(position).getNameOfCompany());
-        holder.mHeightTxt.setText(queryList.get(position).getHeight());
-        holder.mReligiontxt.setText(queryList.get(position).getReligion());
-        holder.mEducationTxt.setText(queryList.get(position).getHighestEducation() );
+        holder.mDietTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getDiet()));
+        holder.mEmploymentTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getWorkingAs()));
+        holder.mCompanyTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getNameOfCompany()));
+        holder.mHeightTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getHeight()));
+        holder.mReligiontxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getReligion()));
+        holder.mEducationTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getHighestEducation()));
 
         try {
             String userId = String.valueOf(queryList.get(position).getId());
             String partUrl = queryList.get(position).getProfileImage();
-            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(holder.mSearchpartnerIV);
+            String gender = queryList.get(position).getGender();
+            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(DataHandlingClass.getInstance().getOtherProfile(gender)).into(holder.mSearchpartnerIV);
         }catch (NullPointerException npe){
             Log.e("TAG", " #Error : "+npe, npe);
         }
@@ -137,7 +139,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public int getItemCount() {
-        return 10;
+        return queryList.size();
 //        return queryList.size();
     }
 
