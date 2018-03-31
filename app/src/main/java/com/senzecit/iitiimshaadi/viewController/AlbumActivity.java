@@ -6,13 +6,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -64,9 +69,16 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,7 +92,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AlbumActivity extends AppCompatActivity implements View.OnClickListener {
+public class AlbumActivity extends AppCompatActivity implements View.OnClickListener, AlbumAdapter.AlbumCommunicator {
 
     private static final String TAG = AlbumActivity.class.getSimpleName();
     Toolbar mToolbar;
@@ -108,11 +120,11 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     String mPermission4 = Manifest.permission.CAMERA;
     private static final String EXTRA_FILE_PATH = "EXTRA_FILE_PATH";
     SwipeRefreshLayout mSwipeRefreshLayout;
-    AlbumAdapter albumAdapter = null;
 
     private int mShortAnimationDuration;
     private Animator mCurrentAnimator;
     static int count = 0;
+    AlbumAdapter albumAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +135,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
+
 
         init();
         handleView();
@@ -211,6 +224,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         );
 
 
+/*
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -236,6 +250,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
+*/
 
         // Retrieve and cache the system's default "short" animation time.
         mShortAnimationDuration = getResources().getInteger(
@@ -577,43 +592,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void reTryMethod(){
-
-        String title = "Alert";
-        String msg = "Oops. Please Try Again! \n";
-
-        final Dialog dialog = new Dialog(AlbumActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.alert_dialog_two_click);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
-        titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
-        msgTxt.setText(msg);
-
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
-        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
-        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callWebServiceForAllAlbum();
-//                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }
-
-
     public void callWebServiceForSetProfile(final Uri uri)throws URISyntaxException {
 
         String fullPath = "";
@@ -842,10 +820,166 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    /** Image Crop */
+    //    CROP IMAGE FROM URI
+
+    public class BackgroundWorker extends AsyncTask<String,String,Uri> {
+        Context context;
+        String result;
+        BackgroundWorker(Context ctx) {
+            context = ctx;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            ProgressClass.getProgressInstance().showDialog(context);
+        }
+
+        @Override
+        protected Uri doInBackground(String... params) {
+
+            String imagePath = params[0];
+            Uri uri = loadImageFromUri(imagePath);
+
+            return  uri;
+        }
+
+        @Override
+        protected void onPostExecute(Uri result) {
+            ProgressClass.getProgressInstance().stopProgress();
+
+            System.out.println(result);
+            try {
+                callWebServiceForFileUpload(result);
+//                performCropImage(result);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    public Uri loadImageFromUri(String imagePath){
+        File myDir = null;
+
+        try {
+            URL myImageURL = new URL(imagePath);
+            HttpURLConnection connection = (HttpURLConnection)myImageURL.openConnection();
+            connection.setDoInput(true);
+//            connection.connect();
+            InputStream input = connection.getInputStream();
+
+            // Get the bitmap
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
+            // Save the bitmap to the file
+//
+/*            String dir = "IITIIMShaadi";
+            // External sdcard location
+            File mediaStorageDir = new File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                    dir);
+
+            // Create the storage directory if it does not exist
+            if (!mediaStorageDir.exists()) {
+                if (!mediaStorageDir.mkdirs()) {
+                    Log.d("TAG", "Oops! Failed create "
+                            + dir + " directory");
+                    return null;
+                }
+            }
+
+            String path = mediaStorageDir.getPath();
+//        */
+                String root = Environment.getExternalStorageDirectory().toString();
+            myDir = new File(root + "/IITIIMShaadi");
+
+                if (!myDir.exists()) {
+                    myDir.mkdirs();
+                }
+
+                String name = new Date().toString() + ".png";
+                myDir = new File(myDir, name);
+                FileOutputStream out = new FileOutputStream(myDir);
+                myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+                out.flush();
+                out.close();
+
+
+            }catch (IOException e) {}
+
+        Log.w("tttt", "got bitmap");
+
+        Uri uri = Uri.fromFile(myDir);
+        return uri;
+    }
+
+
+
+    public void reTryMethod(){
+
+        String title = "Alert";
+        String msg = "Oops. Please Try Again! \n";
+
+        final Dialog dialog = new Dialog(AlbumActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_two_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callWebServiceForAllAlbum();
+//                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
+    @Override
+    public void showImage(ImageView thumbView, int pos) {
+        String imageResId = albumAdapter.getItem(pos).toString();
+        zoomImageFromThumb(thumbView, imageResId);
+    }
+
+    @Override
+    public void setImage(String imageUri) {
+
+
+    }
+
+    @Override
+    public void setAlbumPermission() {
+
+    }
+
+    @Override
+    public void deleteAbum() {
+
+    }
 }

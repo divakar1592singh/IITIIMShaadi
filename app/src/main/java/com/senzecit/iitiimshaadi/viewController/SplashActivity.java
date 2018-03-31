@@ -87,7 +87,7 @@ public class SplashActivity extends AppCompatActivity {
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
 
-               Intent intent = new Intent(SplashActivity.this, SearchPartnerActivity.class);
+               Intent intent = new Intent(SplashActivity.this, AlbumActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();

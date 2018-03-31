@@ -68,10 +68,24 @@ public class AlbumAdapter extends BaseAdapter {
     private Uri mCropImagedUri;
     private final int CROP_IMAGE = 101;
 
+    AlbumCommunicator communicator;
+
+    public void setAlbumCommunicator(Activity activity){
+        this.communicator = (AlbumCommunicator) activity;
+    }
+
     public AlbumAdapter(Context context, List<Album> albumList) {
         this.context = context;
         this.albumList = albumList;
         prefs = AppController.getInstance().getPrefs();
+
+
+        try{
+            communicator = (AlbumCommunicator) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -100,30 +114,31 @@ public class AlbumAdapter extends BaseAdapter {
         } else {
             holder = (Holder) view.getTag();
         }
-//        holder.imageView.setImageResource(imageItem[i]);
 
         try {
             Glide.with(context).load(CONSTANTS.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl()).error(R.drawable.ic_not_available).into(holder.imageView);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*holder.imageView.setOnClickListener(new View.OnClickListener() {
+        Holder finalHolder = holder;
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+                communicator.showImage(finalHolder.imageView, i);
             }
-        });*/
+        });
 
         holder.mSetProfileIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(context, "Set Profile", Toast.LENGTH_SHORT).show();
+/*//                Toast.makeText(context, "Set Profile", Toast.LENGTH_SHORT).show();
                 String profile = String.valueOf(albumList.get(i).getPicOrgUrl());
 //                callWebServiceForSetProfile(profile);
                 String profileURI = CONSTANTS.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl();
 //                cropImageFromURI(profileURI);
                 BackgroundWorker backgroundWorker = new BackgroundWorker(context);
-                backgroundWorker.execute(profileURI);
+                backgroundWorker.execute(profileURI);*/
+                communicator.setImage(String.valueOf(albumList.get(i).getPicOrgUrl()));
 
             }
         });
@@ -461,4 +476,12 @@ public class AlbumAdapter extends BaseAdapter {
         return file;
     }
 
+
+    public interface AlbumCommunicator{
+
+        void showImage(ImageView thumbView, int pos);
+        void setImage(String url);
+        void setAlbumPermission();
+        void deleteAbum();
+    }
 }
