@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/idprogress"
                     android:layout_centerHorizontal="true"
-                    android:text="\@bhar"
+                    android:text="\@--"
                     android:textColor="@color/colorWhite"
                     />
                 <TextView
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/idUserNameTV"
                     android:layout_centerHorizontal="true"
-                    android:text="\@30067"
+                    android:text="\@--"
                     android:textColor="@color/colorWhite"/>
 
                 <!--<TextView

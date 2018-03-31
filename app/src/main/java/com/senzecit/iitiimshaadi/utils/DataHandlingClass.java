@@ -75,16 +75,16 @@ public class DataHandlingClass {
         return R.drawable.progress4;
     }
 
-    public String checkNullString(String input){
+    public String checkNullString(Object input){
         try{
             if(input != null){
-                return input;
+                return input.toString();
             }else {
                 return "";
             }
 
         }catch (NullPointerException npe){
-            Log.e("Null Error : ", "# ERR : "+npe, npe);
+//            Log.e("Null Error : ", "# ERR : "+npe, npe);
             return "";
         }
     }

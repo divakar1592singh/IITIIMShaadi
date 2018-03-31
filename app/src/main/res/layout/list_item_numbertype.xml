@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:hint="Your Email"
             android:singleLine="true"
-            android:inputType="numberSigned"/>
+            android:digits="0123456789"
+            android:inputType="numberDecimal"/>
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>

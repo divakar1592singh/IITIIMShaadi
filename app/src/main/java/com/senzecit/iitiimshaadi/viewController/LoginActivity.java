@@ -199,7 +199,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String profilePic = response.getProfileImage();
         String gender = response.getGender();
 
-
         prefs.putString(CONSTANTPREF.LOGIN_USERNAME, sUsername);
         prefs.putString(CONSTANTPREF.LOGIN_PASSWORD, sPassword);
 

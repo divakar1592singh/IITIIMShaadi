@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = AppController.getInstance().getPrefs();
 //
-//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "0609fa18198d8dabb3f2f613a1d4b9fc");
+        prefs.putString(CONSTANTS.LOGGED_TOKEN, "36499d7de5ed5fdf1886c54d08d32f4e");
 //        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "1ebb5c58bab7f813bff33fe5405b8d9e"); // swati
 
@@ -87,10 +87,11 @@ public class SplashActivity extends AppCompatActivity {
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
 
-               Intent intent = new Intent(SplashActivity.this, AlbumActivity.class);
+               Intent intent = new Intent(SplashActivity.this, SearchPartnerActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+
 
 
 
@@ -103,7 +104,10 @@ public class SplashActivity extends AppCompatActivity {
 
 //***************************
 
+/*https://stackoverflow.com/questions/
+39190058/when-settext-on-edittext-textwatcher-ontextchanged-not-called*/
 /*
+
                 try{
                     String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
                     if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
@@ -139,11 +143,12 @@ public class SplashActivity extends AppCompatActivity {
                     Log.e(TAG, "#Error : "+npe, npe);
                     Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
                 }
+
 */
+
 //                callWebServiceForSignin();
 
             }

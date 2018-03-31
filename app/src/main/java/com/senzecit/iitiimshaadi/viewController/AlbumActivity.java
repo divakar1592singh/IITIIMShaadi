@@ -7,7 +7,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,38 +14,34 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.test.mock.MockPackageManager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -61,15 +56,13 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.pic_response.SetProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
-import com.senzecit.iitiimshaadi.utils.RecyclerItemClickListener;
-import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.preferences.AppMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -85,6 +78,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -103,11 +97,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     FrameLayout mNoImageFoundFL,mImageFoundFL;
     APIInterface apiInterface;
     AppPrefs prefs;
-
-    /*Profile Image*/
     private Uri fileUri; // file url to store image/video
-    private Uri mCropImagedUri;
-    private final int CROP_IMAGE = 101;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 51;
     private static final int READ_FILE_REQUEST_CODE = 52;
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -118,18 +108,14 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     String mPermission2 = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     String mPermission3 = Manifest.permission.READ_EXTERNAL_STORAGE;
     String mPermission4 = Manifest.permission.CAMERA;
-    private static final String EXTRA_FILE_PATH = "EXTRA_FILE_PATH";
     SwipeRefreshLayout mSwipeRefreshLayout;
-
     private int mShortAnimationDuration;
     private Animator mCurrentAnimator;
-    static int count = 0;
     AlbumAdapter albumAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
         setContentView(R.layout.activity_album);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
@@ -385,7 +371,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
-            // if the result is capturing Image
+
             if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
                 if (resultCode == RESULT_OK) {
                     try {
@@ -394,32 +380,26 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                         e.printStackTrace();
                     }
                 } else if (resultCode == RESULT_CANCELED) {
-                    // user cancelled Image capture
                     Toast.makeText(getApplicationContext(),
                             "User cancelled image capture", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    // failed to capture image
                     Toast.makeText(getApplicationContext(),
                             "Sorry! Failed to capture image", Toast.LENGTH_SHORT)
                             .show();
                 }
 
-            } else if(requestCode == READ_FILE_REQUEST_CODE){
-                Uri uri = null;
+            } else if (requestCode == READ_FILE_REQUEST_CODE) {
                 if (data != null) {
-                    uri = data.getData();
+                    Uri uri = data.getData();
                     Log.i(TAG, "Uri: " + uri.toString());
                     try {
-//                        uploadCvFile(uri);
-//                        show(uri);
                         callWebServiceForFileUpload(uri);
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
                 } else if (resultCode == RESULT_CANCELED) {
-                    // user cancelled recording
-                    Toast.makeText(getApplicationContext(),"User cancelled selection", Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(), "User cancelled selection", Toast.LENGTH_SHORT)
                             .show();
                 } else {
                     Toast.makeText(getApplicationContext(),
@@ -428,18 +408,21 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
 
-            if(requestCode==CROP_IMAGE) {
-                if (data != null) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
                     try {
-//                        Toast.makeText(AlbumActivity.this, "Crop", Toast.LENGTH_LONG).show();
-                        callWebServiceForSetProfile(data.getData());
+                        callWebServiceForSetProfile(resultUri);
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                    Toast.makeText(AlbumActivity.this, AppMessage.CROP_ERROR_INFO, Toast.LENGTH_SHORT).show();
                 }
             }
         }
-
     }
 
     /** API */
@@ -516,7 +499,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     if(albumResponse.getMessage().getSuccess() != null) {
                         if (albumResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AlbumActivity.this, AppMessage.PAGE_REFRESH_INFO, Toast.LENGTH_SHORT).show();
                             mNoImageFoundFL.setVisibility(View.GONE);
                             mImageFoundFL.setVisibility(View.VISIBLE);
 
@@ -524,10 +507,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                             showAlbumImage(albumList);
 
                         } else {
-                            Toast.makeText(AlbumActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AlbumActivity.this, AppMessage.SOME_ERROR_INFO, Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                        Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AlbumActivity.this, AppMessage.SOME_ERROR_INFO, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -547,18 +530,14 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     public void callWebServiceForFileUpload(final Uri uri)throws URISyntaxException {
 
-//        String fullPath = Commons.getPath(uri, this);
-        String fullPath = "";
+        String fullPath = Commons.getPath(uri, this);
 
         File   file = new File(fullPath);
         System.out.print(file);
-
-//        String token = CONSTANTS.Token_Paid;
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
-//      MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("id_proof", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
         if(NetworkClass.getInstance().checkInternet(AlbumActivity.this) == true){
@@ -573,9 +552,9 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
 
                     callWebServiceForAllAlbum();
-                    Toast.makeText(AlbumActivity.this, "Image Upload Successful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AlbumActivity.this, AppMessage.IMAGE_UPLOAD_INFO, Toast.LENGTH_LONG).show();
                 } else {
-                    AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "ID", "Confuse");
+                    AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Alert", AppMessage.SOME_ERROR_INFO);
                 }
             }
 
@@ -583,7 +562,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "ID", "Oops");
+                AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Alert", AppMessage.SOME_ERROR_INFO);
             }
         });
 
@@ -594,11 +573,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     public void callWebServiceForSetProfile(final Uri uri)throws URISyntaxException {
 
-        String fullPath = "";
-//        String fullPath = Commons.getPath(uri, AlbumActivity.this);
+//        String fullPath = "";
+        String fullPath = Commons.getPath(uri, AlbumActivity.this);
 
         File   file = new File(fullPath);
-
         System.out.print(file);
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
@@ -825,10 +803,8 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     public class BackgroundWorker extends AsyncTask<String,String,Uri> {
         Context context;
-        String result;
         BackgroundWorker(Context ctx) {
             context = ctx;
-
         }
 
         @Override
@@ -841,47 +817,34 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
             String imagePath = params[0];
             Uri uri = loadImageFromUri(imagePath);
-
             return  uri;
         }
 
         @Override
-        protected void onPostExecute(Uri result) {
+        protected void onPostExecute(Uri imageUri) {
             ProgressClass.getProgressInstance().stopProgress();
-
-            System.out.println(result);
-            try {
-                callWebServiceForFileUpload(result);
-//                performCropImage(result);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+            CropImage.activity(imageUri)
+                    .start(AlbumActivity.this);
         }
-
-
     }
 
     public Uri loadImageFromUri(String imagePath){
-        File myDir = null;
-
+        File file = null;
         try {
             URL myImageURL = new URL(imagePath);
             HttpURLConnection connection = (HttpURLConnection)myImageURL.openConnection();
             connection.setDoInput(true);
-//            connection.connect();
             InputStream input = connection.getInputStream();
 
             // Get the bitmap
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
 
             // Save the bitmap to the file
-//
-/*            String dir = "IITIIMShaadi";
+            String dir = "IITIIMshaadi";
             // External sdcard location
             File mediaStorageDir = new File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                     dir);
-
             // Create the storage directory if it does not exist
             if (!mediaStorageDir.exists()) {
                 if (!mediaStorageDir.mkdirs()) {
@@ -892,32 +855,21 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             }
 
             String path = mediaStorageDir.getPath();
-//        */
-                String root = Environment.getExternalStorageDirectory().toString();
-            myDir = new File(root + "/IITIIMShaadi");
+            OutputStream fOut = null;
+            file = new File(path, "temp.png");
+            fOut = new FileOutputStream(file);
 
-                if (!myDir.exists()) {
-                    myDir.mkdirs();
-                }
-
-                String name = new Date().toString() + ".png";
-                myDir = new File(myDir, name);
-                FileOutputStream out = new FileOutputStream(myDir);
-                myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-
-                out.flush();
-                out.close();
-
-
-            }catch (IOException e) {}
+            myBitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+        }
+        catch (IOException e) {}
 
         Log.w("tttt", "got bitmap");
 
-        Uri uri = Uri.fromFile(myDir);
+        Uri uri = Uri.fromFile(file);
         return uri;
     }
-
-
 
     public void reTryMethod(){
 
@@ -956,12 +908,6 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(0, android.R.anim.slide_out_right);
-    }
-
-    @Override
     public void showImage(ImageView thumbView, int pos) {
         String imageResId = albumAdapter.getItem(pos).toString();
         zoomImageFromThumb(thumbView, imageResId);
@@ -969,17 +915,97 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void setImage(String imageUri) {
-
-
+        String imageURL = CONSTANTS.IMAGE_BASE_URL_SLASHLESS+imageUri;
+        BackgroundWorker backgroundWorker = new BackgroundWorker(AlbumActivity.this);
+        backgroundWorker.execute(imageURL);
     }
 
     @Override
-    public void setAlbumPermission() {
+    public void setAlbumPermission(String albumId) {
+        setPermission(albumId);
+    }
 
+
+//    SET PERMISSION
+    public void setPermission(String albumId){
+
+        final Dialog dialog = new Dialog(AlbumActivity.this);
+        dialog.setContentView(R.layout.custom_dialog_list);
+
+        ListView lv = (ListView) dialog.findViewById(R.id.lv);
+
+        String[] foldername = {"All Members", "Only Friends", "Private"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AlbumActivity.this, android.R.layout.simple_dropdown_item_1line, foldername);
+        lv.setAdapter(adapter);
+        dialog.setCancelable(true);
+        dialog.setTitle("Change Display Permissions");
+        dialog.show();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialog.dismiss();
+                if (position == 0) {
+                    callWebServiceForSetting(albumId, "2");
+                } else if (position == 1) {
+                    callWebServiceForSetting(albumId, "4");
+                } else if (position == 2) {
+                    callWebServiceForSetting(albumId, "6");
+                }
+            }
+        });
+
+    }
+
+
+    public void callWebServiceForSetting(String album_id, String privacy) {
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(NetworkClass.getInstance().checkInternet(AlbumActivity.this) == true){
+
+            ProgressClass.getProgressInstance().showDialog(AlbumActivity.this);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.settingAlbum(token, album_id, privacy);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if (serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                                AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Info", "Permission Changed Successfully");
+
+                            } else {
+//                            Toast.makeText(context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(AlbumActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(AlbumActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(AlbumActivity.this);
+        }
     }
 
     @Override
-    public void deleteAbum() {
-
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
+    //DELETE ALBUM
+
+
 }

@@ -67,7 +67,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
@@ -95,7 +94,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
         setContentView(R.layout.activity_profile);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
@@ -115,27 +113,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onStart();
 
     }
-
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.refresh_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                callWebServiceMyProfile();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-*/
-
 
     private void init(){
 

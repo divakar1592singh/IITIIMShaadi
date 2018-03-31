@@ -859,7 +859,7 @@ public class ExpListViewSubscriberPartnerAdapter2 extends BaseExpandableListAdap
         request.prefered_partner_max_age = Maximum_Age;
         request.prefered_partner_height = Min_Height;
         request.prefered_partner_height_max = Max_Height;
-        request.prefered_partner_marital_status = Marital_StatusArr;
+        request.prefered_partner_marital_status = Marital_Status;
 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 

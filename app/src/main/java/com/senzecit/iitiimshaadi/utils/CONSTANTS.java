@@ -9,6 +9,7 @@ public interface CONSTANTS {
     int splshTime = 200;
     String BASE_URL = "https://www.iitiimshaadi.com/";
     String IMAGE_BASE_URL = "https://iitiimshaadi.com/img/";
+    String IMAGE_BASE_URL_SLASHLESS = "https://iitiimshaadi.com/img";
     String IMAGE_AVATAR_URL = "https://iitiimshaadi.com/img/uploads/avatars/";
 //    CHAT
     String CHAT_SERVER_URL = "http://35.154.217.225:1109";
@@ -102,7 +103,6 @@ public interface CONSTANTS {
     String album_not_found = "No Image Available";
     String unknown_err = "Something went wrong! \n Try again";
     String no_data = "No data found";
-
     String tap_message = "Tap one more time";
     String tap_twice_message = "Please, Tap on pic";
 

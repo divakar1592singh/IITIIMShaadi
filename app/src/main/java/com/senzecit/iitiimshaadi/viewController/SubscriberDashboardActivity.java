@@ -48,6 +48,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -219,7 +221,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         educationCareer.add("Working As");
         educationCareer.add("Work Location");
         educationCareer.add("Annual Income");
-        educationCareer.add("LinkdIn Url");
+        educationCareer.add("Linkedin URL");
         educationCareer.add("Save Changes");
 
         List<String> aboutMe = new ArrayList<String>();
@@ -282,7 +284,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         mMessage = dialogView.findViewById(R.id.tvEmail);
         mCloseBtn = dialogView.findViewById(R.id.idCloseBtn);
 
-        mMessage.setText("Press 'Resend' to send verificatin mail");
+        mMessage.setText("Press 'Resend' to send verification mail");
 
         mCloseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -482,8 +484,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
     public void configureButtonToUpload(Uri uri)throws URISyntaxException{
 
-//        String fullPath = Commons.getPath(uri, this);
-        String fullPath = "";
+        String fullPath = Commons.getPath(uri, this);
+//        String fullPath = "";
 
         File file = new File(fullPath);
         if (btnChooserCount == 1){
@@ -824,7 +826,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             Log.e(TAG, "#Error : "+npe, npe);
         }
     }
-
 
     @Override
     public void onBackPressed() {
