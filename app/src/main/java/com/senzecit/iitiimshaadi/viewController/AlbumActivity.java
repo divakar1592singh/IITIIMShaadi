@@ -60,7 +60,7 @@ import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
-import com.senzecit.iitiimshaadi.utils.preferences.AppMessage;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.theartofdev.edmodo.cropper.CropImage;
 

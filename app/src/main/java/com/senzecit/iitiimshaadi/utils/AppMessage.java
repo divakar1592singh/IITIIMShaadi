@@ -1,4 +1,4 @@
-package com.senzecit.iitiimshaadi.utils.preferences;
+package com.senzecit.iitiimshaadi.utils;
 
 /**
  * Created by senzec on 31/3/18.
@@ -6,8 +6,13 @@ package com.senzecit.iitiimshaadi.utils.preferences;
 
 public interface AppMessage {
 
+    // HEADER
+    String ALERT = "Alert";
+    String INFO = "Info";
+    String WARNING = "Warning";
+
     // Common Message
-    String SOME_ERROR_INFO = "Oops, Something went wrong!";
+    String SOME_ERROR_INFO = "Something went wrong!\n Please, Try Again";
     String TRY_AGAIN_INFO = "Please, Try Again!";
     String IMAGE_UPLOAD_INFO = "Image Uploaded Successfully";
     String PROFILE_CHANGED_INFO = "Image Uploaded Successfully";
@@ -19,6 +24,12 @@ public interface AppMessage {
 
     String HEIGHT_DIFF_ERROR_INFO = "Max height should be greater than min height !";
     String HEIGHT_ERROR_INFO = "Height should be valid !";
+
+    /*LOGIN*/
+    String USERNAME_EMPTY = "Username/Email can't be empty";
+    String USER_VALID = "Check Username/Email is valid";
+    String USERPWD_INVALID = "Check Username/Email or Password is valid";
+    String PASSWORD_EMPTY = "Password can't be empty";
 
 
 

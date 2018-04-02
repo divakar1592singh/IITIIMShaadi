@@ -202,7 +202,7 @@ public class ProfileActivity2 extends AppCompatActivity implements View.OnClickL
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(ProfileActivity2.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity2.this)).into(mProfileCIV);
+            Glide.with(ProfileActivity2.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));

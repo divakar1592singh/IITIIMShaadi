@@ -218,7 +218,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
         if(!TextUtils.isEmpty(profileUri)){
 //            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
-            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(PaidSubscriberDashboardActivity.this)).into(mProfileCIV);
+            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
 
         }
 
@@ -448,7 +448,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                             return false;
                         }
                     })
-                    .error(DataHandlingClass.getInstance().getProfilePicName(PaidSubscriberDashboardActivity.this))
+                    .error(DataHandlingClass.getInstance().getProfilePicName())
                     .into(expandedImageView);
         } catch (Exception e) {
             e.printStackTrace();

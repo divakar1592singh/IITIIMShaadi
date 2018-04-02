@@ -6,11 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.multidex.MultiDex;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
 import com.androidnetworking.AndroidNetworking;
 import com.crashlytics.android.Crashlytics;
 import com.senzecit.iitiimshaadi.payment.AppEnvironment;
@@ -30,7 +25,7 @@ import java.net.URISyntaxException;
 public class AppController extends Application {
 
     public static final String TAG =AppController.class.getSimpleName();
-
+    public static Context context;
     private static AppController sInstance;
     private AppPrefs prefs;
 
@@ -70,6 +65,7 @@ public class AppController extends Application {
     public static synchronized AppController getInstance() {
         return sInstance;
     }
+
 
     // Checking for all possible internet providers
     public boolean isConnectingToInternet() {

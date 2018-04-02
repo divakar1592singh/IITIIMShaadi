@@ -16,6 +16,13 @@ public interface CONSTANTS {
     String CHAT_HISTORY_URL = "http://35.154.217.225:1110/";
 
 //    RELATIVE URL
+    String USER_REG = "api/user_registration.json";
+    String LOGIN_PART_URL = "api/login.json";
+    String FORGOT_PASSWORD = "api/forgot_password.json";
+    String CHECK_ELIGIBILITY = "api/checkEligibilty.json";
+    String FIND_COLLEGE = "api/find_educational_institution.json";
+
+    String SUBS_DASHBOARD_PATH = "api/subscriber_dashboard.json";
     String BASIC_LIFESTYLE = "api/basic_lifestyle.json";
     String RELIGIOUS_BACKGROUND_POST_URL = "api/religious_background.json";
     String CONTACT_DETAILS = "api/contact_details.json";
@@ -109,5 +116,13 @@ public interface CONSTANTS {
     //TYPE
     String BASIC_TYPE = "basic_type";
     String PARTNER_TYPE = "partner_type";
+
+    //
+    String METHOD_1 = "method_1";
+    String METHOD_2 = "method_2";
+    String METHOD_3 = "method_3";
+    String METHOD_4 = "method_4";
+    String METHOD_5 = "method_5";
+
 
 }

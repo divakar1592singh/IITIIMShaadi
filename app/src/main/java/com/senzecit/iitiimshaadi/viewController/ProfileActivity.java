@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void handleView(){
 
         setSupportActionBar(mToolbar);
-        Glide.with(ProfileActivity.this).load(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
+        Glide.with(ProfileActivity.this).load(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -197,7 +197,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-            Glide.with(ProfileActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
+            Glide.with(ProfileActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
@@ -460,7 +460,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             String userId = String.valueOf(myProfileResponse.getEmailData().getId());
             String partUrl = myProfileResponse.getBasicData().getProfileImage();
             prefs.putString(CONSTANTS.LOGGED_USER_PIC, partUrl);
-            Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(DataHandlingClass.getInstance().getProfilePicName(ProfileActivity.this)).into(mProfileCIV);
+            Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
 
         }
 

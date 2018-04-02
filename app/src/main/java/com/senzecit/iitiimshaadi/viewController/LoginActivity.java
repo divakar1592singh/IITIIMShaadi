@@ -7,40 +7,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.forgot_password.ForgotPasswordResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.login.LoginResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.login.ResponseData;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.ForgotPasswordRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.LoginRequest;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.commons.PreAuthWebRequest;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.Validation;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler  {
 
     private static final String TAG = "LoginActivity";
+    RxNetworkingForObjectClass rxNetworkingClass;
     EditText mPassword, mUsername;
     TextView mRegisterNew, mForgotPassword;
     Button mLogin;
@@ -48,10 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView mTitle;
     String sdUsername = "";
     AppPrefs prefs;
-
-    /**
-     * Network
-     */
+    AlertDialog dialog = null;
+    PreAuthWebRequest request;
     APIInterface apiInterface;
 
     @Override
@@ -64,6 +57,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = new AppPrefs(LoginActivity.this);
+        request = new PreAuthWebRequest();
+
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
 
         init();
         handleView();
@@ -105,12 +102,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.registerTV:
                 Navigator.getClassInstance().navigateToActivity(this, QuickRegistrationActivity.class);
-//                startActivity(new Intent(LoginActivity.this,QuickRegistrationActivity.class));
-                break;
-            case R.id.loginBtn:
-//                Navigator.getClassInstance().navigateToActivity(this, PaidSubscriberDashboardActivity.class);
-//                startActivity(new Intent(LoginActivity.this,PaidSubscriberDashboardActivity.class));
-//                checkUserValidation();
                 break;
         }
     }
@@ -123,105 +114,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         String sUsername = mUsername.getText().toString().trim();
         String sPassword = mPassword.getText().toString().trim();
-
-        mPassword.getText().toString().trim();
-        if (!sUsername.isEmpty()) {
-            if (!sPassword.isEmpty()) {
-
-//                new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Login validation passed");
-                callWebServiceForSignin();
-            } else {
-                AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Password can't Empty");
+        if (Validation.handler().isNotEmptyString(LoginActivity.this, sUsername, AppMessage.USERNAME_EMPTY)) {
+            if (Validation.handler().isNotEmptyString(LoginActivity.this, sPassword, AppMessage.PASSWORD_EMPTY)) {
+                request.username = sUsername;
+                request.password = sPassword;
+                RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(LoginActivity.this, CONSTANTS.LOGIN_PART_URL, request, CONSTANTS.METHOD_1);
             }
-        } else {
-            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Username/Email can't Empty");
-        }
-
-
-    }
-
-    /**
-     * Check API Section
-     */
-    public void callWebServiceForSignin() {
-
-        String sUsername = mUsername.getText().toString().trim();
-        String sPassword = mPassword.getText().toString().trim();
-
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.username = sUsername;
-        loginRequest.password = sPassword;
-
-        ProgressClass.getProgressInstance().showDialog(LoginActivity.this);
-        Call<LoginResponse> call = apiInterface.loginInUser(loginRequest);
-        call.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    try {
-                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-                            if (response.body().getResponseData() != null) {
-                                Toast.makeText(LoginActivity.this, "Succesfully", Toast.LENGTH_SHORT).show();
-                                ResponseData responseData = response.body().getResponseData();
-                                setPrefData(responseData);
-                            }
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (NullPointerException npe) {
-                        Log.e(TAG, " #Error" + npe, npe);
-                        AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert", "Invalid username or password, try again");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
-    }
-
-    public void setPrefData(ResponseData response) {
-
-        String sUsername = mUsername.getText().toString().trim();
-        String sPassword = mPassword.getText().toString().trim();
-
-        String token = response.getToken();
-        String userName = response.getUsername();
-        String userId = String.valueOf(response.getUserid());
-        String typeOfUser = response.getTypeOfUser();
-        String email = response.getEmail();
-        String mobile = response.getMobile();
-        String profilePic = response.getProfileImage();
-        String gender = response.getGender();
-
-        prefs.putString(CONSTANTPREF.LOGIN_USERNAME, sUsername);
-        prefs.putString(CONSTANTPREF.LOGIN_PASSWORD, sPassword);
-
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
-        prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
-        prefs.putString(CONSTANTS.LOGGED_USERID, userId);
-        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
-        prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
-        prefs.putString(CONSTANTS.LOGGED_MOB, mobile);
-        prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
-        prefs.putString(CONSTANTS.GENDER_TYPE, gender);
-
-
-        navigateUserToScreen(typeOfUser);
-    }
-
-    public void navigateUserToScreen(String typeOfUser) {
-        if (typeOfUser.equalsIgnoreCase("paid_subscriber_viewer")) {
-            Navigator.getClassInstance().navigateToActivity(LoginActivity.this, PaidSubscriberDashboardActivity.class);
-        } else if (typeOfUser.equalsIgnoreCase("subscriber_viewer")) {
-            Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
-        } else if (typeOfUser.equalsIgnoreCase("subscriber")) {
-            Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
         }
     }
 
@@ -236,7 +134,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
-        final AlertDialog dialog = dialogBuilder.create();
+        dialog = dialogBuilder.create();
         final View dialogView = inflater.inflate(R.layout.forgot_password_layout, null);
 
         mConfirm = dialogView.findViewById(R.id.confirmBtn);
@@ -260,90 +158,89 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 sdUsername = editable.toString();
             }
         });
-//        final String finalSUsername = sdUsername;
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                dialog.dismiss();
                 System.out.println("Email/Username is : " + sdUsername);
                 if (!sdUsername.isEmpty()) {
-//                    if (isValidEmail(sdUsername)) {
-
-                        callWebServiceForForgotPassword(sdUsername);
-                        dialog.dismiss();
-//                        new AlertDialogSingleClick().showDialog(LoginActivity.this, "Alert!", "Email validation succesfull");
+                    request.username = sdUsername;
+                        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(LoginActivity.this, CONSTANTS.FORGOT_PASSWORD, request, CONSTANTS.METHOD_2);
                     } else {
-                        AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Email not valid");
+                        AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", AppMessage.USERNAME_EMPTY);
                     }
-                /*} else {
-                    AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert!", "Email can't Empty");
-                }*/
             }
         });
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                checkUserValidation();
                 dialog.dismiss();
             }
         });
 
         dialog.setView(dialogView);
+        dialog.setCancelable(false);
         dialog.show();
     }
 
-    public void callWebServiceForForgotPassword(String username) {
+    @Override
+    public void handle(JSONObject object, String methodName) {
 
-        ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
-        forgotPasswordRequest.username = username;
+        System.out.println(object);
+        try {
 
-        ProgressClass.getProgressInstance().showDialog(LoginActivity.this);
-        Call<ForgotPasswordResponse> call = apiInterface.forgotPasswordOfUser(forgotPasswordRequest);
-        call.enqueue(new Callback<ForgotPasswordResponse>() {
-            @Override
-            public void onResponse(Call<ForgotPasswordResponse> call, Response<ForgotPasswordResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    ForgotPasswordResponse forgotPasswordResponse = response.body();
-                    if (forgotPasswordResponse.getMessage().getSuccess() != null) {
-                        if (forgotPasswordResponse.getMessage().getSuccess().toString().equalsIgnoreCase("An email with new password is sent to your registered email.")) {
+            if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
+                if(object.getJSONObject("message").getInt("response_code") == 200) {
+                    String sUsername = mUsername.getText().toString().trim();
+                    String sPassword = mPassword.getText().toString().trim();
 
-                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
-                            Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    String token = object.getJSONObject("responseData").getString("token");
+                    String userName = object.getJSONObject("responseData").getString("username");
+                    String userId = String.valueOf(object.getJSONObject("responseData").getString("userid"));
+                    String typeOfUser = object.getJSONObject("responseData").getString("type_of_user");
+                    String email = object.getJSONObject("responseData").getString("email");
+                    String mobile = object.getJSONObject("responseData").getString("mobile");
+                    String profilePic = object.getJSONObject("responseData").getString("profile_image");
+                    String gender = object.getJSONObject("responseData").getString("gender");
 
-                        } else {
-//                            Toast.makeText(LoginActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
-                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert", "Something went wrong! \n Try again!");
-                        }
-                    } else {
-//                        Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                        AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert", "Something went wrong! \n Try again!");
+                    prefs.putString(CONSTANTPREF.LOGIN_USERNAME, sUsername);
+                    prefs.putString(CONSTANTPREF.LOGIN_PASSWORD, sPassword);
+
+                    prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
+                    prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
+                    prefs.putString(CONSTANTS.LOGGED_USERID, userId);
+                    prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+                    prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
+                    prefs.putString(CONSTANTS.LOGGED_MOB, mobile);
+                    prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
+                    prefs.putString(CONSTANTS.GENDER_TYPE, gender);
+
+                    if (typeOfUser.equalsIgnoreCase("paid_subscriber_viewer")) {
+                        Navigator.getClassInstance().navigateToActivity(LoginActivity.this, PaidSubscriberDashboardActivity.class);
+                    } else if (typeOfUser.equalsIgnoreCase("subscriber_viewer")) {
+                        Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
+                    } else if (typeOfUser.equalsIgnoreCase("subscriber")) {
+                        Navigator.getClassInstance().navigateToActivity(LoginActivity.this, SubscriberDashboardActivity.class);
                     }
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, AppMessage.ALERT, AppMessage.USERPWD_INVALID);
+                }
+            }else if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)){
+
+                if(object.getJSONObject("message").getInt("response_code") == 200) {
+                    AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, AppMessage.INFO, "An email with new password is sent to your registered email.");
+                    dialog.dismiss();
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, AppMessage.ALERT, AppMessage.USER_VALID);
                 }
             }
 
-            @Override
-            public void onFailure(Call<ForgotPasswordResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-//                Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Alert", "Something went wrong! \n Try again!");
-            }
-        });
-
-    }
-
-    /**
-     * Helping Method Section
-     */
-    public final static boolean isValidEmail(String target) {
-        if (TextUtils.isEmpty(target)) {
-            return false;
-        } else {
-            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
     }
+
 
     @Override
     protected void onStop() {
@@ -359,13 +256,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-
         Intent intent = new Intent(LoginActivity.this, IntroSliderWebActivity.class);
-
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
-
     }
-
 }

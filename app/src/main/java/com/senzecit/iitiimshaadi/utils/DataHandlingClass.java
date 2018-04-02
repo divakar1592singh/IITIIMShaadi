@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 /**
@@ -19,23 +20,34 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 public class DataHandlingClass {
 
-    private static DataHandlingClass alertClass = null;
+    private static String TAG = "DataHandlingClass";
+    private static DataHandlingClass instances = null;
     AppPrefs prefs;
 
     private DataHandlingClass()
-    {
+    { }
 
-    }
     public static DataHandlingClass getInstance()
     {
-        if(alertClass == null)
+        if(instances == null)
         {
-            alertClass = new DataHandlingClass();
+            return instances = new DataHandlingClass();
         }
-        return alertClass;
+        return instances;
     }
 
-    public int getProfilePicName(Activity activity){
+    public String token(){
+        prefs = AppController.getInstance().getPrefs();
+        String sToken = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(sToken == null){
+            ToastDialogMessage.getInstance().showToast(AppController.context, "Login Again");
+            return "";
+        }else {
+            return sToken;
+        }
+    }
+
+    public int getProfilePicName(){
         prefs = AppController.getInstance().getPrefs();
 
         String gender = prefs.getString(CONSTANTS.GENDER_TYPE);
@@ -47,29 +59,21 @@ public class DataHandlingClass {
         }
     }
 
-    public int getProfilePicName(Context activity){
-        prefs = AppController.getInstance().getPrefs();
 
-        String gender = prefs.getString(CONSTANTS.GENDER_TYPE);
-
-        if(gender.equalsIgnoreCase("Male")){
-            return R.drawable.ic_male_default;
-        }else {
-            return R.drawable.ic_female_default;
-        }
-
-
-    }
 
     public int getOtherProfile(String gender){
 
-        if(gender.equalsIgnoreCase("Male")){
+        try {
+            if (gender.equalsIgnoreCase("Male")) {
+                return R.drawable.ic_male_default;
+            } else {
+                return R.drawable.ic_female_default;
+            }
+        }catch (NullPointerException npe){
+            Log.e(TAG, "#Error : "+npe, npe);
             return R.drawable.ic_male_default;
-        }else {
-            return R.drawable.ic_female_default;
         }
     }
-
 
     public int getProgressId(){
         return R.drawable.progress4;
@@ -82,9 +86,7 @@ public class DataHandlingClass {
             }else {
                 return "";
             }
-
         }catch (NullPointerException npe){
-//            Log.e("Null Error : ", "# ERR : "+npe, npe);
             return "";
         }
     }

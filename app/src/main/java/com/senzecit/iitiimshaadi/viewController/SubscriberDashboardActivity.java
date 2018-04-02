@@ -27,22 +27,29 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
+import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -57,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubscriberDashboardActivity extends BaseNavActivity implements ExpListViewSubsAdapter.OnExpLvSubsItemClickListener {
+public class SubscriberDashboardActivity extends BaseNavActivity implements ExpListViewSubsAdapter.OnExpLvSubsItemClickListener , RxNetworkingForObjectClass.CompletionHandler {
 
     private static final String TAG = SubscriptionActivity.class.getSimpleName();
 
@@ -80,12 +87,18 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     AlertDialog dialogID = null;
     int lastExpandedPosition = -1;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    RxNetworkingForObjectClass rxNetworkingClass;
+    PostAuthWebRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscriber_dashboard);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
+        request = new PostAuthWebRequest();
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
@@ -95,8 +108,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         prepareListData();
         handleClick();
 
-        listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, null);
-        expListView.setAdapter(listAdapter);
+//        listAdapter = new ExpListViewSubsAdapter(this,listDataHeader,listDataChild, null);
+//        expListView.setAdapter(listAdapter);
         expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -538,48 +551,46 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     private void callWebServiceForSubscribeDashboard(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        request.token = token;
 
-        final List<String> countryList = new ArrayList<>();
-        countryList.clear();
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, CONSTANTS.SUBS_DASHBOARD_PATH, request, CONSTANTS.METHOD_1);
 
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
-
-            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-            Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
-            call.enqueue(new Callback<SubscriberMainResponse>() {
-                @Override
-                public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
-                    ProgressClass.getProgressInstance().stopProgress();
-                    if (response.isSuccessful()) {
-                        if(response.body() != null){
-
-                            SubscriberMainResponse subsResponse = response.body();
-                            setMyProfile(subsResponse);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
-                    call.cancel();
-                    ProgressClass.getProgressInstance().stopProgress();
-                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }else {
-            networkDialog();
-//            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
-        }
+//        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
+//
+//            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+//            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+//            Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
+//            call.enqueue(new Callback<SubscriberMainResponse>() {
+//                @Override
+//                public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
+//                    ProgressClass.getProgressInstance().stopProgress();
+//                    if (response.isSuccessful()) {
+//                        if(response.body() != null){
+//
+//                            SubscriberMainResponse subsResponse = response.body();
+//                            setMyProfile(subsResponse);
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
+//                    call.cancel();
+//                    ProgressClass.getProgressInstance().stopProgress();
+//                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//        }else {
+//            networkDialog();
+////            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
+//        }
     }
 
     private void callWebServiceForSubsDashboardRefresh(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        final List<String> countryList = new ArrayList<>();
-        countryList.clear();
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
@@ -593,7 +604,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                         if(response.body() != null){
 
                             SubscriberMainResponse subsResponse = response.body();
-                            setMyProfile(subsResponse);
+//                            setMyProfile(subsResponse);
                         }
                     }
                 }
@@ -815,17 +826,17 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         }
 
-    private void setMyProfile(SubscriberMainResponse subsResponse){
-
-        try {
-            listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, subsResponse);
-            expListView.setAdapter(listAdapter);
-
-            prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, subsResponse.getChatUserCount());
-        }catch (NullPointerException npe){
-            Log.e(TAG, "#Error : "+npe, npe);
-        }
-    }
+//    private void setMyProfile(JSONObject object){
+//
+//        try {
+//            listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
+//            expListView.setAdapter(listAdapter);
+//
+//            prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, subsResponse.getChatUserCount());
+//        }catch (NullPointerException npe){
+//            Log.e(TAG, "#Error : "+npe, npe);
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
@@ -1080,4 +1091,23 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 .show();
     }
 
+    @Override
+    public void handle(JSONObject object, String methodName) {
+        try {
+            System.out.println(object);
+//            object.getJSONObject("basicData").optString("name")
+            if(object.getJSONObject("message").getInt("response_code") == 200){
+
+                listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
+                expListView.setAdapter(listAdapter);
+
+//                prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, subsResponse.getChatUserCount());
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

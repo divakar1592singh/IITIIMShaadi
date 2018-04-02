@@ -157,7 +157,25 @@
             <item>More than 100 LPA</item>
             <item>Not Disclosed</item>
     </array>
-    
+
+    <array name="education_pre_auth">
+        <item>Actuary</item>
+        <item>Hotel Management</item>
+        <item>Management</item>
+        <item>Engineering/Architecture</item>
+        <item>Medical</item>
+        <item>CA/CS/ICWA/CFA</item>
+        <item>Law</item>
+        <item>Design/Fashion Design</item>
+        <item>Government Officer</item>
+        <item>Social Work (Masters)</item>
+        <item>Media Communication (Masters)</item>
+        <item>Performing and Fine Arts</item>
+        <item>Masters</item>
+        <item>Research (Ph.D/FPM)</item>
+        <item>Others</item>
+    </array>
+
     <array name="education_ar">
         <item>Any</item>
         <item>Actuary</item>

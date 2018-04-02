@@ -1,13 +1,10 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,7 +15,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -32,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.CustomArrayAdapter;
@@ -41,18 +36,16 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
 import com.senzecit.iitiimshaadi.customdialog.Model;
-import com.senzecit.iitiimshaadi.model.api_response_model.new_register.NewRegistrationResponse;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.NewRegistrationRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.register_login.UserValidationRequest;
+import com.senzecit.iitiimshaadi.model.commons.PreAuthWebRequest;
 import com.senzecit.iitiimshaadi.model.commons.CountryCodeModel;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CaptchaClass;
 import com.senzecit.iitiimshaadi.utils.ModalBottomSheet;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONArray;
@@ -67,10 +60,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class NewUserRegisterActivity extends AppCompatActivity implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler  {
 
@@ -89,6 +78,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     /** NETWORK */
     APIInterface apiInterface;
+    PreAuthWebRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +92,11 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
         rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
         rxNetworkingClass.setCompletionHandler(this);
+        request = new PreAuthWebRequest();
 
         init();
         handleview();
 
-//        reTryMethod();
     }
 
     private void init(){
@@ -174,12 +164,11 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    UserValidationRequest validationRequest = new UserValidationRequest();
-                    validationRequest.str = mUserNameET.getText().toString().trim();
-                    validationRequest.type = 1;
+                    request.str = mUserNameET.getText().toString().trim();
+                    request.type = 1;
 
                     if(!TextUtils.isEmpty(mUserNameET.getText().toString().trim()))
-                    RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.CHECK_DUPLICATE, validationRequest, "Username");
+                    RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.CHECK_DUPLICATE, request, CONSTANTS.METHOD_1);
 
                 }
             }
@@ -190,13 +179,12 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
 
-                    UserValidationRequest validationRequest = new UserValidationRequest();
-                    validationRequest.str = mEmailET.getText().toString().trim();
-                    validationRequest.type = 2;
+                    request.str = mEmailET.getText().toString().trim();
+                    request.type = 2;
 
                     if (!TextUtils.isEmpty(mEmailET.getText().toString().trim())){
                         if (isValidEmail(mEmailET.getText().toString().trim())) {
-                            RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.CHECK_DUPLICATE, validationRequest, "Email");
+                            RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.CHECK_DUPLICATE, request, CONSTANTS.METHOD_2);
                         }else {
                             mEmailStatus.setVisibility(View.VISIBLE);
                             mEmailStatus.setText("Email Not Valid");
@@ -227,7 +215,6 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
             }
         });
-
         mEmailET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -492,6 +479,8 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     /** Check Validation Section */
     public void checkNewUserValidation(){
 
+
+
         String sUsername = mUserNameET.getText().toString().trim();
         String sEmail = mEmailET.getText().toString().trim();
         String password = mPasswordET.getText().toString().trim();
@@ -500,12 +489,15 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         String sProfile = mProfileCreatedForTV.getText().toString().trim();
         String fullName = mFullNameET.getText().toString().trim();
         String sGender = mGenderTV.getText().toString().trim();
-        String sDateOfBirth =  mDateOfBirthTV.getText().toString().trim();
-        String sMobile = mMobileET.getText().toString().trim();
 
+        String sDay = mDaySPN.getSelectedItem().toString();
+        int posMonth = mMonthSPN.getSelectedItemPosition();
+        String sYear = mYearSPN.getSelectedItem().toString();
+        String sDateOfBirth = sYear+"-"+posMonth+"-"+sDay;
+
+        String sMobile = mMobileET.getText().toString().trim();
         String userEnterCaptcha = mVerifyCaptchaET.getText().toString().trim();
         String serverSideCaptcha = mCaptchaBtn.getText().toString().trim();
-//        String sCollege = mCollegeNameET.getText().toString().trim();
 
         if(!sUsername.isEmpty()){
             if(isValidEmail(sEmail)){
@@ -519,7 +511,18 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                                             if(mTermCheck.getVisibility() == View.VISIBLE){
 
                                                 /** CALL API */
-                                                callWebServiceForNewRegistration();
+
+                                                request.username = sUsername;
+                                                request.email = sEmail;
+                                                request.password = confirmPassword;
+                                                request.profile_created_for = sProfile;
+                                                request.full_name = fullName;
+                                                request.gender = sGender;
+                                                request.date_of_birth = sDateOfBirth;
+                                                request.mob_no = sMobile;
+
+                                                RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(NewUserRegisterActivity.this, CONSTANTS.USER_REG, request, CONSTANTS.METHOD_3);
+
 
                                             }else {
                                                 AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Please accept Terms & Conditions");
@@ -556,115 +559,6 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert!", "Username can't be Empty");
         }
 
-    }
-
-    /** Check API Section */
-    public void callWebServiceForNewRegistration() {
-
-        if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
-
-        String sUsername = mUserNameET.getText().toString().trim();
-        String sEmail = mEmailET.getText().toString().trim();
-        String sPassword = mPasswordET.getText().toString().trim();
-        String sProfile = mProfileCreatedForTV.getText().toString().trim();
-        String sFullName = mFullNameET.getText().toString().trim();
-        String sGender = mGenderTV.getText().toString().trim();
-//        String sDateOfBirth =  mDateOfBirthTV.getText().toString().trim();
-        String sMobile = mMobileET.getText().toString().trim();
-
-        String sDay = mDaySPN.getSelectedItem().toString();
-        int posMonth = mMonthSPN.getSelectedItemPosition();
-        String sYear = mYearSPN.getSelectedItem().toString();
-
-        String sDateOfBirth = sYear+"-"+posMonth+"-"+sDay;
-        NewRegistrationRequest newRegistrationRequest = new NewRegistrationRequest();
-        newRegistrationRequest.username = sUsername;
-        newRegistrationRequest.email = sEmail;
-        newRegistrationRequest.password = sPassword;
-        newRegistrationRequest.profile_created_for = sProfile;
-        newRegistrationRequest.full_name = sFullName;
-        newRegistrationRequest.gender = sGender;
-        newRegistrationRequest.date_of_birth = sDateOfBirth;
-        newRegistrationRequest.mob_no = sMobile;
-
-        ProgressClass.getProgressInstance().showDialog(NewUserRegisterActivity.this);
-        Call<NewRegistrationResponse> call = apiInterface.newUserRegistration(newRegistrationRequest);
-        call.enqueue(new Callback<NewRegistrationResponse>() {
-            @Override
-            public void onResponse(Call<NewRegistrationResponse> call, Response<NewRegistrationResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-
-                try {
-                    if (response.isSuccessful()) {
-
-                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("User is registered successfully !")) {
-                            if (response.body().getResponseData() != null) {
-                                Toast.makeText(NewUserRegisterActivity.this, "Registration Succesfull", Toast.LENGTH_SHORT).show();
-                                com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData responseData = response.body().getResponseData();
-
-                                setPrefData(responseData);
-                            }
-                        } else {
-                            Toast.makeText(NewUserRegisterActivity.this, "Check Username/Email", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                }catch (NullPointerException npe){
-                    Log.e("TAG", "#Error : "+npe, npe);
-                    ProgressClass.getProgressInstance().stopProgress();
-
-                    String title = "Alert";
-                    String msg = "Oops. Please Try Again! \nHelp : Try different Username or Email.\n";
-                    AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, title, msg);
-//                    reTryMethod();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NewRegistrationResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod();
-//                Toast.makeText(NewUserRegisterActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-//                AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Something went wrong! \n Try again!");
-            }
-        });
-
-        }else {
-            NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
-        }
-
-
-    }
-
-    public void setPrefData(com.senzecit.iitiimshaadi.model.api_response_model.new_register.ResponseData response){
-        String token = response.getToken();
-        String userName = response.getUsername();
-        String userId = String.valueOf(response.getUserid());
-        String typeOfUser = response.getTypeOfUser();
-        String email = response.getEmail();
-        String mob = response.getMobileNo();
-        String gender = response.getGender();
-
-
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
-        prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
-        prefs.putString(CONSTANTS.LOGGED_USERID, userId);
-        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
-        prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
-        prefs.putString(CONSTANTS.LOGGED_MOB, mob);
-        prefs.putString(CONSTANTS.GENDER_TYPE, gender);
-
-
-        prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
-        navigateUserToScreen(typeOfUser);
-    }
-
-    public void navigateUserToScreen(String typeOfUser){
-//        if(typeOfUser.equalsIgnoreCase("subscriber")){
-        Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
-//        }
     }
 
     /** Helping Method Section */
@@ -817,13 +711,89 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             public void onClick(View v) {
 //                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
 //                dialog.cancel();
-                callWebServiceForNewRegistration();
+                checkNewUserValidation();
                 dialog.dismiss();
             }
         });
 
         dialog.show();
     }
+
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        System.out.println(object);
+        try {
+            if (methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
+
+                System.out.println(object);
+                int counter = object.getInt("counter");
+                boolean status = counter == 1 ? true : false;
+                if (status == true) {
+                    mUserNameStatus.setVisibility(View.VISIBLE);
+                    mUserNameStatus.setText("Username Not Available");
+                    mUserNameStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
+
+                } else if (status == false) {
+                    mUserNameStatus.setVisibility(View.VISIBLE);
+                    mUserNameStatus.setText("Username Available");
+                    mUserNameStatus.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+
+                }
+
+            } else if (methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)) {
+
+                int counter = object.getInt("counter");
+                boolean status = counter == 1 ? true : false;
+                if (status == true) {
+                    mEmailStatus.setVisibility(View.VISIBLE);
+                    mEmailStatus.setText("Email Not Available");
+                    mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
+
+                } else if (status == false) {
+                    mEmailStatus.setVisibility(View.VISIBLE);
+                    mEmailStatus.setText("Email Available");
+                    mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorGreen));
+
+                }
+
+            } else if (methodName.equalsIgnoreCase(CONSTANTS.METHOD_3)) {
+                System.out.println(object);
+                if (object.getJSONObject("message").getInt("response_code") == 200) {
+                    ToastDialogMessage.getInstance().showToast(NewUserRegisterActivity.this, "User is registered successfully !");
+
+                    String sUsername = mUserNameET.getText().toString().trim();
+                    String sPassword = mRePasswordET.getText().toString().trim();
+
+                    String token = object.getJSONObject("responseData").getString("token");
+                    String userName = object.getJSONObject("responseData").getString("username");
+                    String userId = String.valueOf(object.getJSONObject("responseData").getString("userid"));
+                    String typeOfUser = object.getJSONObject("responseData").getString("type_of_user");
+                    String email = object.getJSONObject("responseData").getString("email");
+                    String mobile = object.getJSONObject("responseData").getString("mobile_no");
+                    String gender = object.getJSONObject("responseData").getString("gender");
+
+                    prefs.putString(CONSTANTPREF.LOGIN_USERNAME, sUsername);
+                    prefs.putString(CONSTANTPREF.LOGIN_PASSWORD, sPassword);
+
+                    prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
+                    prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
+                    prefs.putString(CONSTANTS.LOGGED_USERID, userId);
+                    prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+                    prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
+                    prefs.putString(CONSTANTS.LOGGED_MOB, mobile);
+                    prefs.putString(CONSTANTS.GENDER_TYPE, gender);
+
+                    Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
+                } else {
+                    reTryMethod();
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @Override
@@ -849,53 +819,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
     }
 
-    @Override
-    public void handle(JSONObject object, String methodName) {
 
-        if(methodName.equalsIgnoreCase("Username")){
 
-            System.out.println(object);
-            try {
-                int counter = object.getInt("counter");
-                boolean status = counter == 1 ? true : false;
-                if(status == true){
-                    mUserNameStatus.setVisibility(View.VISIBLE);
-                    mUserNameStatus.setText("Username Not Available");
-                    mUserNameStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
-
-                }else if( status == false) {
-                    mUserNameStatus.setVisibility(View.VISIBLE);
-                    mUserNameStatus.setText("Username Available");
-                    mUserNameStatus.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }else if(methodName.equalsIgnoreCase("Email")){
-
-            System.out.println(object);
-            try {
-                int counter = object.getInt("counter");
-                boolean status = counter == 1 ? true : false;
-                if(status == true){
-                    mEmailStatus.setVisibility(View.VISIBLE);
-                    mEmailStatus.setText("Email Not Available");
-                    mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorRed));
-
-                }else if( status == false) {
-                    mEmailStatus.setVisibility(View.VISIBLE);
-                    mEmailStatus.setText("Email Available");
-                    mEmailStatus.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 }
 
