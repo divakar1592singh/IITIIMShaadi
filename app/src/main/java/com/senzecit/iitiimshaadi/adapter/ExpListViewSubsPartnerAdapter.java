@@ -925,7 +925,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
         PtrReligionCountryRequest request = new PtrReligionCountryRequest();
         request.token = token;
         request.prefered_partner_religion = Preferred_Religion;
-        request.prefered_partner_caste = Preferred_CasteArr;
+        request.prefered_partner_caste = Preferred_Caste;
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
@@ -977,7 +977,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
 
         PtrEduCareerRequest request = new PtrEduCareerRequest();
         request.token = token;
-        request.prefered_partner_education = Preferred_EducationArr;
+        request.prefered_partner_education = Preferred_Education;
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
         ProgressClass.getProgressInstance().showDialog(_context);

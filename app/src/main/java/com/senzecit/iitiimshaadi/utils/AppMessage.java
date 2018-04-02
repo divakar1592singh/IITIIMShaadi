@@ -20,6 +20,7 @@ public interface AppMessage {
     String PAGE_REFRESH_INFO = "Page Refreshed";
 
     String AGE_DIFF_ERROR_INFO = "Max age should be greater than min age !";
+    String AGE_DIFF_5_INFO = "Max age and min age difference is more than 5 years!";
     String AGE_ERROR_INFO = "Age should be valid !";
 
     String HEIGHT_DIFF_ERROR_INFO = "Max height should be greater than min height !";

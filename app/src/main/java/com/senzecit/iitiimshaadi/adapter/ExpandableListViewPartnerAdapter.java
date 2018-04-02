@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -55,6 +56,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -84,6 +86,7 @@ import retrofit2.Response;
 
 public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter {
 
+    private static String TAG = "ExpandableListViewPartnerAdapter";
     private Context _context;
     AppPrefs prefs;
     LayoutInflater layoutInflater;
@@ -91,15 +94,17 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
     MyProfileResponse myProfileResponse;
+    JSONObject object;
+    JSONObject partnerJson = null;
     private List<SliderCheckModel> sliderCheckList;
 
     public ExpandableListViewPartnerAdapter(Context context, List<String> listDataHeader,
-                                               HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
+                                               HashMap<String, List<String>> listChildData, JSONObject object) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this.myProfileResponse = myProfileResponse;
+        this.object = object;
         prefs = AppController.getInstance().getPrefs();
     }
 
@@ -120,492 +125,605 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+
+        try {
+            partnerJson = object.getJSONObject("partnerBasicData");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
         final String childText = (String) getChild(groupPosition, childPosition);
         //****lchild data items start
-        switch (groupPosition){
+
+       switch (groupPosition) {
+        case 0:
+        switch (childPosition){
             case 0:
-                //Toast.makeText(_context, "0", //Toast.LENGTH_LONG).show();
-                switch (childPosition){
-                    case 0:
-                        LayoutInflater infalInflater = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_numbertype, null);
+                LayoutInflater infalInflater = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.list_item_numbertype, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout.setHint(childText);
+                TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                textInputLayout.setHint(childText);
 
-                        EditText editText = convertView.findViewById(R.id.idlistitemET);
+                EditText editText = convertView.findViewById(R.id.idlistitemET);
 
-                        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                        InputFilter[] FilterArray = new InputFilter[1];
-                        FilterArray[0] = new InputFilter.LengthFilter(2);
-                        editText.setFilters(FilterArray);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                InputFilter[] FilterArray = new InputFilter[1];
+                FilterArray[0] = new InputFilter.LengthFilter(2);
+                editText.setFilters(FilterArray);
 
-                        editText.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMinAge()));
 
-                        editText.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editText.setText(String.valueOf(partnerJson.optInt("prefered_partner_min_age")));
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMinimum_Age()))
+                    ExpPartnerProfileModel.getInstance().setMinimum_Age(String.valueOf(partnerJson.optInt("prefered_partner_min_age")));
 
-                            }
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMinimum_Age()))
+                    editText.setText(ExpPartnerProfileModel.getInstance().getMinimum_Age());
 
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            }
+                    }
 
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setMinimum_Age(editable.toString());
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            }
-                        });
+                    }
 
-                        break;
-                    case 1:
-                        LayoutInflater infalInflater1 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setMinimum_Age(editable.toString());
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout1.setHint(childText);
-
-                        EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                        InputFilter[] FilterArray2 = new InputFilter[1];
-                        FilterArray2[0] = new InputFilter.LengthFilter(2);
-                        editText1.setFilters(FilterArray2);
-
-                        //SetData - PreferedPartnerMaxAge
-                        editText1.setText(String.valueOf(myProfileResponse.getPartnerBasicData().getPreferedPartnerMaxAge()));
-                        editText1.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setMaximum_Age(editable.toString());
-
-                            }
-                        });
-
-                        break;
-                    case 2:
-                        LayoutInflater infalInflater2 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater2.inflate(R.layout.list_item, null);
-
-                        final TextView txtListChild2 = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild2.setText(childText);
-
-                        //SetData - PreferedPartnerHeightMin
-                        txtListChild2.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMin());
-
-                        TextView txtListChildHeader2 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader2.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-//                                showDialog(txtListChild2,100,50);
-                                showHeight(txtListChild2);
-                            }
-                        });
-
-                        txtListChild2.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setMin_Height(editable.toString());
-                            }
-                        });
-
-                        break;
-                    case 3:
-                        LayoutInflater infalInflater3 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater3.inflate(R.layout.list_item, null);
-
-                        final TextView txtListChild3 = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild3.setText(childText);
-
-                        //SetData - PreferedPartnerHeightMax
-                        txtListChild3.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMax());
-
-                        TextView txtListChildHeader3 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader3.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-//                                showDialog(txtListChild3,100,50);
-                                showHeight(txtListChild3);
-                            }
-                        });
-
-                        txtListChild3.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setMax_Height(editable.toString());
-                            }
-                        });
-
-                        break;
-                    case 4:
-                        LayoutInflater infalInflater4 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater4.inflate(R.layout.list_item, null);
-
-                        final TextView txtListChild4 = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild4.setText(childText);
-
-                        //SetData - PreferedPartnerMaritalStatus
-                        String marital1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerMaritalStatus().toString().replace("[", "");
-                        String maritalNet = marital1.replace("]", "");
-                        txtListChild4.setText(maritalNet);
-
-                        TextView txtListChildHeader4 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader4.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-//                                showDialog(txtListChild4,100,50);
-                                showMaritalStatus(txtListChild4);
-                            }
-                        });
-
-                        txtListChild4.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setMarital_Status(editable.toString());
-                            }
-                        });
-
-                        break;
-                    case 5:
-                        LayoutInflater infalInflater5 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater5.inflate(R.layout.submit_data_button, null);
-                        Button saveChanges = convertView.findViewById(R.id.save_changes_button);
-                        saveChanges.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //do somethings.
-                                saveChangesOfCase_0();
-                            }
-                        });
-                        break;
-
-                }
+                    }
+                });
 
                 break;
             case 1:
-                switch (childPosition){
-                    case 0:
-                        LayoutInflater infalInflater = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item, null);
+                LayoutInflater infalInflater1 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
 
-                        final TextView txtListChild = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild.setText(childText);
+                TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                textInputLayout1.setHint(childText);
 
-                        //SetData - PreferedPartnerReligion
-                        txtListChild.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerReligion());
+                EditText editText1 = convertView.findViewById(R.id.idlistitemET);
 
-                        TextView txtListChildHeader = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                InputFilter[] FilterArray2 = new InputFilter[1];
+                FilterArray2[0] = new InputFilter.LengthFilter(2);
+                editText1.setFilters(FilterArray2);
+
+                //SetData - PreferedPartnerMaxAge
+                editText1.setText(String.valueOf(partnerJson.optInt("prefered_partner_max_age")));
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMaximum_Age()))
+                    ExpPartnerProfileModel.getInstance().setMaximum_Age(String.valueOf(partnerJson.optInt("prefered_partner_max_age")));
+
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMaximum_Age()))
+                    editText1.setText(ExpPartnerProfileModel.getInstance().getMaximum_Age());
+
+                editText1.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setMaximum_Age(editable.toString());
+                    }
+                });
+
+                break;
+            case 2:
+                LayoutInflater infalInflater2 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater2.inflate(R.layout.list_item, null);
+
+                final TextView txtListChild2 = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild2.setText(childText);
+
+                //SetData - PreferedPartnerHeightMin
+                txtListChild2.setText(partnerJson.optString("prefered_partner_height_min"));
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMin_Height()))
+                    ExpPartnerProfileModel.getInstance().setMin_Height(partnerJson.optString("prefered_partner_height_min"));
+
+                TextView txtListChildHeader2 = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader2.setText(childText);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                                showDialog(txtListChild2,100,50);
+                        showHeight(txtListChild2);
+                    }
+                });
+
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMin_Height()))
+                    txtListChild2.setText(ExpPartnerProfileModel.getInstance().getMin_Height());
+
+                txtListChild2.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setMin_Height(editable.toString());
+                    }
+                });
+
+                break;
+            case 3:
+                LayoutInflater infalInflater3 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater3.inflate(R.layout.list_item, null);
+
+                final TextView txtListChild3 = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild3.setText(childText);
+
+                //SetData - PreferedPartnerHeightMax
+                txtListChild3.setText(partnerJson.optString("prefered_partner_height_max"));
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMax_Height()))
+                    ExpPartnerProfileModel.getInstance().setMax_Height(partnerJson.optString("prefered_partner_height_max"));
+
+                TextView txtListChildHeader3 = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader3.setText(childText);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                                showDialog(txtListChild3,100,50);
+                        showHeight(txtListChild3);
+                    }
+                });
+
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMax_Height()))
+                    txtListChild3.setText(ExpPartnerProfileModel.getInstance().getMax_Height());
+
+                txtListChild3.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setMax_Height(editable.toString());
+                    }
+                });
+
+                break;
+            case 4:
+                LayoutInflater infalInflater4 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater4.inflate(R.layout.list_item, null);
+
+                final TextView txtListChild4 = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild4.setText(childText);
+
+                //SetData - PreferedPartnerMaritalStatus
+//                        String maritalStatus = "";
+                StringBuilder builder = new StringBuilder();
+                try {
+                    JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_marital_status");
+                    for(int pos = 0; pos < jsonArray.length(); pos++){
+                        System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                        if(pos == jsonArray.length()-1){
+                            builder.append(jsonArray.optString(pos));
+                        }else {
+                            builder.append(jsonArray.optString(pos)).append(",");
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                txtListChild4.setText(builder);
+
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMarital_Status()))
+                    ExpPartnerProfileModel.getInstance().setMarital_Status(builder.toString());
+
+                TextView txtListChildHeader4 = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader4.setText(childText);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                                showDialog(txtListChild4,100,50);
+                        showMaritalStatusPt(txtListChild4);
+                    }
+                });
+
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMarital_Status()))
+                    txtListChild4.setText(ExpPartnerProfileModel.getInstance().getMarital_Status());
+
+                txtListChild4.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setMarital_Status(editable.toString());
+                    }
+                });
+
+                break;
+            case 5:
+                LayoutInflater infalInflater5 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater5.inflate(R.layout.submit_data_button, null);
+                Button saveChanges = convertView.findViewById(R.id.save_changes_button);
+                saveChanges.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //do somethings.
+                        saveChangesOfCasePt_0();
+                    }
+                });
+                break;
+
+        }
+
+        break;
+        case 1:
+        switch (childPosition){
+            case 0:
+                LayoutInflater infalInflater = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.list_item, null);
+
+                final TextView txtListChild = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild.setText(childText);
+
+                //SetData - PreferedPartnerReligion
+                txtListChild.setText(partnerJson.optString("prefered_partner_religion"));
+
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Religion()))
+                    ExpPartnerProfileModel.getInstance().setPreferred_Religion(partnerJson.optString("prefered_partner_religion"));
+
+                    TextView txtListChildHeader = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader.setText(childText);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 //                                showDialog(txtListChild,100,50);
-                                showReligion(txtListChild);
-                            }
-                        });
+                        showReligion(txtListChild);
+                    }
+                });
 
-                        txtListChild.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Religion()))
+                    txtListChild.setText(ExpPartnerProfileModel.getInstance().getPreferred_Religion());
 
-                            }
+                txtListChild.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
 
-                            }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setPreferred_Religion(editable.toString());
-                            }
-                        });
+                    }
 
-                        break;
-                    case 1:
-                        LayoutInflater infalInflater1 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item, null);
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setPreferred_Religion(editable.toString());
+                    }
+                });
 
-                        final TextView txtListChild1 = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild1.setText(childText);
+                break;
+            case 1:
+                LayoutInflater infalInflater1 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater1.inflate(R.layout.list_item, null);
 
-                        //SetData - PreferedPartnerCaste
-                        String caste1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCaste().toString().replace("[", "");
-                        String caste = caste1.replace("]","");
-                        txtListChild1.setText(caste);
+                final TextView txtListChild1 = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader1.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                //SetData - PreferedPartnerCaste
+//                        String caste1 = partnerJson.optString("prefered_partner_caste").toString().replace("[", "");
+//                        String caste = caste1.replace("]","");
+                StringBuilder builder = new StringBuilder();
+                try {
+                    JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_caste");
+                    for (int pos = 0; pos < jsonArray.length(); pos++) {
+                        System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                        if (pos == jsonArray.length() - 1) {
+                            builder.append(jsonArray.optString(pos));
+                        } else {
+                            builder.append(jsonArray.optString(pos)).append(",");
+                        }
+                    }
+                }catch (JSONException jse){
+                    Log.e(TAG, " #Err : "+jse, jse);
+                }
+                txtListChild1.setText(builder);
+
+                TextView txtListChildHeader1 = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader1.setText(childText);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 //                                showDialog(txtListChild1,100,50);
-                                showCaste(txtListChild1);
-                            }
-                        });
+                        showCastePt(txtListChild1);
+                    }
+                });
 
-                        txtListChild1.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Caste()))
+                    txtListChild1.setText(ExpPartnerProfileModel.getInstance().getPreferred_Caste());
 
-                            }
+                txtListChild1.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
 
-                            }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setPreferred_Caste(editable.toString());
-                            }
-                        });
-                        break;
-                    case 2:
-                        LayoutInflater infalInflater2 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater2.inflate(R.layout.list_item, null);
+                    }
 
-                        TextView txtListChildHeader2 = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader2.setText(childText);
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setPreferred_Caste(editable.toString());
+                    }
+                });
+                break;
+            case 2:
+                LayoutInflater infalInflater2 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater2.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild2.setText(childText);
+                TextView txtListChildHeader2 = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader2.setText(childText);
 
-                        try {
+                final TextView txtListChild2 = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild2.setText(childText);
+
+                   /*     try {
                             //SetData - PreferedPartnerCountry
-                            String country1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCountry().toString().replace("[", "");
+                            String country1 = partnerJson.optString("prefered_partner_country").toString().replace("[", "");
                             String country = country1.replace("]", "");
                             txtListChild2.setText(country);
 
                         }catch (NullPointerException npe){
                             Log.e("TAG", " #Error : "+npe, npe );
                         }
+                        */
+                StringBuilder builder1 = new StringBuilder();
+                try {
+                    JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_country");
+                    for (int pos = 0; pos < jsonArray.length(); pos++) {
+                        System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                        if (pos == jsonArray.length() - 1) {
+                            builder1.append(jsonArray.optString(pos));
+                        } else {
+                            builder1.append(jsonArray.optString(pos)).append(",");
+                        }
+                    }
+                }catch (JSONException jse){
+                    Log.e(TAG, " #Err : "+jse, jse);
+                }
+                txtListChild2.setText(builder1);
 
-                            convertView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 //                                showDialog(txtListChild2,100,50);
-                                    showCountry(txtListChild2);
-                                }
-                            });
+                        showCountryPt(txtListChild2);
+                    }
+                });
 
-                            txtListChild2.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Country()))
+                    txtListChild2.setText(ExpPartnerProfileModel.getInstance().getPreferred_Country());
 
-                                }
+                txtListChild2.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                                @Override
-                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
 
-                                }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                                @Override
-                                public void afterTextChanged(Editable editable) {
-                                    ExpPartnerProfileModel.getInstance().setPreferred_Country(editable.toString());
-                                }
-                            });
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setPreferred_Country(editable.toString());
+                    }
+                });
 
 
-
-                        break;
-                    case 3:
-                        LayoutInflater infalInflater3 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater3.inflate(R.layout.submit_data_button, null);
-                        Button saveChanges = convertView.findViewById(R.id.save_changes_button);
-                        saveChanges.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //do somethings.
-                                saveChangesOfCase_1();
-                            }
-                        });
-                        break;
-                }
-                break;
-            case 2:
-                //Toast.makeText(_context, "2", //Toast.LENGTH_LONG).show();
-                switch (childPosition){
-                    case 0:
-                        LayoutInflater infalInflater = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item, null);
-
-                        final TextView txtListChild = (TextView) convertView
-                                .findViewById(R.id.childItemTV);
-                        txtListChild.setText(childText);
-
-                        //SetData - PreferedPartnerEducation
-                        String education1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerEducation().toString().replace("[", "");
-                        String education = education1.replace("]","");
-                        txtListChild.setText(education);
-
-                        TextView txtListChildHeader = (TextView) convertView
-                                .findViewById(R.id.childItemTVheader);
-                        txtListChildHeader.setText(childText);
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-//                                showSelectableDialog(txtListChild,100,50);
-                                showEducation(txtListChild);
-                            }
-                        });
-
-                        txtListChild.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setPreferred_Education(editable.toString());
-                            }
-                        });
-
-                        break;
-                    case 1:
-                        LayoutInflater infalInflater1 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.submit_data_button, null);
-                        Button saveChanges = convertView.findViewById(R.id.save_changes_button);
-                        saveChanges.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //do somethings.
-                                saveChangesOfCase_2();
-                            }
-                        });
-                        break;
-
-                }
                 break;
             case 3:
+                LayoutInflater infalInflater3 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater3.inflate(R.layout.submit_data_button, null);
+                Button saveChanges = convertView.findViewById(R.id.save_changes_button);
+                saveChanges.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //do somethings.
+                        saveChangesOfCasePt_1();
+                    }
+                });
+                break;
+        }
+        break;
+        case 2:
+        //Toast.makeText(_context, "2", //Toast.LENGTH_LONG).show();
+        switch (childPosition){
+            case 0:
+                LayoutInflater infalInflater = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.list_item, null);
 
-                switch (childPosition){
-                    case 0:
-                        //Toast.makeText(_context, "3", //Toast.LENGTH_LONG).show();
-                        LayoutInflater infalInflater = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
+                final TextView txtListChild = (TextView) convertView
+                        .findViewById(R.id.childItemTV);
+                txtListChild.setText(childText);
 
-//                        EditText textInputLayout = (EditText) convertView.findViewById(R.id.idTextInputLayout);
-//                        textInputLayout.setHint(childText);
+                //SetData - PreferedPartnerEducation
+//                String education1 = partnerJson.optString("prefered_partner_education").toString().replace("[", "");
+//                String education = education1.replace("]","");
+                StringBuilder builder = new StringBuilder();
+                try {
+                    JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_education");
+                    for (int pos = 0; pos < jsonArray.length(); pos++) {
+                        System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                        if (pos == jsonArray.length() - 1) {
+                            builder.append(jsonArray.optString(pos));
+                        } else {
+                            builder.append(jsonArray.optString(pos)).append(",");
+                        }
+                    }
+                }catch (JSONException jse){
+                    Log.e(TAG, " #Err : "+jse, jse);
+                }
+                txtListChild.setText(builder);
 
-                        EditText editText = convertView.findViewById(R.id.idlistitemET);
-                        editText.setHint("Say something...");
+                TextView txtListChildHeader = (TextView) convertView
+                        .findViewById(R.id.childItemTVheader);
+                txtListChildHeader.setText(childText);
+
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getPreferred_Education()))
+                    txtListChild.setText(ExpPartnerProfileModel.getInstance().getPreferred_Education());
+
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                                showSelectableDialog(txtListChild,100,50);
+                        showEducation(txtListChild);
+                    }
+                });
+
+                txtListChild.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setPreferred_Education(editable.toString());
+                    }
+                });
+
+                break;
+            case 1:
+                LayoutInflater infalInflater1 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater1.inflate(R.layout.submit_data_button, null);
+                Button saveChanges = convertView.findViewById(R.id.save_changes_button);
+                saveChanges.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //do somethings.
+                        saveChangesOfCasePt_2();
+                    }
+                });
+                break;
+
+        }
+        break;
+        case 3:
+        switch (childPosition){
+            case 0:
+                //Toast.makeText(_context, "3", //Toast.LENGTH_LONG).show();
+                LayoutInflater infalInflater = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.list_item_boxtype, null);
+
+                EditText editText = convertView.findViewById(R.id.idlistitemET);
+                editText.setHint("Say something...");
 //                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
-                        //SetData - ChoiceOfGroom
-                        editText.setText(myProfileResponse.getPartnerBasicData().getChoiceOfGroom());
+                //SetData - ChoiceOfGroom
+                editText.setText(partnerJson.optString("choice_of_partner"));
 
-                        editText.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getChoice_of_Groom()))
+                    editText.setText(ExpPartnerProfileModel.getInstance().getChoice_of_Groom());
 
-                            }
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
 
-                            }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                ExpPartnerProfileModel.getInstance().setChoice_of_Groom(editable.toString());
+                    }
 
-                            }
-                        });
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        ExpPartnerProfileModel.getInstance().setChoice_of_Groom(editable.toString());
 
-                        break;
-                    case 1:
-                        LayoutInflater infalInflater1 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.submit_data_button, null);
-                        Button saveChanges = convertView.findViewById(R.id.save_changes_button);
-                        saveChanges.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //do somethings.
-                                saveChangesOfCase_3();
-                            }
-                        });
-                        break;
+                    }
+                });
 
-                }
                 break;
+            case 1:
+                LayoutInflater infalInflater1 = (LayoutInflater) this._context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater1.inflate(R.layout.submit_data_button, null);
+                Button saveChanges = convertView.findViewById(R.id.save_changes_button);
+                saveChanges.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //do somethings.
+                        saveChangesOfCasePt_3();
+                    }
+                });
+                break;
+        }
+        break;
+
         }
 
         return convertView;
@@ -839,11 +957,11 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-    public void showMaritalStatus(TextView textView){
+    public void showMaritalStatusPt(TextView textView) {
 
         String[] ar = _context.getResources().getStringArray(R.array.marital_status_ar);
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
-        showDialog(list, textView);
+        showSelectableDialog(list, textView);
     }
     public void showReligion(TextView textView){
 
@@ -858,11 +976,12 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         showSelectableDialog(list, textView);
     }
 
+    /**Search Partner*/
     /** Network Operation */
-
-    public void saveChangesOfCase_0(){
+    public void saveChangesOfCasePt_0(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
         String Minimum_Age = ExpPartnerProfileModel.getInstance().getMinimum_Age();
         String Maximum_Age = ExpPartnerProfileModel.getInstance().getMaximum_Age();
         String Min_Height = ExpPartnerProfileModel.getInstance().getMin_Height();
@@ -872,57 +991,78 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         String[] Marital_StatusArr = new String[1];
         Marital_StatusArr[0] = Marital_Status;
 
-        ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
-        request.token = token;
-        request.prefered_partner_min_age = Minimum_Age;
-        request.prefered_partner_max_age = Maximum_Age;
-        request.prefered_partner_height = Min_Height;
-        request.prefered_partner_height_max = Max_Height;
-        request.prefered_partner_marital_status = Marital_Status;
+        try {
+            if (NetworkClass.getInstance().checkInternet(_context) == true) {
+                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) > 0 ) {
+                    if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
+                        if ((getHeightInCM(Max_Height) - getHeightInCM(Min_Height)) > 0) {
 
-        if(NetworkClass.getInstance().checkInternet(_context) == true){
+                            ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
+                            request.token = token;
+                            request.prefered_partner_min_age = Minimum_Age;
+                            request.prefered_partner_max_age = Maximum_Age;
+                            request.prefered_partner_height = Min_Height;
+                            request.prefered_partner_height_max = Max_Height;
+                            request.prefered_partner_marital_status = Marital_Status;
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendPartnerBasicProfile(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse serverResponse = response.body();
-                    if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            ProgressClass.getProgressInstance().showDialog(_context);
+                            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+                            Call<AddFolderResponse> call = apiInterface.sendPartnerBasicProfile(request);
+                            call.enqueue(new Callback<AddFolderResponse>() {
+                                @Override
+                                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                                    ProgressClass.getProgressInstance().stopProgress();
+                                    if (response.isSuccessful()) {
+                                        AddFolderResponse serverResponse = response.body();
+                                        if (serverResponse.getMessage().getSuccess() != null) {
+                                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
-                        } else {
+                                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                                    call.cancel();
+                                    ProgressClass.getProgressInstance().stopProgress();
+                                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        } else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.HEIGHT_DIFF_ERROR_INFO);
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_5_INFO);
                     }
+                } else {
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_ERROR_INFO);
                 }
+
+            } else {
+                NetworkDialogHelper.getInstance().showDialog(_context);
             }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        }else {
-            NetworkDialogHelper.getInstance().showDialog(_context);
+        }catch (NumberFormatException nfe){
+            Log.e(TAG, " #Error : "+nfe, nfe);
+            Toast.makeText(_context, AppMessage.AGE_ERROR_INFO, Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Log.e(TAG, " #Error : "+e, e);
+            Toast.makeText(_context, AppMessage.HEIGHT_ERROR_INFO, Toast.LENGTH_SHORT).show();
         }
 
     }
-    public void saveChangesOfCase_1(){
+    public void saveChangesOfCasePt_1(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         String Preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         String Preferred_Caste = ExpPartnerProfileModel.getInstance().getPreferred_Caste();
         String Preferred_Country = ExpPartnerProfileModel.getInstance().getPreferred_Country();
@@ -935,92 +1075,41 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         PtrReligionCountryRequest request = new PtrReligionCountryRequest();
         request.token = token;
         request.prefered_partner_religion = Preferred_Religion;
-        request.prefered_partner_caste = Preferred_CasteArr;
-        request.prefered_partner_country = Preferred_CountryArr;
-
+        request.prefered_partner_caste = Preferred_Caste;
+        request.prefered_partner_country = Preferred_Country;
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendPartnerReligionCountry(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse ptReligionResponse = response.body();
-                    if(ptReligionResponse.getMessage().getSuccess() != null) {
-                        if (ptReligionResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendPartnerReligionCountry(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse ptReligionResponse = response.body();
+                        if(ptReligionResponse.getMessage().getSuccess() != null) {
+                            if (ptReligionResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
-                        } else {
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }else {
-        NetworkDialogHelper.getInstance().showDialog(_context);
-    }
-
-    }
-    public void saveChangesOfCase_2(){
-
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
-        String[] Preferred_EducationArr = new String[1];
-        Preferred_EducationArr[0] = Preferred_Education;
-
-        PtrEduCareerRequest request = new PtrEduCareerRequest();
-        request.token = token;
-        request.prefered_partner_education = Preferred_EducationArr;
-
-        if(NetworkClass.getInstance().checkInternet(_context) == true){
-
-            ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendPartnerEduCareer(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse ptrEduResponse = response.body();
-                    if(ptrEduResponse.getMessage().getSuccess() != null) {
-                        if (ptrEduResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
-//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
-                        }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
@@ -1028,11 +1117,62 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
 
     }
-    public void saveChangesOfCase_3(){
+    public void saveChangesOfCasePt_2(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        String Preferred_Education = ExpPartnerProfileModel.getInstance().getPreferred_Education();
+
+        String[] Preferred_EducationArr = new String[1];
+        Preferred_EducationArr[0] = Preferred_Education;
+
+        PtrEduCareerRequest request = new PtrEduCareerRequest();
+        request.token = token;
+        request.prefered_partner_education = Preferred_Education;
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendPartnerEduCareer(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse ptrEduResponse = response.body();
+                        if(ptrEduResponse.getMessage().getSuccess() != null) {
+                            if (ptrEduResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+
+                            } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
+    }
+    public void saveChangesOfCasePt_3(){
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
+
         ChoiceOfGroomRequest request = new ChoiceOfGroomRequest();
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
@@ -1040,82 +1180,36 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendPartnerGroom(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse aboutMeResponse = response.body();
-                    if(aboutMeResponse.getMessage().getSuccess() != null) {
-                        if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendPartnerGroom(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse aboutMeResponse = response.body();
+                        if(aboutMeResponse.getMessage().getSuccess() != null) {
+                            if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
-                        } else {
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        }else {
-            NetworkDialogHelper.getInstance().showDialog(_context);
-        }
-
-    }
-
-    public void showCountry(final TextView textView) {
-
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        if(NetworkClass.getInstance().checkInternet(_context) == true){
-
-        ProgressClass.getProgressInstance().showDialog(_context);
-        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
-                .addBodyParameter("token", token)
-//                .addBodyParameter("religion", preferred_Religion)
-                .setTag("test")
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        ProgressClass.getProgressInstance().stopProgress();
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("allCountries");
-                            List<String> countryList = new ArrayList<>();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject countryObject = jsonArray.getJSONObject(i);
-                                String country = countryObject.getString("name");
-                                countryList.add(country);
-                            }
-                            showDialog(countryList, textView);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
-                    }
-                });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
@@ -1123,53 +1217,105 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
     }
 
-    public void showCaste(final TextView textView) {
+    public void showCountryPt(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        String preferred_Religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
-                .addBodyParameter("token", token)
-                .addBodyParameter("religion", preferred_Religion)
-                .setTag("test")
-                .setPriority(Priority.MEDIUM)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        ProgressClass.getProgressInstance().stopProgress();
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("allCastes");
-                            List<String> casteList = new ArrayList<>();
-                            if(jsonArray.length() > 0){
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                String country = jsonArray.getString(i);
-                                casteList.add(country);
+            AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                    .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+                    .setTag("test")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            ProgressClass.getProgressInstance().stopProgress();
+                            try {
+                                JSONArray jsonArray = response.getJSONArray("allCountries");
+                                List<String> countryList = new ArrayList<>();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject countryObject = jsonArray.getJSONObject(i);
+                                    String country = countryObject.getString("name");
+                                    countryList.add(country);
+                                }
+                                showSelectableDialog(countryList, textView);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
                             }
-                            showDialog(casteList, textView);
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
-                        }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
                         }
 
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
-                    }
-                });
+                        @Override
+                        public void onError(ANError error) {
+                            ProgressClass.getProgressInstance().stopProgress();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
+                        }
+                    });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
 
+    }
+
+    public void showCastePt(final TextView textView) {
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        String religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
+            AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
+                    .addBodyParameter("token", token)
+                    .addBodyParameter("religion", religion)
+                    .setTag("test")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            ProgressClass.getProgressInstance().stopProgress();
+                            try {
+                                JSONArray jsonArray = response.getJSONArray("allCastes");
+                                List<String> casteList = new ArrayList<>();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    String country = jsonArray.getString(i);
+                                    casteList.add(country);
+                                }
+                                showSelectableDialog(casteList, textView);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            ProgressClass.getProgressInstance().stopProgress();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
+                        }
+                    });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+    }
+
+    public static int getHeightInCM(String s) {
+
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return 0;
+        }
+        String removedSpaceStr = s.replaceAll("\\s+", "");
+        String rawString = removedSpaceStr.substring(0, removedSpaceStr.length() - 3);
+        String netString = rawString.substring(rawString.length() - 3, rawString.length());
+        return Integer.parseInt(netString);
     }
 
     public static String removeLastChar(String s) {
@@ -1177,7 +1323,8 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
             return s = "";
         }
         String rawString = s.substring(0, s.length()-1);
-        return rawString.replaceAll("\\s+","");
+        return rawString;
     }
+
 
 }

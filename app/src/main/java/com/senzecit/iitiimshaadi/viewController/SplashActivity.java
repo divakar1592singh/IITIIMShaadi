@@ -1,7 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,8 +37,9 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = AppController.getInstance().getPrefs();
+//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "gffg");
 //
-        prefs.putString(CONSTANTS.LOGGED_TOKEN, "85a53c74c747cd3e551cb7d1fd223fcf");
+//        prefs.putString(CONSTANTS.LOGGED_TOKEN, "85a53c74c747cd3e551cb7d1fd223fcf");
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, null);
 
 //        prefs.putString(CONSTANTS.LOGGED_USER_TYPE, "subscriber");
@@ -80,11 +83,12 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-               Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+  /*             Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
 
+*/
 
 
              /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
@@ -97,55 +101,82 @@ public class SplashActivity extends AppCompatActivity {
 
 /*https://stackoverflow.com/questions/
 39190058/when-settext-on-edittext-textwatcher-ontextchanged-not-called*/
-/*
 
-                try{
-                    String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
-                    if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
-                        Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-//                        finish();
-                    } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
-
-                        Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-//                        finish();
-                    } else if (userType.equalsIgnoreCase("subscriber")) {
-
-                        Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-//                        finish();
-                    } else {
-                        Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-//                        finish();
-                    }
-                }catch (NullPointerException npe){
-
-                    Log.e(TAG, "#Error : "+npe, npe);
-                    Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-
-                    startActivity(intent);
-                    finish();
-                }
-
-*/
 
 //                callWebServiceForSignin();
+
+            if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
+                navigatyPage();
+            }else {
+                networkDialog();
+            }
+
+
 
             }
         },SPLASH_DISPLAY_TIME);
     }
 
+    public void navigatyPage(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
+
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+//                        finish();
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+//                        finish();
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
+
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+//                        finish();
+            } else {
+                Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+//                        finish();
+            }
+        }catch (NullPointerException npe){
+
+            Log.e(TAG, "#Error : "+npe, npe);
+            Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
+
+            startActivity(intent);
+            finish();
+        }
+
+    }
+
+    public void networkDialog(){
+        new AlertDialog.Builder(SplashActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("No Network")
+                .setMessage("Check Your Internet")
+                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        finishActivity(0);
+                        dialog.dismiss();
+                    }
+
+                })
+                .show();
+    }
 
 
     @Override

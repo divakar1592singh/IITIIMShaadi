@@ -785,6 +785,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
                     prefs.putString(CONSTANTS.GENDER_TYPE, gender);
 
                     Navigator.getClassInstance().navigateToActivity(NewUserRegisterActivity.this, SubscriberDashboardActivity.class);
+                    finishActivity(0);
                 } else {
                     reTryMethod();
                 }
@@ -799,7 +800,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     @Override
     protected void onStop() {
         super.onStop();
-        finish();
+//        finish();
     }
 
     @Override

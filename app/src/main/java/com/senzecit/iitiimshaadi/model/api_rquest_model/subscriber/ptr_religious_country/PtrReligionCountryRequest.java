@@ -8,8 +8,8 @@ public class PtrReligionCountryRequest {
 
     public String token;
     public String prefered_partner_religion;
-    public String[] prefered_partner_caste;
-    public String[] prefered_partner_country;
+    public String prefered_partner_caste;
+    public String prefered_partner_country;
 
 
 

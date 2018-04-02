@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,7 +28,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -41,12 +41,6 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.about_me.AboutMeResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.basic_profile.BasicProfileResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.contact_details.ContactDetailsResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.education_career.EducationCareerResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.familty_detail.FamilyDetailResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.religious_background.ReligiousBackgroundResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
@@ -56,31 +50,26 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.Rel
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.SplashActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -88,24 +77,25 @@ import retrofit2.Response;
 
 public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
-
+    private static String TAG = "ExpandableListViewAdapter";
     private Context _context;
     LayoutInflater layoutInflater;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
-    MyProfileResponse myProfileResponse;
     AppPrefs prefs;
     RxNetworkingForObjectClass rxNetworkingClass;
     private List<SliderCheckModel> sliderCheckList;
+    JSONObject object;
+    JSONObject basicObject = null;
 
     public ExpandableListViewAdapter(Context context, List<String> listDataHeader,
-                                        HashMap<String, List<String>> listChildData, MyProfileResponse myProfileResponse) {
+                                        HashMap<String, List<String>> listChildData, JSONObject object) {
         this._context = context;
         layoutInflater = LayoutInflater.from(_context);
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this.myProfileResponse = myProfileResponse;
+        this.object = object;
 
         prefs = AppController.getInstance().getPrefs();
     }
@@ -126,7 +116,13 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
+
         final String childText = (String) getChild(groupPosition, childPosition);
+        try {
+            basicObject = object.getJSONObject("basicData");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         switch (groupPosition) {
             case 0:
@@ -142,7 +138,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         //SetData - Name
-                        editText.setText(myProfileResponse.getBasicData().getName());
+                        editText.setText(basicObject.optString("name"));
+
+                        if (!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getName()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getName());
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -159,6 +158,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 ExpOwnProfileModel.getInstance().setName(editable.toString());
                             }
                         });
+
                         break;
                     case 1:
                         LayoutInflater infalInflater1 = (LayoutInflater) this._context
@@ -173,8 +173,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - Diet
-                        txtListChild.setText(myProfileResponse.getBasicData().getProfileCreatedFor());
-
+                        txtListChild.setText(basicObject.optString("profile_created_for"));
                         txtListChild.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -205,9 +204,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         TextView txtListChildHeader2 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
-
-                        formattedDate(txtListChild2, myProfileResponse.getBasicData().getBirthDate());
-
+                        formattedDate(txtListChild2, basicObject.optString("birth_date"));
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -240,15 +237,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChildHeader3.setText(childText);
 
                         //SetData - Diet
-                        txtListChild3.setText(myProfileResponse.getBasicData().getDiet());
+                        txtListChild3.setText(basicObject.optString("diet"));
 
-                        convertView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-//                                showDialog(txtListChild3);
-                                showDiet(txtListChild3);
-                            }
-                        });
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDiet()))
+                            txtListChild3.setText(ExpOwnProfileModel.getInstance().getDiet());
 
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -264,6 +256,13 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpOwnProfileModel.getInstance().setDiet(editable.toString());
+                            }
+                        });
+
+                        convertView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showDiet(txtListChild3);
                             }
                         });
 
@@ -284,12 +283,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         //SetData - DOB
                         txtListChild4.setText("Test");
                         //SetData - DOB
-                        if(myProfileResponse.getBasicData().getBirthDate() != null){
+                        if(basicObject.optString("birth_date") != null) {
 
-                            String dateOfBirth = myProfileResponse.getBasicData().getBirthDate();
+                            String dateOfBirth = basicObject.optString("birth_date");
                             txtListChild4.setText(getDate(dateOfBirth));
                         }
-
                         txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -307,6 +305,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+
                         break;
                     case 5:
                         LayoutInflater infalInflater5 = (LayoutInflater) this._context
@@ -320,6 +319,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         final TextView txtListChildHeader5 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader5.setText(childText);
+                        txtListChild5.setText(basicObject.optString("marital_status"));
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -329,7 +329,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         });
 
                         //SetData - MaritalStatus
-                        txtListChild5.setText(myProfileResponse.getBasicData().getMaritalStatus());
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMarital_Status()))
+                            txtListChild5.setText(ExpOwnProfileModel.getInstance().getMarital_Status());
 
                         txtListChild5.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -359,7 +361,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild6.setText(childText);
 
                         //SetData - Drink
-                        txtListChild6.setText(myProfileResponse.getBasicData().getDrink());
+                        txtListChild6.setText(basicObject.optString("drink"));
 
                         TextView txtListChildHeader6 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -372,8 +374,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
-                        //SetData - MaritalStatus
-                        txtListChild6.setText(myProfileResponse.getBasicData().getDrink());
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDrink()))
+                            txtListChild6.setText(ExpOwnProfileModel.getInstance().getDrink());
 
                         txtListChild6.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -403,7 +405,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild7.setText(childText);
 
                         //SetData - Drink
-                        txtListChild7.setText(myProfileResponse.getBasicData().getSmoke());
+                        txtListChild7.setText(basicObject.optString("smoke"));
 
                         TextView txtListChildHeader7 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -415,6 +417,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showSmoke(txtListChild7);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSmoke()))
+                            txtListChild7.setText(ExpOwnProfileModel.getInstance().getSmoke());
 
                         txtListChild7.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -445,7 +450,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         EditText editText8 = convertView.findViewById(R.id.idlistitemET);
                         editText8.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         //SetData - Name
-                        editText8.setText(myProfileResponse.getBasicData().getHealthIssue());
+                        editText8.setText(basicObject.optString("health_issue"));
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getHealth_Issue()))
+                            editText8.setText(ExpOwnProfileModel.getInstance().getHealth_Issue());
+
                         editText8.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -474,11 +482,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild9.setText(childText);
 
                         //SetData - Height
-                        txtListChild9.setText(myProfileResponse.getBasicData().getHeight());
-
+                        txtListChild9.setText(basicObject.optString("height"));
                         TextView txtListChildHeader9 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader9.setText(childText);
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getHeight()))
+                            txtListChild9.setText(ExpOwnProfileModel.getInstance().getHeight());
+
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -514,13 +525,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTV);
                         txtListChild10.setText(childText);
 
-                        //SetData - Interest
-                        if(myProfileResponse.getBasicData().getInterest() != null) {
-                            String interest1 = myProfileResponse.getBasicData().getInterest().toString().replace("[", "");
-                            String interestNet = interest1.replace("]", "");
-                            txtListChild10.setText(interestNet);
-                        }
-
                         TextView txtListChildHeader10 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader10.setText(childText);
@@ -531,6 +535,26 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showInterests(txtListChild10);
                             }
                         });
+
+                        StringBuilder builder = new StringBuilder();
+                        try {
+                            JSONArray jsonArray = basicObject.getJSONArray("interest");
+                            for (int pos = 0; pos < jsonArray.length(); pos++) {
+                                System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                                if (pos == jsonArray.length() - 1) {
+                                    builder.append(jsonArray.optString(pos));
+                                } else {
+                                    builder.append(jsonArray.optString(pos)).append(",");
+                                }
+                            }
+                        }catch (JSONException jse){
+                            Log.e(TAG, " #Err : "+jse, jse);
+                        }
+                        txtListChild10.setText(builder);
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getInterests()))
+                            txtListChild10.setText(ExpOwnProfileModel.getInstance().getInterests());
 
                         txtListChild10.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -577,13 +601,15 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        //SetData - Religion
-                        txtListChild1.setText(myProfileResponse.getBasicData().getReligion());
-                        ExpOwnProfileModel.getInstance().setReligion(myProfileResponse.getBasicData().getReligion());
-
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
+
+                        //SetData - Religion
+                        txtListChild1.setText(basicObject.optString("religion"));
+                        if (TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getReligion()))
+                            ExpOwnProfileModel.getInstance().setReligion(basicObject.optString("religion"));
+
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -592,18 +618,26 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+                        if (!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getReligion()))
+                            txtListChild1.setText(ExpOwnProfileModel.getInstance().getReligion());
+
                         txtListChild1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                             }
+
                             @Override
                             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                             }
+
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpOwnProfileModel.getInstance().setReligion(txtListChild1.getText().toString());
                             }
                         });
+//
 
                         break;
                     case 1:
@@ -616,8 +650,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild2.setText(childText);
 
                         //SetData - Caste
-                        txtListChild2.setText(myProfileResponse.getBasicData().getCaste());
-
+                        txtListChild2.setText(basicObject.optString("caste"));
                         TextView txtListChildHeader2 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
@@ -628,6 +661,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showCaste(txtListChild2);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCaste()))
+                            txtListChild2.setText(ExpOwnProfileModel.getInstance().getCaste());
 
                         txtListChild2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -646,6 +682,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             }
                         });
 
+
                         break;
                     case 2:
                         LayoutInflater infalInflater3 = (LayoutInflater) this._context
@@ -657,8 +694,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild3.setText(childText);
 
                         //SetData - Mother Tounge
-                        txtListChild3.setText(myProfileResponse.getBasicData().getMotherTounge());
-
+                        txtListChild3.setText(basicObject.optString("mother_tounge"));
                         TextView txtListChildHeader3 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
@@ -669,6 +705,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showMotherTongue(txtListChild3);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMother_Tongue()))
+                            txtListChild3.setText(ExpOwnProfileModel.getInstance().getMother_Name());
 
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -717,8 +756,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild.setText(childText);
 
                         //SetData - MobileNo
-                        txtListChild.setText(myProfileResponse.getBasicData().getMobileNo());
-
+                        txtListChild.setText(basicObject.optString("mobile_no"));
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
@@ -752,7 +790,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
 
                         //SetData - AlternateNo
-                        editText1.setText(myProfileResponse.getBasicData().getAlternateNo());
+                        editText1.setText(basicObject.optString("alternate_no"));
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAlternate_Number()))
+                            editText1.setText(ExpOwnProfileModel.getInstance().getAlternate_Number());
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -771,6 +811,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
+
                         break;
                     case 2:
                         LayoutInflater infalInflater2 = (LayoutInflater) this._context
@@ -784,7 +825,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText2.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - PermanentAddress
-                        editText2.setText(myProfileResponse.getBasicData().getPermanentAddress());
+                        editText2.setText(basicObject.optString("permanent_address"));
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_Address()))
+                            editText2.setText(ExpOwnProfileModel.getInstance().getPermanent_Address());
 
                         editText2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -803,6 +846,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
+
                         break;
                     case 3:
                         LayoutInflater infalInflater3 = (LayoutInflater) this._context
@@ -814,8 +858,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild3.setText(childText);
 
                         //SetData - PermanentCountry
-                        txtListChild3.setText(myProfileResponse.getBasicData().getPermanentCountry());
-
+                        txtListChild3.setText(basicObject.optString("permanent_country"));
                         TextView txtListChildHeader3 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
@@ -827,6 +870,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showCountry(txtListChild3);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_Country()))
+                            txtListChild3.setText(ExpOwnProfileModel.getInstance().getPermanent_Country());
 
                         txtListChild3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -844,7 +890,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 ExpOwnProfileModel.getInstance().setPermanent_Country(editable.toString());
                             }
                         });
-
                         break;
                     case 4:
                         LayoutInflater infalInflater4 = (LayoutInflater) this._context
@@ -856,8 +901,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild4.setText(childText);
 
                         //SetData - PermanentState
-                        txtListChild4.setText(myProfileResponse.getBasicData().getPermanentState());
-
+                        txtListChild4.setText(basicObject.optString("permanent_state"));
                         TextView txtListChildHeader4 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
@@ -868,6 +912,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showPermanentState(txtListChild4);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_State()))
+                            txtListChild4.setText(ExpOwnProfileModel.getInstance().getPermanent_State());
 
                         txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -885,7 +932,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 ExpOwnProfileModel.getInstance().setPermanent_State(editable.toString());
                             }
                         });
-
                         break;
                     case 5:
                         LayoutInflater infalInflater5 = (LayoutInflater) this._context
@@ -899,7 +945,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText5.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - PermanentCity
-                        editText5.setText(myProfileResponse.getBasicData().getPermanentCity());
+                        editText5.setText(basicObject.optString("permanent_city"));
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPermanent_City()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getPermanent_City());
 
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -928,10 +976,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout6.setHint(childText);
 
                         EditText editText6 = convertView.findViewById(R.id.idlistitemET);
-//                        editText6.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
                         //SetData - PermanentZipcode
-                        editText6.setText(myProfileResponse.getBasicData().getPermanentZipcode());
+                        editText6.setText(basicObject.optString("permanent_zipcode"));
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getZip_Code_Perm()))
+                            editText6.setText(ExpOwnProfileModel.getInstance().getZip_Code_Perm());
 
                         editText6.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -964,7 +1012,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - CurrentAddress
-                        editText7.setText(myProfileResponse.getBasicData().getCurrentAddress());
+                        editText7.setText(basicObject.optString("current_address"));
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_Address()))
+                            editText7.setText(ExpOwnProfileModel.getInstance().getCurrent_Address());
 
                         editText7.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -994,8 +1044,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild8.setText(childText);
 
                         //SetData - CurrentCountry
-                        txtListChild8.setText(myProfileResponse.getBasicData().getCurrentCountry());
-
+                        txtListChild8.setText(basicObject.optString("current_country"));
                         TextView txtListChildHeader8 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader8.setText(childText);
@@ -1006,6 +1055,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showCountry(txtListChild8);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_Country()))
+                            txtListChild8.setText(ExpOwnProfileModel.getInstance().getCurrent_Country());
 
                         txtListChild8.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1023,7 +1075,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 ExpOwnProfileModel.getInstance().setCurrent_Country(editable.toString());
                             }
                         });
-
                         break;
                     case 9:
                         LayoutInflater infalInflater9 = (LayoutInflater) this._context
@@ -1035,7 +1086,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild9.setText(childText);
 
                         //SetData - CurrentState
-                        txtListChild9.setText(myProfileResponse.getBasicData().getCurrentState());
+
+                        txtListChild9.setText(basicObject.optString("current_state"));
 
                         TextView txtListChildHeader9 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -1047,6 +1099,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showCurrentState(txtListChild9);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_State()))
+                            txtListChild9.setText(ExpOwnProfileModel.getInstance().getCurrent_State());
 
                         txtListChild9.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1078,7 +1133,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText10.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - CurrentCity
-                        editText10.setText(myProfileResponse.getBasicData().getCurrentCity());
+                        editText10.setText(basicObject.optString("current_city"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getCurrent_City()))
+                            editText10.setText(ExpOwnProfileModel.getInstance().getCurrent_City());
 
                         editText10.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1097,7 +1155,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
-
                         break;
                     case 11:
                         LayoutInflater infalInflater11 = (LayoutInflater) this._context
@@ -1108,7 +1165,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout11.setHint(childText);
 
                         EditText editText11 = convertView.findViewById(R.id.idlistitemET);
-                        editText11.setText(myProfileResponse.getBasicData().getCurrentZipcode());
+                        editText11.setText(basicObject.optString("current_zipcode"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getZip_Code_Cur()))
+                            editText11.setText(ExpOwnProfileModel.getInstance().getZip_Code_Cur());
 
                         editText11.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1127,7 +1187,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
-
                         break;
                     case 12:
                         LayoutInflater infalInflater12 = (LayoutInflater) this._context
@@ -1159,7 +1218,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - FatherName
-                        editText.setText(myProfileResponse.getBasicData().getFatherName());
+                        editText.setText(basicObject.optString("father_name"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getFather_Name()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getFather_Name());
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1178,7 +1240,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
-
                         break;
                     case 1:
                         LayoutInflater infalInflater1 = (LayoutInflater) this._context
@@ -1192,7 +1253,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - FatherOccupation
-                        editText1.setText(myProfileResponse.getBasicData().getFatherOccupation());
+                        editText1.setText(basicObject.optString("father_occupation"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getFather_Occupation()))
+                            editText1.setText(ExpOwnProfileModel.getInstance().getFather_Occupation());
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1224,7 +1288,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText2.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - MotherName
-                        editText2.setText(myProfileResponse.getBasicData().getMotherName());
+                        editText2.setText(basicObject.optString("mother_name"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMother_Name()))
+                            editText2.setText(ExpOwnProfileModel.getInstance().getMother_Name());
 
                         editText2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1243,7 +1310,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
-
                         break;
                     case 3:
                         LayoutInflater infalInflater3 = (LayoutInflater) this._context
@@ -1257,7 +1323,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText3.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - MotherOccupation
-                        editText3.setText(myProfileResponse.getBasicData().getMotherOccupation());
+                        editText3.setText(basicObject.optString("mother_occupation"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getMother_Occupation()))
+                            editText3.setText(ExpOwnProfileModel.getInstance().getMother_Occupation());
 
                         editText3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1276,7 +1345,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
-
                         break;
                     case 4:
                         LayoutInflater infalInflater4 = (LayoutInflater) this._context
@@ -1290,8 +1358,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - Sister
-                        editText4.setText(myProfileResponse.getBasicData().getSister());
+                        editText4.setText(basicObject.optString("sister"));
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDetails_Sisters()))
+                            editText4.setText(ExpOwnProfileModel.getInstance().getDetails_Sisters());
                         editText4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1323,8 +1393,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText5.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - Brother
-                        editText5.setText(myProfileResponse.getBasicData().getBrother());
+                        editText5.setText(basicObject.optString("brother"));
 
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getDetails_Brothers()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getDetails_Brothers());
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1342,7 +1414,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
                             }
                         });
-
                         break;
                     case 6:
                         LayoutInflater infalInflater6 = (LayoutInflater) this._context
@@ -1374,7 +1445,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - Schooling
-                        editText.setText(myProfileResponse.getBasicData().getSchooling());
+                        editText.setText(basicObject.optString("schooling"));
+
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getSchooling());
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1404,13 +1479,17 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                       editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
                         InputFilter[] FilterArray = new InputFilter[1];
                         FilterArray[0] = new InputFilter.LengthFilter(4);
                         editText1.setFilters(FilterArray);
 
                         //SetData - SchoolingYear
-                        editText1.setText(String.valueOf(myProfileResponse.getBasicData().getSchoolingYear()));
+                        editText1.setText(String.valueOf(basicObject.optInt("schooling_year")));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
+                            editText1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
 
                         editText1.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1443,7 +1522,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText2.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - Graduation
-                        editText2.setText(myProfileResponse.getBasicData().getGraduation());
+                        editText2.setText(basicObject.optString("graduation"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation()))
+                            editText2.setText(ExpOwnProfileModel.getInstance().getGraduation());
 
                         editText2.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1476,7 +1558,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText3.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - GraduationCollege
-                        editText3.setText(myProfileResponse.getBasicData().getGraduationCollege());
+                        editText3.setText(basicObject.optString("graduation_college"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_College()))
+                            editText3.setText(ExpOwnProfileModel.getInstance().getGraduation_College());
 
                         editText3.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1506,17 +1591,17 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout4.setHint(childText);
 
                         EditText editText4 = convertView.findViewById(R.id.idlistitemET);
-
                         editText4.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                        InputFilter[] FilterArray4 = new InputFilter[1];
-                        FilterArray4[0] = new InputFilter.LengthFilter(4);
-                        editText4.setFilters(FilterArray4);
 
-
-//                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        InputFilter[] FilterArray1 = new InputFilter[1];
+                        FilterArray1[0] = new InputFilter.LengthFilter(4);
+                        editText4.setFilters(FilterArray1);
 
                         //SetData - GraduationYear
-                        editText4.setText(String.valueOf(myProfileResponse.getBasicData().getGraduationYear()));
+                        editText4.setText(String.valueOf(basicObject.optInt("graduation_year")));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
+                            editText4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
 
                         editText4.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1549,7 +1634,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText5.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - PostGraduation
-                        editText5.setText(myProfileResponse.getBasicData().getPostGraduation());
+                        editText5.setText(basicObject.optString("post_graduation"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getPost_Graduation());
 
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1582,7 +1670,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText6.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - PostGraduationCollege
-                        editText6.setText(myProfileResponse.getBasicData().getPostGraduationCollege());
+                        editText6.setText(basicObject.optString("post_graduation_college"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_College()))
+                            editText6.setText(ExpOwnProfileModel.getInstance().getPost_Graduation());
 
                         editText6.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1612,15 +1703,17 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         textInputLayout7.setHint(childText);
 
                         EditText editText7 = convertView.findViewById(R.id.idlistitemET);
-                        editText7.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-                        InputFilter[] FilterArray7 = new InputFilter[1];
-                        FilterArray7[0] = new InputFilter.LengthFilter(4);
-                        editText7.setFilters(FilterArray7);
-
-//                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - PostGraduationYear
-                        editText7.setText(String.valueOf(myProfileResponse.getBasicData().getPostGraduationYear()));
+                        editText7.setText(String.valueOf(basicObject.optInt("post_graduation_year")));
+                        editText7.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+
+                        InputFilter[] FilterArray2 = new InputFilter[1];
+                        FilterArray2[0] = new InputFilter.LengthFilter(4);
+                        editText7.setFilters(FilterArray2);
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
+                            editText7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
 
                         editText7.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1653,7 +1746,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText8.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - HighestEducation
-                        editText8.setText(myProfileResponse.getBasicData().getHighestEducation());
+                        editText8.setText(basicObject.optString("highest_education"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getHighest_Education()))
+                            editText8.setText(ExpOwnProfileModel.getInstance().getHighest_Education());
 
                         editText8.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1686,7 +1782,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText9.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - WorkingWith
-                        editText9.setText(myProfileResponse.getBasicData().getNameOfCompany());
+                        editText9.setText(basicObject.optString("name_of_company"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getWorking_With()))
+                            editText9.setText(ExpOwnProfileModel.getInstance().getWorking_With());
 
                         editText9.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1719,7 +1818,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText10.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - WorkingAs
-                        editText10.setText(myProfileResponse.getBasicData().getWorkingAs());
+                        editText10.setText(basicObject.optString("working_as"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getWorking_As()))
+                            editText10.setText(ExpOwnProfileModel.getInstance().getWorking_As());
 
                         editText10.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1752,7 +1854,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText11.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - WorkingLocation
-                        editText11.setText(myProfileResponse.getBasicData().getJobLocation());
+                        editText11.setText(basicObject.optString("job_location"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getWork_Location()))
+                            editText11.setText(ExpOwnProfileModel.getInstance().getWork_Location());
 
                         editText11.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1783,7 +1888,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         txtListChild12.setText(childText);
 
                         //SetData - AnnualIncome
-                        txtListChild12.setText(myProfileResponse.getBasicData().getAnnualIncome());
+                        txtListChild12.setText(basicObject.optString("annual_income"));
 
                         TextView txtListChildHeader12 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -1795,6 +1900,9 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                                 showAnnualIncome(txtListChild12);
                             }
                         });
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAnnual_Income()))
+                            txtListChild12.setText(ExpOwnProfileModel.getInstance().getAnnual_Income());
 
                         txtListChild12.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1826,7 +1934,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         editText13.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - LinkedIn
-                        editText13.setText(myProfileResponse.getBasicData().getLinkedIn());
+                        editText13.setText(basicObject.optString("linked_in"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getLinkdIn_Url()))
+                            editText13.setText(ExpOwnProfileModel.getInstance().getLinkdIn_Url());
 
                         editText13.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1875,7 +1986,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 //                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
                         //SetData - AboutMe
-                        editText.setText(myProfileResponse.getBasicData().getAboutMe());
+                        editText.setText(basicObject.optString("about_me"));
+
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAbout_you()))
+                            editText.setText(ExpOwnProfileModel.getInstance().getAbout_you());
 
                         editText.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -1906,144 +2020,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                             public void onClick(View view) {
                                 //do somethings.
                                 saveChangesOfCase_5();
-                            }
-                        });
-                        break;
-                }
-                break;
-            case 6:
-                switch (childPosition){
-
-                    case 0:
-                        LayoutInflater infalInflater = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout.setHint(childText);
-
-                        EditText editText = convertView.findViewById(R.id.idlistitemET);
-                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 1:
-                        LayoutInflater infalInflater1 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout1.setHint(childText);
-
-                        EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 2:
-                        LayoutInflater infalInflater2 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater2.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout2 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout2.setHint(childText);
-
-                        EditText editText2 = convertView.findViewById(R.id.idlistitemET);
-                        editText2.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 3:
-                        LayoutInflater infalInflater3 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater3.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout3 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout3.setHint(childText);
-
-                        EditText editText3 = convertView.findViewById(R.id.idlistitemET);
-                        editText3.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 4:
-                        LayoutInflater infalInflater4 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater4.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout4 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout4.setHint(childText);
-
-                        EditText editText4 = convertView.findViewById(R.id.idlistitemET);
-                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 5:
-                        LayoutInflater infalInflater5 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater5.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout5 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout5.setHint(childText);
-
-                        EditText editText5 = convertView.findViewById(R.id.idlistitemET);
-                        editText5.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 6:
-                        LayoutInflater infalInflater6 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater6.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout6 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout6.setHint(childText);
-
-                        EditText editText6 = convertView.findViewById(R.id.idlistitemET);
-                        editText6.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 7:
-                        LayoutInflater infalInflater7 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater7.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout7 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout7.setHint(childText);
-
-                        EditText editText7 = convertView.findViewById(R.id.idlistitemET);
-                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 8:
-                        LayoutInflater infalInflater8 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater8.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout8 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout8.setHint(childText);
-
-                        EditText editText8 = convertView.findViewById(R.id.idlistitemET);
-                        editText8.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 9:
-                        LayoutInflater infalInflater9 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater9.inflate(R.layout.list_item_secondtype, null);
-
-                        TextInputLayout textInputLayout9 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout9.setHint(childText);
-
-                        EditText editText9 = convertView.findViewById(R.id.idlistitemET);
-                        editText9.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-
-                        break;
-                    case 10:
-                        LayoutInflater infalInflater10 = (LayoutInflater) this._context
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater10.inflate(R.layout.submit_data_button, null);
-                        Button saveChanges = convertView.findViewById(R.id.save_changes_button);
-                        saveChanges.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //do somethings.
-//                                saveChangesOfCase_();
                             }
                         });
                         break;
@@ -2275,154 +2251,100 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     // GET and SET Value
-    public void showDiet(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Vegetarian");
-        list.add("Jain");
-        list.add("Vegan");
-        list.add("Non Vegetarian");
+    public void showDiet(TextView textView) {
 
+        String[] ar = _context.getResources().getStringArray(R.array.diet_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-    public void showMaritalStatus(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Never Married");
-        list.add("Divorced");
-        list.add("Divorced Awaited");
-        list.add("Widow/Widower");
-        list.add("Any");
 
+    public void showMaritalStatus(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-    public void showDrink(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("No");
-        list.add("Yes");
-        list.add("Occasionally");
+    public void showMaritalStatusPt(TextView textView) {
 
-        showDialog(list, textView);
-    }
-    public void showSmoke(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("No");
-        list.add("Yes");
-        list.add("Occasionally");
-
-        showDialog(list, textView);
-    }
-    public void showHeight(TextView textView){
-        List<String> list = new ArrayList<>();
-
-        list.add("4 ft 5in (134 cm)");
-        list.add("4 ft 6in (137 cm)");
-        list.add("4 ft 7in (139 cm)");
-        list.add("4 ft 8in (142 cm)");
-        list.add("4 ft 9in (144 cm)");
-        list.add("4 ft 10in (147 cm)");
-        list.add("4 ft 11in (149 cm)");
-        list.add("5 ft 0in (152 cm)");
-        list.add("5 ft 1in (154 cm)");
-        list.add("5 ft 2in (157 cm)");
-        list.add("5 ft 3in (160 cm)");
-        list.add("5 ft 4in (162 cm)");
-        list.add("5 ft 5in (165 cm)");
-        list.add("5 ft 6in (167 cm)");
-        list.add("5 ft 7in (170 cm)");
-        list.add("5 ft 8in (172 cm)");
-        list.add("5 ft 9in (175 cm)");
-        list.add("5 ft 10in (177 cm)");
-        list.add("5 ft 11in (180 cm)");
-        list.add("6 ft 0in (182 cm)");
-        list.add("6 ft 1in (185 cm)");
-        list.add("6 ft 2in (187 cm)");
-        list.add("6 ft 3in (190 cm)");
-        list.add("6 ft 4in (193 cm)");
-        list.add("6 ft 5in (195 cm)");
-        list.add("6 ft 6in (198 cm)");
-        list.add("6 ft 7in (200 cm)");
-        list.add("6 ft 8in (203 cm)");
-
-
-        showDialog(list, textView);
-    }
-    public void showInterests(TextView textView){
-
-        List<String> list = new ArrayList<>();
-        list.add("Music");
-        list.add("Books");
-        list.add("Travelling");
-        list.add("Cooking");
-        list.add("Movies");
-        list.add("Sports");
-        list.add("Shopping");
-        list.add("Net Surfing");
-        list.add("Others");
-
+        String[] ar = _context.getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showSelectableDialog(list, textView);
     }
-    public void showReligion(TextView textView){
 
-        List<String> list = new ArrayList<>();
+    public void showDrink(TextView textView) {
 
-        list.add("Hindu");
-        list.add("Muslim");
-        list.add("Christian");
-        list.add("Sikh");
-        list.add("Parsi");
-        list.add("Jain");
-        list.add("Buddhist");
-        list.add("Jewish");
-        list.add("Other");
-
+        String[] ar = _context.getResources().getStringArray(R.array.yes_no_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-    public void showMotherTongue(TextView textView){
-        List<String> list = new ArrayList<>();
-        list.add("Assamese");
-        list.add("Bengali");
-        list.add("English");
-        list.add("Gujarati");
-        list.add("Hindi");
 
+    public void showSmoke(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.yes_no_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showDialog(list, textView);
+
+    }
+
+    public void showHeight(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.height_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
-    public void showAnnualIncome(TextView textView){
 
-        List<String> list = new ArrayList<>();
-        list.add("less than 10 LPA");
-        list.add("11-20 LPA");
-        list.add("21-30 LPA");
-        list.add("31-50 LPA");
-        list.add("51-75 LPA");
-        list.add("76-100 LPA");
-        list.add("More than 100 LPA");
-        list.add("Not Disclosed");
+    public void showInterests(TextView textView) {
 
+        String[] ar = _context.getResources().getStringArray(R.array.interest_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showSelectableDialog(list, textView);
+    }
+
+    //RELIGIOUS BACKGROUND
+    public void showReligion(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.religion_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
+
+    public void showMotherTongue(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.mother_tongue_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showDialog(list, textView);
+    }
+
+    //EDUCATION & CARREER
+    public void showAnnualIncome(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.ann_income_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showDialog(list, textView);
+    }
+
 
     /** Network Operation */
+    public void saveChangesOfCase_0() {
 
-    public void saveChangesOfCase_0(){
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         String name = ExpOwnProfileModel.getInstance().getName();
         String Profile = ExpOwnProfileModel.getInstance().getProfile();
         String Age = ExpOwnProfileModel.getInstance().getAge();
         String Diet = ExpOwnProfileModel.getInstance().getDiet();
         String Date_Of_Birth = ExpOwnProfileModel.getInstance().getDate_Of_Birth();
-        String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
-//        String[] marital_statusArr = new String[1];
-//        marital_statusArr[0] = Marital_Status;
 
+        String Marital_Status = ExpOwnProfileModel.getInstance().getMarital_Status();
+        String[] marital_statusArr = new String[1];
+        marital_statusArr[0] = Marital_Status;
         String Drink = ExpOwnProfileModel.getInstance().getDrink();
         String Smoke = ExpOwnProfileModel.getInstance().getSmoke();
-        String Height = ExpOwnProfileModel.getInstance().getHeight();
         String Health = ExpOwnProfileModel.getInstance().getHealth_Issue();
+        String Height = ExpOwnProfileModel.getInstance().getHeight();
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
-        String[] interestsArr = new String[1];
-        interestsArr[0] = Interests;
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+//        Toast.makeText(_context, "Output : " + Interests, Toast.LENGTH_LONG).show();
 
         BasicProfileRequest request = new BasicProfileRequest();
         request.token = token;
@@ -2434,99 +2356,101 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         request.drink = Drink;
         request.smoke = Smoke;
         request.interest = Interests;
-
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
-        ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendBasicProfile(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse basicProfileResponse = response.body();
-                    if(basicProfileResponse.getMessage().getSuccess() != null) {
-                        if (basicProfileResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            ProgressClass.getProgressInstance().showDialog(_context);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendBasicProfile(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            communicator.saveChangesOfCaseI_0();
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
-                        } else {
+
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
 
     }
-    public void saveChangesOfCase_1(){
+    public void saveChangesOfCase_1() {
 
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String Religion = ExpOwnProfileModel.getInstance().getReligion();
         String Caste = ExpOwnProfileModel.getInstance().getCaste();
         String Mother_Tongue = ExpOwnProfileModel.getInstance().getMother_Tongue();
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         ReligiousBackgroundRequest request = new ReligiousBackgroundRequest();
         request.token = token;
         request.religion = Religion;
-        request.caste= Caste;
+        request.caste = Caste;
         request.mother_tounge = Mother_Tongue;
-
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendReligiousBackground(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse religiousResponse = response.body();
-                    if(religiousResponse.getMessage().getSuccess() != null) {
-                        if (religiousResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendReligiousBackground(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_1();
 
-                        } else {
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
 
+
     }
-    public void saveChangesOfCase_2(){
+    public void saveChangesOfCase_2() {
 
         String Phone_Number = ExpOwnProfileModel.getInstance().getPhone_Number();
         String Alternate_Number = ExpOwnProfileModel.getInstance().getAlternate_Number();
@@ -2542,13 +2466,12 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Zip_Code_Cur = ExpOwnProfileModel.getInstance().getZip_Code_Cur();
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-
         ContactDetailsRequest request = new ContactDetailsRequest();
         request.token = token;
         request.mobile_no = Phone_Number;
         request.alternate_no = Alternate_Number;
-        request.permanent_address= Permanent_Address;
-        request.permanent_country= Permanent_Country;
+        request.permanent_address = Permanent_Address;
+        request.permanent_country = Permanent_Country;
         request.permanent_state = Permanent_State;
         request.permanent_city = Permanent_City;
         request.permanent_zipcode = Zip_Code_Perm;
@@ -2561,43 +2484,44 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendContactDetails(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse contactResponse = response.body();
-                    if(contactResponse.getMessage().getSuccess() != null) {
-                        if (contactResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendContactDetails(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_2();
 
-                        } else {
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
 
     }
-    public void saveChangesOfCase_3(){
+    public void saveChangesOfCase_3() {
 
         String Father_Name = ExpOwnProfileModel.getInstance().getFather_Name();
         String Father_Occupation = ExpOwnProfileModel.getInstance().getFather_Occupation();
@@ -2605,13 +2529,13 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         String Mother_Occupation = ExpOwnProfileModel.getInstance().getMother_Occupation();
         String Details_Sisters = ExpOwnProfileModel.getInstance().getDetails_Sisters();
         String Details_Brothers = ExpOwnProfileModel.getInstance().getDetails_Brothers();
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         FamilyDetailRequest request = new FamilyDetailRequest();
         request.token = token;
         request.father_name = Father_Name;
         request.father_occupation = Father_Occupation;
-        request.mother_name= Mother_Name;
+        request.mother_name = Mother_Name;
         request.mother_occupation = Mother_Occupation;
         request.brother = Details_Brothers;
         request.sister = Details_Sisters;
@@ -2619,43 +2543,44 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendFamilyDetails(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse familyResponse = response.body();
-                    if(familyResponse.getMessage().getSuccess() != null) {
-                        if (familyResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendFamilyDetails(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
-//                            Toast.makeText(_context, "Success",  .LENGTH_SHORT).show();
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+//                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_3();
 
-                        } else {
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
 
     }
-    public void saveChangesOfCase_4(){
+    public void saveChangesOfCase_4() {
 
         String Schooling = ExpOwnProfileModel.getInstance().getSchooling();
         String Schooling_Year = ExpOwnProfileModel.getInstance().getSchooling_Year();
@@ -2694,43 +2619,44 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendEducationCareer(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse educationResponse = response.body();
-                    if(educationResponse.getMessage().getSuccess() != null) {
-                        if (educationResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendEducationCareer(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_4();
 
-                        } else {
-                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            } else {
+//                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
 
     }
-    public void saveChangesOfCase_5(){
+    public void saveChangesOfCase_5() {
 
         String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
@@ -2741,36 +2667,37 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.sendAboutMe(request);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse aboutMeResponse = response.body();
-                    if(aboutMeResponse.getMessage().getSuccess() != null) {
-                        if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.sendAboutMe(request);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
+//                            communicator.saveChangesOfCaseI_5();
 
-                        } else {
+                            } else {
 //                            Toast.makeText(_context, "Confuse", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(_context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(_context, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
@@ -2932,7 +2859,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
-        AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
+            AndroidNetworking.post("https://iitiimshaadi.com/api/caste.json")
                 .addBodyParameter("token", token)
                 .addBodyParameter("religion", religion)
                 .setTag("test")
@@ -3018,9 +2945,6 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
 
     public static String getDate(String _Date){
 
-//        String _Date = "2010-09-29 08:45:22";
-//        String _Date = "2018-05-02T00:00:00+0000";
-
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat fmt2 = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -3028,10 +2952,8 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             return fmt2.format(date);
         }
         catch(ParseException pe) {
-
             return "Date";
         }
-
     }
 
     public static String removeLastChar(String s) {
@@ -3039,7 +2961,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
             return s = "";
         }
         String rawString = s.substring(0, s.length()-1);
-        return rawString.replaceAll("\\s+","");
+        return rawString;
     }
 
 

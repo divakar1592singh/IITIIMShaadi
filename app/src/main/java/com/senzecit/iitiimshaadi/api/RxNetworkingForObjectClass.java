@@ -9,7 +9,9 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 
 import org.json.JSONObject;
@@ -41,6 +43,9 @@ public class RxNetworkingForObjectClass {
 //    -----------------------------------------------
 
     public void callWebServiceForRxNetworking(Activity activity, String relativePath, Object paramClass, String methodName ) {
+
+        if(NetworkClass.getInstance().checkInternet(activity) == true){
+
         ProgressClass.getProgressInstance().showDialog(activity);
         AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
                 .addBodyParameter(paramClass)
@@ -57,14 +62,20 @@ public class RxNetworkingForObjectClass {
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data");
+                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
                     }
                 });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(activity);
+        }
     }
 
     public void callWebServiceForRxNetworking(Context context, String relativePath, Object paramClass, String methodName ) {
-        ProgressClass.getProgressInstance().showDialog(context);
-        AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
+
+        if(NetworkClass.getInstance().checkInternet(context) == true){
+
+            AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
                 .addBodyParameter(paramClass)
                 .setPriority(Priority.MEDIUM)
                 .build()
@@ -72,16 +83,71 @@ public class RxNetworkingForObjectClass {
                     @Override
                     public void onResponse(JSONObject response) {
                         // do anything with response
-                        ProgressClass.getProgressInstance().stopProgress();
                         handler.handle(response, methodName);
                     }
 
                     @Override
                     public void onError(ANError error) {
-                        ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", "Error to Retrive Data");
+                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
                     }
                 });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(context);
+        }
+    }
+
+    //WITHOUT PROGRESS
+    public void callWebServiceForRxNetworking(Activity activity, String relativePath, Object paramClass, String methodName, boolean progress ) {
+
+        if(NetworkClass.getInstance().checkInternet(activity) == true){
+
+            AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
+                .addBodyParameter(paramClass)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        handler.handle(response, methodName);
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                    }
+                });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(activity);
+        }
+    }
+
+    public void callWebServiceForRxNetworking(Context context, String relativePath, Object paramClass, String methodName, boolean progress  ) {
+
+        if(NetworkClass.getInstance().checkInternet(context) == true){
+
+            AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
+                .addBodyParameter(paramClass)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        handler.handle(response, methodName);
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                    }
+                });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(context);
+        }
     }
 
     public interface CompletionHandler {

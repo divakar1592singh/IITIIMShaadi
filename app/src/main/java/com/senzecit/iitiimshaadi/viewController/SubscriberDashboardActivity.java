@@ -64,12 +64,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubscriberDashboardActivity extends BaseNavActivity implements ExpListViewSubsAdapter.OnExpLvSubsItemClickListener , RxNetworkingForObjectClass.CompletionHandler {
+public class SubscriberDashboardActivity extends BaseNavActivity implements ExpListViewSubsAdapter.OnExpLvSubsItemClickListener, RxNetworkingForObjectClass.CompletionHandler {
 
     private static final String TAG = SubscriptionActivity.class.getSimpleName();
 
-    ExpListViewSubsAdapter listAdapter;
     ExpandableListView expListView;
+    ExpListViewSubsAdapter listAdapter;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
@@ -232,9 +232,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         educationCareer.add("Highest Education");
         educationCareer.add("Working With");
         educationCareer.add("Working As");
-        educationCareer.add("Work Location");
+        educationCareer.add("Job Location");
         educationCareer.add("Annual Income");
-        educationCareer.add("Linkedin URL");
+        educationCareer.add("Linkedin Url");
         educationCareer.add("Save Changes");
 
         List<String> aboutMe = new ArrayList<String>();
@@ -589,9 +589,18 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
     private void callWebServiceForSubsDashboardRefresh(){
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
+            String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        request.token = token;
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, CONSTANTS.SUBS_DASHBOARD_PATH, request, CONSTANTS.METHOD_1, false);
 
+    }else {
+        mSwipeRefreshLayout.setRefreshing(false);
+            networkDialog();
+    }
+
+/*
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
             APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
@@ -620,7 +629,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         }else {
             networkDialog();
 //            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
-        }
+        }*/
     }
 
     /** Email */
@@ -1058,6 +1067,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+                finishActivity(0);
                 dialog.dismiss();
             }
         });
@@ -1067,7 +1078,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             @Override
             public void onClick(View v) {
                 callWebServiceForSubscribeDashboard();
-//                dialog.cancel();
+                dialog.dismiss();
             }
         });
 
@@ -1093,18 +1104,23 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
     @Override
     public void handle(JSONObject object, String methodName) {
+
+        if(mSwipeRefreshLayout.isRefreshing())
+            mSwipeRefreshLayout.setRefreshing(false);
+
+
         try {
             System.out.println(object);
-//            object.getJSONObject("basicData").optString("name")
             if(object.getJSONObject("message").getInt("response_code") == 200){
 
                 listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
                 expListView.setAdapter(listAdapter);
 
-//                prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, subsResponse.getChatUserCount());
+                prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
 
+            }else {
+                reTryMethod();
             }
-
 
         } catch (JSONException e) {
             e.printStackTrace();

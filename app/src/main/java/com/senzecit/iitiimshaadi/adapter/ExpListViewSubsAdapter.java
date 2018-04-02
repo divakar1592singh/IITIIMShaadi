@@ -562,13 +562,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTV);
                         txtListChild10.setText(childText);
 
-                        //SetData - Interest
-                        if(basicObject.optString("interest") != null) {
-                            String interest1 = basicObject.optString("interest").toString().replace("[", "");
-                            String interestNet = interest1.replace("]", "");
-                            txtListChild10.setText(interestNet);
-                        }
-
                         TextView txtListChildHeader10 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader10.setText(childText);
@@ -579,6 +572,23 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showInterests(txtListChild10);
                             }
                         });
+
+                        StringBuilder builder = new StringBuilder();
+                        try {
+                            JSONArray jsonArray = basicObject.getJSONArray("interest");
+                            for (int pos = 0; pos < jsonArray.length(); pos++) {
+                                System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                                if (pos == jsonArray.length() - 1) {
+                                    builder.append(jsonArray.optString(pos));
+                                } else {
+                                    builder.append(jsonArray.optString(pos)).append(",");
+                                }
+                            }
+                        }catch (JSONException jse){
+                            Log.e(TAG, " #Err : "+jse, jse);
+                        }
+                        txtListChild10.setText(builder);
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getInterests()))
                             txtListChild10.setText(ExpOwnProfileModel.getInstance().getInterests());
@@ -628,39 +638,43 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
+                        TextView txtListChildHeader1 = (TextView) convertView
+                                .findViewById(R.id.childItemTVheader);
+                        txtListChildHeader1.setText(childText);
+
                         //SetData - Religion
-                            txtListChild1.setText(basicObject.optString("religion"));
+                        txtListChild1.setText(basicObject.optString("religion"));
+                        if (TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getReligion()))
                             ExpOwnProfileModel.getInstance().setReligion(basicObject.optString("religion"));
-                            TextView txtListChildHeader1 = (TextView) convertView
-                                    .findViewById(R.id.childItemTVheader);
-                            txtListChildHeader1.setText(childText);
-                            convertView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+
+                        convertView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
 //                                showDialog(txtListChild1,100,50);
-                                    showReligion(txtListChild1);
-                                }
-                            });
+                                showReligion(txtListChild1);
+                            }
+                        });
 
-                            if (!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getReligion()))
-                                txtListChild1.setText(ExpOwnProfileModel.getInstance().getReligion());
+                        if (!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getReligion()))
+                            txtListChild1.setText(ExpOwnProfileModel.getInstance().getReligion());
 
-                            txtListChild1.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        txtListChild1.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                                }
+                            }
 
-                                @Override
-                                public void afterTextChanged(Editable editable) {
-                                    ExpOwnProfileModel.getInstance().setReligion(txtListChild1.getText().toString());
-                                }
-                            });
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                ExpOwnProfileModel.getInstance().setReligion(txtListChild1.getText().toString());
+                            }
+                        });
+//
 
                         break;
                     case 1:
@@ -1660,8 +1674,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - PostGraduation
                         editText5.setText(basicObject.optString("post_graduation"));
 
-                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
-                            editText5.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
+                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation()))
+                            editText5.setText(ExpOwnProfileModel.getInstance().getPost_Graduation());
 
                         editText5.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -2241,12 +2255,27 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         txtListChild4.setText(childText);
 
                         //SetData - PreferedPartnerMaritalStatus
-                        String marital1 = partnerJson.optString("prefered_partner_marital_status").toString().replace("[", "");
-                        String maritalNet = marital1.replace("]", "");
-                        txtListChild4.setText(maritalNet);
+//                        String maritalStatus = "";
+                        StringBuilder builder = new StringBuilder();
+                        try {
+                            JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_marital_status");
+                            for(int pos = 0; pos < jsonArray.length(); pos++){
+                                System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                             if(pos == jsonArray.length()-1){
+                                 builder.append(jsonArray.optString(pos));
+                             }else {
+                                builder.append(jsonArray.optString(pos)).append(",");
+                             }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        txtListChild4.setText(builder);
 
                         if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMarital_Status()))
-                            ExpPartnerProfileModel.getInstance().setMarital_Status(maritalNet);
+                            ExpPartnerProfileModel.getInstance().setMarital_Status(builder.toString());
 
                         TextView txtListChildHeader4 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -2255,7 +2284,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild4,100,50);
-                                showMaritalStatus(txtListChild4);
+                                showMaritalStatusPt(txtListChild4);
                             }
                         });
 
@@ -2341,6 +2370,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 ExpPartnerProfileModel.getInstance().setPreferred_Religion(editable.toString());
                             }
                         });
+                        txtListChild.setText(partnerJson.optString("prefered_partner_religion"));
 
                         break;
                     case 1:
@@ -2353,9 +2383,24 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         txtListChild1.setText(childText);
 
                         //SetData - PreferedPartnerCaste
-                        String caste1 = partnerJson.optString("prefered_partner_caste").toString().replace("[", "");
-                        String caste = caste1.replace("]","");
-                        txtListChild1.setText(caste);
+//                        String caste1 = partnerJson.optString("prefered_partner_caste").toString().replace("[", "");
+//                        String caste = caste1.replace("]","");
+                        StringBuilder builder = new StringBuilder();
+                        try {
+                            JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_caste");
+                            for (int pos = 0; pos < jsonArray.length(); pos++) {
+                                System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                                if (pos == jsonArray.length() - 1) {
+                                    builder.append(jsonArray.optString(pos));
+                                } else {
+                                    builder.append(jsonArray.optString(pos)).append(",");
+                                }
+                            }
+                        }catch (JSONException jse){
+                            Log.e(TAG, " #Err : "+jse, jse);
+                        }
+                        txtListChild1.setText(builder);
 
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -2401,7 +2446,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        try {
+                   /*     try {
                             //SetData - PreferedPartnerCountry
                             String country1 = partnerJson.optString("prefered_partner_country").toString().replace("[", "");
                             String country = country1.replace("]", "");
@@ -2410,12 +2455,29 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         }catch (NullPointerException npe){
                             Log.e("TAG", " #Error : "+npe, npe );
                         }
+                        */
+                           StringBuilder builder1 = new StringBuilder();
+                        try {
+                            JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_country");
+                            for (int pos = 0; pos < jsonArray.length(); pos++) {
+                                System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                                if (pos == jsonArray.length() - 1) {
+                                    builder1.append(jsonArray.optString(pos));
+                                } else {
+                                    builder1.append(jsonArray.optString(pos)).append(",");
+                                }
+                            }
+                        }catch (JSONException jse){
+                            Log.e(TAG, " #Err : "+jse, jse);
+                        }
+                        txtListChild2.setText(builder1);
 
                         convertView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 //                                showDialog(txtListChild2,100,50);
-                                showCountry(txtListChild2);
+                                showCountryPt(txtListChild2);
                             }
                         });
 
@@ -2469,9 +2531,26 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         txtListChild.setText(childText);
 
                         //SetData - PreferedPartnerEducation
-                        String education1 = partnerJson.optString("prefered_partner_education").toString().replace("[", "");
+                   /*     String education1 = partnerJson.optString("prefered_partner_education").toString().replace("[", "");
                         String education = education1.replace("]","");
                         txtListChild.setText(education);
+*/
+                        StringBuilder builder = new StringBuilder();
+                        try {
+                            JSONArray jsonArray = partnerJson.getJSONArray("prefered_partner_education");
+                            for (int pos = 0; pos < jsonArray.length(); pos++) {
+                                System.out.println(jsonArray);
+//                             JSONObject object1 = jsonArray.getJSONObject(pos);
+                                if (pos == jsonArray.length() - 1) {
+                                    builder.append(jsonArray.optString(pos));
+                                } else {
+                                    builder.append(jsonArray.optString(pos)).append(",");
+                                }
+                            }
+                        }catch (JSONException jse){
+                            Log.e(TAG, " #Err : "+jse, jse);
+                        }
+                        txtListChild.setText(builder);
 
                         TextView txtListChildHeader = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -2847,6 +2926,12 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         List<String> list = new ArrayList<String>(Arrays.asList(ar));
         showDialog(list, textView);
     }
+    public void showMaritalStatusPt(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.marital_status_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showSelectableDialog(list, textView);
+    }
 
     public void showDrink(TextView textView) {
 
@@ -2922,8 +3007,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String Health = ExpOwnProfileModel.getInstance().getHealth_Issue();
         String Height = ExpOwnProfileModel.getInstance().getHeight();
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
-        String[] interestsArr = new String[1];
-        interestsArr[0] = Interests;
 
 //        Toast.makeText(_context, "Output : " + Interests, Toast.LENGTH_LONG).show();
 
@@ -3303,7 +3386,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
         try {
             if (NetworkClass.getInstance().checkInternet(_context) == true) {
-                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) > 0) {
+                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) > 0 ) {
+                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
                     if ((getHeightInCM(Max_Height) - getHeightInCM(Min_Height)) > 0) {
 
                     ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
@@ -3346,8 +3430,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         }
                     });
 
+                    } else {
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.HEIGHT_DIFF_ERROR_INFO);
+                    }
                 } else {
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.HEIGHT_DIFF_ERROR_INFO);
+                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_5_INFO);
                 }
                 } else {
                     AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_ERROR_INFO);
@@ -3381,7 +3468,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         PtrReligionCountryRequest request = new PtrReligionCountryRequest();
         request.token = token;
         request.prefered_partner_religion = Preferred_Religion;
-        request.prefered_partner_caste = Preferred_CasteArr;
+        request.prefered_partner_caste = Preferred_Caste;
+        request.prefered_partner_country = Preferred_Country;
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
@@ -3433,7 +3521,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
         PtrEduCareerRequest request = new PtrEduCareerRequest();
         request.token = token;
-        request.prefered_partner_education = Preferred_EducationArr;
+        request.prefered_partner_education = Preferred_Education;
         if(NetworkClass.getInstance().checkInternet(_context) == true){
 
             ProgressClass.getProgressInstance().showDialog(_context);
@@ -3548,6 +3636,51 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 countryList.add(country);
                             }
                             showDialog(countryList, textView);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        ProgressClass.getProgressInstance().stopProgress();
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
+                    }
+                });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
+    }
+    public void showCountryPt(final TextView textView) {
+
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(NetworkClass.getInstance().checkInternet(_context) == true){
+
+            ProgressClass.getProgressInstance().showDialog(_context);
+        AndroidNetworking.post("https://iitiimshaadi.com/api/country.json")
+                .addBodyParameter("token", token)
+//                .addBodyParameter("religion", preferred_Religion)
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        ProgressClass.getProgressInstance().stopProgress();
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("allCountries");
+                            List<String> countryList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject countryObject = jsonArray.getJSONObject(i);
+                                String country = countryObject.getString("name");
+                                countryList.add(country);
+                            }
+                            showSelectableDialog(countryList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.country_not_found);
@@ -3690,14 +3823,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             showDialog(casteList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                         }
                     }
 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                     }
                 });
 
@@ -3705,7 +3838,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
             NetworkDialogHelper.getInstance().showDialog(_context);
         }
     }
-   public void showCastePt(final TextView textView) {
+    public void showCastePt(final TextView textView) {
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String religion = ExpPartnerProfileModel.getInstance().getPreferred_Religion();
@@ -3730,17 +3863,17 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 String country = jsonArray.getString(i);
                                 casteList.add(country);
                             }
-                            showDialog(casteList, textView);
+                            showSelectableDialog(casteList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
                         }
                     }
 
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.religion_error_msg);
+                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                     }
                 });
 
@@ -4017,7 +4150,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
             return s = "";
         }
         String rawString = s.substring(0, s.length()-1);
-        return rawString.replaceAll("\\s+","");
+        return rawString;
 //        st = st.replaceAll("\\s+","")
     }
     public static String removeWhiteSpace(String s) {

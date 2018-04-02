@@ -391,6 +391,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                     });
         }else {
             networkDialog();
+            mSwipeRefreshLayout.setRefreshing(false);
 //            NetworkDialogHelper.getInstance().showDialog(PaidSubscriberDashboardActivity.this);
         }
     }

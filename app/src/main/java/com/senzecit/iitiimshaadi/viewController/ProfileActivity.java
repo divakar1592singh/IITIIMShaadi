@@ -35,13 +35,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
+import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
@@ -52,6 +56,9 @@ import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -67,7 +74,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler {
 
     private static final String TAG = ProfileActivity.class.getSimpleName();
     Toolbar mToolbar;
@@ -90,6 +97,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     TextView mUsrNameTV, mUsrIdTV;
     APIInterface apiInterface;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    RxNetworkingForObjectClass rxNetworkingClass;
+    PostAuthWebRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +108,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
+
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(ProfileActivity.this);
+        request = new PostAuthWebRequest();
 
         init();
         handleView();
@@ -312,9 +325,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         educationCareer.add("Highest Education");
         educationCareer.add("Working With");
         educationCareer.add("Working As");
-        educationCareer.add("Work Location");
+        educationCareer.add("Job Location");
         educationCareer.add("Annual Income");
-        educationCareer.add("LinkdIn Url");
+        educationCareer.add("Linkedin Url");
         educationCareer.add("Save Changes");
 
         List<String> aboutMe = new ArrayList<String>();
@@ -343,7 +356,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         listDataHeaderPartner.add("Religious and Country Preference");
         listDataHeaderPartner.add("Education & Career");
         listDataHeaderPartner.add("Groom");
-//        listDataHeaderPartner.add("Video");
 
         // Adding child data
         List<String> basicsLifestyle = new ArrayList<String>();
@@ -369,21 +381,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         aboutMe.add("Choice of Groom");
         aboutMe.add("Save Changes");
 
-//        List<String> video = new ArrayList<String>();
-//        video.add("Partner Preference Video");
-
         listDataChildPartner.put(listDataHeaderPartner.get(0), basicsLifestyle); // Header, Child data
         listDataChildPartner.put(listDataHeaderPartner.get(1), religiousBackgroung);
         listDataChildPartner.put(listDataHeaderPartner.get(2), educationCareer);
         listDataChildPartner.put(listDataHeaderPartner.get(3), aboutMe);
-//        listDataChildPartner.put(listDataHeaderPartner.get(4), video);
 
     }
 
     private void callWebServiceMyProfile(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        request.token = token;
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ProfileActivity.this, CONSTANTS.MY_PROFILE, request, CONSTANTS.METHOD_1);
 
+
+  /*
         final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
@@ -415,13 +427,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }else {
             NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
         }
+        */
     }
 
     private void callWebServiceMyProfileRefresh(){
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
 
-        final List<String> countryList = new ArrayList<>();
+            String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        request.token = token;
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(ProfileActivity.this, CONSTANTS.MY_PROFILE, request, CONSTANTS.METHOD_1, false);
+
+        }else {
+            mSwipeRefreshLayout.setRefreshing(false);
+            NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
+        }
+
+   /*     final List<String> countryList = new ArrayList<>();
         countryList.clear();
 
         if(NetworkClass.getInstance().checkInternet(ProfileActivity.this) == true){
@@ -450,7 +472,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(ProfileActivity.this);
-        }
+        }*/
     }
 
 
@@ -463,14 +485,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
 
         }
-
-        prepareListData();
-        listAdapter = new ExpandableListViewAdapter(this, listDataHeader, listDataChild, myProfileResponse);
-        expListView.setAdapter(listAdapter);
-
-        prepareListDataPartner();
-        partnerlistAdapter = new ExpandableListViewPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner, myProfileResponse);
-        expListViewPartner.setAdapter(partnerlistAdapter);
+//
+//        prepareListData();
+//        listAdapter = new ExpandableListViewAdapter(this, listDataHeader, listDataChild, myProfileResponse);
+//        expListView.setAdapter(listAdapter);
+//
+//        prepareListDataPartner();
+//        partnerlistAdapter = new ExpandableListViewPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner, myProfileResponse);
+//        expListViewPartner.setAdapter(partnerlistAdapter);
 
     }
 
@@ -587,7 +609,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View v) {
                 callWebServiceMyProfile();
-//                dialog.cancel();
+                dialog.dismiss();
             }
         });
 
@@ -598,5 +620,39 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        if(mSwipeRefreshLayout.isRefreshing())
+            mSwipeRefreshLayout.setRefreshing(false);
+
+        try {
+            System.out.println(object);
+            if(object.getJSONObject("message").getInt("response_code") == 200){
+
+                prepareListData();
+                listAdapter = new ExpandableListViewAdapter(this, listDataHeader, listDataChild, object);
+                expListView.setAdapter(listAdapter);
+
+                prepareListDataPartner();
+                partnerlistAdapter = new ExpandableListViewPartnerAdapter(this, listDataHeaderPartner, listDataChildPartner, object);
+                expListViewPartner.setAdapter(partnerlistAdapter);
+
+                String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
+                String partUrl = object.getJSONObject("basicData").optString("profile_image");
+                prefs.putString(CONSTANTS.LOGGED_USER_PIC, partUrl);
+                Glide.with(ProfileActivity.this).load(CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+partUrl).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
+
+            }else {
+                reTryMethod();
+            }
+        } catch (JSONException e) {
+//            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+//        e.printStackTrace();
+    }
+    }
+
 
 }

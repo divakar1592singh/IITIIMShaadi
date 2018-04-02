@@ -23,6 +23,8 @@ public interface CONSTANTS {
     String FIND_COLLEGE = "api/find_educational_institution.json";
 
     String SUBS_DASHBOARD_PATH = "api/subscriber_dashboard.json";
+    String MY_PROFILE = "api/my_profile.json";
+
     String BASIC_LIFESTYLE = "api/basic_lifestyle.json";
     String RELIGIOUS_BACKGROUND_POST_URL = "api/religious_background.json";
     String CONTACT_DETAILS = "api/contact_details.json";
