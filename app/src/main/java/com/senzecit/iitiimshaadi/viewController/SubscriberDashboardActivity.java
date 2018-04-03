@@ -524,7 +524,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         new AlertDialog.Builder(SubscriberDashboardActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle(title+" Upload")
-                .setMessage("are you sure?")
+                .setMessage("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -282,7 +282,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                 new AlertDialog.Builder(BaseNavActivity.this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle("Logout Alert")
-                        .setMessage("are you sure?")
+                        .setMessage("Are you sure?")
                         .setPositiveButton("yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

@@ -304,7 +304,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             }
             case R.id.idSubscriptionTV: {
                 //Toast.makeText(PaidSubscriberDashboardActivity.this,"Subscription", //Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(PaidSubscriberDashboardActivity.this,SubscriptionActivity.class));
+                startActivity(new Intent(PaidSubscriberDashboardActivity.this,SubscriptionActivityPaid.class));
                 break;
             }
             case R.id.idCustFolderTV: {
@@ -952,7 +952,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     public void showUploadAlert(String title, File filePath){
         new AlertDialog.Builder(PaidSubscriberDashboardActivity.this)
                 .setTitle(title+" Upload")
-                .setMessage("are you sure?")
+                .setMessage("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

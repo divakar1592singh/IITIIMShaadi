@@ -87,6 +87,10 @@
             android:name=".viewController.SubscriptionActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".viewController.SubscriptionActivityPaid"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".viewController.FriendsActivity"
             android:screenOrientation="portrait" />
         <activity

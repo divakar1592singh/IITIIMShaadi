@@ -88,14 +88,18 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        SubscriptionPlanActivity.this.finish();
+//        SubscriptionPlanActivity.this.finish();
+        startActivity(new Intent(SubscriptionPlanActivity.this, SubscriptionActivity.class));
+        finishActivity(0);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backIV:
-                SubscriptionPlanActivity.this.finish();
+//                SubscriptionPlanActivity.this.finish();
+                startActivity(new Intent(SubscriptionPlanActivity.this, SubscriptionActivity.class));
+                finishActivity(0);
                 break;
             case R.id.idPayBtn:
 

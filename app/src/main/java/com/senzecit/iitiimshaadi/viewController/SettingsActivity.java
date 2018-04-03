@@ -372,7 +372,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         new AlertDialog.Builder(SettingsActivity.this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Account Deactivation!")
-                .setMessage("are you sure?")
+                .setMessage("Are you sure?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

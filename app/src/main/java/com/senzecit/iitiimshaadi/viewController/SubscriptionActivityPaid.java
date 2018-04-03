@@ -1,11 +1,11 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.fragment.SubscriptionFragment;
 
-public class SubscriptionActivity extends AppCompatActivity implements View.OnClickListener,SubscriptionFragment.SubscriptionFragmentCommunicator {
+public class SubscriptionActivityPaid extends AppCompatActivity implements View.OnClickListener,SubscriptionFragment.SubscriptionFragmentCommunicator {
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
@@ -50,9 +50,8 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
-                startActivity(new Intent(SubscriptionActivity.this, SubscriberDashboardActivity.class));
-                finishActivity(0);
-//                startActivity(new Intent(SubscriptionActivity.this, SubscriptionActivity.class));
+
+                startActivity(new Intent(SubscriptionActivityPaid.this, PaidSubscriberDashboardActivity.class));
                 finishActivity(0);
 //                SubscriptionActivity.this.finish();
 //               /* Fragment home= mFragmentManager.findFragmentByTag("subscriptionFragment");
@@ -70,8 +69,7 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-
-        startActivity(new Intent(SubscriptionActivity.this, SubscriberDashboardActivity.class));
+        startActivity(new Intent(SubscriptionActivityPaid.this, PaidSubscriberDashboardActivity.class));
         finishActivity(0);
         /*int count = mFragmentManager.getBackStackEntryCount();
         if(count>1){
@@ -94,7 +92,7 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
 //        Fragment home= mFragmentManager.findFragmentByTag("subscriptionFragment");
 //        if(home!=null){
 //            if(home.isVisible()){
-//                SubscriptionActivity.this.finish();
+//                SubscriptionActivityPaid.this.finish();
 //            }else{
 //                mFragmentManager.popBackStack("subscriptionPlanFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //            }
@@ -107,7 +105,7 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
         setFragment(subscriptionPlanFragment,"subscriptionPlanFragment");
         mFragmentTransaction.addToBackStack("TAG");
         mTitle.setText("Plans");*/
-       startActivity(new Intent(SubscriptionActivity.this, SubscriptionPlanActivity.class));
+       startActivity(new Intent(SubscriptionActivityPaid.this, SubscriptionPlanActivity.class));
 
     }
 
@@ -135,6 +133,7 @@ public class SubscriptionActivity extends AppCompatActivity implements View.OnCl
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
 
     @Override
     protected void onStop() {

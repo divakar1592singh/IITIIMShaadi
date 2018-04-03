@@ -2676,8 +2676,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.row_subscriber_top, null);
 
-                handleHeaderData(convertView);
+                mProfileCIV = (CircleImageView)convertView.findViewById(R.id.idProfileCIV);
                 Glide.with(_context).load(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
+                handleHeaderData(convertView);
 
 
                 return convertView;
@@ -3194,6 +3195,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         request.prefered_partner_caste = Preferred_Caste;
         request.prefered_partner_country = Preferred_Country;
 
+        communicator.onProfileSubmission(CONSTANTS.RELIGIOUS_BACKGROUND_PT_PATH, request, CONSTANTS.METHOD_2);
+
     }
     public void saveChangesOfCasePt_2(){
 
@@ -3561,7 +3564,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     public void handleHeaderData(View convertView){
 
         //INIT SECTION
-        mProfileCIV = (CircleImageView)convertView.findViewById(R.id.idProfileCIV);
+
         TextView mUsrNameTV = (TextView)convertView.findViewById(R.id.idUserNameTV) ;
         TextView mUsrIdTV = (TextView)convertView.findViewById(R.id.idUserId) ;
         ProgressBar mProgress = (ProgressBar)convertView.findViewById(R.id.idprogress);
@@ -3597,16 +3600,15 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
 
         try {
-
-                int profileCompletion = basicObject.optInt("profile_complition");
-                mProgress.setProgress(profileCompletion);
-                mProfilepercTV.setText(String.valueOf(profileCompletion)+"%");
-
-
             String profileUri = CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + basicObject.optString("profile_image");
-            if (!TextUtils.isEmpty(profileUri)) {
-                Glide.with(_context).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
-            }
+            Glide.with(_context).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
+
+            int profileCompletion = basicObject.optInt("profile_complition");
+            mProgress.setProgress(profileCompletion);
+            mProfilepercTV.setText(String.valueOf(profileCompletion)+"%");
+
+//            if (!TextUtils.isEmpty(profileUri)) {
+//            }
         }catch (NullPointerException npe){
             Log.e(TAG, " #Error : "+npe, npe);
         }
@@ -3638,7 +3640,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                 setVerificationStatus(email, mob, doc, idProof);
 
 
-                setVerificationStatus(email, mob, doc, false);
+                setVerificationStatus(email, mob, doc, idProof);
             }
 
         }catch (NullPointerException npe){
