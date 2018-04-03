@@ -42,7 +42,7 @@ public class RxNetworkingForObjectClass {
 
 //    -----------------------------------------------
 
-    public void callWebServiceForRxNetworking(Activity activity, String relativePath, Object paramClass, String methodName ) {
+    public void callWebServiceForRxNetworking(Activity activity, String relativePath, Object paramClass, String methodName) {
 
         if(NetworkClass.getInstance().checkInternet(activity) == true){
 

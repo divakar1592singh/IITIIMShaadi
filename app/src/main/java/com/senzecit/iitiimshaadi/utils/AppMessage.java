@@ -12,6 +12,7 @@ public interface AppMessage {
     String WARNING = "Warning";
 
     // Common Message
+    String DATA_SUBMIT_INFO = "Data Submited Successfully";
     String SOME_ERROR_INFO = "Something went wrong!\n Please, Try Again";
     String TRY_AGAIN_INFO = "Please, Try Again!";
     String IMAGE_UPLOAD_INFO = "Image Uploaded Successfully";

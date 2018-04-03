@@ -37,6 +37,7 @@ import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
@@ -555,43 +556,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, CONSTANTS.SUBS_DASHBOARD_PATH, request, CONSTANTS.METHOD_1);
 
-//        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
-//
-//            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-//            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-//            Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
-//            call.enqueue(new Callback<SubscriberMainResponse>() {
-//                @Override
-//                public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
-//                    ProgressClass.getProgressInstance().stopProgress();
-//                    if (response.isSuccessful()) {
-//                        if(response.body() != null){
-//
-//                            SubscriberMainResponse subsResponse = response.body();
-//                            setMyProfile(subsResponse);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
-//                    call.cancel();
-//                    ProgressClass.getProgressInstance().stopProgress();
-//                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//
-//        }else {
-//            networkDialog();
-////            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
-//        }
     }
 
     private void callWebServiceForSubsDashboardRefresh(){
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-            String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         request.token = token;
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, CONSTANTS.SUBS_DASHBOARD_PATH, request, CONSTANTS.METHOD_1, false);
 
@@ -600,36 +571,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             networkDialog();
     }
 
-/*
-        if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
-
-            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-            Call<SubscriberMainResponse> call = apiInterface.subscribeDashoard(token);
-            call.enqueue(new Callback<SubscriberMainResponse>() {
-                @Override
-                public void onResponse(Call<SubscriberMainResponse> call, Response<SubscriberMainResponse> response) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    if (response.isSuccessful()) {
-                        if(response.body() != null){
-
-                            SubscriberMainResponse subsResponse = response.body();
-//                            setMyProfile(subsResponse);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SubscriberMainResponse> call, Throwable t) {
-                    call.cancel();
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(SubscriberDashboardActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }else {
-            networkDialog();
-//            NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
-        }*/
     }
 
     /** Email */
@@ -835,17 +776,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         }
 
-//    private void setMyProfile(JSONObject object){
-//
-//        try {
-//            listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
-//            expListView.setAdapter(listAdapter);
-//
-//            prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, subsResponse.getChatUserCount());
-//        }catch (NullPointerException npe){
-//            Log.e(TAG, "#Error : "+npe, npe);
-//        }
-//    }
 
     @Override
     public void onBackPressed() {
@@ -882,78 +812,15 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     }
 
     @Override
+    public void onProfileSubmission(String urlPath, PostAuthWebRequest request, String methodName) {
+
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, urlPath, request, methodName);
+    }
+
+    @Override
     public void refreshPage() {
-        callWebServiceForSubscribeDashboard();
-    }
-/*
-    @Override
-    public void saveChangesOfCaseI_0() {
-        expListView.collapseGroup(0);
-        expListView.expandGroup(1);
 
     }
-
-    @Override
-    public void saveChangesOfCaseI_1() {
-        expListView.collapseGroup(1);
-        expListView.expandGroup(2);
-
-    }
-
-    @Override
-    public void saveChangesOfCaseI_2() {
-        expListView.collapseGroup(2);
-        expListView.expandGroup(3);
-
-    }
-
-    @Override
-    public void saveChangesOfCaseI_3() {
-        expListView.collapseGroup(3);
-        expListView.expandGroup(4);
-
-    }
-
-    @Override
-    public void saveChangesOfCaseI_4() {
-        expListView.collapseGroup(4);
-        expListView.expandGroup(5);
-
-    }
-
-    @Override
-    public void saveChangesOfCaseI_5() {
-        expListView.collapseGroup(5);
-        expListView.expandGroup(6);
-
-    }
-
-    @Override
-    public void saveChangesOfCasePtI_0() {
-        expListView.collapseGroup(6);
-        expListView.expandGroup(7);
-
-    }
-
-    @Override
-    public void saveChangesOfCasePtI_1() {
-        expListView.collapseGroup(7);
-        expListView.expandGroup(8);
-
-    }
-
-    @Override
-    public void saveChangesOfCasePtI_2() {
-        expListView.collapseGroup(8);
-        expListView.expandGroup(9);
-
-    }
-
-    @Override
-    public void saveChangesOfCasePtI_3() {
-
-    }
-    */
 
     public void resetModel(){
 
@@ -1108,19 +975,30 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         if(mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);
 
-
         try {
-            System.out.println(object);
-            if(object.getJSONObject("message").getInt("response_code") == 200){
 
-                listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
-                expListView.setAdapter(listAdapter);
+            if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
+                if (object.getJSONObject("message").getInt("response_code") == 200) {
 
-                prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
+                    listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
+                    expListView.setAdapter(listAdapter);
 
-            }else {
-                reTryMethod();
+                    prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
+
+                } else {
+                    reTryMethod();
+                }
+            }else if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)){
+                if (object.getJSONObject("message").getInt("response_code") == 200) {
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, AppMessage.INFO, AppMessage.DATA_SUBMIT_INFO);
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, AppMessage.ALERT, AppMessage.SOME_ERROR_INFO);
+                }
+                System.out.println(object);
             }
+
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
