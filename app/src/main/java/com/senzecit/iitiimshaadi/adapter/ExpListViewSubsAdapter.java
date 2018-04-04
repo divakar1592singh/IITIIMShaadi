@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.adapter;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -84,6 +86,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2668,8 +2671,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
 
-//        switch (groupPosition){
-
             if(groupPosition == 0) {
 
                 LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -2799,7 +2800,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         });
 
     }
-
 
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
     private void showSelectableDialog(List<String> dataList, final TextView txtListChild) {
