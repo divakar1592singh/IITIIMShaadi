@@ -319,6 +319,10 @@ Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Que
     @FormUrlEncoded
     @POST("api/add_friend.json")
     Call<AddFolderResponse> serviceAddAsFriend(@Field("token")String token, @Field("friend_user")String friend_user);
+    //Accept
+//    @FormUrlEncoded
+//    @POST("api/add_friend.json")
+//    Call<AddFolderResponse> serviceAddAsFriend(@Field("token")String token, @Field("friend_user")String friend_user);
     /*Remove Friend*/
     @FormUrlEncoded
     @POST("api/remove_friend.json")

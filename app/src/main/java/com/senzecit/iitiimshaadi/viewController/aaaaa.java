@@ -3,6 +3,8 @@ package com.senzecit.iitiimshaadi.viewController;
 public class aaaaa {
 
     /*
+    id
+    view chat userlist
     * check user valid on splash api
     * mobile_no. to mobile
     * chat count
@@ -12,7 +14,7 @@ public class aaaaa {
     * other album
     * friend - accept friend n all
     * Success Payment  - Paypal and Payumoney
-    *
+    *chat
     * */
 
 }

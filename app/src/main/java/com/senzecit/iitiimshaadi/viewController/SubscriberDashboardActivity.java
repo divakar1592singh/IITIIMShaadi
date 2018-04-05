@@ -30,7 +30,6 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
@@ -40,23 +39,20 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -68,6 +64,8 @@ import retrofit2.Response;
 public class SubscriberDashboardActivity extends BaseNavActivity implements ExpListViewSubsAdapter.OnExpLvSubsItemClickListener, RxNetworkingForObjectClass.CompletionHandler {
 
     private static final String TAG = SubscriptionActivity.class.getSimpleName();
+//    private static final String TAG = SubscriptionActivity.class.getSimpleName();
+
 
     ExpandableListView expListView;
     ExpListViewSubsAdapter listAdapter;
@@ -680,7 +678,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
+                        if (serverResponse.getMessage().getResponseCode() == 200) {
 
                             dialog.dismiss();
                             callWebServiceForSubscribeDashboard();
@@ -688,7 +686,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
                         } else {
-                            Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
+                            ToastDialogMessage.getInstance().showToast(SubscriberDashboardActivity.this, serverResponse.getMessage().getSuccess());
+//     Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -989,7 +988,9 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                     reTryMethod();
                 }
             }else if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)){
+                System.out.println(object);
                 if (object.getJSONObject("message").getInt("response_code") == 200) {
+//                    callWebServiceForSubsDashboardRefresh();
                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, AppMessage.INFO, AppMessage.DATA_SUBMIT_INFO);
                 }else {
                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, AppMessage.ALERT, AppMessage.SOME_ERROR_INFO);

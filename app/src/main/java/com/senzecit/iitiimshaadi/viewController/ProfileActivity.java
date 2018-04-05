@@ -1,41 +1,26 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.Manifest;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.test.mock.MockPackageManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -45,7 +30,6 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
@@ -56,13 +40,10 @@ import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.net.URISyntaxException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,9 +63,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     ImageView mBack;
     Button mMyProfile,mPartnerProfile;
     ImageView mUploadIv;
-    ExpandableListViewAdapter listAdapter;
+
     ExpandableListView expListView, expListViewPartner;
+    ExpandableListViewAdapter listAdapter;
     ExpandableListViewPartnerAdapter partnerlistAdapter;
+
     List<String> listDataHeader,listDataHeaderPartner;
     HashMap<String, List<String>> listDataChild,listDataChildPartner;
     ScrollView mScrollView;

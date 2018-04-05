@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String userId = String.valueOf(object.getJSONObject("responseData").getString("userid"));
                     String typeOfUser = object.getJSONObject("responseData").getString("type_of_user");
                     String email = object.getJSONObject("responseData").getString("email");
-                    String mobile = object.getJSONObject("responseData").getString("mobile");
+                    String mobile = object.getJSONObject("responseData").getString("mobile_no");
                     String profilePic = object.getJSONObject("responseData").getString("profile_image");
                     String gender = object.getJSONObject("responseData").getString("gender");
 

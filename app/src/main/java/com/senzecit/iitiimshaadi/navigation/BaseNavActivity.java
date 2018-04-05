@@ -274,7 +274,11 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
             }
             case R.id.idChat:
 //                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on Chat");
-                startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
+                if(prefs.getInt(CONSTANTPREF.CHAT_USER_COUNT) == 0){
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "No Chatable User!");
+                }else {
+                    startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
+                }
                 break;
             case R.id.idLogoutNav:
 //                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "LogOut");

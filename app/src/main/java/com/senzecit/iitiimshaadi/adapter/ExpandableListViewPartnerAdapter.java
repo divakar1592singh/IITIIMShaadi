@@ -994,7 +994,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
         try {
             if (NetworkClass.getInstance().checkInternet(_context) == true) {
                 if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) > 0 ) {
-                    if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
+//                    if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
                         if ((getHeightInCM(Max_Height) - getHeightInCM(Min_Height)) > 0) {
 
                             ParnerBasicProfileRequest request = new ParnerBasicProfileRequest();
@@ -1040,9 +1040,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         } else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.HEIGHT_DIFF_ERROR_INFO);
                         }
-                    } else {
-                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_5_INFO);
-                    }
+//                    } else {
+//                        AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_5_INFO);
+//                    }
                 } else {
                     AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_ERROR_INFO);
                 }

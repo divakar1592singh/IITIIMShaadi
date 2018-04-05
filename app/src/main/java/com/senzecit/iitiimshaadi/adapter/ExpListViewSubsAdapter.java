@@ -1,6 +1,5 @@
 package com.senzecit.iitiimshaadi.adapter;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -25,7 +24,6 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +31,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -43,20 +40,8 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
-import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.groom.ChoiceOfGroomRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.contact_details.ContactDetailsRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.education_career.EducationCareerRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.family_detail.FamilyDetailRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.profile.BasicProfileRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.PtrEduCareerRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
@@ -77,16 +62,13 @@ import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AlbumActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -834,6 +816,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         //SetData - AlternateNo
                         editText1.setText(basicObject.optString("alternate_no"));
+
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAlternate_Number()))
                             editText1.setText(ExpOwnProfileModel.getInstance().getAlternate_Number());
 
@@ -1240,7 +1223,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void onClick(View view) {
                                 //do somethings.
-                                saveChangesOfCase_2();
+                                    saveChangesOfCase_2();
                             }
                         });
                         break;
@@ -1523,11 +1506,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         txtListChild1.setText(childText);
 
                         //SetData - School Year
-                        txtListChild1.setText(String.valueOf(basicObject.optInt("schooling_year")));
-
-                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
-                            txtListChild1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
-
 
                         TextView txtListChildHeader1 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -1539,6 +1517,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showYear(txtListChild1);
                             }
                         });
+
+                        txtListChild1.setText(String.valueOf(basicObject.optInt("schooling_year")));
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
                             txtListChild1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
@@ -1682,11 +1662,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         txtListChild4.setText(childText);
 
                         //SetData - School Year
-                        txtListChild4.setText(String.valueOf(basicObject.optInt("graduation_year")));
-
-                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
-                            txtListChild4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
-//
 
                         TextView txtListChildHeader4 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
@@ -1698,6 +1673,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showYear(txtListChild4);
                             }
                         });
+
+                        txtListChild4.setText(String.valueOf(basicObject.optInt("graduation_year")));
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
                             txtListChild4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
@@ -1840,13 +1817,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .findViewById(R.id.childItemTV);
                         txtListChild7.setText(childText);
 
-                        //SetData - School Year
-                        txtListChild7.setText(String.valueOf(basicObject.optInt("post_graduation_year")));
-
-                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
-                            txtListChild7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
-//
-
                         TextView txtListChildHeader7 = (TextView) convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader7.setText(childText);
@@ -1857,6 +1827,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 showYear(txtListChild7);
                             }
                         });
+
+                        //SetData - School Year
+                        txtListChild7.setText(String.valueOf(basicObject.optInt("post_graduation_year")));
+
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
                             txtListChild7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
@@ -3149,6 +3123,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         request.drink = Drink;
         request.smoke = Smoke;
         request.interest = Interests;
+
         communicator.onProfileSubmission(CONSTANTS.BASIC_LIFESTYLE, request, CONSTANTS.METHOD_2);
 
     }
@@ -3185,7 +3160,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
         request.token = token;
-        request.mobile_no = Phone_Number;
         request.alternate_no = Alternate_Number;
         request.permanent_address = Permanent_Address;
         request.permanent_country = Permanent_Country;
@@ -3484,13 +3458,17 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         ProgressClass.getProgressInstance().stopProgress();
                         try {
                             JSONArray jsonArray = response.getJSONArray("allStates");
-                            List<String> stateList = new ArrayList<>();
+                            if(jsonArray.length() > 0) {
+                                List<String> stateList = new ArrayList<>();
 //                            if(jsonArray.length() > 0){
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                String sState = jsonArray.getString(i);
-                                stateList.add(sState);
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    String sState = jsonArray.getString(i);
+                                    stateList.add(sState);
+                                }
+                                showDialog(stateList, textView);
+                            }else {
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert","Select Country");
                             }
-                            showDialog(stateList, textView);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.state_not_found);
@@ -3530,6 +3508,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         ProgressClass.getProgressInstance().stopProgress();
                         try {
                             JSONArray jsonArray = response.getJSONArray("allStates");
+                            if(jsonArray.length() > 0) {
                             List<String> stateList = new ArrayList<>();
 //                            if(jsonArray.length() > 0){
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -3537,6 +3516,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 stateList.add(sState);
                             }
                             showDialog(stateList, textView);
+
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert","Select Country");
+                        }
                         /*}else {
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
                         }*/

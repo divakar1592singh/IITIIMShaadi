@@ -11,6 +11,9 @@ public class Message {
     @SerializedName("success")
     @Expose
     private String success;
+    @SerializedName("response_code")
+    @Expose
+    private Integer responseCode;
 
     public String getSuccess() {
         return success;
@@ -18,6 +21,14 @@ public class Message {
 
     public void setSuccess(String success) {
         this.success = success;
+    }
+
+    public Integer getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
     }
 
 }

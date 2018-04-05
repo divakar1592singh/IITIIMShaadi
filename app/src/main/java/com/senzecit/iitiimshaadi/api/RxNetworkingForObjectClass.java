@@ -62,7 +62,9 @@ public class RxNetworkingForObjectClass {
                     @Override
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
-                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+//                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error : "+error);
+
                     }
                 });
 
@@ -73,6 +75,7 @@ public class RxNetworkingForObjectClass {
 
     public void callWebServiceForRxNetworking(Context context, String relativePath, Object paramClass, String methodName ) {
 
+        System.out.print("--------> Path : "+relativePath);
         if(NetworkClass.getInstance().checkInternet(context) == true){
 
             AndroidNetworking.post(CONSTANTS.BASE_URL+relativePath)
