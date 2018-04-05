@@ -50,8 +50,11 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
@@ -476,7 +479,11 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String sMinHeight = mSelectHeightMinTV.getText().toString() ;
         String sMaxHeight = mSelectHeightMaxTV.getText().toString() ;
 
-        prefs.putString(CONSTANTS.MIN_AGE, minage);
+        try{
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+            if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5 ) {
+
+                prefs.putString(CONSTANTS.MIN_AGE, minage);
         prefs.putString(CONSTANTS.MAX_AGE, maxage);
         prefs.putString(CONSTANTS.COUNTRY, country);
         prefs.putString(CONSTANTS.CITY, city);
@@ -492,6 +499,20 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
 
         communicator.saveAndSearchPaidPartner();
+            } else {
+                AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_DIFF_5_INFO);
+            }
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(getActivity());
+        }
+
+    }catch (NumberFormatException nfe){
+        Log.e(TAG, " #Error : "+nfe, nfe);
+        Toast.makeText(getActivity(), AppMessage.AGE_ERROR_INFO, Toast.LENGTH_SHORT).show();
+    }catch (Exception e){
+        Log.e(TAG, " #Error : "+e, e);
+        Toast.makeText(getActivity(), AppMessage.HEIGHT_ERROR_INFO, Toast.LENGTH_SHORT).show();
+    }
 
     }
 

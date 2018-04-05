@@ -82,13 +82,13 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-
-  /*             Intent intent = new Intent(SplashActivity.this, ProfileActivity.class);
+//
+              Intent intent = new Intent(SplashActivity.this, FriendsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
 
-*/
+
 
 
              /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
@@ -107,7 +107,7 @@ public class SplashActivity extends AppCompatActivity {
 //                callWebServiceForSignin();
 
             if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
-                navigatyPage();
+//                navigatyPage();
             }else {
                 networkDialog();
             }

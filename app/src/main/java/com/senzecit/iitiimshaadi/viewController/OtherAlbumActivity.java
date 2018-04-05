@@ -55,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OtherAlbumActivity extends AppCompatActivity implements View.OnClickListener {
+public class OtherAlbumActivity extends AppCompatActivity implements View.OnClickListener, OtherAlbumAdapter.OnOtherAlbumClickListner {
 
     private static final String TAG = AlbumActivity.class.getSimpleName();
     Toolbar mToolbar;
@@ -70,6 +70,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
     APIInterface apiInterface;
     AppPrefs prefs;
     SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,33 +117,33 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
         );
 
 
-
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-
-//                Toast.makeText(OtherAlbumActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                if(count == 0) {
-                    count++;
-                    Toast.makeText(OtherAlbumActivity.this, CONSTANTS.tap_message, Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(OtherAlbumActivity.this, CONSTANTS.tap_twice_message, Toast.LENGTH_SHORT).show();
-                }
-
-                ImageView thumbView = v.findViewById(R.id.grid_imageView);
-                thumbView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        count = 0;
-                        String imageResId = albumAdapter.getItem(position).toString();
-//                        Toast.makeText(AlbumActivity.this, "" + imageResId,
-//                                Toast.LENGTH_LONG).show();
-                        zoomImageFromThumb(thumbView, imageResId);
-                    }
-                });
-
-            }
-        });
+//
+//        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v,
+//                                    int position, long id) {
+//
+////                Toast.makeText(OtherAlbumActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+//                if(count == 0) {
+//                    count++;
+//                    Toast.makeText(OtherAlbumActivity.this, CONSTANTS.tap_message, Toast.LENGTH_SHORT).show();
+//                }else {
+//                    Toast.makeText(OtherAlbumActivity.this, CONSTANTS.tap_twice_message, Toast.LENGTH_SHORT).show();
+//                }
+//
+//                ImageView thumbView = v.findViewById(R.id.grid_imageView);
+//                thumbView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        count = 0;
+//                        String imageResId = albumAdapter.getItem(position).toString();
+////                        Toast.makeText(AlbumActivity.this, "" + imageResId,
+////                                Toast.LENGTH_LONG).show();
+//                        zoomImageFromThumb(thumbView, imageResId);
+//                    }
+//                });
+//
+//            }
+//        });
 
         // Retrieve and cache the system's default "short" animation time.
         mShortAnimationDuration = getResources().getInteger(
@@ -311,7 +312,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
 
 
     //IMAGEZOOM
-    private void zoomImageFromThumb(final View thumbView, String imageResId) {
+    private void zoomImageFromThumb(final View thumbView, String imageURL) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (mCurrentAnimator != null) {
@@ -325,7 +326,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
 
         try {
             ProgressClass.getProgressInstance().showDialog(OtherAlbumActivity.this);
-            Glide.with(OtherAlbumActivity.this).load(imageResId).error(R.drawable.ic_not_available)
+            Glide.with(OtherAlbumActivity.this).load(imageURL).error(R.drawable.ic_not_available)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -484,5 +485,11 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    @Override
+    public void onAlbumClick(ImageView thumbView, String imageURL) {
+
+        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
     }
 }

@@ -17,6 +17,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -51,6 +53,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -77,6 +80,8 @@ import retrofit2.Response;
  */
 
 public class SearchPartnerFragment extends Fragment implements View.OnClickListener {
+
+    private static String TAG = "SearchPartnerFragment";
     View view;
     AppPrefs prefs;
     ImageView mAdvanceSearchIV;
@@ -366,7 +371,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         profileList.add(mother_tounge);profileList.add(marital_status);
         profileList.add(course);profileList.add(annual_income);
 
+        try{
         if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
+            if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5 ) {
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(getActivity());
@@ -400,9 +407,20 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             }
         });
 
+            } else {
+         AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_DIFF_5_INFO);
+        }
         }else {
             NetworkDialogHelper.getInstance().showDialog(getActivity());
         }
+
+    }catch (NumberFormatException nfe){
+        Log.e(TAG, " #Error : "+nfe, nfe);
+        Toast.makeText(getActivity(), AppMessage.AGE_ERROR_INFO, Toast.LENGTH_SHORT).show();
+    }catch (Exception e){
+        Log.e(TAG, " #Error : "+e, e);
+        Toast.makeText(getActivity(), AppMessage.HEIGHT_ERROR_INFO, Toast.LENGTH_SHORT).show();
+    }
 
     }
 
