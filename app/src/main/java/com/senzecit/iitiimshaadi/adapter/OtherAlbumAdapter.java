@@ -60,10 +60,12 @@ public class OtherAlbumAdapter extends BaseAdapter {
     Context context;
     List<AllAlbumPic> albumList;
     AppPrefs prefs;
+    OnOtherAlbumClickListner listner;
 
     public OtherAlbumAdapter(Context context, List<AllAlbumPic> albumList) {
         this.context = context;
         this.albumList = albumList;
+        listner = (OnOtherAlbumClickListner)context;
     }
 
     @Override
@@ -97,13 +99,15 @@ public class OtherAlbumAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-       /* holder.imageView.setOnClickListener(new View.OnClickListener() {
+        Holder finalHolder = holder;
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context, "Click", Toast.LENGTH_SHORT).show();
+                listner.onAlbumClick(finalHolder.imageView, CONSTANTS.IMAGE_BASE_URL + albumList.get(i).getPicOrgUrl());
             }
         });
-*/
+
         return view;
     }
 
@@ -113,6 +117,10 @@ public class OtherAlbumAdapter extends BaseAdapter {
         public Holder(View convertView) {
             imageView = (ImageView) convertView.findViewById(R.id.grid_imageView);
         }
+    }
+
+    public interface OnOtherAlbumClickListner{
+        void onAlbumClick(ImageView thumbView, String imageURL);
     }
 
 }

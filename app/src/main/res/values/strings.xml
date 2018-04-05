@@ -267,6 +267,6 @@
 </string>
 
     //EROR
-    <string name="age_limit">Age difference can\'t more than 5year.</string>
+    <string name="age_limit">Age difference can\'t be more than 5 year.</string>
 
 </resources>

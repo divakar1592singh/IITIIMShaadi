@@ -1516,25 +1516,34 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                     case 1:
                         LayoutInflater infalInflater1 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater1.inflate(R.layout.list_item_numbertype, null);
+                        convertView = infalInflater1.inflate(R.layout.list_item, null);
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout1.setHint(childText);
+                        final TextView txtListChild1 = (TextView) convertView
+                                .findViewById(R.id.childItemTV);
+                        txtListChild1.setText(childText);
 
-                        EditText editText1 = convertView.findViewById(R.id.idlistitemET);
-                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        //SetData - School Year
+                        txtListChild1.setText(String.valueOf(basicObject.optInt("schooling_year")));
 
-                        InputFilter[] FilterArray = new InputFilter[1];
-                        FilterArray[0] = new InputFilter.LengthFilter(4);
-                        editText1.setFilters(FilterArray);
+                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
+                            txtListChild1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
 
-                        //SetData - SchoolingYear
-                        editText1.setText(String.valueOf(basicObject.optInt("schooling_year")));
+
+                        TextView txtListChildHeader1 = (TextView) convertView
+                                .findViewById(R.id.childItemTVheader);
+                        txtListChildHeader1.setText(childText);
+                        convertView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                showDialog(txtListChild9,100,50);
+                                showYear(txtListChild1);
+                            }
+                        });
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
-                            editText1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
+                            txtListChild1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
 
-                        editText1.addTextChangedListener(new TextWatcher() {
+                        txtListChild1.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -1548,9 +1557,46 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpOwnProfileModel.getInstance().setSchooling_Year(editable.toString());
-
                             }
                         });
+
+//                        LayoutInflater infalInflater1 = (LayoutInflater) this._context
+//                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                        convertView = infalInflater1.inflate(R.layout.list_item_numbertype, null);
+//
+//                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+//                        textInputLayout1.setHint(childText);
+//
+//                        EditText editText1 = convertView.findViewById(R.id.idlistitemET);
+//                        editText1.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+//
+//                        InputFilter[] FilterArray = new InputFilter[1];
+//                        FilterArray[0] = new InputFilter.LengthFilter(4);
+//                        editText1.setFilters(FilterArray);
+//
+//                        //SetData - SchoolingYear
+//                        editText1.setText(String.valueOf(basicObject.optInt("schooling_year")));
+//
+//                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getSchooling_Year()))
+//                            editText1.setText(ExpOwnProfileModel.getInstance().getSchooling_Year());
+//
+//                        editText1.addTextChangedListener(new TextWatcher() {
+//                            @Override
+//                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                            }
+//
+//                            @Override
+//                            public void afterTextChanged(Editable editable) {
+//                                ExpOwnProfileModel.getInstance().setSchooling_Year(editable.toString());
+//
+//                            }
+//                        });
 
                         break;
                     case 2:
@@ -1626,28 +1672,37 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         break;
                     case 4:
+
                         LayoutInflater infalInflater4 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater4.inflate(R.layout.list_item_numbertype, null);
+                        convertView = infalInflater4.inflate(R.layout.list_item, null);
 
-                        TextInputLayout textInputLayout4 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout4.setHint(childText);
+                        final TextView txtListChild4 = (TextView) convertView
+                                .findViewById(R.id.childItemTV);
+                        txtListChild4.setText(childText);
 
-                        EditText editText4 = convertView.findViewById(R.id.idlistitemET);
-                        editText4.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        //SetData - School Year
+                        txtListChild4.setText(String.valueOf(basicObject.optInt("graduation_year")));
 
-                        InputFilter[] FilterArray1 = new InputFilter[1];
-                        FilterArray1[0] = new InputFilter.LengthFilter(4);
-                        editText4.setFilters(FilterArray1);
-//                        editText4.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
+                            txtListChild4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
+//
 
-                        //SetData - GraduationYear
-                        editText4.setText(String.valueOf(basicObject.optInt("graduation_year")));
+                        TextView txtListChildHeader4 = (TextView) convertView
+                                .findViewById(R.id.childItemTVheader);
+                        txtListChildHeader4.setText(childText);
+                        convertView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                showDialog(txtListChild9,100,50);
+                                showYear(txtListChild4);
+                            }
+                        });
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
-                            editText4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
+                            txtListChild4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
 
-                        editText4.addTextChangedListener(new TextWatcher() {
+                        txtListChild4.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -1661,9 +1716,46 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpOwnProfileModel.getInstance().setGraduation_Year(editable.toString());
-
                             }
                         });
+
+
+//                        LayoutInflater infalInflater4 = (LayoutInflater) this._context
+//                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                        convertView = infalInflater4.inflate(R.layout.list_item_numbertype, null);
+//
+//                        TextInputLayout textInputLayout4 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+//                        textInputLayout4.setHint(childText);
+//
+//                        EditText editText4 = convertView.findViewById(R.id.idlistitemET);
+//                        editText4.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+//
+//                        InputFilter[] FilterArray1 = new InputFilter[1];
+//                        FilterArray1[0] = new InputFilter.LengthFilter(4);
+//                        editText4.setFilters(FilterArray1);
+//                        //SetData - GraduationYear
+//                        editText4.setText(String.valueOf(basicObject.optInt("graduation_year")));
+//
+//                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getGraduation_Year()))
+//                            editText4.setText(ExpOwnProfileModel.getInstance().getGraduation_Year());
+//
+//                        editText4.addTextChangedListener(new TextWatcher() {
+//                            @Override
+//                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                            }
+//
+//                            @Override
+//                            public void afterTextChanged(Editable editable) {
+//                                ExpOwnProfileModel.getInstance().setGraduation_Year(editable.toString());
+//
+//                            }
+//                        });
 
                         break;
                     case 5:
@@ -1739,28 +1831,37 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         break;
                     case 7:
+
                         LayoutInflater infalInflater7 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        convertView = infalInflater7.inflate(R.layout.list_item_numbertype, null);
+                        convertView = infalInflater7.inflate(R.layout.list_item, null);
 
-                        TextInputLayout textInputLayout7 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
-                        textInputLayout7.setHint(childText);
+                        final TextView txtListChild7 = (TextView) convertView
+                                .findViewById(R.id.childItemTV);
+                        txtListChild7.setText(childText);
 
-                        EditText editText7 = convertView.findViewById(R.id.idlistitemET);
-//                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                        //SetData - School Year
+                        txtListChild7.setText(String.valueOf(basicObject.optInt("post_graduation_year")));
 
-                        //SetData - PostGraduationYear
-                        editText7.setText(String.valueOf(basicObject.optInt("post_graduation_year")));
-                        editText7.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
+                            txtListChild7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
+//
 
-                        InputFilter[] FilterArray2 = new InputFilter[1];
-                        FilterArray2[0] = new InputFilter.LengthFilter(4);
-                        editText7.setFilters(FilterArray2);
+                        TextView txtListChildHeader7 = (TextView) convertView
+                                .findViewById(R.id.childItemTVheader);
+                        txtListChildHeader7.setText(childText);
+                        convertView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+//                                showDialog(txtListChild9,100,50);
+                                showYear(txtListChild7);
+                            }
+                        });
 
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
-                            editText7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
+                            txtListChild7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
 
-                        editText7.addTextChangedListener(new TextWatcher() {
+                        txtListChild7.addTextChangedListener(new TextWatcher() {
                             @Override
                             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -1774,9 +1875,48 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                             @Override
                             public void afterTextChanged(Editable editable) {
                                 ExpOwnProfileModel.getInstance().setPost_Graduation_Year(editable.toString());
-
                             }
                         });
+
+
+//                        LayoutInflater infalInflater7 = (LayoutInflater) this._context
+//                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                        convertView = infalInflater7.inflate(R.layout.list_item_numbertype, null);
+//
+//                        TextInputLayout textInputLayout7 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+//                        textInputLayout7.setHint(childText);
+//
+//                        EditText editText7 = convertView.findViewById(R.id.idlistitemET);
+////                        editText7.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+//
+//                        //SetData - PostGraduationYear
+//                        editText7.setText(String.valueOf(basicObject.optInt("post_graduation_year")));
+//                        editText7.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+//
+//                        InputFilter[] FilterArray2 = new InputFilter[1];
+//                        FilterArray2[0] = new InputFilter.LengthFilter(4);
+//                        editText7.setFilters(FilterArray2);
+//
+//                        if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getPost_Graduation_Year()))
+//                            editText7.setText(ExpOwnProfileModel.getInstance().getPost_Graduation_Year());
+//
+//                        editText7.addTextChangedListener(new TextWatcher() {
+//                            @Override
+//                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                            }
+//
+//                            @Override
+//                            public void afterTextChanged(Editable editable) {
+//                                ExpOwnProfileModel.getInstance().setPost_Graduation_Year(editable.toString());
+//
+//                            }
+//                        });
 
                         break;
                     case 8:
@@ -2939,6 +3079,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         showDialog(list, textView);
     }
 
+    public void showYear(TextView textView) {
+
+        String[] ar = _context.getResources().getStringArray(R.array.year_ar);
+        List<String> list = new ArrayList<String>(Arrays.asList(ar));
+        showDialog(list, textView);
+    }
+
+
     public void showInterests(TextView textView) {
 
         String[] ar = _context.getResources().getStringArray(R.array.interest_ar);
@@ -3143,7 +3291,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         try {
             if (NetworkClass.getInstance().checkInternet(_context) == true) {
                 if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) > 0 ) {
-                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
+//                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
                     if ((getHeightInCM(Max_Height) - getHeightInCM(Min_Height)) > 0) {
 
                     request.token = token;
@@ -3158,9 +3306,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                     } else {
                         AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.HEIGHT_DIFF_ERROR_INFO);
                     }
-                } else {
-                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_5_INFO);
-                }
+//                } else {
+//                    AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_5_INFO);
+//                }
                 } else {
                     AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.AGE_DIFF_ERROR_INFO);
                 }
