@@ -14,14 +14,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
-public class SubscriptionPlanActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener{
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class SubscriptionPlanActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, RxNetworkingForObjectClass.CompletionHandler {
 
     Toolbar mToolbar;
     TextView mTitle, mSubTotalAmountTV, mTotalAmountTV, mTotalSignTV,mSubSignTV;
@@ -33,6 +39,9 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     Button mPayBtn;
     AppPrefs prefs;
+    RxNetworkingForObjectClass rxNetworkingClass;
+    PostAuthWebRequest request;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,10 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         init();
         handleView();
         mBack.setOnClickListener(this);
+
+        rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
+        rxNetworkingClass.setCompletionHandler(this);
+        request = new PostAuthWebRequest();
 
     }
 
@@ -105,12 +118,15 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
                 if(NetworkClass.getInstance().checkInternet(SubscriptionPlanActivity.this) == true){
 //                    showPaymentAlert();
-                    if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
+                    if(mPaymentModeTwoRB.isChecked() == true){
+                            callWebServiceForResendEmail();
+                    }
+                 /*   if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
 
                         alertPaymentSummary();
                     }else if(mInterNationalRB.isChecked() == true) {
 
-                    }
+                    }*/
                 }else {
                     NetworkDialogHelper.getInstance().showDialog(SubscriptionPlanActivity.this);
                 }
@@ -282,5 +298,26 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
+    public void callWebServiceForResendEmail(){
 
+        request.token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriptionPlanActivity.this, CONSTANTS.RTGS_PAYMENT_URL, request, CONSTANTS.METHOD_1);
+
+    }
+
+
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        System.out.println(object);
+
+        try {
+            if(object.getJSONObject("message").getInt("response_code") == 200){
+                AlertDialogSingleClick.getInstance().showDialog(SubscriptionPlanActivity.this, "Alert", "An email is sent with the bank details.");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

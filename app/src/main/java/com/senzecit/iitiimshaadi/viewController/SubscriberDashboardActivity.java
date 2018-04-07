@@ -132,6 +132,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
     }
 
+
     private void init(){
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idRefreshLayout);
         expListView = (ExpandableListView) findViewById(R.id.expandableLV);
@@ -971,6 +972,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     @Override
     public void handle(JSONObject object, String methodName) {
 
+        System.out.println(object);
         if(mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);
 

@@ -490,6 +490,8 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onAlbumClick(ImageView thumbView, String imageURL) {
 
-        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+
+        zoomImageFromThumb(thumbView, imageURL);
     }
 }

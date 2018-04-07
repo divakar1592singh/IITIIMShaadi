@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
-//        prefs.putString(CONSTANTS.OTHER_USERID, "30413");
+        prefs.putString(CONSTANTS.OTHER_USERID, "30413");
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");
@@ -82,8 +82,8 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-//
-//              Intent intent = new Intent(SplashActivity.this, FriendsActivity.class);
+////
+//              Intent intent = new Intent(SplashActivity.this, OtherProfileActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
 //                finish();

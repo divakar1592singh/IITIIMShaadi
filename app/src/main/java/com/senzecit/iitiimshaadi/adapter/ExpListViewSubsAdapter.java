@@ -3879,7 +3879,6 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
     }
 
-
     public static String removeLastChar(String s) {
         if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
             return s = "";

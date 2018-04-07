@@ -274,6 +274,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         return TYPE_ITEM;
     }
+
+
     private boolean isPositionFooter(int position) {
 //        return position > list.size();
         return false;

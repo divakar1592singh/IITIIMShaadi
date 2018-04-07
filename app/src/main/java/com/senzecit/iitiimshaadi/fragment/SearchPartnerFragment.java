@@ -171,6 +171,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         mCityID  = (TextView)view.findViewById(R.id.idCityID);
 
         textEventListner();
+
+        cityWithIdList = new ArrayList<>();
     }
 
     public void textEventListner(){
@@ -751,7 +753,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
                                 String city = object.getString("name");
+                                String cityId = object.getString("old_value");
                                 cityList.add(city);
+                                CityModel cityModel = new CityModel(city, cityId);
+                                cityWithIdList.add(cityModel);
+
                             }
 //                            showDialog(cityList, textView);
                             showSelectableDialog(cityList, textView);
@@ -778,7 +784,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         }
     }
     public void showCityId(String cityName){
-        cityWithIdList = new ArrayList<>();
+//        cityWithIdList = new ArrayList<>();
         for (int i = 0; i < cityWithIdList.size(); i++){
             if(cityName.equalsIgnoreCase(cityWithIdList.get(i).getCityName())){
                 mCityID.append(cityWithIdList.get(i).getCityId()+", ");
