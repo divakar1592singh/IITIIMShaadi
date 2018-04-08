@@ -147,7 +147,7 @@
     </array>
 
     <array name="ann_income_ar">
-        <item>Any</item>
+        <item>Any CTC</item>
         <item>less than 10 LPA</item>
             <item>11-20 LPA</item>
             <item>21-30 LPA</item>

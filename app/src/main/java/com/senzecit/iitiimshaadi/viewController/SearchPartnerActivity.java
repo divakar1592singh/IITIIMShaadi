@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.SearchResultAdapter;
@@ -20,6 +21,8 @@ import com.senzecit.iitiimshaadi.fragment.SearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator, View.OnClickListener {
 
@@ -126,9 +129,43 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.backIV:
-                SearchPartnerActivity.this.finish();
+
+//                Observable.just(mContainerFragLayout)
+//                        .filter(layout -> layout.getVisibility() == View.VISIBLE)
+//                        .subscribe(layout -> {
+//                            // Do something with it
+//                            System.out.println("Visible");
+//                            Toast.makeText(this, "True", Toast.LENGTH_SHORT).show();
+//                        }, throwable1 -> {
+//                            //
+//                            System.out.println("Not Visible");
+//                            Toast.makeText(this, "false", Toast.LENGTH_SHORT).show();
+//                        });
+
+                if(mContainerFragLayout.getVisibility() == View.GONE){
+                    mContainerFragLayout.setVisibility(View.VISIBLE);
+                    mContainerResLayout.setVisibility(View.GONE);
+
+                }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
+                    SearchPartnerActivity.this.finish();
+                }
+
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+       // super.onBackPressed();
+
+        if(mContainerFragLayout.getVisibility() == View.GONE){
+            mContainerFragLayout.setVisibility(View.VISIBLE);
+            mContainerResLayout.setVisibility(View.GONE);
+
+        }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
+            SearchPartnerActivity.this.finish();
+        }
+
     }
 
     @Override

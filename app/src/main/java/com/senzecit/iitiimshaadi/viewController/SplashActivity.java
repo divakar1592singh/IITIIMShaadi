@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "23593");
-        prefs.putString(CONSTANTS.OTHER_USERID, "30413");
+//        prefs.putString(CONSTANTS.OTHER_USERID, "30413");
 
 
 //        prefs.putString(CONSTANTS.LOGGED_USERID, "30413");

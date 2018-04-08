@@ -118,6 +118,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         view = inflater.inflate(R.layout.fragment_search_partner,container,false);
         mDialogInflator = LayoutInflater.from(view.getContext());
         sliderCheckList = new ArrayList<>();
+
         return view;
     }
 
@@ -274,9 +275,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 String city = removeLastChar(s.toString());
                 String[] cityArr = city.split(",");
                 mCityID.setText("");
-                for(String city1 : cityArr){
-                    showCityId(city1);
-                }
+
+                    showCityId(cityArr);
+
             }
         });
     }
@@ -748,6 +749,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                         ProgressClass.getProgressInstance().stopProgress();
                         try {
                             JSONArray jsonArray = response.getJSONArray("allCities");
+                            if(jsonArray.length() > 0){
                             List<String> cityList = new ArrayList<>();
 //                            if(jsonArray.length() > 0){
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -761,9 +763,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                             }
 //                            showDialog(cityList, textView);
                             showSelectableDialog(cityList, textView);
-                        /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
-                        }*/
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
+                        }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.city_not_found);
@@ -783,13 +785,25 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             NetworkDialogHelper.getInstance().showDialog(getActivity());
         }
     }
-    public void showCityId(String cityName){
-//        cityWithIdList = new ArrayList<>();
-        for (int i = 0; i < cityWithIdList.size(); i++){
-            if(cityName.equalsIgnoreCase(cityWithIdList.get(i).getCityName())){
-                mCityID.append(cityWithIdList.get(i).getCityId()+", ");
+
+    public void showCityId(String[] cityArr){
+    StringBuilder sb1 = new StringBuilder();
+
+        for(int i = 0; i < cityArr.length; i++) {
+            for (int j = 0; j < cityWithIdList.size(); j++) {
+                if (cityArr[i].trim().equalsIgnoreCase((cityWithIdList.get(j).getCityName()))) {
+
+//                    mCityID.append(cityWithIdList.get(i).getCityId() + ", ");
+                    sb1.append(cityWithIdList.get(j).getCityId() + ", ");
+                    break;
+                }
             }
         }
+
+        System.out.println(sb1);
+        mCityID.setText(sb1);
+
+
     }
 
 
@@ -880,7 +894,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             return s = "";
         }
         String rawString = s.substring(0, s.length()-1);
-        return rawString.replaceAll("\\s+","");
+        return rawString;
+//        return rawString.replaceAll("\\s+","");
+
 //        st = st.replaceAll("\\s+","")
     }
 
@@ -892,4 +908,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 //        st = st.replaceAll("\\s+","")
     }
 
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//
+//        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+//
+//    }
 }

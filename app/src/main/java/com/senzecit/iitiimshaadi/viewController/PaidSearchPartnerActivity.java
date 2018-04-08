@@ -513,9 +513,31 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.backIV:
-                PaidSearchPartnerActivity.this.finish();
+
+                if(mContainerFragLayout.getVisibility() == View.GONE){
+                    mContainerFragLayout.setVisibility(View.VISIBLE);
+                    mContainerResLayout.setVisibility(View.GONE);
+
+                }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
+                    PaidSearchPartnerActivity.this.finish();
+                }
+
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // super.onBackPressed();
+
+        if(mContainerFragLayout.getVisibility() == View.GONE){
+            mContainerFragLayout.setVisibility(View.VISIBLE);
+            mContainerResLayout.setVisibility(View.GONE);
+
+        }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
+            PaidSearchPartnerActivity.this.finish();
+        }
+
     }
 
     @Override

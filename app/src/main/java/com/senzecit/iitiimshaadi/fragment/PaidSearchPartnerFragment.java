@@ -227,9 +227,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 String city = removeLastChar(s.toString());
                 String[] cityArr = city.split(",");
                 mCityID.setText("");
-                for(String city1 : cityArr){
-                    showCityId(city1);
-                }
+
+                    showCityId(cityArr);
+
             }
         });
 
@@ -855,6 +855,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                             ProgressClass.getProgressInstance().stopProgress();
                             try {
                                 JSONArray jsonArray = response.getJSONArray("allCities");
+                                if(jsonArray.length() > 0){
+
                                 List<String> cityList = new ArrayList<>();
 //                            if(jsonArray.length() > 0){
                                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -866,9 +868,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                                     cityWithIdList.add(cityModel);
                                 }
                                 showSelectableDialog(cityList, textView);
-                        /*}else {
-                            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", CONSTANTS.cast_not_found);
-                        }*/
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.country_error_msg);
+                        }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.city_not_found);
@@ -888,12 +890,24 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         }
 
     }
-    public void showCityId(String cityName){
-        for (int i = 0; i < cityWithIdList.size(); i++){
-            if(cityName.equalsIgnoreCase(cityWithIdList.get(i).getCityName())){
-                mCityID.append(cityWithIdList.get(i).getCityId()+", ");
+    public void showCityId(String[] cityArr){
+        StringBuilder sb1 = new StringBuilder();
+
+        for(int i = 0; i < cityArr.length; i++) {
+            for (int j = 0; j < cityWithIdList.size(); j++) {
+                if (cityArr[i].trim().equalsIgnoreCase((cityWithIdList.get(j).getCityName()))) {
+
+//                    mCityID.append(cityWithIdList.get(i).getCityId() + ", ");
+                    sb1.append(cityWithIdList.get(j).getCityId() + ", ");
+                    break;
+                }
             }
         }
+
+        System.out.println(sb1);
+        mCityID.setText(sb1);
+
+
     }
 
 
