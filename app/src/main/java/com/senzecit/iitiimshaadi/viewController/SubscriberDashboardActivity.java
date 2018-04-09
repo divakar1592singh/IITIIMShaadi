@@ -973,7 +973,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     public void handle(JSONObject object, String methodName) {
 
         System.out.println(object);
-        if(mSwipeRefreshLayout.isRefreshing())
+//        if(mSwipeRefreshLayout.isRefreshing() == true)
             mSwipeRefreshLayout.setRefreshing(false);
 
         try {

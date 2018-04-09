@@ -96,7 +96,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         holder.mEducationTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getHighestEducation()));
 
         try {
-            String userId = String.valueOf(queryList.get(position).getId());
+            String userId = String.valueOf(queryList.get(position).getUserId());
             String partUrl = queryList.get(position).getProfileImage();
             String gender = queryList.get(position).getGender();
             Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(DataHandlingClass.getInstance().getOtherProfile(gender)).into(holder.mSearchpartnerIV);
@@ -127,7 +127,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         holder.mSearchpartnerIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userId = String.valueOf(queryList.get(position).getId());
+                String userId = String.valueOf(queryList.get(position).getUserId());
                 if(userId.length()> 0){
                     prefs.putString(CONSTANTS.OTHER_USERID, userId);
                     Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);

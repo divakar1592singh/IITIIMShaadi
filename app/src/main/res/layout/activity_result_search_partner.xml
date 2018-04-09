@@ -57,7 +57,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="21"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -87,7 +87,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="21"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -117,7 +117,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="India"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -147,7 +147,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Delhi"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -177,7 +177,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Hindu"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -236,7 +236,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Hindi"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -266,7 +266,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Never Married"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -296,7 +296,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Not Disclose"
+                    android:text=""
                     android:textColor="@color/colorGrey"
                     android:textSize="14sp"/>
             </LinearLayout>
@@ -314,6 +314,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/idTotalCountTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Page 1 of "
@@ -324,36 +325,44 @@
                     android:layout_height="wrap_content"
                     android:text="1"
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=", showing "
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
+                    android:id="@+id/idMinRecord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" records out of "
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
+                    android:id="@+id/idMaxRecord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" total,"
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
             </LinearLayout>
             <LinearLayout
@@ -364,23 +373,28 @@
                     android:layout_height="wrap_content"
                     android:text=" starting on record "
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" ,ending on "
                     android:textColor="@color/colorGrey"
+                    android:visibility="gone"
                     android:textSize="16sp"/>
                 <TextView
+                    android:id="@+id/idEndRecord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
+                    android:visibility="gone"
                     android:textColor="@color/colorGrey"
                     android:textSize="16sp"/>
             </LinearLayout>

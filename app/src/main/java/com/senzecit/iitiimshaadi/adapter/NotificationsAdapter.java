@@ -71,12 +71,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Current Selection : "+getItemCount(), Toast.LENGTH_SHORT).show();
+              /*  Toast.makeText(mContext, "Current Selection : "+getItemCount(), Toast.LENGTH_SHORT).show();
                 String userID = String.valueOf(list.get(position).getId());
                 if(userID.length()> 0){
                     prefs.putString(CONSTANTS.OTHER_USERID, userID);
                     Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
-                }
+                }*/
             }
         });
     }

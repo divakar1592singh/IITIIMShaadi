@@ -38,6 +38,8 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     RecyclerView mSearchResultRecyclerView;
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
 
+    TextView mTotalCountTV, mMinRecordTV, mMaxRecord, mEndRecord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +74,14 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
 
+        //
+        mTotalCountTV = (TextView)findViewById(R.id.idTotalCountTV);
+        mMinRecordTV = (TextView)findViewById(R.id.idMinRecord);
+        mMaxRecord = (TextView)findViewById(R.id.idMaxRecord);
+        mEndRecord = (TextView)findViewById(R.id.idEndRecord);
+
+
+
         mAgeMin = findViewById(R.id.minAgeTV);
         mAgeMax = findViewById(R.id.maxAgeTV);
         mCountry = findViewById(R.id.countryTV);
@@ -89,7 +99,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     }
 
     @Override
-    public void saveSearchPartner(List<User> queryList, List<String> profileList) {
+    public void saveSearchPartner(List<User> queryList, List<String> profileList, int totalUserCount) {
 
         mBack.setOnClickListener(this);
         mContainerFragLayout.setVisibility(View.GONE);
@@ -100,6 +110,44 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
         setSearchedData(profileList);
         setMatchedList(queryList);
+
+
+        try {
+           /* mTotalCountTV.setText(String.valueOf(totalUserCount/10));
+            if(totalUserCount <10){
+                mMinRecordTV.setText(String.valueOf(totalUserCount));
+            }else {
+                mMinRecordTV.setText("10");
+            }
+            mMaxRecord.setText(String.valueOf(totalUserCount));
+            if(totalUserCount <10){
+                mEndRecord.setText(String.valueOf(totalUserCount));
+            }else {
+                mEndRecord.setText("10");
+            }*/
+           int pageCount = (totalUserCount/10)+1;
+           int minCount = 0;
+           int maxCount = 0;
+            if(totalUserCount <10){
+                minCount = totalUserCount;
+            }else {
+                minCount = 10;
+            }
+
+          /*  if(totalUserCount <10){
+                mEndRecord.setText(String.valueOf(totalUserCount));
+            }else {
+                mEndRecord.setText("10");
+            }
+            */
+           String s = "Page 1 of "+pageCount+", showing "+minCount+" records out of "+totalUserCount+" total, starting on record 1, ending on "+minCount;
+
+            mTotalCountTV.setText(s);
+        }catch(NullPointerException npe){
+            Log.e(TAG, " #Error : "+npe, npe);
+        }catch(NumberFormatException nfe){
+            Log.e(TAG, " #Error : "+nfe, nfe);
+        }
 
     }
 
@@ -129,18 +177,6 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.backIV:
-
-//                Observable.just(mContainerFragLayout)
-//                        .filter(layout -> layout.getVisibility() == View.VISIBLE)
-//                        .subscribe(layout -> {
-//                            // Do something with it
-//                            System.out.println("Visible");
-//                            Toast.makeText(this, "True", Toast.LENGTH_SHORT).show();
-//                        }, throwable1 -> {
-//                            //
-//                            System.out.println("Not Visible");
-//                            Toast.makeText(this, "false", Toast.LENGTH_SHORT).show();
-//                        });
 
                 if(mContainerFragLayout.getVisibility() == View.GONE){
                     mContainerFragLayout.setVisibility(View.VISIBLE);

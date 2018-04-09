@@ -203,7 +203,7 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
 
         if(typeOf.equalsIgnoreCase(UserDefinedKeyword.ADD.toString())){
-            return apiInterface.serviceAddAsFriend(token, friend_user);
+            return apiInterface.serviceAcceptFriend(token, friend_user);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.REMOVE.toString())){
             return apiInterface.serviceRemoveFriend(token, friend_user);
         }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.CANCEL.toString())){

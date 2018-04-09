@@ -35,6 +35,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.GeneralSettingResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.general_setting.GeneralSettingRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -318,7 +319,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                             Toast.makeText(SettingsActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Toast.makeText(SettingsActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this, AppMessage.SOME_ERROR_INFO, Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(SettingsActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
@@ -380,7 +381,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         int id = mDeactivateRG.getCheckedRadioButtonId();
         RadioButton rb1 = (RadioButton)findViewById(id);
         String reason = rb1.getText().toString();
-        Toast.makeText(SettingsActivity.this, "Success : "+reason, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(SettingsActivity.this, "Success : "+reason, Toast.LENGTH_SHORT).show();
         callWebServiceForDeactivate(reason);
 
                     }
@@ -415,7 +416,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
 
                         } else {
-                            Toast.makeText(SettingsActivity.this, "Confuse", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this, AppMessage.SOME_ERROR_INFO, Toast.LENGTH_SHORT).show();
                         }
                     }else {
                         Toast.makeText(SettingsActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();

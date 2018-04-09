@@ -298,7 +298,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         }
     }
-*/
+*//**/
 
 
     /** API - Friend Manipulation Task */

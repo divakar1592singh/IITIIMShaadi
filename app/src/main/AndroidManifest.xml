@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -37,9 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
 
         <activity
             android:name=".viewController.LoginActivity"
@@ -52,20 +51,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.ProfileActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
             android:descendantFocusability="afterDescendants"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".viewController.PaidSubscriberDashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".viewController.SubscriberDashboardActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
             android:descendantFocusability="afterDescendants"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".navigation.PaidBaseActivity"
             android:screenOrientation="portrait" />
@@ -89,7 +88,6 @@
         <activity
             android:name=".viewController.SubscriptionActivityPaid"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".viewController.FriendsActivity"
             android:screenOrientation="portrait" />
@@ -115,47 +113,53 @@
         <activity
             android:name=".viewController.ChatMessagesActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".viewController.IntroSliderActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".customdialog.MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".viewController.IntroSliderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".customdialog.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.YoutubeActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".viewController.AlertPlanActivity" />
         <activity
             android:name=".viewController.PrivacyActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".viewController.DisclaimerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".viewController.HowToNavigatePageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".viewController.IntroSliderWebActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".viewController.SubscriptionPlanActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".viewController.IntroSliderWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".viewController.SubscriptionPlanActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".viewController.OtherProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".viewController.SearchPartnerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".viewController.PaidSearchPartnerActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".viewController.CustomFoldersActivity"
+        <activity
+            android:name=".viewController.SearchPartnerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".viewController.PaidSearchPartnerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".viewController.CustomFoldersActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -163,19 +167,31 @@
 
         <activity
             android:name=".payment.MakePaymentActivity"
-            android:theme="@style/AppThemePay"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".chat.ChatLoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".chat.SocketSingleChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".viewController.NotificationsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".viewController.AllInterestActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".viewController.OtherAlbumActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemePay" />
+        <activity
+            android:name=".chat.ChatLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".chat.SocketSingleChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".viewController.NotificationsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".viewController.AllInterestActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".viewController.OtherAlbumActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".paypal.PayPalHomeActivity" />
+        <activity android:name=".paypal.PayPalDetailsActivity"></activity>
+        //PayPal
+        <service android:name="com.paypal.android.sdk.payments.PayPalService" android:exported="false" />
+        <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
+        <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
+
     </application>
 
 </manifest>

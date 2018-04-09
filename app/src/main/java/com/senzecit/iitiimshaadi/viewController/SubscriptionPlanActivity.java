@@ -17,6 +17,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
+import com.senzecit.iitiimshaadi.paypal.PayPalHomeActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -116,11 +117,13 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
                 break;
             case R.id.idPayBtn:
 
+//                if(mPaymentModeTwoRB.isChecked() == true){
+//                    callWebServiceForResendEmail();
+//                }
+
                 if(NetworkClass.getInstance().checkInternet(SubscriptionPlanActivity.this) == true){
-//                    showPaymentAlert();
-                    if(mPaymentModeTwoRB.isChecked() == true){
-                            callWebServiceForResendEmail();
-                    }
+                    showPaymentAlert();
+
                  /*   if(mIndianRB.isChecked() == true && mPaymentModeOneRB.isChecked() == true){
 
                         alertPaymentSummary();
@@ -228,7 +231,21 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
     }
 
     public void showPaymentAlert(){
-//        showDialogPayment();
+
+/*        TextView mTitle, mSubTotalAmountTV, mTotalAmountTV, mTotalSignTV,mSubSignTV;
+        ImageView mBack;
+
+        RadioGroup mRadioGroup, mCountryRadioGroup;
+        RadioButton mInterNationalRB, mIndianRB, mOneMonthRB, mSixMonthRB, mTwelveMonthRB,
+                mLifetimeRB, mPaymentModeOneRB, mPaymentModeTwoRB;*/
+
+        if(mPaymentModeOneRB.isChecked() == true){
+            alertPaymentSummary();
+        }
+
+        if(mPaymentModeTwoRB.isChecked() == true){
+            callWebServiceForResendEmail();
+        }
     }
 
     private void alertPaymentSummary(){
@@ -271,7 +288,11 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
             @Override
             public void onClick(View view) {
 //                callWebServiceForEmailVerification();
-                transactPayment();
+                if(mIndianRB.isChecked() == true){
+                    transactPayUMoney();
+                }else if(mInterNationalRB.isChecked() == true){
+                    transactPayPal();
+                }
                 dialog.dismiss();
             }
         });
@@ -281,9 +302,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
     }
 
 
-    public void transactPayment(){
-
-//            Toast.makeText(SubscriptionPlanActivity.this, mTotalAmountTV.getText().toString(), Toast.LENGTH_LONG).show();
+    public void transactPayUMoney(){
             boolean status = true;
             Intent intent = new Intent(SubscriptionPlanActivity.this, MakePaymentActivity.class);
             intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());
@@ -291,6 +310,17 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
             startActivity(intent);
 
     }
+
+    public void transactPayPal(){
+            boolean status = true;
+            Intent intent = new Intent(SubscriptionPlanActivity.this, PayPalHomeActivity.class);
+            intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());
+            intent.putExtra(CONSTANTS.PLAN_STATUS, status);
+            startActivity(intent);
+
+    }
+
+
 
     @Override
     public void finish() {

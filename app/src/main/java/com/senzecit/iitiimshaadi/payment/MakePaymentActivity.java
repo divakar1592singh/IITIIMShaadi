@@ -309,6 +309,9 @@ public class MakePaymentActivity extends BaseActivity {
             if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
                 if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
                     //Success Transaction
+
+
+
                 } else {
                     //Failure Transaction
                 }
@@ -390,6 +393,8 @@ public class MakePaymentActivity extends BaseActivity {
         try {
 //            amount = Double.parseDouble(amount_et.getText().toString());
             String sAmount = getIntent().getExtras().getString(CONSTANTS.AMOUNT_PAY);
+//            String sAmount = "1";
+
             amount = Double.parseDouble(sAmount);
 
 

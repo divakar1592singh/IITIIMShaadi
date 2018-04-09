@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.paypal.PayPalHomeActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -83,12 +84,12 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 ////
-//              Intent intent = new Intent(SplashActivity.this, OtherProfileActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                finish();
+     /*         Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
 
-
+*/
 
 
              /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){

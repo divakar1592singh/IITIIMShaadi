@@ -328,7 +328,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     }
 
     public interface SearchPartnerFragmentCommunicator{
-        void saveSearchPartner(List<User> queryList, List<String> profileList);
+        void saveSearchPartner(List<User> queryList, List<String> profileList, int totalUserCount );
     }
 
     /** API -  */
@@ -390,7 +390,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                         if(response.body().getUsers().size() > 0){
                             List<User> queryList = response.body().getUsers();
                             System.out.print(profileList);
-                            communicator.saveSearchPartner(queryList, profileList);
+                            communicator.saveSearchPartner(queryList, profileList, response.body().getTotalCount());
                         }else {
                             AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.search_ptnr_err_msg);
                         }
@@ -805,7 +805,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
 
     }
-
 
     public void showCaste(final TextView textView) {
 
