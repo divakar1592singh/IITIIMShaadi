@@ -173,7 +173,12 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        IntroSliderWebActivity.super.onBackPressed();
+//                        IntroSliderWebActivity.super.onBackPressed();
+
+                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                        homeIntent.addCategory( Intent.CATEGORY_HOME );
+                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeIntent);
                     }
                 }).create().show();
     }

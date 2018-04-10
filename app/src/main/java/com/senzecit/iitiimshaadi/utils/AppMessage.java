@@ -32,6 +32,11 @@ public interface AppMessage {
     String USER_VALID = "Check Username/Email is valid";
     String USERPWD_INVALID = "Check Username/Email or Password is valid";
     String PASSWORD_EMPTY = "Password can't be empty";
+    String AGE_LIMIT = "Age should be more than 20";
+    String MAX_AGE_LIMIT = "Max Age should be more than 20";
+
+    String NO_CHAT_USER = "No User is available for chat";
+
 
 
 

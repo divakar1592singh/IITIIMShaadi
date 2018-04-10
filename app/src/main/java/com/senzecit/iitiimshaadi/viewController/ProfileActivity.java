@@ -100,7 +100,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         handleView();
 
         setProfileData();
-        callWebServiceMyProfile();
 
     }
 
@@ -108,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onStart() {
         super.onStart();
 
+        callWebServiceMyProfile();
     }
 
     private void init(){

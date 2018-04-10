@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
@@ -51,6 +54,9 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
     FrameLayout frameLayout;
     String userType;
     AppPrefs prefs;
+    ToggleButton rightToggle;
+    NavigationView navigationView;
+    View headerview;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -65,7 +71,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         super.setContentView(drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        final ToggleButton rightToggle = (ToggleButton)findViewById(R.id.right_menu_toggle);
+        rightToggle = (ToggleButton)findViewById(R.id.right_menu_toggle);
 //        Button btn1 = (Button) findViewById(R.id.idNavHome);
         ImageView mChatIV = (ImageView)findViewById(R.id.idChat);
         mChatIV.setOnClickListener(this);
@@ -93,10 +99,10 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.requestLayout();
-        View headerview = navigationView.getHeaderView(0);
+        headerview = navigationView.getHeaderView(0);
 
         TextView mSearchPartnerBtn = (TextView)headerview.findViewById(R.id.idSearchPartnerNav);
         TextView mFriendsBtn = (TextView)headerview.findViewById(R.id.idfriendsNav);
@@ -171,11 +177,14 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
 
+        drawer.closeDrawer(Gravity.RIGHT);
+        drawer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
         switch (view.getId())
         {
-
-            case R.id.idSearchPartnerNav: {
-                // Toast.makeText(getApplicationContext(), "Search Partner", // Toast.LENGTH_LONG).show();
+                case R.id.idSearchPartnerNav: {
 
                 if(userType.equalsIgnoreCase("subscriber")) {
                     AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Subscriber not allowed");
@@ -275,7 +284,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.idChat:
 //                AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "Working on Chat");
                 if(prefs.getInt(CONSTANTPREF.CHAT_USER_COUNT) == 0){
-                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", "No Chatable User!");
+                    AlertDialogSingleClick.getInstance().showDialog(BaseNavActivity.this, "Alert", AppMessage.NO_CHAT_USER);
                 }else {
                     startActivity(new Intent(BaseNavActivity.this, ChatMessagesActivity.class));
                 }
@@ -323,9 +332,21 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                         .show();
 
                 break;
-
         }
+
+            }
+        }, 200);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+
+        /*if(drawer.isDrawerOpen(headerview)){
+            drawer.closeDrawer(Gravity.RIGHT);
+        }else{
+            super.onBackPressed();
+        }*/
+    }
 }

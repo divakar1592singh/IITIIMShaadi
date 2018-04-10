@@ -185,7 +185,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         mAgeMaxET.setFilters(FilterArray);
         mAgeMaxET.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
 
-
         mAgeMinET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -195,7 +194,55 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String sMinAge = mAgeMinET.getText().toString().trim();
+                try {
+                    String sMinAge = mAgeMinET.getText().toString().trim();
+                    String sMaxAge = mAgeMaxET.getText().toString().trim();
+
+                    if (!TextUtils.isEmpty(sMinAge)) {
+                        int minimumAge = Integer.parseInt(sMinAge);
+
+                        if (minimumAge <= 20) {
+                            mAgeCautionTV.setVisibility(View.VISIBLE);
+                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
+                        } else {
+                            mAgeCautionTV.setVisibility(View.GONE);
+                            if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                                int maximumAge = Integer.parseInt(sMaxAge);
+                                if ((maximumAge - minimumAge) <= 5) {
+                                    mAgeCautionTV.setVisibility(View.GONE);
+                                } else {
+                                    mAgeCautionTV.setVisibility(View.VISIBLE);
+                                    mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
+                                }
+                            }
+                        }
+                    }
+
+                }catch (NumberFormatException nfe){
+                    Log.e(TAG, "#Err : "+nfe, nfe);
+                }catch (NullPointerException npe){
+                    Log.e(TAG, "#Err : "+npe, npe);
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mAgeMaxET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+              /*  String sMinAge = mAgeMinET.getText().toString();
                 String sMaxAge = mAgeMaxET.getText().toString();
 
                 if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
@@ -208,37 +255,36 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                         mAgeCautionTV.setVisibility(View.VISIBLE);
                     }
                 }
+*/
 
-            }
+                try {
+                    String sMinAge = mAgeMinET.getText().toString().trim();
+                    String sMaxAge = mAgeMaxET.getText().toString().trim();
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                    if (!TextUtils.isEmpty(sMinAge)) {
+                        int maximumAge = Integer.parseInt(sMaxAge);
 
-            }
-        });
-
-        mAgeMaxET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-                String sMinAge = mAgeMinET.getText().toString();
-                String sMaxAge = mAgeMaxET.getText().toString();
-
-                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
-                    int minimumAge = Integer.parseInt(sMinAge);
-                    int maximumAge = Integer.parseInt(sMaxAge);
-
-                    if ((maximumAge - minimumAge) <= 5) {
-                        mAgeCautionTV.setVisibility(View.GONE);
-                    } else {
-                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                        if (maximumAge <= 20) {
+                            mAgeCautionTV.setVisibility(View.VISIBLE);
+                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
+                        } else {
+                            mAgeCautionTV.setVisibility(View.GONE);
+                            if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                                int minimumAge = Integer.parseInt(sMinAge);
+                                if ((maximumAge - minimumAge) <= 5) {
+                                    mAgeCautionTV.setVisibility(View.GONE);
+                                } else {
+                                    mAgeCautionTV.setVisibility(View.VISIBLE);
+                                    mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
+                                }
+                            }
+                        }
                     }
+
+                }catch (NumberFormatException nfe){
+                    Log.e(TAG, "#Err : "+nfe, nfe);
+                }catch (NullPointerException npe){
+                    Log.e(TAG, "#Err : "+npe, npe);
                 }
 
 
@@ -261,6 +307,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             public void afterTextChanged(Editable s) {
                 String country = s.toString();
                 showCountryId(country);
+                mPartnerCurrentCityIV.setText("Select City");
             }
         });
         mPartnerCurrentCityIV.addTextChangedListener(new TextWatcher() {
@@ -278,6 +325,23 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
                     showCityId(cityArr);
 
+            }
+        });
+
+        mSelectReligionTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSelectCastTV.setText("Select Caste");
             }
         });
     }
@@ -375,44 +439,49 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         profileList.add(course);profileList.add(annual_income);
 
         try{
-        if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
-            if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5 ) {
+        if(NetworkClass.getInstance().checkInternet(getActivity()) == true) {
+            if (Integer.parseInt(maxage) > 20 && Integer.parseInt(minage) > 20) {
+                if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5) {
 
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        ProgressClass.getProgressInstance().showDialog(getActivity());
-        Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(token, "1", minage, maxage, country, cityArr,religion,casteArr,mother_toungeArr,marital_statusArr,courseArr,annual_incomeArr);
-        call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
-            @Override
-            public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
-                        if(response.body().getUsers().size() > 0){
-                            List<User> queryList = response.body().getUsers();
-                            System.out.print(profileList);
-                            communicator.saveSearchPartner(queryList, profileList, response.body().getTotalCount());
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.search_ptnr_err_msg);
-                        }
-                    }else {
+
+                    APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+                    ProgressClass.getProgressInstance().showDialog(getActivity());
+                    Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearch(token, "1", minage, maxage, country, cityArr, religion, casteArr, mother_toungeArr, marital_statusArr, courseArr, annual_incomeArr);
+                    call.enqueue(new Callback<SubsAdvanceSearchResponse>() {
+                        @Override
+                        public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
+                            ProgressClass.getProgressInstance().stopProgress();
+                            if (response.isSuccessful()) {
+                                if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                                    if (response.body().getUsers().size() > 0) {
+                                        List<User> queryList = response.body().getUsers();
+                                        System.out.print(profileList);
+                                        communicator.saveSearchPartner(queryList, profileList, response.body().getTotalCount());
+                                    } else {
+                                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", CONSTANTS.search_ptnr_err_msg);
+                                    }
+                                } else {
 //                        AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Search Partner", "Opps");
-                        reTryMethod();
-                    }
-                }
-            }
+                                    reTryMethod();
+                                }
+                            }
+                        }
 
-            @Override
-            public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
-                call.cancel();
+                        @Override
+                        public void onFailure(Call<SubsAdvanceSearchResponse> call, Throwable t) {
+                            call.cancel();
 //                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod();
-            }
-        });
+                            ProgressClass.getProgressInstance().stopProgress();
+                            reTryMethod();
+                        }
+                    });
 
+                } else {
+                    AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_DIFF_5_INFO);
+                }
             } else {
-         AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_DIFF_5_INFO);
-        }
+                AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_LIMIT);
+            }
         }else {
             NetworkDialogHelper.getInstance().showDialog(getActivity());
         }
@@ -535,10 +604,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         final ListView listView = (ListView) view.findViewById(R.id.custom_list);
         Button doneBtn = (Button)view.findViewById(R.id.button_done);
 
-
         SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(getContext(), models, sliderCheckList);
         listView.setAdapter(clad1);
-
 
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
@@ -572,9 +639,12 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     }
 
                 }
+                /*txtListChild.setText(selectedQualification.toString());
+                dialog.dismiss();*/
                 txtListChild.setText(selectedQualification.toString());
+                String rawStr = txtListChild.getText().toString().trim();
+                txtListChild.setText(removeLastChar(rawStr));
                 dialog.dismiss();
-//             Toast.makeText(MainActivity.this, "Data is : "+slideText.getText(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -889,14 +959,14 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     }
 
     public static String removeLastChar(String s) {
+        String rawString = "";
         if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
             return s = "";
-        }
-        String rawString = s.substring(0, s.length()-1);
-        return rawString;
-//        return rawString.replaceAll("\\s+","");
+        }else if(s.endsWith(",")){
 
-//        st = st.replaceAll("\\s+","")
+            return  rawString = s.substring(0, s.length()-1);
+        }
+        return s;
     }
 
     public static String removeWhiteSpace(String s) {

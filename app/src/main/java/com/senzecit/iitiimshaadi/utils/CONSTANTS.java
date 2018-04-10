@@ -129,4 +129,28 @@ public interface CONSTANTS {
     String METHOD_5 = "method_5";
 
 
+    //MEDIA COVERAGE WEB
+    String MEDIA_URL_1 = "https://www.economist.com/news/business/21729571-only-tenth-people-seeking-spouse-use-internet-set-rise-online";
+    String MEDIA_URL_2 = "https://iitiimshaadi.com/admin/img/uploads/1488360418-BrandEquity.jpg";
+    String MEDIA_URL_3 = "https://iitiimshaadi.com/images/hello.mp4";
+    String MEDIA_URL_4 = "http://blogs.wsj.com/indiarealtime/2014/08/18/a-matter-of-degree-wedding-website-for-iit-and-iim-graduates/";
+    String MEDIA_URL_5 = "http://economictimes.indiatimes.com/articleshow/40958879.cms";
+    String MEDIA_URL_6 = "https://www.hindustantimes.com/india/matchmaking-portal-for-iit-iim-graduates/story-u2XFPJX6NXjkSeowFXLetI.html";
+    String MEDIA_URL_7 = "https://timesofindia.indiatimes.com/India/Eligible-for-marriage-only-if-you-have-an-elite-education/articleshow/41399863.cms";
+    String MEDIA_URL_8 = "http://www.newindianexpress.com/cities/hyderabad/2014/aug/21/Are-You-Qualified-Enough-to-Get-Married-650589.html";
+    String MEDIA_URL_9 = "http://www.business-standard.com/article/beyond-business/highly-educated-and-ready-to-mingle-log-on-114091100232_1.html";
+    String MEDIA_URL_10 = "https://www.cnbc.com/2014/12/17/saying-i-do-goes-high-tech-in-india.html";
+    String MEDIA_URL_11 = "https://www.deccanchronicle.com/150113/nation-current-affairs/article/iits-iims-trend-matrimonial-websites";
+    String MEDIA_URL_12 = "http://www.deccanherald.com/content/567584/matchmaking-made-easy-iit-iim.html";
+    String MEDIA_URL_13 = "https://iitiimshaadi.com/images/sandesh.png";
+    String MEDIA_URL_14 = "https://www.redfmindia.in/";
+    String MEDIA_URL_15 = "http://iitiimshaadi.com/webroot/document/Doc2.docx";
+    String MEDIA_URL_16 = "https://www.youthkiawaaz.com/2017/07/iitiimshaadi-matrimony-in-india/    ";
+    String MEDIA_URL_17 = "https://www.buzzfeed.com/sahilrizwan/shaadi-se-pehle?utm_term=.mwDJa0pxW#.pq31DyQre";
+    String MEDIA_URL_18 = "https://www.firstpost.com/business/living-business/seeking-iit-iim-graduates-as-husbands-now-a-portal-for-the-academic-elite-1985165.html";
+    String MEDIA_URL_19 = "https://www.scoopwhoop.com/news/wedding-bells/?ref=search#.gwk8y32s6";
+    String MEDIA_URL_20 = "http://www.rediff.com/getahead/report/specials-now-dating-sites-for-the-highly-educated/20140915.htm";
+
+
+
 }

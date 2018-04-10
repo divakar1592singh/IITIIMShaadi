@@ -247,19 +247,37 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String sMinAge = mAgeMinET.getText().toString().trim();
-                String sMaxAge = mAgeMaxET.getText().toString();
 
-                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
-                    int minimumAge = Integer.parseInt(sMinAge);
-                    int maximumAge = Integer.parseInt(sMaxAge);
+                try {
+                    String sMinAge = mAgeMinET.getText().toString().trim();
+                    String sMaxAge = mAgeMaxET.getText().toString().trim();
 
-                    if ((maximumAge - minimumAge) <= 5) {
-                        mAgeCautionTV.setVisibility(View.GONE);
-                    } else {
-                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                    if (!TextUtils.isEmpty(sMinAge)) {
+                        int minimumAge = Integer.parseInt(sMinAge);
+
+                        if (minimumAge <= 20) {
+                            mAgeCautionTV.setVisibility(View.VISIBLE);
+                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
+                        } else {
+                            mAgeCautionTV.setVisibility(View.GONE);
+                            if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                                int maximumAge = Integer.parseInt(sMaxAge);
+                                if ((maximumAge - minimumAge) <= 5) {
+                                    mAgeCautionTV.setVisibility(View.GONE);
+                                } else {
+                                    mAgeCautionTV.setVisibility(View.VISIBLE);
+                                    mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
+                                }
+                            }
+                        }
                     }
+
+                }catch (NumberFormatException nfe){
+                    Log.e(TAG, "#Err : "+nfe, nfe);
+                }catch (NullPointerException npe){
+                    Log.e(TAG, "#Err : "+npe, npe);
                 }
+
 
             }
 
@@ -279,18 +297,34 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 
-                String sMinAge = mAgeMinET.getText().toString();
-                String sMaxAge = mAgeMaxET.getText().toString();
+                try {
+                    String sMinAge = mAgeMinET.getText().toString().trim();
+                    String sMaxAge = mAgeMaxET.getText().toString().trim();
 
-                if(!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
-                    int minimumAge = Integer.parseInt(sMinAge);
-                    int maximumAge = Integer.parseInt(sMaxAge);
+                    if (!TextUtils.isEmpty(sMinAge)) {
+                        int maximumAge = Integer.parseInt(sMaxAge);
 
-                    if ((maximumAge - minimumAge) <= 5) {
-                        mAgeCautionTV.setVisibility(View.GONE);
-                    } else {
-                        mAgeCautionTV.setVisibility(View.VISIBLE);
+                        if (maximumAge <= 20) {
+                            mAgeCautionTV.setVisibility(View.VISIBLE);
+                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
+                        } else {
+                            mAgeCautionTV.setVisibility(View.GONE);
+                            if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
+                                int minimumAge = Integer.parseInt(sMinAge);
+                                if ((maximumAge - minimumAge) <= 5) {
+                                    mAgeCautionTV.setVisibility(View.GONE);
+                                } else {
+                                    mAgeCautionTV.setVisibility(View.VISIBLE);
+                                    mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
+                                }
+                            }
+                        }
                     }
+
+                }catch (NumberFormatException nfe){
+                    Log.e(TAG, "#Err : "+nfe, nfe);
+                }catch (NullPointerException npe){
+                    Log.e(TAG, "#Err : "+npe, npe);
                 }
 
 
@@ -302,17 +336,38 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             }
         });
 
-    }
+        mPartnerCurrentCountryTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+//                String country = s.toString();
+//                showCountryId(country);
+                mPartnerCurrentCityIV.setText("Select City");
+            }
+        });
 
-    public static String removeLastChar(String s) {
-        if (s == null || s.length() == 0) {
-            return s;
-        }
-        String rawString = s.substring(0, s.length()-1);
-        return rawString.replaceAll("\\s+","");
-//        st = st.replaceAll("\\s+","")
-    }
+        mSelectReligionTV.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mSelectCastTV.setText("Select Caste");
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {
@@ -1003,6 +1058,17 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 //        void saveAndSearchPaidPartnerByKeyword(List<Query> queryList, String keyword);
 //        void saveAndSearchPaidPartnerByAdvance(List<Query> queryList, List<String> profileList);
 
+    }
+
+    public static String removeLastChar(String s) {
+        String rawString = "";
+        if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
+            return s = "";
+        }else if(s.endsWith(",")){
+
+            return  rawString = s.substring(0, s.length()-1);
+        }
+        return s;
     }
 
 }

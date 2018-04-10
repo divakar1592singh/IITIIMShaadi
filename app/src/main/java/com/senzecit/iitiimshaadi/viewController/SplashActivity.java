@@ -84,7 +84,8 @@ public class SplashActivity extends AppCompatActivity {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 ////
-     /*         Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
+
+      /*        Intent intent = new Intent(SplashActivity.this, MediaCoverageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
@@ -99,9 +100,6 @@ public class SplashActivity extends AppCompatActivity {
                 }*/
 
 //***************************
-
-/*https://stackoverflow.com/questions/
-39190058/when-settext-on-edittext-textwatcher-ontextchanged-not-called*/
 
 
 
@@ -154,7 +152,6 @@ public class SplashActivity extends AppCompatActivity {
 
             Log.e(TAG, "#Error : "+npe, npe);
             Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-
             startActivity(intent);
             finish();
         }

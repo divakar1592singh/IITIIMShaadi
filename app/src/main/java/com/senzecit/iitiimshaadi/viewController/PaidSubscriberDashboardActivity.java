@@ -217,9 +217,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
 
         if(!TextUtils.isEmpty(profileUri)){
-//            Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
             Glide.with(PaidSubscriberDashboardActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
-
         }
 
         mUsrNameTV.setText(new StringBuilder("@").append(userName));
@@ -636,7 +634,11 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        PaidSubscriberDashboardActivity.super.onBackPressed();
+//                        PaidSubscriberDashboardActivity.super.onBackPressed();
+                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                        homeIntent.addCategory( Intent.CATEGORY_HOME );
+                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeIntent);
 
                     }
                 }).create().show();
@@ -684,7 +686,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         dialog.show();
     }
 
-    //        EXTRA
+    // EXTRA
     public void showSnackBar(){
         View parentLayout = findViewById(android.R.id.content);
         Snackbar.make(parentLayout, "Something went wrong! Retry", Snackbar.LENGTH_LONG)
@@ -712,7 +714,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     }
 
     /** ******** GARBAGE ******** */
-
     private void alertDialogEmail(){
 
         final TextView mMessage;
@@ -1202,5 +1203,20 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                 .show();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+//        recreate();
+
+        /*Intent intent = getIntent();
+        finish();
+        startActivity(intent);*/
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
 
 }

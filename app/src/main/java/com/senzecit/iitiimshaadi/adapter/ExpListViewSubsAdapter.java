@@ -2916,7 +2916,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     }
 
     public Vector<Dialog> selectableDialogs = new Vector<Dialog>();
-    private void showSelectableDialog(List<String> dataList, final TextView txtListChild) {
+    private void showSelectableDialog(List<String> dataList, final TextView txtListChild)
+    {
 
         sliderCheckList = new ArrayList<>();
         sliderCheckList.clear();

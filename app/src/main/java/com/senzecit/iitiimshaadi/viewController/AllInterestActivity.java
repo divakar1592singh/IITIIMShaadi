@@ -1,6 +1,9 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +13,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +28,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.AllInterestAdapter;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
@@ -98,8 +104,6 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
         ProgressClass.getProgressInstance().showDialog(AllInterestActivity.this);
         AndroidNetworking.post("https://iitiimshaadi.com/api/paid_subscriber.json")
                 .addBodyParameter("token", token)
-//                .addBodyParameter("religion", preferred_Religion)
-//                .setTag("test")
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -111,12 +115,15 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
 
                         try {
                             JSONArray jsonArray = response.getJSONArray("allInterestReceived");
-                            parseInterestData(jsonArray);
+                            if(jsonArray.length()>0) {
+                                parseInterestData(jsonArray);
+                            }else {
+                                showDialog(AllInterestActivity.this, "Alert", "Np Interest found");
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             reTryMethod();
                         }
-
                     }
 
                     @Override
@@ -125,42 +132,6 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
                         reTryMethod();
                     }
                 });
-
-
-    /*    ProgressClass.getProgressInstance().showDialog(AllInterestActivity.this);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<PaidDashboardResponse> call = apiInterface.subscribeDashoardPaid(token);
-        call.enqueue(new Callback<PaidDashboardResponse>() {
-            @Override
-            public void onResponse(Call<PaidDashboardResponse> call, Response<PaidDashboardResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    PaidDashboardResponse serverResponse = response.body();
-                    if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
-
-                            Toast.makeText(AllInterestActivity.this, "Success", Toast.LENGTH_SHORT).show();
-
-                            List<AllInterestReceived> list = serverResponse.getAllInterestReceived();
-//                            setPaidSubs(serverResponse);
-                            parseInterestData(list);
-
-                        }else {
-                            AlertDialogSingleClick.getInstance().showDialog(AllInterestActivity.this, "OTP Alert", "Confuse");
-                        }
-                    }else {
-                        Toast.makeText(AllInterestActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PaidDashboardResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(AllInterestActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });*/
     }
 
     public void parseInterestData(JSONArray jsonArray){
@@ -206,11 +177,47 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
                 .show();
     }
 
+    public void showDialog(Context activity, String title, String msg){
+        Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_single_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Cancel" ,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
+                Navigator.getClassInstance().navigateToActivity(AllInterestActivity.this, PaidSubscriberDashboardActivity.class);
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
+
 
 
 }

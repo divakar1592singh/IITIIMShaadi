@@ -91,7 +91,51 @@ public class DataHandlingClass {
         }
     }
 
-
+    public String getWebURL(int pos){
+        if(pos == 0){
+            return CONSTANTS.MEDIA_URL_1;
+        }else if(pos == 1){
+            return CONSTANTS.MEDIA_URL_2;
+        }else if(pos == 2){
+            return CONSTANTS.MEDIA_URL_3;
+        }else if(pos == 3){
+            return CONSTANTS.MEDIA_URL_4;
+        }else if(pos == 4){
+            return CONSTANTS.MEDIA_URL_5;
+        }else if(pos == 5){
+            return CONSTANTS.MEDIA_URL_6;
+        }else if(pos == 6){
+            return CONSTANTS.MEDIA_URL_7;
+        }else if(pos == 7){
+            return CONSTANTS.MEDIA_URL_8;
+        }else if(pos == 8){
+            return CONSTANTS.MEDIA_URL_9;
+        }else if(pos == 9){
+            return CONSTANTS.MEDIA_URL_10;
+        }else if(pos == 10){
+            return CONSTANTS.MEDIA_URL_11;
+        }else if(pos == 11){
+            return CONSTANTS.MEDIA_URL_12;
+        }else if(pos == 12){
+            return CONSTANTS.MEDIA_URL_13;
+        }else if(pos == 13){
+            return CONSTANTS.MEDIA_URL_14;
+        }else if(pos == 14){
+            return CONSTANTS.MEDIA_URL_15;
+        }else if(pos == 15){
+            return CONSTANTS.MEDIA_URL_16;
+        }else if(pos == 16){
+            return CONSTANTS.MEDIA_URL_17;
+        }else if(pos == 17){
+            return CONSTANTS.MEDIA_URL_18;
+        }else if(pos == 18){
+            return CONSTANTS.MEDIA_URL_19;
+        }else if(pos == 19){
+            return CONSTANTS.MEDIA_URL_20;
+        }else {
+            return "https://iitiimshaadi.com";
+        }
+    }
 
 
 

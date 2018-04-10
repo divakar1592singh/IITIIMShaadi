@@ -1,10 +1,15 @@
 package com.senzecit.iitiimshaadi.viewController;
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
@@ -15,6 +20,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNo
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.GetAllNotificaiton;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
@@ -99,7 +105,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
                             parserNotificationData(list);
                         }else {
-                            AlertNavigateSingleClick.getInstance().showDialog(NotificationsActivity.this, PaidSubscriberDashboardActivity.class, "Notification Alert", "No Notification Received");
+                            showDialog(NotificationsActivity.this, "Notification Alert", "No Notification Received");
                         }
 
                     }
@@ -131,7 +137,47 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
-/*    @Override
+    public void showDialog(Context activity, String title, String msg){
+        Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.alert_dialog_single_click);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        titleTxt.setText(title);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        msgTxt.setText(msg);
+
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Cancel" ,Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
+                Navigator.getClassInstance().navigateToActivity(NotificationsActivity.this, PaidSubscriberDashboardActivity.class);
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    /*    @Override
     protected void onStop() {
         super.onStop();
 //        Toast.makeText(ChatMessagesActivity.this, "Stop click hua", Toast.LENGTH_LONG).show();

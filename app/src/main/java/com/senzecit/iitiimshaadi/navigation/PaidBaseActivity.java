@@ -152,120 +152,127 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()) {
+        drawer.closeDrawer(Gravity.RIGHT);
+        drawer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-            case R.id.idAboutNav: {
+                switch (view.getId()) {
 
-                // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, AboutUsActivity.class));
-                break;
-            }
-            case R.id.idMyProfilePaidNav: {
+                    case R.id.idAboutNav: {
 
-                // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, ProfileActivity.class));
-                break;
-            }
-            case R.id.idMediaCoverageNav: {
-                // Toast.makeText(getApplicationContext(), "Media Coverage", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, MediaCoverageActivity.class));
-                break;
-            }
-            case R.id.idSuccessStoryNav: {
-                // Toast.makeText(getApplicationContext(), "Success Story", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, SuccessStoriesActivity.class));
-                break;
-            }
-            case R.id.idHowToNav: {
-                // Toast.makeText(getApplicationContext(), "How To Navigate", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, HowToNavigatePageActivity.class));
-                break;
-            }
-            case R.id.idPrivacyPolicyNav: {
-                // Toast.makeText(getApplicationContext(), "Privacy Policy", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, PrivacyActivity.class));
-                break;
-            }
-            case R.id.idContactUsNav: {
-                // Toast.makeText(getApplicationContext(), "Contact Us", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, ContactUsActivity.class));
-                break;
-            }
-            case R.id.idFAQNav: {
-                // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, FAQActivity.class));
-                break;
-            }
-            case R.id.idDisclaimerNav: {
-                // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this,DisclaimerActivity.class));
-                break;
-            }
-            case R.id.idSettingNav: {
-                // Toast.makeText(getApplicationContext(), "Settings ", // Toast.LENGTH_LONG).show();
-                startActivity(new Intent(PaidBaseActivity.this, SettingsActivity.class));
-                break;
+                        // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, AboutUsActivity.class));
+                        break;
+                    }
+                    case R.id.idMyProfilePaidNav: {
 
-            }
-            case R.id.idChat:
+                        // Toast.makeText(getApplicationContext(), "About", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, ProfileActivity.class));
+                        break;
+                    }
+                    case R.id.idMediaCoverageNav: {
+                        // Toast.makeText(getApplicationContext(), "Media Coverage", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, MediaCoverageActivity.class));
+                        break;
+                    }
+                    case R.id.idSuccessStoryNav: {
+                        // Toast.makeText(getApplicationContext(), "Success Story", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, SuccessStoriesActivity.class));
+                        break;
+                    }
+                    case R.id.idHowToNav: {
+                        // Toast.makeText(getApplicationContext(), "How To Navigate", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, HowToNavigatePageActivity.class));
+                        break;
+                    }
+                    case R.id.idPrivacyPolicyNav: {
+                        // Toast.makeText(getApplicationContext(), "Privacy Policy", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, PrivacyActivity.class));
+                        break;
+                    }
+                    case R.id.idContactUsNav: {
+                        // Toast.makeText(getApplicationContext(), "Contact Us", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, ContactUsActivity.class));
+                        break;
+                    }
+                    case R.id.idFAQNav: {
+                        // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, FAQActivity.class));
+                        break;
+                    }
+                    case R.id.idDisclaimerNav: {
+                        // Toast.makeText(getApplicationContext(), "FAQ", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, DisclaimerActivity.class));
+                        break;
+                    }
+                    case R.id.idSettingNav: {
+                        // Toast.makeText(getApplicationContext(), "Settings ", // Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(PaidBaseActivity.this, SettingsActivity.class));
+                        break;
+
+                    }
+                    case R.id.idChat:
 //            AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
-                startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
-            break;
-            case R.id.idMyFriends:
-            startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
-            break;
-            case R.id.idNotification:
+                        startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
+                        break;
+                    case R.id.idMyFriends:
+                        startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
+                        break;
+                    case R.id.idNotification:
 //                AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Notification Alert", "There is no new notification");
-            Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, NotificationsActivity.class);
-            break;
-            case R.id.idLogoutNav: {
-                // Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
+                        Navigator.getClassInstance().navigateToActivity(PaidBaseActivity.this, NotificationsActivity.class);
+                        break;
+                    case R.id.idLogoutNav: {
+                        // Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
 
 
-                new AlertDialog.Builder(PaidBaseActivity.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Logout Alert")
-                        .setMessage("Are you sure?")
-                        .setPositiveButton("yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        new AlertDialog.Builder(PaidBaseActivity.this)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle("Logout Alert")
+                                .setMessage("Are you sure?")
+                                .setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
 
-                                AppPrefs prefs = AppController.getInstance().getPrefs();
-                prefs.remove(CONSTANTS.LOGGED_TOKEN);
-                prefs.remove(CONSTANTS.LOGGED_USERNAME);
-                prefs.remove(CONSTANTS.LOGGED_USERID);
-                prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
-                prefs.remove(CONSTANTS.LOGGED_USER_PIC);
-                prefs.remove(CONSTANTS.LOGGED_EMAIL);
-                prefs.remove(CONSTANTS.LOGGED_MOB);
-                prefs.remove(CONSTANTS.OTHER_USERID);
-                prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
-                prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
-                prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
+                                        AppPrefs prefs = AppController.getInstance().getPrefs();
+                                        prefs.remove(CONSTANTS.LOGGED_TOKEN);
+                                        prefs.remove(CONSTANTS.LOGGED_USERNAME);
+                                        prefs.remove(CONSTANTS.LOGGED_USERID);
+                                        prefs.remove(CONSTANTS.LOGGED_USER_TYPE);
+                                        prefs.remove(CONSTANTS.LOGGED_USER_PIC);
+                                        prefs.remove(CONSTANTS.LOGGED_EMAIL);
+                                        prefs.remove(CONSTANTS.LOGGED_MOB);
+                                        prefs.remove(CONSTANTS.OTHER_USERID);
+                                        prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
+                                        prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
+                                        prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
 
-                Intent intent = new Intent(PaidBaseActivity.this, SplashActivity.class);
+                                        Intent intent = new Intent(PaidBaseActivity.this, SplashActivity.class);
 
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        finish();
 
 
-                            }
-                        })
-                        .setNegativeButton("no", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("no", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
 
-                break;
-            }
+                        break;
+                    }
 
+                }
         }
+    }, 200);
     }
 
 }

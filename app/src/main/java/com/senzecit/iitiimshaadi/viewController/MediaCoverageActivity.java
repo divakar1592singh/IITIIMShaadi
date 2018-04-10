@@ -4,12 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.MediaAdapter;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 
 import java.util.ArrayList;
 
@@ -48,6 +52,22 @@ public class MediaCoverageActivity extends AppCompatActivity implements View.OnC
         mTitle.setText("Media Coverage");
 
         mGridView = (GridView) findViewById(R.id.gridView);
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(position != 14) {
+                    String URL = DataHandlingClass.getInstance().getWebURL(position);
+                    Bundle bundleWeb = new Bundle();
+                    bundleWeb.putString("url", URL);
+                    Navigator.getClassInstance().navigateToActivityWithBundleData(MediaCoverageActivity.this, WebActivity.class, bundleWeb);
+                }else {
+//                    Toast.makeText(MediaCoverageActivity.this, "Webs", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
     @Override

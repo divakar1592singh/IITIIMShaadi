@@ -186,12 +186,15 @@
             android:name=".viewController.OtherAlbumActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".paypal.PayPalHomeActivity" />
-        <activity android:name=".paypal.PayPalDetailsActivity"></activity>
+        <activity android:name=".paypal.PayPalDetailsActivity" />
         //PayPal
-        <service android:name="com.paypal.android.sdk.payments.PayPalService" android:exported="false" />
+        <service
+            android:name="com.paypal.android.sdk.payments.PayPalService"
+            android:exported="false" />
+
         <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
         <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
-
+        <activity android:name=".viewController.WebActivity"></activity>
     </application>
 
 </manifest>

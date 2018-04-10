@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -131,7 +132,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     @Override
     protected void onStart() {
         super.onStart();
-
 
         callWebServiceForSubscribeDashboard();
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
@@ -792,7 +792,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        SubscriberDashboardActivity.super.onBackPressed();
+//                        SubscriberDashboardActivity.super.onBackPressed();
+
+                        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                        homeIntent.addCategory( Intent.CATEGORY_HOME );
+                        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeIntent);
+
                     }
                 }).create().show();
     }
@@ -1018,6 +1024,16 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     @Override
     protected void onRestart() {
         super.onRestart();
-        recreate();
+//        recreate();
+
+        /*Intent intent = getIntent();
+        finish();
+        startActivity(intent);*/
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
 }

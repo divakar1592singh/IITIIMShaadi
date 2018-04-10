@@ -66,6 +66,8 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     CircleImageView mProfileCIV;
     TextView mUsrNameTV, mUsrIdTV;
 
+    Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -371,7 +373,6 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
             public void onFailure(Call<OtherProfileResponse> call, Throwable t) {
                 call.cancel();
                 ProgressClass.getProgressInstance().stopProgress();
-                reTryMethod();
 //                Toast.makeText(OtherProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 reTryMethod();
             }
@@ -388,7 +389,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         String title = "Alert";
         String msg = "Oops. Please Try Again! \n";
 
-        final Dialog dialog = new Dialog(OtherProfileActivity.this);
+        dialog = new Dialog(OtherProfileActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.alert_dialog_two_click);

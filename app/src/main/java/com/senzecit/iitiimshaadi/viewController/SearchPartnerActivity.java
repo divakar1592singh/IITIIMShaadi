@@ -81,7 +81,6 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
         mEndRecord = (TextView)findViewById(R.id.idEndRecord);
 
 
-
         mAgeMin = findViewById(R.id.minAgeTV);
         mAgeMax = findViewById(R.id.maxAgeTV);
         mCountry = findViewById(R.id.countryTV);

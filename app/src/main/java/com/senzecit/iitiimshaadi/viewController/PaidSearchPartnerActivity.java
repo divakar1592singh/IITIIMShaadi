@@ -31,6 +31,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Su
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -376,8 +377,11 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String page = curPage;
 
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
+            if (Integer.parseInt(maxage) > 20 && Integer.parseInt(minage) > 20) {
+                if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5) {
 
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+
+                    APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
 
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
@@ -423,6 +427,12 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
             }
         });
 
+                } else {
+                    AlertDialogSingleClick.getInstance().showDialog(this, "Alert", AppMessage.AGE_DIFF_5_INFO);
+                }
+            } else {
+                AlertDialogSingleClick.getInstance().showDialog(this, "Alert", AppMessage.AGE_LIMIT);
+            }
         }else {
             NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
         }
