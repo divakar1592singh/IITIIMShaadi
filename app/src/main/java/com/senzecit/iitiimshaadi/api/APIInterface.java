@@ -15,13 +15,11 @@ import com.senzecit.iitiimshaadi.model.api_response_model.general_setting.Genera
 import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNotificationRespnse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_dashboard.PaidDashboardResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.pic_response.SetProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.socket.SingleChatHistoryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.main.SubscriberMainResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscription_retrieve.SubsRetrieveResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.about_me.AboutMeRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.custom_folder.RenameFolderRequest;
@@ -36,7 +34,6 @@ import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.pt_education.
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_basic_profile.ParnerBasicProfileRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.ptr_religious_country.PtrReligionCountryRequest;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.religious.ReligiousBackgroundRequest;
-import com.senzecit.iitiimshaadi.model.common.contact_us.ContactUsRequest;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 
 import okhttp3.MultipartBody;
@@ -102,23 +99,11 @@ public interface APIInterface {
     Call<IdVerificationResponse> postGradCertUpload(@Part MultipartBody.Part file, @Part("post_graduate") RequestBody requestBody, @Query("token") String token);
 
 //    ========COMMON========
- /*   @FormUrlEncoded
-    @POST("api/country.json")
-    Call<CountryListResponse> countryList(@Field("token")String token);
 
-    @FormUrlEncoded
-    @POST("api/states_acc_country.json")
-    Call<StateListResponse> stateList(@Field("token")String token, @Field("country")String country );
-*/
     @FormUrlEncoded
     @POST("api/cities.json")
     Call<CitiesAccCountryResponse> cityList(@Field("country_id")String country_id);
 
-/*
-    @FormUrlEncoded
-    @POST("api/caste.json")
-    Call<CasteAccReligionResponse> casteList(@Field("token")String token, @Field("religion")String religion );
-*/
 
 //========================
     /** Own Profile */
@@ -129,10 +114,6 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("api/other_profile.json")
     Call<OtherProfileResponse> otherProfileData(@Field("token")String token, @Field("other_user")String other_user);
-
-//    /** Advance Search - Subs */
-//    @POST("api/advance_search.json")
-//    Call<SubsAdvanceSearchResponse> advanceSearch(@Body SubsAdvanceSearchRequest advanceSearchRequest);
 
     /*Move To*/
     @FormUrlEncoded
@@ -168,31 +149,6 @@ Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Que
                                               @Query("course[]")String[] course, @Query("annual_income[]")String[] annual_income);
 
 
-/*
-    */
-/** ID Search - Paid Subs *//*
-
-    @FormUrlEncoded
-    @POST("api/search_by_id.json")
-    Call<PaidSubscriberResponse> idSearchPaid1(@Field("token")String token, @Field("user_id")String userId);
-*/
-
-/*
-    */
-/** Keyword Search - Paid Subs */
-/*
-    @FormUrlEncoded
-    @POST("api/search_by_keyword.json")
-    Call<SubsAdvanceSearchResponse> keywordSearchPaid(@Field("token")String token, @Field("keyword")String keyword);
-*/
-
-/*
-    */
-/** Advance Search - Paid Subs *//*
-
-    @POST("api/advance_search.json")
-    Call<SubsAdvanceSearchResponse> advanceSearchPaid(@Body PaidSubsAdvanceSearchRequest advanceSearchRequest);
-*/
 
     /** Custom Folder List */
     @FormUrlEncoded
@@ -209,16 +165,6 @@ Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Que
     @FormUrlEncoded
     @POST("api/delete_folder.json")
     Call<AddFolderResponse> deleteFolder(@Field("token")String token, @Field("folder_id")Integer folder_id);
-
-    /**Subscriber Dashboard*/
-    /* Subscriber Dashboard */
-    @FormUrlEncoded
-    @POST("api/subscriber_dashboard.json")
-    Call<SubscriberMainResponse> subscribeDashoard(@Field("token")String token);
-    /* Subscriber Dashboard */
-    @FormUrlEncoded
-    @POST("api/paid_subscriber.json")
-    Call<PaidDashboardResponse> subscribeDashoardPaid(@Field("token")String token);
 
     /* Resend OTP */
     @FormUrlEncoded
@@ -279,10 +225,6 @@ Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Que
     @POST("api/albums.json")
     Call<AllAlbumResponse> allAlbumist(@Field("token")String token);
 
-    @Multipart
-    @POST("api/profile_image_upload.json")
-    Call<AddFolderResponse> uploadImageFile(@Part MultipartBody.Part file, @Part("file[]") RequestBody name, @Path("user_id") String user_id);
-
     /** Setting Album */
     @FormUrlEncoded
     @POST("api/change_permission.json")
@@ -291,10 +233,6 @@ Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Que
     @FormUrlEncoded
     @POST("api/delete_album.json")
     Call<AddFolderResponse> deleteAlbum(@Field("token")String token, @Field("album_id")String album_id);
-    /** Set Profile Album */
-    @FormUrlEncoded
-    @POST("api/set_profile_picture.json")
-    Call<AddFolderResponse> setProfileAlbum(@Field("token")String token, @Field("profile")String profile);
 
 
     /** Friend */
@@ -339,10 +277,6 @@ Call<SubsAdvanceSearchResponse> advanceSearch(@Query("token") String token, @Que
     @FormUrlEncoded
     @POST("api/unshortlisted_friend.json")
     Call<AddFolderResponse> serviceUnShortlistFriend(@Field("token")String token, @Field("friend_user")String friend_user);
-
-    /** Contact Us */
-    @POST("api/contact_us.json")
-    Call<AddFolderResponse> contactUs(@Body ContactUsRequest request);
 
     /** Notifications*/
     @FormUrlEncoded

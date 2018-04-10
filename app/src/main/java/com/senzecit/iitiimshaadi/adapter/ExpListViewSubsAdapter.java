@@ -3733,6 +3733,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         try {
             String profileUri = CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + basicObject.optString("profile_image");
             Glide.with(_context).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
+            System.out.println(profileUri);
 
             int profileCompletion = basicObject.optInt("profile_complition");
             mProgress.setProgress(profileCompletion);
@@ -3742,6 +3743,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 //            }
         }catch (NullPointerException npe){
             Log.e(TAG, " #Error : "+npe, npe);
+            Toast.makeText(_context, "Image Not Found", Toast.LENGTH_SHORT).show();
         }
         String userName = prefs.getString(CONSTANTS.LOGGED_USERNAME);
         mUsrNameTV.setText(new StringBuilder("@").append(userName));

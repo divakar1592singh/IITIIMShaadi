@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.database.DataSetObserver;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.androidnetworking.AndroidNetworking;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -56,6 +59,7 @@ import java.util.List;
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -95,6 +99,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         setContentView(R.layout.activity_subscriber_dashboard);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+
         rxNetworkingClass = RxNetworkingForObjectClass.getInstance();
         rxNetworkingClass.setCompletionHandler(this);
         request = new PostAuthWebRequest();
@@ -126,6 +131,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     @Override
     protected void onStart() {
         super.onStart();
+
 
         callWebServiceForSubscribeDashboard();
         prefs.putInt(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB, 1);
@@ -972,7 +978,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     @Override
     public void handle(JSONObject object, String methodName) {
 
-        System.out.println(object);
+        System.out.println("Handle ------> "+object);
 //        if(mSwipeRefreshLayout.isRefreshing() == true)
             mSwipeRefreshLayout.setRefreshing(false);
 
@@ -983,6 +989,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
                     listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
                     expListView.setAdapter(listAdapter);
+                    listAdapter.notifyDataSetChanged();
 
                     prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
 
@@ -1006,5 +1013,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        recreate();
     }
 }
