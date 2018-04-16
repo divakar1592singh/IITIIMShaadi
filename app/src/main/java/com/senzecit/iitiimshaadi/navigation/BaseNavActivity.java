@@ -312,6 +312,7 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                                 prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
                                 prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
                                 prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
+                                prefs.remove(CONSTANTPREF.CHAT_USER_COUNT);
 
 
                                 Intent intent = new Intent(BaseNavActivity.this, SplashActivity.class);

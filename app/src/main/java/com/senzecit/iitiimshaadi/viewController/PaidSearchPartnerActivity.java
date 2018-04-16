@@ -365,8 +365,8 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String[] sPartnerLocArr = new String[1];
         sPartnerLocArr = sPartnerLoc.split(",");
 
-        String sMinHeight = removeWhiteSpace(prefs.getString(CONSTANTS.MIN_HEIGHT));
-        String sMaxHeight = removeWhiteSpace(prefs.getString(CONSTANTS.MAX_HEIGHT));
+        String sMinHeight = prefs.getString(CONSTANTS.MIN_HEIGHT);
+        String sMaxHeight = prefs.getString(CONSTANTS.MAX_HEIGHT);
 
         profileList.add(minage);profileList.add(maxage);profileList.add(country);
         profileList.add(city);profileList.add(religion);profileList.add(caste);
@@ -381,7 +381,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5) {
 
 
-                    APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
 
         Call<SubsAdvanceSearchResponse> call = apiInterface.advanceSearchPaid(token, page, minage, maxage, country, cityArr,sPartnerLocArr,religion,casteArr,mother_toungeArr,marital_statusArr,sMinHeight,sMaxHeight,courseArr,annual_incomeArr);
@@ -442,7 +442,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
     private void setupPageView(int pages){
 
-        int val = pages/10;
+        int val = 0;
+
+        val = pages/10;
+        int reminderVal = pages%10;
+        if(reminderVal > 0){
+            val  = val+ 1;
+        }
         Button[] buttons = new Button[val];
         Space[] views = new Space[val];
         for(int i = 0; i< val; i++){
@@ -556,13 +562,16 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
+
     public static String removeLastChar(String s) {
+        String rawString = "";
         if (s == null || s.length() == 0 || s.equalsIgnoreCase("--") || s.equalsIgnoreCase("-")) {
             return s = "";
+        }else if(s.endsWith(",")){
+
+            return  rawString = s.substring(0, s.length()-1);
         }
-        String rawString = s.substring(0, s.length()-1);
-        return rawString.replaceAll("\\s+","");
-//        st = st.replaceAll("\\s+","")
+        return s;
     }
 
     public static String removeWhiteSpace(String s) {

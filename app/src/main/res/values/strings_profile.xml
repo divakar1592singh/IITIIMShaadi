@@ -51,6 +51,38 @@
             <item>6 ft 7in (200 cm)</item>
             <item>6 ft 8in (203 cm)</item>
     </array>
+
+    <array name="height_ar_ptr">
+        <item>Any</item>
+        <item>4 ft 5in (134 cm)</item>
+        <item>4 ft 6in (137 cm)</item>
+        <item>4 ft 7in (139 cm)</item>
+        <item>4 ft 8in (142 cm)</item>
+        <item>4 ft 9in (144 cm)</item>
+        <item>4 ft 10in (147 cm)</item>
+        <item>4 ft 11in (149 cm)</item>
+        <item>5 ft 0in (152 cm)</item>
+        <item>5 ft 1in (154 cm)</item>
+        <item>5 ft 2in (157 cm)</item>
+        <item>5 ft 3in (160 cm)</item>
+        <item>5 ft 4in (162 cm)</item>
+        <item>5 ft 5in (165 cm)</item>
+        <item>5 ft 6in (167 cm)</item>
+        <item>5 ft 7in (170 cm)</item>
+        <item>5 ft 8in (172 cm)</item>
+        <item>5 ft 9in (175 cm)</item>
+        <item>5 ft 10in (177 cm)</item>
+        <item>5 ft 11in (180 cm)</item>
+        <item>6 ft 0in (182 cm)</item>
+        <item>6 ft 1in (185 cm)</item>
+        <item>6 ft 2in (187 cm)</item>
+        <item>6 ft 3in (190 cm)</item>
+        <item>6 ft 4in (193 cm)</item>
+        <item>6 ft 5in (195 cm)</item>
+        <item>6 ft 6in (198 cm)</item>
+        <item>6 ft 7in (200 cm)</item>
+        <item>6 ft 8in (203 cm)</item>
+    </array>
     
     <array name="interest_ar">
             <item>Music</item>

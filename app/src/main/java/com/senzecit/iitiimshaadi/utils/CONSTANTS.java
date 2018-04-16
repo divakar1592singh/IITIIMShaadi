@@ -40,6 +40,8 @@ public interface CONSTANTS {
     String CHECK_DUPLICATE = "api/check_duplicate.json";
 
     String RTGS_PAYMENT_URL = "api/send_ccd_mail.json";
+    String CHAT_USER_COUNT_PATH = "http://35.154.217.225:1110/viewUserCount";
+
 
 
     String Own_Token = "8848b0bfc931a3fc45e4462c19f06c85";
@@ -100,6 +102,7 @@ public interface CONSTANTS {
 
     String AMOUNT_PAY = "amount_payble";
     String PLAN_STATUS = "subscription plan status";
+    String PLAN_EXP = "plan_exp";
 
 
 //    Message

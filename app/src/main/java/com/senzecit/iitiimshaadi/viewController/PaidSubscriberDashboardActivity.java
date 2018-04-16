@@ -14,6 +14,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -49,6 +50,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ChatUserAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.chat.SingleChatPostRequest;
 import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.ChatUserListModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.Result;
@@ -85,7 +87,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
+public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements RxNetworkingForObjectClass.CompletionHandler{
 
     private static final String TAG = "PaidSubscriberDashboard";
     ScrollView mScrollView;
@@ -113,6 +115,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
     LinearLayout mButtonLayout;
     private static final int READ_FILE_REQUEST_CODE = 101;
     APIInterface apiInterface;
+    RxNetworkingForObjectClass networkingClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +125,9 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
 
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         prefs = AppController.getInstance().getPrefs();
+
+        networkingClass = RxNetworkingForObjectClass.getInstance();
+        networkingClass.setCompletionHandler(this);
 
         initView();
         handleClick();
@@ -351,6 +357,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
                         // do anything with response
                         ProgressClass.getProgressInstance().stopProgress();
                             setPaidSubs(response);
+                        callWebServiceForChatUserCount();
                     }
                     @Override
                     public void onError(ANError error) {
@@ -365,6 +372,21 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         }
 
     }
+
+    public void callWebServiceForChatUserCount(){
+
+        String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("from_user", userId);
+
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(this, CONSTANTS.CHAT_USER_COUNT_PATH, jsonObject, CONSTANTS.METHOD_1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void callWebServiceForPaidSubsRefresh(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
@@ -411,7 +433,6 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
             e.printStackTrace();
         }
     }
-
 
     //IMAGEZOOM
     private void zoomImageFromThumb(final View thumbView, String imageResId) {
@@ -1217,6 +1238,24 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity {
         finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
+    }
+
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        try {
+            if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
+            if(object.getInt("responseCode") == 200){
+
+                prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.getInt("result"));
+
+                }
+            }
+
+        } catch (JSONException e) {
+                e.printStackTrace();
+        }
+
     }
 
 }

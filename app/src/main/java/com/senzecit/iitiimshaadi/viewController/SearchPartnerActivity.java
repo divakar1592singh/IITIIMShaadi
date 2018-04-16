@@ -98,7 +98,8 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     }
 
     @Override
-    public void saveSearchPartner(List<User> queryList, List<String> profileList, int totalUserCount) {
+    public void saveSearchPartner(List<User> queryList, List<String> profileList, int totalUserCount)
+    {
 
         mBack.setOnClickListener(this);
         mContainerFragLayout.setVisibility(View.GONE);
@@ -173,7 +174,8 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         switch (v.getId()) {
             case R.id.backIV:
 

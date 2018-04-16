@@ -563,6 +563,20 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
     }
 
+    public void callWebServiceForChatUserCount(){
+
+        String userId = prefs.getString(CONSTANTS.LOGGED_USERID);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("from_user", userId);
+
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(this, CONSTANTS.CHAT_USER_COUNT_PATH, jsonObject, CONSTANTS.METHOD_3);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void callWebServiceForSubsDashboardRefresh(){
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
@@ -999,6 +1013,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
                     prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
 
+                    callWebServiceForChatUserCount();
+
                 } else {
                     reTryMethod();
                 }
@@ -1011,8 +1027,13 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, AppMessage.ALERT, AppMessage.SOME_ERROR_INFO);
                 }
                 System.out.println(object);
-            }
+            }else if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_3)) {
+                if(object.getInt("responseCode") == 200){
 
+                    prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.getInt("result"));
+
+                }
+            }
 
 
 
@@ -1036,4 +1057,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
+
+
 }

@@ -309,6 +309,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
             intent.putExtra(CONSTANTS.PLAN_STATUS, status);
             startActivity(intent);
 
+
     }
 
     public void transactPayPal(){
@@ -316,6 +317,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
             Intent intent = new Intent(SubscriptionPlanActivity.this, PayPalHomeActivity.class);
             intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());
             intent.putExtra(CONSTANTS.PLAN_STATUS, status);
+            intent.putExtra(CONSTANTS.PLAN_EXP, getDuration());
             startActivity(intent);
 
     }

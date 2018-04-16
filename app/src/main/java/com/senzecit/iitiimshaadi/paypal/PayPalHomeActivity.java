@@ -90,6 +90,7 @@ import java.math.BigDecimal;
                             startActivity(new Intent(this, PayPalDetailsActivity.class)
                                     .putExtra("paymentDetails", paymentDetails)
                                     .putExtra("PaymentAmount", amount)
+                                    .putExtra(CONSTANTS.PLAN_EXP, getIntent().getExtras().getString(CONSTANTS.PLAN_EXP))
                             );
 
                         } catch (JSONException e) {

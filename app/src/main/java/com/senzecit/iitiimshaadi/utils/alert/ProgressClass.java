@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 
@@ -18,6 +19,7 @@ import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 
 public class ProgressClass {
 
+    private static final String TAG = "ProgressClass";
     private static ProgressClass progressClass = null;
     private Dialog dialog;
 
@@ -45,11 +47,16 @@ public class ProgressClass {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
             ImageView progressImage = (ImageView) dialog.findViewById(R.id.idPregress);
-            Glide.with(activity)
-                    .load(DataHandlingClass.getInstance().getProgressId())
-                    .into(progressImage);
+            try {
+                Glide.with(activity)
+                        .load(DataHandlingClass.getInstance().getProgressId())
+                        .into(progressImage);
+
 
             dialog.show();
+            }catch (IllegalArgumentException e){
+                Log.e(TAG, "#Errro : "+e, e);
+            }
         }
 
     public void showDialog(Context activity){

@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
@@ -43,6 +44,7 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
     DrawerLayout drawer;
     FrameLayout frameLayout;
+    AppPrefs prefs;
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
@@ -56,7 +58,7 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
         super.setContentView(drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
+        prefs = new AppPrefs(PaidBaseActivity.this);
 
         final ToggleButton rightToggle = (ToggleButton)findViewById(R.id.right_menu_toggle);
         ImageView mChatIV = (ImageView)findViewById(R.id.idChat);
@@ -213,9 +215,12 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
                     }
                     case R.id.idChat:
-//            AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", "Working on Chat");
-                        startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
-                        break;
+                        if(prefs.getInt(CONSTANTPREF.CHAT_USER_COUNT) == 0){
+                            AlertDialogSingleClick.getInstance().showDialog(PaidBaseActivity.this, "Alert", AppMessage.NO_CHAT_USER);
+                        }else {
+                            startActivity(new Intent(PaidBaseActivity.this, ChatMessagesActivity.class));
+                        }
+                    break;
                     case R.id.idMyFriends:
                         startActivity(new Intent(PaidBaseActivity.this, FriendsActivity.class));
                         break;
@@ -248,6 +253,8 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                                         prefs.remove(CONSTANTPREF.PROGRESS_STATUS_FOR_TAB);
                                         prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
                                         prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
+                                        prefs.remove(CONSTANTPREF.CHAT_USER_COUNT);
+
 
                                         Intent intent = new Intent(PaidBaseActivity.this, SplashActivity.class);
 
