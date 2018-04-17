@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -29,7 +28,6 @@ import com.senzecit.iitiimshaadi.fragment.PaidSearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.PaidSubscriberResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -42,7 +40,6 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -104,19 +101,19 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
-        mCurrentSearchBtn = (Button)findViewById(R.id.idCurrentSearchBtn);
-        mContainerFragLayout = (FrameLayout) findViewById(R.id.search_partner_FL);
-        mContainerResLayout = (FrameLayout) findViewById(R.id.search_result_FL);
+        mCurrentSearchBtn = findViewById(R.id.idCurrentSearchBtn);
+        mContainerFragLayout = findViewById(R.id.search_partner_FL);
+        mContainerResLayout = findViewById(R.id.search_result_FL);
 
-        mCurrentSearchLayout = (LinearLayout)findViewById(R.id.idCurrentSearchLayout);
+        mCurrentSearchLayout = findViewById(R.id.idCurrentSearchLayout);
 
-        mSearchResultRecyclerView = (RecyclerView) findViewById(R.id.partnerSearchResulttRV);
-        mHorizontalLayout = (LinearLayout)findViewById(R.id.idHBarLayout);
-        mResultScroll = (ScrollView)findViewById(R.id.idResultScroll);
+        mSearchResultRecyclerView = findViewById(R.id.partnerSearchResulttRV);
+        mHorizontalLayout = findViewById(R.id.idHBarLayout);
+        mResultScroll = findViewById(R.id.idResultScroll);
 
         mAgeMin = findViewById(R.id.minAgeTV);
         mAgeMax = findViewById(R.id.maxAgeTV);
@@ -243,7 +240,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     /** Search By ID */
     public void callWebServiceForSubsIDSearch(){
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String searchID = prefs.getString(CONSTANTS.SEARCH_ID) ;
 
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
@@ -256,7 +253,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
             public void onResponse(Call<PaidSubscriberResponse> call, Response<PaidSubscriberResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                    if(response.body().getMessage().getSuccess().equalsIgnoreCase("success")){
                         if(response.body().getQuery().size() > 0){
                             List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList = response.body().getQuery();
 
@@ -288,7 +285,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     /** Search By Keyword */
     public void callWebServiceForSubsKeywordSearch(String curPage){
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
+        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String keyword = prefs.getString(CONSTANTS.SEARCH_KEYWORD) ;
         String page = curPage ;
 
@@ -302,7 +299,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
             public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                    if(response.body().getMessage().getSuccess().equalsIgnoreCase("success")){
                         if(response.body().getUsers().size() > 0){
 
                             int pageCount = response.body().getTotalCount();
@@ -404,7 +401,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
                     try {
-                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (response.body().getMessage().getSuccess().equalsIgnoreCase("success")) {
                             if (response.body().getUsers().size() > 0) {
 
                                 int pageCount = response.body().getTotalCount();
@@ -497,13 +494,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
                     for (int i = 0; i < mHorizontalLayout.getChildCount(); i++) {
                         if (mHorizontalLayout.getChildAt(i) instanceof Button) {
-                            ((Button) mHorizontalLayout.getChildAt(i)).
+                            mHorizontalLayout.getChildAt(i).
                                     setBackgroundResource(R.drawable.round_view_yellow_border);
                         }
                     }
 
                     String id = v.getTag().toString();
-                    Button button2 = (Button) v.findViewWithTag(v.getTag());
+                    Button button2 = v.findViewWithTag(v.getTag());
                     button2.setBackgroundResource(R.drawable.round_view_green_border);
                     if (prefs.getString(CONSTANTPREF.SEARCH_TYPE).equalsIgnoreCase(CONSTANTS.SEARCH_BY_ID)) {
                         callWebServiceForSubsIDSearch();

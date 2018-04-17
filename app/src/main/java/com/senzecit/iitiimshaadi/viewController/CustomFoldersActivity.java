@@ -108,25 +108,25 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
 
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("      Custom Folders");
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mTabLayout = findViewById(R.id.tab);
+        mViewPager = findViewById(R.id.viewPager);
 
-        mFolderNameET = (EditText)findViewById(R.id.folderNameET);
-        mAddFolderIV = (ImageView)findViewById(R.id.idAddFolder);
-        mEditFolderIV = (ImageView)findViewById(R.id.idEditFolder);
-        mDeleteFolderIV = (ImageView)findViewById(R.id.idDeleteFolder);
+        mFolderNameET = findViewById(R.id.folderNameET);
+        mAddFolderIV = findViewById(R.id.idAddFolder);
+        mEditFolderIV = findViewById(R.id.idEditFolder);
+        mDeleteFolderIV = findViewById(R.id.idDeleteFolder);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.requestFriendListRV);
+        mRecyclerView = findViewById(R.id.requestFriendListRV);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mFolderSpnr = (Spinner)findViewById(R.id.folderNameSPNR);
+        mFolderSpnr = findViewById(R.id.folderNameSPNR);
 
     }
 
@@ -204,7 +204,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 List<MyMeta> myMetaList = null;
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                    if(response.body().getMessage().getSuccess().equalsIgnoreCase("success")){
 
                         removeTab();
                         myMetaList = response.body().getMyMetas();
@@ -249,7 +249,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             public void onResponse(Call<FolderListModelResponse> call, Response<FolderListModelResponse> response) {
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                    if(response.body().getMessage().getSuccess().equalsIgnoreCase("success")){
 
                         List<MyMeta> myMetaList = response.body().getMyMetas();
 
@@ -430,7 +430,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                     try {
                         AddFolderResponse addResponse = response.body();
                         if (addResponse.getMessage().getSuccess() != null) {
-                            if (addResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            if (addResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
                                 Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
                                 callWebServiceForCustomFolder();
 //                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
@@ -484,7 +484,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 if (response.isSuccessful()) {
                     RenameFolderResponse renameResponse = response.body();
                     if(renameResponse.getMessage().getSuccess() != null) {
-                        if (renameResponse.getMessage().getSuccess().toString().equalsIgnoreCase("Folder is renamed")) {
+                        if (renameResponse.getMessage().getSuccess().equalsIgnoreCase("Folder is renamed")) {
 
                             callWebServiceForCustomFolder();
 //                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
@@ -531,7 +531,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
                 if (response.isSuccessful()) {
                     AddFolderResponse addResponse = response.body();
                     if(addResponse.getMessage().getSuccess() != null) {
-                        if (addResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (addResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
                             Toast.makeText(CustomFoldersActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             callWebServiceForCustomFolder();
 //                            AlertDialogSingleClick.getInstance().showDialog(CustomFoldersActivity.this, "Rename Folder", "Folder rename succesfull.");
@@ -569,12 +569,12 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -582,7 +582,7 @@ public class CustomFoldersActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -78,30 +78,30 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
         mTitle.setText("Quick Register");
 
-        mbuttonContinue = (Button) findViewById(R.id.continueBtn);
+        mbuttonContinue = findViewById(R.id.continueBtn);
 
-        mBoySelect = (ImageView) findViewById(R.id.boySelect);
-        mBoyUnSelect = (ImageView) findViewById(R.id.boyUnSelect);
-        mGirlSelect = (ImageView) findViewById(R.id.girlSelect);
-        mGirlUnSelect = (ImageView) findViewById(R.id.girlUnSelect);
+        mBoySelect = findViewById(R.id.boySelect);
+        mBoyUnSelect = findViewById(R.id.boyUnSelect);
+        mGirlSelect = findViewById(R.id.girlSelect);
+        mGirlUnSelect = findViewById(R.id.girlUnSelect);
 
-        mEducationTV = (TextView) findViewById(R.id.educationTV);
-        mStreamTV = (TextView) findViewById(R.id.idStreamTV);
-        mInstitutionTV = (TextView) findViewById(R.id.idInstitutionTV);
+        mEducationTV = findViewById(R.id.educationTV);
+        mStreamTV = findViewById(R.id.idStreamTV);
+        mInstitutionTV = findViewById(R.id.idInstitutionTV);
 
-        mEducationRL = (RelativeLayout) findViewById(R.id.id_educationRL);
-        mStreamRL = (LinearLayout) findViewById(R.id.id_streamRL);
-        mInstitutionRL = (RelativeLayout) findViewById(R.id.id_institutionRL);
+        mEducationRL = findViewById(R.id.id_educationRL);
+        mStreamRL = findViewById(R.id.id_streamRL);
+        mInstitutionRL = findViewById(R.id.id_institutionRL);
 
-        mUserNameET = (EditText) findViewById(R.id.userNameET);
-        mEmailET = (EditText) findViewById(R.id.emailET);
-        mMobileET = (EditText) findViewById(R.id.mobileET);
-        mCollegeNameET = (EditText) findViewById(R.id.collegeNameET);
-        mSubmitFindEduBtn = (Button)findViewById(R.id.idSubmitFindEduBtn);
+        mUserNameET = findViewById(R.id.userNameET);
+        mEmailET = findViewById(R.id.emailET);
+        mMobileET = findViewById(R.id.mobileET);
+        mCollegeNameET = findViewById(R.id.collegeNameET);
+        mSubmitFindEduBtn = findViewById(R.id.idSubmitFindEduBtn);
 
 
     }
@@ -230,13 +230,13 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
         View view = getLayoutInflater().inflate(R.layout.toast_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

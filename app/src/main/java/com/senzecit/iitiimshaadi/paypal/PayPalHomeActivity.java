@@ -39,8 +39,8 @@ import java.math.BigDecimal;
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_pay_pal_home);
 
-            btnPayNow = (Button)findViewById(R.id.btnPayNow);
-            edtAmount = (EditText)findViewById(R.id.edtAmount);
+            btnPayNow = findViewById(R.id.btnPayNow);
+            edtAmount = findViewById(R.id.edtAmount);
 
             try {
                 String sAmount = getIntent().getExtras().getString(CONSTANTS.AMOUNT_PAY);

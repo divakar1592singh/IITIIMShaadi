@@ -151,50 +151,50 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     }
 
     private void init(){
-        mframeLayoutSearchById = (FrameLayout)view.findViewById(R.id.searchIdFL);
-        mframeLayoutSearchByKeyword = (FrameLayout)view.findViewById(R.id.searchKeywordFL);
-        mlinearLayoutAdvanceSearch = (LinearLayout) view.findViewById(R.id.searchAdvanceLL);
+        mframeLayoutSearchById = view.findViewById(R.id.searchIdFL);
+        mframeLayoutSearchByKeyword = view.findViewById(R.id.searchKeywordFL);
+        mlinearLayoutAdvanceSearch = view.findViewById(R.id.searchAdvanceLL);
 
-        mSearchByIdIV = (ImageView)view.findViewById(R.id.searchProfileIdIV);
-        mSerchByKeywordIV = (ImageView)view.findViewById(R.id.searchByKeywordIV);
-        mAdvanceSearchIV = (ImageView) view.findViewById(R.id.searchAdvanceIV);
-        mSearchPartner = (Button) view.findViewById(R.id.searchPartnerBtn);
+        mSearchByIdIV = view.findViewById(R.id.searchProfileIdIV);
+        mSerchByKeywordIV = view.findViewById(R.id.searchByKeywordIV);
+        mAdvanceSearchIV = view.findViewById(R.id.searchAdvanceIV);
+        mSearchPartner = view.findViewById(R.id.searchPartnerBtn);
 
-        mPartnerCurrentCountry = (RelativeLayout) view.findViewById(R.id.idPartnerCurrentCountry);
-        mPartnerCurrentCity = (RelativeLayout) view.findViewById(R.id.idPartnerCurrentCity);
-        mPartnerReligion = (RelativeLayout) view.findViewById(R.id.idPartnerReligion);
-        mPartnerCaste = (RelativeLayout) view.findViewById(R.id.idPartnerCaste);
-        mPartnerMotherTongue = (RelativeLayout) view.findViewById(R.id.idPartnerMotherTongue);
-        mPartnerMaritalStatus = (RelativeLayout) view.findViewById(R.id.idPartnerMaritalStatus);
-        mPartnerEduOccup = (RelativeLayout) view.findViewById(R.id.idPartnerEduOccup);
-        mPartnerAnnIncome = (RelativeLayout) view.findViewById(R.id.idPartnerAnnIncome);
+        mPartnerCurrentCountry = view.findViewById(R.id.idPartnerCurrentCountry);
+        mPartnerCurrentCity = view.findViewById(R.id.idPartnerCurrentCity);
+        mPartnerReligion = view.findViewById(R.id.idPartnerReligion);
+        mPartnerCaste = view.findViewById(R.id.idPartnerCaste);
+        mPartnerMotherTongue = view.findViewById(R.id.idPartnerMotherTongue);
+        mPartnerMaritalStatus = view.findViewById(R.id.idPartnerMaritalStatus);
+        mPartnerEduOccup = view.findViewById(R.id.idPartnerEduOccup);
+        mPartnerAnnIncome = view.findViewById(R.id.idPartnerAnnIncome);
 
-        mPartnerPermLoc = (RelativeLayout) view.findViewById(R.id.idPartnerPermLoc);
-        mPartnerMinHeight = (RelativeLayout) view.findViewById(R.id.idPartnerMinHeight);
-        mPartnerMaxHeight = (RelativeLayout) view.findViewById(R.id.idPartnerMaxHeight);
+        mPartnerPermLoc = view.findViewById(R.id.idPartnerPermLoc);
+        mPartnerMinHeight = view.findViewById(R.id.idPartnerMinHeight);
+        mPartnerMaxHeight = view.findViewById(R.id.idPartnerMaxHeight);
 
-        mSearchByIdET = (EditText)view.findViewById(R.id.searchByIdET) ;
-        mRandomKeywordET = (EditText)view.findViewById(R.id.randomKeywordET) ;
-        mAgeMinET = (EditText)view.findViewById(R.id.ageMinET) ;
-        mAgeMaxET = (EditText)view.findViewById(R.id.ageMaxET) ;
-        mAgeCautionTV = (TextView)view.findViewById(R.id.idAgeCautionTV) ;
+        mSearchByIdET = view.findViewById(R.id.searchByIdET);
+        mRandomKeywordET = view.findViewById(R.id.randomKeywordET);
+        mAgeMinET = view.findViewById(R.id.ageMinET);
+        mAgeMaxET = view.findViewById(R.id.ageMaxET);
+        mAgeCautionTV = view.findViewById(R.id.idAgeCautionTV);
 
-        mPartnerCurrentCountryTV = (TextView)view.findViewById(R.id.partnerCurrentCountryTV) ;
-        mPartnerCurrentCityIV = (TextView)view.findViewById(R.id.partnerCurrentCityTV) ;
-        mSelectReligionTV = (TextView)view.findViewById(R.id.selectReligionTV) ;
-        mSelectCastTV = (TextView)view.findViewById(R.id.selectCastTV) ;
-        mSelectMotherToungeTV = (TextView)view.findViewById(R.id.selectMotherToungeTV) ;
-        mMaritalStatusTV = (TextView)view.findViewById(R.id.maritalStatusTV) ;
-        mEducationOccupationTV = (TextView)view.findViewById(R.id.educationOccupationTV) ;
-        mAnnualIncomeTV = (TextView)view.findViewById(R.id.annualIncomeTV) ;
+        mPartnerCurrentCountryTV = view.findViewById(R.id.partnerCurrentCountryTV);
+        mPartnerCurrentCityIV = view.findViewById(R.id.partnerCurrentCityTV);
+        mSelectReligionTV = view.findViewById(R.id.selectReligionTV);
+        mSelectCastTV = view.findViewById(R.id.selectCastTV);
+        mSelectMotherToungeTV = view.findViewById(R.id.selectMotherToungeTV);
+        mMaritalStatusTV = view.findViewById(R.id.maritalStatusTV);
+        mEducationOccupationTV = view.findViewById(R.id.educationOccupationTV);
+        mAnnualIncomeTV = view.findViewById(R.id.annualIncomeTV);
 
-        mPartnerPermanentLocarionTV = (TextView)view.findViewById(R.id.partnerPermanentLocarionTV) ;
-        mSelectHeightMinTV = (TextView)view.findViewById(R.id.selectHeightMinTV) ;
-        mSelectHeightMaxTV = (TextView)view.findViewById(R.id.selectHeightMaxTV) ;
+        mPartnerPermanentLocarionTV = view.findViewById(R.id.partnerPermanentLocarionTV);
+        mSelectHeightMinTV = view.findViewById(R.id.selectHeightMinTV);
+        mSelectHeightMaxTV = view.findViewById(R.id.selectHeightMaxTV);
 
         //
-        mCountryID  = (TextView)view.findViewById(R.id.idCountryID);
-        mCityID  = (TextView)view.findViewById(R.id.idCityID);
+        mCountryID  = view.findViewById(R.id.idCountryID);
+        mCityID  = view.findViewById(R.id.idCityID);
 
 
         mPartnerCurrentCountryTV.addTextChangedListener(new TextWatcher() {
@@ -608,13 +608,13 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         View view = mDialogInflator.inflate(R.layout.slider_dialog_list_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -684,8 +684,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         View view = mDialogInflator.inflate(R.layout.slider_dialog_checkbox_layout, null);
 
-        final ListView listView = (ListView) view.findViewById(R.id.custom_list);
-        Button doneBtn = (Button)view.findViewById(R.id.button_done);
+        final ListView listView = view.findViewById(R.id.custom_list);
+        Button doneBtn = view.findViewById(R.id.button_done);
 
         SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(getContext(), models, sliderCheckList);
         listView.setAdapter(clad1);
@@ -713,12 +713,12 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 for (int i = 0; i < models.size(); i++) {
 
                     parentListView[0] = getViewByPosition(i, listView);
-                    CheckBox checkBox = (CheckBox)parentListView[0].findViewById(R.id.idCheckbox);
-                    TextView textView = (TextView)parentListView[0].findViewById(R.id.idText);
+                    CheckBox checkBox = parentListView[0].findViewById(R.id.idCheckbox);
+                    TextView textView = parentListView[0].findViewById(R.id.idText);
 
                     if (checkBox.isChecked()){
 
-                        selectedQualification.append(textView.getText().toString()+",");
+                        selectedQualification.append(textView.getText().toString()).append(",");
                     }
 
                 }
@@ -959,7 +959,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 if (cityArr[i].trim().equalsIgnoreCase((cityWithIdList.get(j).getCityName()))) {
 
 //                    mCityID.append(cityWithIdList.get(i).getCityId() + ", ");
-                    sb1.append(cityWithIdList.get(j).getCityId() + ", ");
+                    sb1.append(cityWithIdList.get(j).getCityId()).append(", ");
                     break;
                 }
             }

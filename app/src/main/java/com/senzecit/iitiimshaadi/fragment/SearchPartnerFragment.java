@@ -2,12 +2,10 @@ package com.senzecit.iitiimshaadi.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,14 +43,10 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CityModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.SubsAdvanceSearchResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
-import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.SubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutModel;
-import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
@@ -62,7 +56,6 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,36 +135,36 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     }
 
     private void init(){
-        mlinearLayoutAdvanceSearch = (LinearLayout) view.findViewById(R.id.searchAdvanceLL);
+        mlinearLayoutAdvanceSearch = view.findViewById(R.id.searchAdvanceLL);
 
-        mAdvanceSearchIV = (ImageView) view.findViewById(R.id.searchAdvanceIV);
-        mSearchPartner = (Button) view.findViewById(R.id.searchPartnerBtn);
+        mAdvanceSearchIV = view.findViewById(R.id.searchAdvanceIV);
+        mSearchPartner = view.findViewById(R.id.searchPartnerBtn);
 
-        mPartnerCurrentCountry = (RelativeLayout) view.findViewById(R.id.idPartnerCurrentCountry);
-        mPartnerCurrentCity = (RelativeLayout) view.findViewById(R.id.idPartnerCurrentCity);
-        mPartnerReligion = (RelativeLayout) view.findViewById(R.id.idPartnerReligion);
-        mPartnerCaste = (RelativeLayout) view.findViewById(R.id.idPartnerCaste);
-        mPartnerMotherTongue = (RelativeLayout) view.findViewById(R.id.idPartnerMotherTongue);
-        mPartnerMaritalStatus = (RelativeLayout) view.findViewById(R.id.idPartnerMaritalStatus);
-        mPartnerEduOccup = (RelativeLayout) view.findViewById(R.id.idPartnerEduOccup);
-        mPartnerAnnIncome = (RelativeLayout) view.findViewById(R.id.idPartnerAnnIncome);
+        mPartnerCurrentCountry = view.findViewById(R.id.idPartnerCurrentCountry);
+        mPartnerCurrentCity = view.findViewById(R.id.idPartnerCurrentCity);
+        mPartnerReligion = view.findViewById(R.id.idPartnerReligion);
+        mPartnerCaste = view.findViewById(R.id.idPartnerCaste);
+        mPartnerMotherTongue = view.findViewById(R.id.idPartnerMotherTongue);
+        mPartnerMaritalStatus = view.findViewById(R.id.idPartnerMaritalStatus);
+        mPartnerEduOccup = view.findViewById(R.id.idPartnerEduOccup);
+        mPartnerAnnIncome = view.findViewById(R.id.idPartnerAnnIncome);
 
-        mAgeMinET = (EditText)view.findViewById(R.id.ageMinET) ;
-        mAgeMaxET = (EditText)view.findViewById(R.id.ageMaxET) ;
-        mAgeCautionTV = (TextView)view.findViewById(R.id.idAgeCautionTV) ;
+        mAgeMinET = view.findViewById(R.id.ageMinET);
+        mAgeMaxET = view.findViewById(R.id.ageMaxET);
+        mAgeCautionTV = view.findViewById(R.id.idAgeCautionTV);
 
-        mPartnerCurrentCountryTV = (TextView)view.findViewById(R.id.partnerCurrentCountryTV) ;
-        mPartnerCurrentCityIV = (TextView)view.findViewById(R.id.partnerCurrentCityTV) ;
-        mSelectReligionTV = (TextView)view.findViewById(R.id.selectReligionTV) ;
-        mSelectCastTV = (TextView)view.findViewById(R.id.selectCastTV) ;
-        mSelectMotherToungeTV = (TextView)view.findViewById(R.id.selectMotherToungeTV) ;
-        mMaritalStatusTV = (TextView)view.findViewById(R.id.maritalStatusTV) ;
-        mEducationOccupationTV = (TextView)view.findViewById(R.id.educationOccupationTV) ;
-        mAnnualIncomeTV = (TextView)view.findViewById(R.id.annualIncomeTV) ;
+        mPartnerCurrentCountryTV = view.findViewById(R.id.partnerCurrentCountryTV);
+        mPartnerCurrentCityIV = view.findViewById(R.id.partnerCurrentCityTV);
+        mSelectReligionTV = view.findViewById(R.id.selectReligionTV);
+        mSelectCastTV = view.findViewById(R.id.selectCastTV);
+        mSelectMotherToungeTV = view.findViewById(R.id.selectMotherToungeTV);
+        mMaritalStatusTV = view.findViewById(R.id.maritalStatusTV);
+        mEducationOccupationTV = view.findViewById(R.id.educationOccupationTV);
+        mAnnualIncomeTV = view.findViewById(R.id.annualIncomeTV);
 
         //
-        mCountryID  = (TextView)view.findViewById(R.id.idCountryID);
-        mCityID  = (TextView)view.findViewById(R.id.idCityID);
+        mCountryID  = view.findViewById(R.id.idCountryID);
+        mCityID  = view.findViewById(R.id.idCityID);
 
         textEventListner();
 
@@ -454,7 +447,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                         public void onResponse(Call<SubsAdvanceSearchResponse> call, Response<SubsAdvanceSearchResponse> response) {
                             ProgressClass.getProgressInstance().stopProgress();
                             if (response.isSuccessful()) {
-                                if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                                if (response.body().getMessage().getSuccess().equalsIgnoreCase("success")) {
                                     if (response.body().getUsers().size() > 0) {
                                         List<User> queryList = response.body().getUsers();
                                         System.out.print(profileList);
@@ -527,13 +520,13 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         View view = mDialogInflator.inflate(R.layout.slider_dialog_list_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -603,8 +596,8 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         View view = mDialogInflator.inflate(R.layout.slider_dialog_checkbox_layout, null);
 
-        final ListView listView = (ListView) view.findViewById(R.id.custom_list);
-        Button doneBtn = (Button)view.findViewById(R.id.button_done);
+        final ListView listView = view.findViewById(R.id.custom_list);
+        Button doneBtn = view.findViewById(R.id.button_done);
 
         SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(getContext(), models, sliderCheckList);
         listView.setAdapter(clad1);
@@ -632,12 +625,12 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 for (int i = 0; i < models.size(); i++) {
 
                     parentListView[0] = getViewByPosition(i, listView);
-                    CheckBox checkBox = (CheckBox)parentListView[0].findViewById(R.id.idCheckbox);
-                    TextView textView = (TextView)parentListView[0].findViewById(R.id.idText);
+                    CheckBox checkBox = parentListView[0].findViewById(R.id.idCheckbox);
+                    TextView textView = parentListView[0].findViewById(R.id.idText);
 
                     if (checkBox.isChecked()){
 
-                        selectedQualification.append(textView.getText().toString()+", ");
+                        selectedQualification.append(textView.getText().toString()).append(", ");
                     }
 
                 }
@@ -868,7 +861,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 if (cityArr[i].trim().equalsIgnoreCase((cityWithIdList.get(j).getCityName()))) {
 
 //                    mCityID.append(cityWithIdList.get(i).getCityId() + ", ");
-                    sb1.append(cityWithIdList.get(j).getCityId() + ", ");
+                    sb1.append(cityWithIdList.get(j).getCityId()).append(", ");
                     break;
                 }
             }
@@ -991,12 +984,12 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1004,7 +997,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

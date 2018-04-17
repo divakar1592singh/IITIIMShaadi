@@ -30,7 +30,6 @@ import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
-import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +93,7 @@ public class InvitedFriendFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
 
-                        TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
+                        TextView tvUserID = view.findViewById(R.id.idUserIDTV);
                         String userID = tvUserID.getText().toString();
 
                         Button mCancelReqBtn = view.findViewById(R.id.idCancelReqBtn);
@@ -174,7 +173,7 @@ public class InvitedFriendFragment extends Fragment {
                 if (response.isSuccessful()) {
                     InvitedFriendResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 //                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 

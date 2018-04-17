@@ -41,9 +41,9 @@ public class IntroSliderWebActivity extends AppCompatActivity implements View.On
     }
 
     private void init() {
-        mWebView = (WebView) findViewById(R.id.idIntroWeb);
-        mLogin = (Button) findViewById(R.id.idLoginBtn);
-        mRegistration = (Button) findViewById(R.id.idRegisterBtn);
+        mWebView = findViewById(R.id.idIntroWeb);
+        mLogin = findViewById(R.id.idLoginBtn);
+        mRegistration = findViewById(R.id.idRegisterBtn);
 
     }
 

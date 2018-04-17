@@ -98,11 +98,11 @@ public class MyFriendsFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
 
-                        TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
+                        TextView tvUserID = view.findViewById(R.id.idUserIDTV);
                         String userID = tvUserID.getText().toString();
 //                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
 
-                        Button btnRemoveFriend = (Button) view.findViewById(R.id.idRemoveFriendBtn);
+                        Button btnRemoveFriend = view.findViewById(R.id.idRemoveFriendBtn);
                         btnRemoveFriend.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -112,7 +112,7 @@ public class MyFriendsFragment extends Fragment {
                             }
                         });
 
-                        Button btnUnShortList = (Button) view.findViewById(R.id.idShortlistBtn);
+                        Button btnUnShortList = view.findViewById(R.id.idShortlistBtn);
                         btnUnShortList.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -121,7 +121,7 @@ public class MyFriendsFragment extends Fragment {
                             }
                         });
 
-                        Button btnViewProfile = (Button) view.findViewById(R.id.idViewProfileBtn);
+                        Button btnViewProfile = view.findViewById(R.id.idViewProfileBtn);
                         btnViewProfile.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -168,7 +168,7 @@ public class MyFriendsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     MyFriendsResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 //                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 

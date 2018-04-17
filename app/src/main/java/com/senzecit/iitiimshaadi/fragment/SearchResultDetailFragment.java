@@ -12,7 +12,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapterSearchPartner;
 
 import java.util.ArrayList;
@@ -67,8 +66,8 @@ public class SearchResultDetailFragment extends Fragment implements View.OnClick
         mCounty = view.findViewById(R.id.countryTV);
         mEducations = view.findViewById(R.id.educationTV);
 
-        expListView = (ExpandableListView)view.findViewById(R.id.expandableLV);
-        expListViewPartner = (ExpandableListView)view.findViewById(R.id.expandablePartnerLV);
+        expListView = view.findViewById(R.id.expandableLV);
+        expListViewPartner = view.findViewById(R.id.expandablePartnerLV);
         mDetails = view.findViewById(R.id.detailsBtn);
         mPartnerPref = view.findViewById(R.id.partnerPrefBtn);
         mAlbum = view.findViewById(R.id.albumsBtm);

@@ -62,13 +62,13 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
         mTitle.setText("Privacy Policy");
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
 
-        mPrivacyLayout = (LinearLayout)findViewById(R.id.idPrivacyLayout);
+        mPrivacyLayout = findViewById(R.id.idPrivacyLayout);
         parseData();
     }
 

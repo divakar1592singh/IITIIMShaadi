@@ -42,7 +42,6 @@ import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -118,14 +117,14 @@ public class MainFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_socket_chat_single, container, false);
         //      addMessage("User", "This is test message");
-        TextView tv_title = (TextView)view.findViewById(R.id.idUserNameTV) ;
+        TextView tv_title = view.findViewById(R.id.idUserNameTV);
 //        tv_title.setText(new SharedPrefClass(getActivity()).getChatReceiverName());
         tv_title.setText(String.valueOf(prefs.getString(CONSTANTS.OTHER_USERNAME)));
 
-        ImageView mProfileIV =(ImageView)view.findViewById(R.id.idProfileIV);
+        ImageView mProfileIV = view.findViewById(R.id.idProfileIV);
         mProfileIV.setVisibility(View.GONE);
 
-        ImageView iv_back=(ImageView)view.findViewById(R.id.idBackIV);
+        ImageView iv_back= view.findViewById(R.id.idBackIV);
         iv_back.setOnClickListener(this);
         return view;
     }
@@ -152,11 +151,11 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mMessagesView = (RecyclerView) view.findViewById(R.id.messages);
+        mMessagesView = view.findViewById(R.id.messages);
         mMessagesView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessagesView.setAdapter(mAdapter);
 
-        mInputMessageView = (EditText) view.findViewById(R.id.message_input);
+        mInputMessageView = view.findViewById(R.id.message_input);
  /*       mInputMessageView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int id, KeyEvent event) {
@@ -191,7 +190,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        ImageButton sendButton = (ImageButton) view.findViewById(R.id.send_button);
+        ImageButton sendButton = view.findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -502,7 +501,7 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 //                    removeTyping(userName);
 //                    addMessage(userImageUrl, userId, userName, message);
 
-;                    addMessage(profileUri, userId, null, message);
+                    addMessage(profileUri, userId, null, message);
 
                 }
             });

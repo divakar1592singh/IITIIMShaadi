@@ -1,12 +1,10 @@
 package com.senzecit.iitiimshaadi.payment;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
@@ -14,16 +12,11 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -34,30 +27,17 @@ import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
-import com.payumoney.core.response.ErrorResponse;
-import com.payumoney.sdkui.ui.utils.PPConfig;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.SubscriptionPlanActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,26 +73,26 @@ public class MakePaymentActivity extends BaseActivity {
         prefs = AppController.getInstance().getPrefs();
         isPlanPage = getIntent().getExtras().getBoolean(CONSTANTS.PLAN_STATUS);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+        Toolbar toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle(getString(R.string.app_name));
         settings = getSharedPreferences("settings", MODE_PRIVATE);
-        logoutBtn = (TextView) findViewById(R.id.logout_button);
-        email_et = (EditText) findViewById(R.id.email_et);
-        mobile_et = (EditText) findViewById(R.id.mobile_et);
-        amount_et = (EditText) findViewById(R.id.amount_et);
+        logoutBtn = findViewById(R.id.logout_button);
+        email_et = findViewById(R.id.email_et);
+        mobile_et = findViewById(R.id.mobile_et);
+        amount_et = findViewById(R.id.amount_et);
         amount_et.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(7, 2)});
-        email_til = (TextInputLayout) findViewById(R.id.email_til);
-        mobile_til = (TextInputLayout) findViewById(R.id.mobile_til);
-        radioGroup_color_theme = (RadioGroup) findViewById(R.id.radio_grp_color_theme);
-        radio_btn_default = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_default);
-        radio_btn_theme_pink = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_pink);
-        radio_btn_theme_purple = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_purple);
-        radio_btn_theme_green = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_green);
-        radio_btn_theme_grey = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_grey);
+        email_til = findViewById(R.id.email_til);
+        mobile_til = findViewById(R.id.mobile_til);
+        radioGroup_color_theme = findViewById(R.id.radio_grp_color_theme);
+        radio_btn_default = findViewById(R.id.radio_btn_theme_default);
+        radio_btn_theme_pink = findViewById(R.id.radio_btn_theme_pink);
+        radio_btn_theme_purple = findViewById(R.id.radio_btn_theme_purple);
+        radio_btn_theme_green = findViewById(R.id.radio_btn_theme_green);
+        radio_btn_theme_grey = findViewById(R.id.radio_btn_theme_grey);
 
-        mBackButton = (ImageView)findViewById(R.id.idBackIV);
+        mBackButton = findViewById(R.id.idBackIV);
 
         if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
             logoutBtn.setVisibility(View.VISIBLE);
@@ -120,14 +100,14 @@ public class MakePaymentActivity extends BaseActivity {
             logoutBtn.setVisibility(View.GONE);
         }
 
-        switch_disable_wallet = (SwitchCompat) findViewById(R.id.switch_disable_wallet);
-        switch_disable_netBanks = (SwitchCompat) findViewById(R.id.switch_disable_netbanks);
-        switch_disable_cards = (SwitchCompat) findViewById(R.id.switch_disable_cards);
-        AppCompatRadioButton radio_btn_sandbox = (AppCompatRadioButton) findViewById(R.id.radio_btn_sandbox);
-        AppCompatRadioButton radio_btn_production = (AppCompatRadioButton) findViewById(R.id.radio_btn_production);
-        radioGroup_select_env = (RadioGroup) findViewById(R.id.radio_grp_env);
+        switch_disable_wallet = findViewById(R.id.switch_disable_wallet);
+        switch_disable_netBanks = findViewById(R.id.switch_disable_netbanks);
+        switch_disable_cards = findViewById(R.id.switch_disable_cards);
+        AppCompatRadioButton radio_btn_sandbox = findViewById(R.id.radio_btn_sandbox);
+        AppCompatRadioButton radio_btn_production = findViewById(R.id.radio_btn_production);
+        radioGroup_select_env = findViewById(R.id.radio_grp_env);
 
-        payNowButton = (Button) findViewById(R.id.pay_now_button);
+        payNowButton = findViewById(R.id.pay_now_button);
 
         initListeners();
 

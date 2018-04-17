@@ -171,20 +171,20 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
-        mAlbumLogo = (ImageView) findViewById(R.id.albumLogoIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
+        mAlbumLogo = findViewById(R.id.albumLogoIV);
         mBack.setVisibility(View.VISIBLE);
 //        mAlbumLogo.setVisibility(View.VISIBLE);
         mTitle.setText("Album");
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
-        mGridView = (GridView) findViewById(R.id.gridView);
-        mAddBtnLL = (LinearLayout) findViewById(R.id.idAddBtnLL);
-        mAddImage = (LinearLayout) findViewById(R.id.idAddImgLL);
-        mNoImageFoundFL = (FrameLayout) findViewById(R.id.idAlbumNoImageFL);
-        mImageFoundFL = (FrameLayout) findViewById(R.id.idAlbumImageFoundFL);
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+        mGridView = findViewById(R.id.gridView);
+        mAddBtnLL = findViewById(R.id.idAddBtnLL);
+        mAddImage = findViewById(R.id.idAddImgLL);
+        mNoImageFoundFL = findViewById(R.id.idAlbumNoImageFL);
+        mImageFoundFL = findViewById(R.id.idAlbumImageFoundFL);
     }
 
     public void handleView(){
@@ -343,14 +343,10 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         return mediaFile;
     }
     private boolean isDeviceSupportCamera() {
-        if (getApplicationContext().getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
+        // this device has a camera
+// no camera on this device
+        return getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA);
     }
 
     @Override
@@ -443,7 +439,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
                     AllAlbumResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
 //                            Toast.makeText(AlbumActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             try {
@@ -497,7 +493,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                 if (response.isSuccessful()) {
                     AllAlbumResponse albumResponse = response.body();
                     if(albumResponse.getMessage().getSuccess() != null) {
-                        if (albumResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (albumResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             Toast.makeText(AlbumActivity.this, AppMessage.PAGE_REFRESH_INFO, Toast.LENGTH_SHORT).show();
                             mNoImageFoundFL.setVisibility(View.GONE);
@@ -643,7 +639,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         }
 
         // Load the high-resolution "zoomed-in" image.
-        final ImageView expandedImageView = (ImageView) findViewById(
+        final ImageView expandedImageView = findViewById(
                 R.id.expanded_image);
 //        expandedImageView.setImageResource(imageResId);
 
@@ -882,12 +878,12 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -895,7 +891,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -932,7 +928,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
         final Dialog dialog = new Dialog(AlbumActivity.this);
         dialog.setContentView(R.layout.custom_dialog_list);
 
-        ListView lv = (ListView) dialog.findViewById(R.id.lv);
+        ListView lv = dialog.findViewById(R.id.lv);
 
         String[] foldername = {"All Members", "Only Friends", "Private"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AlbumActivity.this, android.R.layout.simple_dropdown_item_1line, foldername);
@@ -973,7 +969,7 @@ public class AlbumActivity extends AppCompatActivity implements View.OnClickList
                     if (response.isSuccessful()) {
                         AddFolderResponse serverResponse = response.body();
                         if (serverResponse.getMessage().getSuccess() != null) {
-                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                                 AlertDialogSingleClick.getInstance().showDialog(AlbumActivity.this, "Info", "Permission Changed Successfully");
 

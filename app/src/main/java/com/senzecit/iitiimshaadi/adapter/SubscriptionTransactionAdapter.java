@@ -33,13 +33,13 @@ public class SubscriptionTransactionAdapter extends RecyclerView.Adapter<Subscri
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            mSerialNoTV = (TextView)itemView.findViewById(R.id.idSerialNoTV) ;
-            mPaymentModeTV = (TextView)itemView.findViewById(R.id.idPaymentModeTV) ;
-            mTransactionIdTV = (TextView)itemView.findViewById(R.id.idTransactionIdTV) ;
-            mAmountTV = (TextView)itemView.findViewById(R.id.idAmountTV) ;
-            mPaymentDateTV = (TextView)itemView.findViewById(R.id.idPaymentDateTV) ;
-            mExpiryDateTV = (TextView)itemView.findViewById(R.id.idExpiryDateTV) ;
-            mDurationTV = (TextView)itemView.findViewById(R.id.idDurationTV) ;
+            mSerialNoTV = itemView.findViewById(R.id.idSerialNoTV);
+            mPaymentModeTV = itemView.findViewById(R.id.idPaymentModeTV);
+            mTransactionIdTV = itemView.findViewById(R.id.idTransactionIdTV);
+            mAmountTV = itemView.findViewById(R.id.idAmountTV);
+            mPaymentDateTV = itemView.findViewById(R.id.idPaymentDateTV);
+            mExpiryDateTV = itemView.findViewById(R.id.idExpiryDateTV);
+            mDurationTV = itemView.findViewById(R.id.idDurationTV);
 
         }
     }

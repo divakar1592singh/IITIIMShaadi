@@ -23,13 +23,11 @@ import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
-import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Callback;
@@ -61,12 +59,12 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 //        chatuserFragment();
     }
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
 
-        mRecyclerViewChatUser = (RecyclerView) findViewById(R.id.idChatUserRV);
+        mRecyclerViewChatUser = findViewById(R.id.idChatUserRV);
 
     }
 
@@ -149,12 +147,12 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         dialog.setContentView(R.layout.alert_dialog_single_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,7 +161,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

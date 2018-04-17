@@ -147,25 +147,25 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
 
     private void init(){
 
-        albumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
+        albumLayout = findViewById(R.id.idAlbumLayout);
 
-        mScrollView = (ScrollView)findViewById(R.id.idScrlView);
+        mScrollView = findViewById(R.id.idScrlView);
 
-        mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
-        mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
-        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
-        mProgress = (ProgressBar)findViewById(R.id.idprogress);
-        mProfilepercTV = (TextView)findViewById(R.id.idProfilePercTV);
+        mProfileCIV = findViewById(R.id.idProfileCIV);
+        mUsrNameTV = findViewById(R.id.idUserNameTV);
+        mUsrIdTV = findViewById(R.id.idUserId);
+        mProgress = findViewById(R.id.idprogress);
+        mProfilepercTV = findViewById(R.id.idProfilePercTV);
 
-        mAlbumIV = (ImageView)findViewById(R.id.idAlbum);
+        mAlbumIV = findViewById(R.id.idAlbum);
 
-        mEmailVerifyTV = (TextView)findViewById(R.id.idEmailVerify);
-        mMobVerifyTV = (TextView)findViewById(R.id.idMobVerify);
-        mDocumentsVerifyTV = (TextView)findViewById(R.id.idDocumentsVerify);
-        mProofVerifyTV = (TextView)findViewById(R.id.idProofVerify);
+        mEmailVerifyTV = findViewById(R.id.idEmailVerify);
+        mMobVerifyTV = findViewById(R.id.idMobVerify);
+        mDocumentsVerifyTV = findViewById(R.id.idDocumentsVerify);
+        mProofVerifyTV = findViewById(R.id.idProofVerify);
 
-        expListView = (ExpandableListView) findViewById(R.id.expandableLV);
-        expListViewPartner = (ExpandableListView) findViewById(R.id.partnerPrefExpLV);
+        expListView = findViewById(R.id.expandableLV);
+        expListViewPartner = findViewById(R.id.partnerPrefExpLV);
     }
     public void handleClick() {
 
@@ -401,7 +401,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
     }
 
     private void setInitListViewHeight(ExpandableListView listView) {
-        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
                 View.MeasureSpec.EXACTLY);
@@ -436,7 +436,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
     }
 
     private void setListViewHeight(ExpandableListView listView,int group) {
-        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
                 View.MeasureSpec.EXACTLY);
@@ -471,7 +471,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
     }
 
     private void setCollapseListViewHeight(ExpandableListView listView,int group) {
-        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        ExpandableListAdapter listAdapter = listView.getExpandableListAdapter();
         int totalHeight = 0;
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
                 View.MeasureSpec.EXACTLY);
@@ -773,7 +773,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
         int profileCompletion = jsonObject.optInt("profile_complition");
 
         mProgress.setProgress(profileCompletion);
-        mProfilepercTV.setText(new StringBuilder(String.valueOf(profileCompletion)).append("%")); ;
+        mProfilepercTV.setText(new StringBuilder(String.valueOf(profileCompletion)).append("%"));
         mUsrNameTV.setText(new StringBuilder("@").append(username));
 
         callWebServiceMyProfile();
@@ -882,7 +882,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
                 try {
                     if (response.isSuccessful()) {
 
-                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (response.body().getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
@@ -927,7 +927,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase(msg1)) {
 //                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
 //                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
@@ -973,7 +973,7 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("OTP is verified")) {
 
                             dialog.dismiss();
                             showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
@@ -1098,11 +1098,11 @@ public class SubscriberDashboardActivity2 extends BaseNavActivity {
                                 int doc_verified = verifiedObject.getInt("document_verified");
                                 int idProof_verified = verifiedObject.getInt("identity_proof_verified");
 
-                                boolean email = email_verified.equalsIgnoreCase("Yes")?true:false;
-                                boolean mob = mob_verified == 1?true:false;
-                                boolean bioData = biodata_verified == 1?true:false;
-                                boolean doc = doc_verified == 1?true:false;
-                                boolean idProof = idProof_verified == 1?true:false;
+                                boolean email = email_verified.equalsIgnoreCase("Yes");
+                                boolean mob = mob_verified == 1;
+                                boolean bioData = biodata_verified == 1;
+                                boolean doc = doc_verified == 1;
+                                boolean idProof = idProof_verified == 1;
 
                                 setVerificationStatus(email, mob, bioData, doc, idProof);
 

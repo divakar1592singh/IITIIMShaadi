@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 
 /**
@@ -46,7 +45,7 @@ public class ProgressClass {
             dialog.setContentView(R.layout.layout_progress_dialog);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-            ImageView progressImage = (ImageView) dialog.findViewById(R.id.idPregress);
+            ImageView progressImage = dialog.findViewById(R.id.idPregress);
             try {
                 Glide.with(activity)
                         .load(DataHandlingClass.getInstance().getProgressId())
@@ -66,7 +65,7 @@ public class ProgressClass {
         dialog.setContentView(R.layout.layout_progress_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        ImageView progressImage = (ImageView) dialog.findViewById(R.id.idPregress);
+        ImageView progressImage = dialog.findViewById(R.id.idPregress);
         Glide.with(activity)
                 .load(DataHandlingClass.getInstance().getProgressId())
                 .into(progressImage);

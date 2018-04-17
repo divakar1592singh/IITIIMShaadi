@@ -1,8 +1,6 @@
 package com.senzecit.iitiimshaadi.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +47,7 @@ public class MediaAdapter extends BaseAdapter {
         Holder holder =null;
         if(view==null){
 //            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.media_coverage_item,viewGroup,false);
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.media_coverage_item,viewGroup,false);
             holder = new Holder(view);
             view.setTag(holder);
@@ -69,7 +67,7 @@ public class MediaAdapter extends BaseAdapter {
         ImageView imageView;
 
         public Holder(View convertView){
-            imageView = (ImageView) convertView.findViewById(R.id.grid_imageView);
+            imageView = convertView.findViewById(R.id.grid_imageView);
 
         }
     }

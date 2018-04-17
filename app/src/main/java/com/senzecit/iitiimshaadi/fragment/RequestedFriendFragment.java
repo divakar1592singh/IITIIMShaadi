@@ -32,7 +32,6 @@ import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
-import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import java.util.List;
 
@@ -85,7 +84,7 @@ public class RequestedFriendFragment extends Fragment {
     }
 
     private void init(){
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.requestFriendListRV);
+        mRecyclerView = view.findViewById(R.id.requestFriendListRV);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
     }
@@ -98,11 +97,11 @@ public class RequestedFriendFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
 
-                        TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
+                        TextView tvUserID = view.findViewById(R.id.idUserIDTV);
                         String userID = tvUserID.getText().toString();
 //                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
 
-                        LinearLayout layout = (LinearLayout) view.findViewById(R.id.idProfileLayout);
+                        LinearLayout layout = view.findViewById(R.id.idProfileLayout);
                         layout.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -117,7 +116,7 @@ public class RequestedFriendFragment extends Fragment {
                         });
 
 
-                        Button btnAddFriend = (Button) view.findViewById(R.id.idAddFriendBtn);
+                        Button btnAddFriend = view.findViewById(R.id.idAddFriendBtn);
                         btnAddFriend.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -128,7 +127,7 @@ public class RequestedFriendFragment extends Fragment {
                         });
 
 
-                        Button btnCancelReq = (Button) view.findViewById(R.id.idCancelReqBtn);
+                        Button btnCancelReq = view.findViewById(R.id.idCancelReqBtn);
                         btnCancelReq.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -138,7 +137,7 @@ public class RequestedFriendFragment extends Fragment {
                         });
 
 
-                        Button btnUnShortList = (Button) view.findViewById(R.id.idShortlistBtn);
+                        Button btnUnShortList = view.findViewById(R.id.idShortlistBtn);
                         btnUnShortList.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -190,7 +189,7 @@ public class RequestedFriendFragment extends Fragment {
                 if (response.isSuccessful()) {
                     RequestedFriendResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 //                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 

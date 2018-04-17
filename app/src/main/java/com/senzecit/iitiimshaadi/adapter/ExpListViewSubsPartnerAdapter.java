@@ -124,7 +124,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_numbertype, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
@@ -154,7 +154,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout1 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
@@ -186,14 +186,14 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
                         //SetData - PreferedPartnerHeightMin
                         txtListChild2.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMin());
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -227,14 +227,14 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
                         //SetData - PreferedPartnerHeightMax
                         txtListChild3.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMax());
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +268,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
@@ -277,7 +277,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                         String maritalNet = marital1.replace("]", "");
                         txtListChild4.setText(maritalNet);
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -330,14 +330,14 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
                         //SetData - PreferedPartnerReligion
                         txtListChild.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerReligion());
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -371,7 +371,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
@@ -380,7 +380,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                         String caste = caste1.replace("]","");
                         txtListChild1.setText(caste);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -413,11 +413,11 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
@@ -482,7 +482,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
@@ -491,7 +491,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                         String education = education1.replace("]","");
                         txtListChild.setText(education);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -629,7 +629,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
+        TextView lblListHeader = convertView
                 .findViewById(R.id.profileGroupTV);
         lblListHeader.setTypeface(null, Typeface.NORMAL);
         lblListHeader.setText(headerTitle);
@@ -676,13 +676,13 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
         View view = layoutInflater.inflate(R.layout.slider_dialog_list_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(_context);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -753,8 +753,8 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
 
         View view = layoutInflater.inflate(R.layout.slider_dialog_checkbox_layout, null);
 
-        final ListView listView = (ListView) view.findViewById(R.id.custom_list);
-        Button doneBtn = (Button)view.findViewById(R.id.button_done);
+        final ListView listView = view.findViewById(R.id.custom_list);
+        Button doneBtn = view.findViewById(R.id.button_done);
 
 
         SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(_context, models, sliderCheckList);
@@ -784,12 +784,12 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                 for (int i = 0; i < models.size(); i++) {
 
                     parentListView[0] = getViewByPosition(i, listView);
-                    CheckBox checkBox = (CheckBox)parentListView[0].findViewById(R.id.idCheckbox);
-                    TextView textView = (TextView)parentListView[0].findViewById(R.id.idText);
+                    CheckBox checkBox = parentListView[0].findViewById(R.id.idCheckbox);
+                    TextView textView = parentListView[0].findViewById(R.id.idText);
 
                     if (checkBox.isChecked()){
 
-                        selectedQualification.append(textView.getText().toString()+", ");
+                        selectedQualification.append(textView.getText().toString()).append(", ");
                     }
 
                 }
@@ -874,7 +874,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
@@ -909,7 +909,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
         String Preferred_Country = ExpPartnerProfileModel.getInstance().getPreferred_Country();
 
         String[] Preferred_CasteArr = new String[1];
-        String[] Preferred_CountryArr = new String[1];;
+        String[] Preferred_CountryArr = new String[1];
         Preferred_CasteArr[0] = Preferred_Caste;
         Preferred_CountryArr[0] = Preferred_Country;
 
@@ -929,7 +929,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                 if (response.isSuccessful()) {
                     AddFolderResponse ptReligionResponse = response.body();
                     if(ptReligionResponse.getMessage().getSuccess() != null) {
-                        if (ptReligionResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (ptReligionResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
@@ -981,7 +981,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                 if (response.isSuccessful()) {
                     AddFolderResponse ptrEduResponse = response.body();
                     if(ptrEduResponse.getMessage().getSuccess() != null) {
-                        if (ptrEduResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (ptrEduResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
@@ -1029,7 +1029,7 @@ public class ExpListViewSubsPartnerAdapter extends BaseExpandableListAdapter {
                 if (response.isSuccessful()) {
                     AddFolderResponse aboutMeResponse = response.body();
                     if(aboutMeResponse.getMessage().getSuccess() != null) {
-                        if (aboutMeResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (aboutMeResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();

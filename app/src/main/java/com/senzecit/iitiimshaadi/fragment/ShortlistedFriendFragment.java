@@ -95,11 +95,11 @@ public class ShortlistedFriendFragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         // do whatever
 
-                        TextView tvUserID = (TextView)view.findViewById(R.id.idUserIDTV);
+                        TextView tvUserID = view.findViewById(R.id.idUserIDTV);
                         String userID = tvUserID.getText().toString();
 //                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
 
-                        Button btnAddFriend = (Button) view.findViewById(R.id.idAddFriendBtn);
+                        Button btnAddFriend = view.findViewById(R.id.idAddFriendBtn);
                         btnAddFriend.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -109,7 +109,7 @@ public class ShortlistedFriendFragment extends Fragment {
                             }
                         });
 
-                        Button btnUnShortList = (Button) view.findViewById(R.id.idUnShortlistBtn);
+                        Button btnUnShortList = view.findViewById(R.id.idUnShortlistBtn);
                         btnUnShortList.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -118,7 +118,7 @@ public class ShortlistedFriendFragment extends Fragment {
                             }
                         });
 
-                        Button btnViewProfile = (Button) view.findViewById(R.id.idViewProfileBtn);
+                        Button btnViewProfile = view.findViewById(R.id.idViewProfileBtn);
                         btnViewProfile.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -177,7 +177,7 @@ public class ShortlistedFriendFragment extends Fragment {
                 if (response.isSuccessful()) {
                     ShortlistedFriendResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 //                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
 

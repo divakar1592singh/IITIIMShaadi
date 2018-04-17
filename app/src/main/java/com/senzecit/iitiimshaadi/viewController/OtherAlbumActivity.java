@@ -14,31 +14,24 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.util.AsyncListUtil;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.AlbumAdapter;
 import com.senzecit.iitiimshaadi.adapter.OtherAlbumAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.all_album.Album;
-import com.senzecit.iitiimshaadi.model.api_response_model.all_album.AllAlbumResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.AllAlbumPic;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -88,16 +81,16 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
-        mAlbumLogo = (ImageView) findViewById(R.id.albumLogoIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
+        mAlbumLogo = findViewById(R.id.albumLogoIV);
         mBack.setVisibility(View.VISIBLE);
         mAlbumLogo.setVisibility(View.VISIBLE);
         mTitle.setText("Album");
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swiperefresh);
-        mGridView = (GridView) findViewById(R.id.gridView);
+        mSwipeRefreshLayout = findViewById(R.id.swiperefresh);
+        mGridView = findViewById(R.id.gridView);
 
     }
 
@@ -280,12 +273,12 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -298,7 +291,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,7 +313,7 @@ public class OtherAlbumActivity extends AppCompatActivity implements View.OnClic
         }
 
         // Load the high-resolution "zoomed-in" image.
-        final ImageView expandedImageView = (ImageView) findViewById(
+        final ImageView expandedImageView = findViewById(
                 R.id.expanded_image);
 //        expandedImageView.setImageResource(imageResId);
 

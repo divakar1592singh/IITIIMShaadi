@@ -1,9 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +18,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
@@ -126,22 +123,22 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 
     private void init(){
 
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("");
 
-        mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
-        mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
-        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
+        mProfileCIV = findViewById(R.id.idProfileCIV);
+        mUsrNameTV = findViewById(R.id.idUserNameTV);
+        mUsrIdTV = findViewById(R.id.idUserId);
 
-        mMyProfile = (Button) findViewById(R.id.myProfileBtn);
-        mPartnerProfile = (Button) findViewById(R.id.partnerProfileBtn);
-        expListView = (ExpandableListView) findViewById(R.id.expandableLV);
-        expListViewPartner = (ExpandableListView) findViewById(R.id.expandablePartnerLV);
+        mMyProfile = findViewById(R.id.myProfileBtn);
+        mPartnerProfile = findViewById(R.id.partnerProfileBtn);
+        expListView = findViewById(R.id.expandableLV);
+        expListViewPartner = findViewById(R.id.expandablePartnerLV);
 
-        mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
+        mScrollView = findViewById(R.id.scrollViewLayout);
 
         setSupportActionBar(mToolbar);
     }
@@ -395,12 +392,12 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -409,7 +406,7 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

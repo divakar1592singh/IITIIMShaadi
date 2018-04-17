@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
@@ -31,15 +30,15 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_layout);
 
-		textView= (TextView) findViewById(R.id.text);
-		((Button)findViewById(R.id.btn_normal)).setOnClickListener(new OnClickListener() {
+		textView= findViewById(R.id.text);
+		findViewById(R.id.btn_normal).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showDialog(100,50);
 			}
 		});
 
-		((Button)findViewById(R.id.btn_cal)).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.btn_cal).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
@@ -66,13 +65,13 @@ public class MainActivity extends Activity {
 		View view = getLayoutInflater().inflate(R.layout.toast_layout, null);
 
 		final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-		final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+		final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 		recyclerView.setLayoutManager(mLayoutManager);
 		recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-		((Button)view.findViewById(R.id.button_done)).setOnClickListener(new OnClickListener() {
+		view.findViewById(R.id.button_done).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();

@@ -1,17 +1,13 @@
 package com.senzecit.iitiimshaadi.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +19,6 @@ import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_fold
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
-import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
@@ -75,7 +70,7 @@ public class AlbumAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         Holder holder = null;
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.album_item, viewGroup, false);
             holder = new Holder(view);
             view.setTag(holder);
@@ -149,10 +144,10 @@ public class AlbumAdapter extends BaseAdapter {
 
         public Holder(View convertView) {
 
-            imageView = (ImageView) convertView.findViewById(R.id.grid_imageView);
-            mSetProfileIV = (ImageView) convertView.findViewById(R.id.idSetProfileIV);
-            mSettingIV = (ImageView) convertView.findViewById(R.id.idSettingIV);
-            mDeleteIV = (ImageView) convertView.findViewById(R.id.idDeleteIV);
+            imageView = convertView.findViewById(R.id.grid_imageView);
+            mSetProfileIV = convertView.findViewById(R.id.idSetProfileIV);
+            mSettingIV = convertView.findViewById(R.id.idSettingIV);
+            mDeleteIV = convertView.findViewById(R.id.idDeleteIV);
 
         }
     }
@@ -173,7 +168,7 @@ public class AlbumAdapter extends BaseAdapter {
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if (serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             albumList.remove(position);
                             notifyDataSetChanged();

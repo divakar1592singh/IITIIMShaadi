@@ -112,26 +112,26 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void init(){
 
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
+        mToolbar= findViewById(R.id.toolbar);
 
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Profile");
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idRefreshLayout);
+        mSwipeRefreshLayout = findViewById(R.id.idRefreshLayout);
 
-        mProfileCIV = (CircleImageView) findViewById(R.id.idProfileCIV) ;
-        mUploadIv = (ImageView)findViewById(R.id.idUploadBtn);
-        mUsrNameTV = (TextView)findViewById(R.id.idUserNameTV) ;
-        mUsrIdTV = (TextView)findViewById(R.id.idUserId) ;
+        mProfileCIV = findViewById(R.id.idProfileCIV);
+        mUploadIv = findViewById(R.id.idUploadBtn);
+        mUsrNameTV = findViewById(R.id.idUserNameTV);
+        mUsrIdTV = findViewById(R.id.idUserId);
 
-        mMyProfile = (Button) findViewById(R.id.myProfileBtn);
-        mPartnerProfile = (Button) findViewById(R.id.partnerProfileBtn);
-        expListView = (ExpandableListView) findViewById(R.id.expandableLV);
-        expListViewPartner = (ExpandableListView) findViewById(R.id.expandablePartnerLV);
+        mMyProfile = findViewById(R.id.myProfileBtn);
+        mPartnerProfile = findViewById(R.id.partnerProfileBtn);
+        expListView = findViewById(R.id.expandableLV);
+        expListViewPartner = findViewById(R.id.expandablePartnerLV);
 
-        mScrollView = (ScrollView) findViewById(R.id.scrollViewLayout);
+        mScrollView = findViewById(R.id.scrollViewLayout);
     }
 
     public void handleView(){
@@ -574,12 +574,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -587,7 +587,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

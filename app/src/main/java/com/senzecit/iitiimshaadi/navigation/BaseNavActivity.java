@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,7 +23,6 @@ import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.AboutUsActivity;
@@ -37,7 +34,6 @@ import com.senzecit.iitiimshaadi.viewController.FAQActivity;
 import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.HowToNavigatePageActivity;
 import com.senzecit.iitiimshaadi.viewController.MediaCoverageActivity;
-import com.senzecit.iitiimshaadi.viewController.PaidSubscriberDashboardActivity;
 import com.senzecit.iitiimshaadi.viewController.PremierServicesActivity;
 import com.senzecit.iitiimshaadi.viewController.PrivacyActivity;
 import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
@@ -65,19 +61,19 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
         prefs = AppController.getInstance().getPrefs();
         drawer = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
 
-        FrameLayout activityContainer = (FrameLayout) drawer.findViewById(R.id.activity_content);
+        FrameLayout activityContainer = drawer.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
         //getLayoutInflater().inflate(R.layout.activity_home, activityContainer, true);
         super.setContentView(drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
-        rightToggle = (ToggleButton)findViewById(R.id.right_menu_toggle);
+        rightToggle = findViewById(R.id.right_menu_toggle);
 //        Button btn1 = (Button) findViewById(R.id.idNavHome);
-        ImageView mChatIV = (ImageView)findViewById(R.id.idChat);
+        ImageView mChatIV = findViewById(R.id.idChat);
         mChatIV.setOnClickListener(this);
         setSupportActionBar(toolbar);
 
-        frameLayout = (FrameLayout) findViewById(R.id.activity_content);
+        frameLayout = findViewById(R.id.activity_content);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -99,32 +95,32 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.requestLayout();
         headerview = navigationView.getHeaderView(0);
 
-        TextView mSearchPartnerBtn = (TextView)headerview.findViewById(R.id.idSearchPartnerNav);
-        TextView mFriendsBtn = (TextView)headerview.findViewById(R.id.idfriendsNav);
-        TextView mChatMessageBtn = (TextView)headerview.findViewById(R.id.idChatMessageNav);
-        TextView mSubscriptionBtn = (TextView)headerview.findViewById(R.id.idSubscriptionNav);
+        TextView mSearchPartnerBtn = headerview.findViewById(R.id.idSearchPartnerNav);
+        TextView mFriendsBtn = headerview.findViewById(R.id.idfriendsNav);
+        TextView mChatMessageBtn = headerview.findViewById(R.id.idChatMessageNav);
+        TextView mSubscriptionBtn = headerview.findViewById(R.id.idSubscriptionNav);
 
-        TextView mPremierServiceBtn = (TextView)headerview.findViewById(R.id.idPremierServiceNav);
-        TextView mAboutBtn = (TextView)headerview.findViewById(R.id.idAboutNav);
-        TextView mMediaCovBtn = (TextView)headerview.findViewById(R.id.idMediaCoverageNav);
-        TextView mSuccessStoryBtn = (TextView)headerview.findViewById(R.id.idSuccessStoryNav);
-        TextView mHowToNavBtn = (TextView)headerview.findViewById(R.id.idHowToNav);
-        TextView mPrivacyPolicyBtn = (TextView)headerview.findViewById(R.id.idPrivacyPolicyNav);
-        TextView mContactUsBtn = (TextView)headerview.findViewById(R.id.idContactUsNav);
-        TextView mFaqBtn = (TextView)headerview.findViewById(R.id.idFAQNav);
-        TextView mDisclaimerBtn = (TextView)headerview.findViewById(R.id.idDisclaimerNav);
-        TextView mWallet = (TextView)headerview.findViewById(R.id.idWalletNav);
-        TextView mReferFriend = (TextView)headerview.findViewById(R.id.idReferFriendNav);
-        TextView mUploadVideo = (TextView)headerview.findViewById(R.id.idUploadVideoNav);
-        TextView mSettings = (TextView)headerview.findViewById(R.id.idSettingNav);
-        TextView mMyProfile = (TextView)headerview.findViewById(R.id.idMyProfileNav);
-        TextView mCustomFolder = (TextView)headerview.findViewById(R.id.idCustomFolderNav);
-        TextView mLogOut = (TextView)headerview.findViewById(R.id.idLogoutNav);
+        TextView mPremierServiceBtn = headerview.findViewById(R.id.idPremierServiceNav);
+        TextView mAboutBtn = headerview.findViewById(R.id.idAboutNav);
+        TextView mMediaCovBtn = headerview.findViewById(R.id.idMediaCoverageNav);
+        TextView mSuccessStoryBtn = headerview.findViewById(R.id.idSuccessStoryNav);
+        TextView mHowToNavBtn = headerview.findViewById(R.id.idHowToNav);
+        TextView mPrivacyPolicyBtn = headerview.findViewById(R.id.idPrivacyPolicyNav);
+        TextView mContactUsBtn = headerview.findViewById(R.id.idContactUsNav);
+        TextView mFaqBtn = headerview.findViewById(R.id.idFAQNav);
+        TextView mDisclaimerBtn = headerview.findViewById(R.id.idDisclaimerNav);
+        TextView mWallet = headerview.findViewById(R.id.idWalletNav);
+        TextView mReferFriend = headerview.findViewById(R.id.idReferFriendNav);
+        TextView mUploadVideo = headerview.findViewById(R.id.idUploadVideoNav);
+        TextView mSettings = headerview.findViewById(R.id.idSettingNav);
+        TextView mMyProfile = headerview.findViewById(R.id.idMyProfileNav);
+        TextView mCustomFolder = headerview.findViewById(R.id.idCustomFolderNav);
+        TextView mLogOut = headerview.findViewById(R.id.idLogoutNav);
 
         mSearchPartnerBtn.setOnClickListener(BaseNavActivity.this);
         mFriendsBtn.setOnClickListener(BaseNavActivity.this);

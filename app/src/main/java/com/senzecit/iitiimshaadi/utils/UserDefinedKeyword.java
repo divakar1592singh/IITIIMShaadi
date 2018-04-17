@@ -11,8 +11,7 @@ public enum UserDefinedKeyword {
 
     ADD, REMOVE, CANCEL, SHORTLIST, UNSHORTLIST, MOVETO, ACCEPT,
 
-    id_proof, bioData, higher_document, under_graduate, post_graduate;
+    id_proof, bioData, higher_document, under_graduate, post_graduate
 
 
-
-    }
+}

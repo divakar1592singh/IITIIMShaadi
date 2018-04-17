@@ -79,11 +79,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - Name
@@ -95,11 +95,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
                         txtListChild1.setText(myProfileResponse.getBasicData().getProfileCreatedFor());
@@ -110,11 +110,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
@@ -129,11 +129,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -146,11 +146,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
 
@@ -170,11 +170,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         /*maritalStatusTV= (TextView) convertView
                                 .findViewById(R.id.childItemTV);
                         maritalStatusTV.setText(childText);*/
-                        final TextView txtListChild5 = (TextView) convertView
+                        final TextView txtListChild5 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild5.setText(childText);
 
-                        final TextView txtListChildHeader5 = (TextView) convertView
+                        final TextView txtListChildHeader5 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader5.setText(childText);
 
@@ -187,14 +187,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild6 = (TextView) convertView
+                        final TextView txtListChild6 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild6.setText(childText);
 
                         //SetData - Drink
                         txtListChild6.setText(myProfileResponse.getBasicData().getDrink());
 
-                        TextView txtListChildHeader6 = (TextView) convertView
+                        TextView txtListChildHeader6 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader6.setText(childText);
 
@@ -207,14 +207,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater7.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild7 = (TextView) convertView
+                        final TextView txtListChild7 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild7.setText(childText);
 
                         //SetData - Drink
                         txtListChild7.setText(myProfileResponse.getBasicData().getSmoke());
 
-                        TextView txtListChildHeader7 = (TextView) convertView
+                        TextView txtListChildHeader7 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader7.setText(childText);
 
@@ -224,14 +224,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild8 = (TextView) convertView
+                        final TextView txtListChild8 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild8.setText(childText);
 
                         //SetData - Height
                         txtListChild8.setText(myProfileResponse.getBasicData().getHeight());
 
-                        TextView txtListChildHeader8 = (TextView) convertView
+                        TextView txtListChildHeader8 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader8.setText(childText);
 
@@ -241,7 +241,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater9.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild9 = (TextView) convertView
+                        final TextView txtListChild9 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild9.setText(childText);
 
@@ -251,7 +251,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                             String interestNet = interest1.replace("]", "");
                             txtListChild9.setText(interestNet);
 
-                            TextView txtListChildHeader9 = (TextView) convertView
+                            TextView txtListChildHeader9 = convertView
                                     .findViewById(R.id.childItemTVheader);
                             txtListChildHeader9.setText(childText);
                         }
@@ -268,14 +268,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
                         //SetData - Religion
                         txtListChild1.setText(myProfileResponse.getBasicData().getReligion());
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
 
@@ -285,14 +285,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
                         //SetData - Caste
                         txtListChild2.setText(myProfileResponse.getBasicData().getCaste());
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
@@ -302,14 +302,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
                         //SetData - Mother Tounge
                         txtListChild3.setText(myProfileResponse.getBasicData().getMotherTounge());
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -326,14 +326,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
                         //SetData - MobileNo
                         txtListChild.setText(myProfileResponse.getBasicData().getMobileNo());
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
 
@@ -344,11 +344,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
                         //SetData - Name
@@ -361,11 +361,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
@@ -378,14 +378,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
                         //SetData - PermanentCountry
                         txtListChild3.setText(myProfileResponse.getBasicData().getPermanentCountry());
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -395,14 +395,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
                         //SetData - PermanentState
                         txtListChild4.setText(myProfileResponse.getBasicData().getPermanentState());
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
                         break;
@@ -411,11 +411,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild5 = (TextView) convertView
+                        final TextView txtListChild5 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild5.setText(childText);
 
-                        TextView txtListChildHeader5 = (TextView) convertView
+                        TextView txtListChildHeader5 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader5.setText(childText);
 
@@ -428,11 +428,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild6 = (TextView) convertView
+                        final TextView txtListChild6 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild6.setText(childText);
 
-                        TextView txtListChildHeader6 = (TextView) convertView
+                        TextView txtListChildHeader6 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader6.setText(childText);
 
@@ -445,11 +445,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater7.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild7 = (TextView) convertView
+                        final TextView txtListChild7 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild7.setText(childText);
 
-                        TextView txtListChildHeader7 = (TextView) convertView
+                        TextView txtListChildHeader7 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader7.setText(childText);
                         //SetData - CurrentAddress
@@ -461,14 +461,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild8 = (TextView) convertView
+                        final TextView txtListChild8 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild8.setText(childText);
 
                         //SetData - CurrentCountry
                         txtListChild8.setText(myProfileResponse.getBasicData().getCurrentCountry());
 
-                        TextView txtListChildHeader8 = (TextView) convertView
+                        TextView txtListChildHeader8 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader8.setText(childText);
 
@@ -478,14 +478,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater9.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild9 = (TextView) convertView
+                        final TextView txtListChild9 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild9.setText(childText);
 
                         //SetData - CurrentState
                         txtListChild9.setText(myProfileResponse.getBasicData().getCurrentState());
 
-                        TextView txtListChildHeader9 = (TextView) convertView
+                        TextView txtListChildHeader9 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader9.setText(childText);
 
@@ -495,11 +495,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater10.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild10 = (TextView) convertView
+                        final TextView txtListChild10 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild10.setText(childText);
 
-                        TextView txtListChildHeader10 = (TextView) convertView
+                        TextView txtListChildHeader10 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader10.setText(childText);
                         //SetData - CurrentCity
@@ -511,11 +511,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater11.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild11 = (TextView) convertView
+                        final TextView txtListChild11 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild11.setText(childText);
 
-                        TextView txtListChildHeader11 = (TextView) convertView
+                        TextView txtListChildHeader11 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader11.setText(childText);
                         //SetData - CurrentZipcode
@@ -532,11 +532,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
 
@@ -549,11 +549,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
 
@@ -566,11 +566,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
@@ -583,11 +583,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -600,11 +600,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
 
@@ -618,11 +618,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         convertView = infalInflater5.inflate(R.layout.list_item_non_editable, null);
 
 
-                        final TextView txtListChild5 = (TextView) convertView
+                        final TextView txtListChild5 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild5.setText(childText);
 
-                        TextView txtListChildHeader5 = (TextView) convertView
+                        TextView txtListChildHeader5 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader5.setText(childText);
 
@@ -642,11 +642,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
 
@@ -659,11 +659,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
 
@@ -676,11 +676,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
@@ -693,11 +693,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -710,11 +710,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
 
@@ -727,11 +727,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild5 = (TextView) convertView
+                        final TextView txtListChild5 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild5.setText(childText);
 
-                        TextView txtListChildHeader5 = (TextView) convertView
+                        TextView txtListChildHeader5 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader5.setText(childText);
 
@@ -744,11 +744,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild6 = (TextView) convertView
+                        final TextView txtListChild6 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild6.setText(childText);
 
-                        TextView txtListChildHeader6 = (TextView) convertView
+                        TextView txtListChildHeader6 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader6.setText(childText);
 
@@ -762,11 +762,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         convertView = infalInflater7.inflate(R.layout.list_item_non_editable, null);
 
 
-                        final TextView txtListChild7 = (TextView) convertView
+                        final TextView txtListChild7 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild7.setText(childText);
 
-                        TextView txtListChildHeader7 = (TextView) convertView
+                        TextView txtListChildHeader7 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader7.setText(childText);
 
@@ -779,11 +779,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild8 = (TextView) convertView
+                        final TextView txtListChild8 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild8.setText(childText);
 
-                        TextView txtListChildHeader8 = (TextView) convertView
+                        TextView txtListChildHeader8 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader8.setText(childText);
 
@@ -797,11 +797,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                         convertView = infalInflater9.inflate(R.layout.list_item_non_editable, null);
 
 
-                        final TextView txtListChild9 = (TextView) convertView
+                        final TextView txtListChild9 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild9.setText(childText);
 
-                        TextView txtListChildHeader9 = (TextView) convertView
+                        TextView txtListChildHeader9 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader9.setText(childText);
 
@@ -814,11 +814,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater10.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild10 = (TextView) convertView
+                        final TextView txtListChild10 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild10.setText(childText);
 
-                        TextView txtListChildHeader10 = (TextView) convertView
+                        TextView txtListChildHeader10 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader10.setText(childText);
 
@@ -830,11 +830,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater11.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild11 = (TextView) convertView
+                        final TextView txtListChild11 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild11.setText(childText);
 
-                        TextView txtListChildHeader11 = (TextView) convertView
+                        TextView txtListChildHeader11 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader11.setText(childText);
 
@@ -847,14 +847,14 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater12.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild12 = (TextView) convertView
+                        final TextView txtListChild12 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild12.setText(childText);
 
                         //SetData - AnnualIncome
                         txtListChild12.setText(myProfileResponse.getBasicData().getAnnualIncome());
 
-                        TextView txtListChildHeader12 = (TextView) convertView
+                        TextView txtListChildHeader12 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader12.setText(childText);
 
@@ -864,11 +864,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater13.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild13 = (TextView) convertView
+                        final TextView txtListChild13 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild13.setText(childText);
 
-                        TextView txtListChildHeader13 = (TextView) convertView
+                        TextView txtListChildHeader13 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader13.setText(childText);
 
@@ -886,11 +886,11 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - AboutMe
@@ -907,7 +907,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
@@ -919,7 +919,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout1 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
@@ -931,7 +931,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout2 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout2 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout2.setHint(childText);
 
                         EditText editText2 = convertView.findViewById(R.id.idlistitemET);
@@ -943,7 +943,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout3 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout3 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout3.setHint(childText);
 
                         EditText editText3 = convertView.findViewById(R.id.idlistitemET);
@@ -955,7 +955,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout4 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout4 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout4.setHint(childText);
 
                         EditText editText4 = convertView.findViewById(R.id.idlistitemET);
@@ -967,7 +967,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout5 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout5 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout5.setHint(childText);
 
                         EditText editText5 = convertView.findViewById(R.id.idlistitemET);
@@ -979,7 +979,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout6 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout6 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout6.setHint(childText);
 
                         EditText editText6 = convertView.findViewById(R.id.idlistitemET);
@@ -991,7 +991,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater7.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout7 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout7 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout7.setHint(childText);
 
                         EditText editText7 = convertView.findViewById(R.id.idlistitemET);
@@ -1003,7 +1003,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout8 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout8 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout8.setHint(childText);
 
                         EditText editText8 = convertView.findViewById(R.id.idlistitemET);
@@ -1015,7 +1015,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater9.inflate(R.layout.list_item_non_editable, null);
 
-                        TextInputLayout textInputLayout9 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout9 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout9.setHint(childText);
 
                         EditText editText9 = convertView.findViewById(R.id.idlistitemET);
@@ -1061,7 +1061,7 @@ public class OtherExpListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
+        TextView lblListHeader = convertView
                 .findViewById(R.id.profileGroupTV);
         lblListHeader.setTypeface(null, Typeface.NORMAL);
         lblListHeader.setText(headerTitle);

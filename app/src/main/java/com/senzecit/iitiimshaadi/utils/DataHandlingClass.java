@@ -1,14 +1,6 @@
 package com.senzecit.iitiimshaadi.utils;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;

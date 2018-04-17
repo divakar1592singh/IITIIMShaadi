@@ -1,53 +1,5 @@
 package com.senzecit.iitiimshaadi.adapter;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
-import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
-import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.UserDetail;
-import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
-import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
-import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
-import com.senzecit.iitiimshaadi.utils.AppController;
-import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.Navigator;
-import com.senzecit.iitiimshaadi.utils.NetworkClass;
-import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
-import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
-import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
 
 public class PaidSearchResultAdapterBKP { /*extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

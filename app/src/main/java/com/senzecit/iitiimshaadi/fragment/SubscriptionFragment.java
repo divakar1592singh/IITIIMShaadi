@@ -27,7 +27,6 @@ import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,12 +88,12 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
 
     private void init(){
 
-        mSubscriptionLayout = (FrameLayout)view.findViewById(R.id.idSubscriptionLayout);
-        mUserTypeTV = (TextView)view.findViewById(R.id.idUserType);
+        mSubscriptionLayout = view.findViewById(R.id.idSubscriptionLayout);
+        mUserTypeTV = view.findViewById(R.id.idUserType);
        mUpgradeSubscription = view.findViewById(R.id.idSubscriptionBtn);
 
-        mLastRenewTV = (TextView)view.findViewById(R.id.idLastRenewTV);
-        mNextRenewTV = (TextView)view.findViewById(R.id.idNextRenewTV);
+        mLastRenewTV = view.findViewById(R.id.idLastRenewTV);
+        mNextRenewTV = view.findViewById(R.id.idNextRenewTV);
 
         mRecyclerView = view.findViewById(R.id.idSubsTranDetail_RV);
         mRecyclerView.setLayoutManager(new LinearLayoutManagerWithSmoothScroller(getActivity()));
@@ -144,7 +143,7 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
     public void callWebServiceForSubscription(){
 
 //        String token = CONSTANTS.Token_Paid;
-        String token =  prefs.getString(CONSTANTS.LOGGED_TOKEN);;
+        String token =  prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
 
         if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
@@ -160,7 +159,7 @@ public class SubscriptionFragment extends Fragment implements View.OnClickListen
                 if (response.isSuccessful()) {
                     SubsRetrieveResponse subsResponse = response.body();
                     if(subsResponse.getMessage().getSuccess() != null) {
-                        if (subsResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (subsResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             List<AllSubscription> allSubsList = subsResponse.getAllSubscriptions();
                             setSubsToRecyclerView(allSubsList);

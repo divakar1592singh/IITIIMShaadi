@@ -2,8 +2,6 @@ package com.senzecit.iitiimshaadi.utils;
 
     import android.content.Context;
     import android.net.ConnectivityManager;
-    import android.view.View;
-    import android.widget.Toast;
 
 /**
  * Created by Cyber Matrix3 on 12/13/2016.
@@ -30,7 +28,7 @@ public class NetworkClass {
     }
 
     public boolean checkInternet(Context context) {
-        ConnectivityManager connec =(ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connec =(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if ( connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
                 connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
                 connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||

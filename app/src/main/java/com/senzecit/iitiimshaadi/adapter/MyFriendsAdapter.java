@@ -86,9 +86,9 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
     public String setCollege(UserDetail userDetail){
 
         if(TextUtils.isEmpty(userDetail.getPostGraduation())){
-            return new StringBuilder(userDetail.getGraduation()).append(", "+userDetail.getGraduationCollege()).toString();
+            return new StringBuilder(userDetail.getGraduation()).append(", ").append(userDetail.getGraduationCollege()).toString();
         }else {
-          return new StringBuilder(userDetail.getPostGraduation()).append(", "+userDetail.getPostGraduationCollege()).toString();
+          return new StringBuilder(userDetail.getPostGraduation()).append(", ").append(userDetail.getPostGraduationCollege()).toString();
         }
     }
 

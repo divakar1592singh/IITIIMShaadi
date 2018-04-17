@@ -9,7 +9,6 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
-import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 import com.senzecit.iitiimshaadi.viewController.SplashActivity;
@@ -34,9 +33,9 @@ public class PayPalDetailsActivity extends AppCompatActivity implements RxNetwor
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_pay_pal_details);
 
-            txtId = (TextView)findViewById(R.id.txtId);
-            txtAmount = (TextView)findViewById(R.id.txtAmount);
-            txtStatus = (TextView)findViewById(R.id.txtStatus);
+            txtId = findViewById(R.id.txtId);
+            txtAmount = findViewById(R.id.txtAmount);
+            txtStatus = findViewById(R.id.txtStatus);
 
             prefs = new AppPrefs(PayPalDetailsActivity.this);
             networkingClass = RxNetworkingForObjectClass.getInstance();

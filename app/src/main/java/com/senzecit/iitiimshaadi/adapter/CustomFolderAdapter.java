@@ -27,7 +27,6 @@ import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.FriendsActivity;
 import com.senzecit.iitiimshaadi.viewController.OtherProfileActivity;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public class CustomFolderAdapter extends RecyclerView.Adapter<CustomFolderAdapte
             super(itemView);
             mViewProfileLayout = itemView.findViewById(R.id.idViewProfileLayout);
 
-            mImageView = (CircleImageView)itemView.findViewById(R.id.idImageView);
+            mImageView = itemView.findViewById(R.id.idImageView);
             mUserIDTV = itemView.findViewById(R.id.idUserIDTV);
             mNameTV = itemView.findViewById(R.id.idNameTV);
             mReligionTV = itemView.findViewById(R.id.idReligionTV);

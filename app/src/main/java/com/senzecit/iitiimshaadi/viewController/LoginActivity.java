@@ -68,14 +68,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void init() {
-        mPassword = (EditText) findViewById(R.id.passwordET);
-        mUsername = (EditText) findViewById(R.id.userNameET);
-        mRegisterNew = (TextView) findViewById(R.id.registerTV);
-        mForgotPassword = (TextView) findViewById(R.id.forgotpasswordTV);
-        mLogin = (Button) findViewById(R.id.loginBtn);
+        mPassword = findViewById(R.id.passwordET);
+        mUsername = findViewById(R.id.userNameET);
+        mRegisterNew = findViewById(R.id.registerTV);
+        mForgotPassword = findViewById(R.id.forgotpasswordTV);
+        mLogin = findViewById(R.id.loginBtn);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
+        mToolbar = findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
         mTitle.setText("Login");
     }
 

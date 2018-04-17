@@ -3,14 +3,9 @@ package com.senzecit.iitiimshaadi.utils.alert;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,9 +39,9 @@ public class ToastDialogMessage {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View layout = inflater.inflate(R.layout.toast_dialog, null);
 
-        ImageView image = (ImageView) layout.findViewById(R.id.image);
+        ImageView image = layout.findViewById(R.id.image);
         image.setImageResource(R.drawable.logo_main);
-        TextView text = (TextView) layout.findViewById(R.id.text);
+        TextView text = layout.findViewById(R.id.text);
         text.setText(msg);
 
         Toast toast = new Toast(activity);
@@ -62,9 +57,9 @@ public class ToastDialogMessage {
         LayoutInflater inflater = LayoutInflater.from(activity);
         View layout = inflater.inflate(R.layout.toast_dialog, null);
 
-        ImageView image = (ImageView) layout.findViewById(R.id.image);
+        ImageView image = layout.findViewById(R.id.image);
         image.setImageResource(R.drawable.logo_main);
-        TextView text = (TextView) layout.findViewById(R.id.text);
+        TextView text = layout.findViewById(R.id.text);
         text.setText(msg);
 
         Toast toast = new Toast(activity);

@@ -37,7 +37,7 @@ public class SliderDialogListLayoutAdapter extends RecyclerView.Adapter<SliderDi
         View container;
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.unit);
+            title = view.findViewById(R.id.unit);
 //            genre = (TextView) view.findViewById(R.id.quantity);
             this.container=view;
             view.setOnClickListener(this);

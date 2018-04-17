@@ -25,10 +25,10 @@ public class DisclaimerActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
         mTitle.setText("Disclaimer");
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mBack.setOnClickListener(DisclaimerActivity.this);
     }

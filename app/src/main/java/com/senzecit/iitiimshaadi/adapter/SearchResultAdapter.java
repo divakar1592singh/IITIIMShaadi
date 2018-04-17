@@ -214,7 +214,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                 List<MyMeta> myMetaList = null;
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                    if(response.body().getMessage().getSuccess().equalsIgnoreCase("success")){
 
 //                        removeTab();
                         myMetaList = response.body().getMyMetas();
@@ -256,7 +256,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         final Dialog dialog = new Dialog(mContext);
         dialog.setContentView(R.layout.custom_dialog_list);
 
-        ListView lv = (ListView) dialog.findViewById(R.id.lv);
+        ListView lv = dialog.findViewById(R.id.lv);
 
 //        String[] foldername = {"ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC", "ABC"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, folderList);

@@ -62,12 +62,12 @@ public class SliderDialogCheckboxLayoutAdapter2 extends BaseAdapter {
         // TODO Auto-generated method stub
         View row = null;
         row = View.inflate(mContext, R.layout.slider_dialog_checkbox_row, null);
-        TextView tvContent=(TextView) row.findViewById(R.id.idText);
+        TextView tvContent= row.findViewById(R.id.idText);
         //tvContent.setText(data[position]);
         tvContent.setText(models.get(position).getName());
         //System.out.println("The Text is here like.. == "+tvContent.getText().toString());
 
-        final CheckBox cb = (CheckBox) row
+        final CheckBox cb = row
                 .findViewById(R.id.idCheckbox);
         cb.setOnClickListener(new View.OnClickListener() {
 

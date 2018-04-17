@@ -157,7 +157,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
@@ -190,11 +190,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - Diet
@@ -222,11 +222,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
                         formattedDate(txtListChild2, basicObject.optString("birth_date"));
@@ -253,11 +253,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -297,11 +297,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
 
@@ -337,11 +337,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild5 = (TextView) convertView
+                        final TextView txtListChild5 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild5.setText(childText);
 
-                        final TextView txtListChildHeader5 = (TextView) convertView
+                        final TextView txtListChildHeader5 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader5.setText(childText);
                             txtListChild5.setText(basicObject.optString("marital_status"));
@@ -381,14 +381,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild6 = (TextView) convertView
+                        final TextView txtListChild6 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild6.setText(childText);
 
                         //SetData - Drink
                         txtListChild6.setText(basicObject.optString("drink"));
 
-                        TextView txtListChildHeader6 = (TextView) convertView
+                        TextView txtListChildHeader6 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader6.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -425,14 +425,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater7.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild7 = (TextView) convertView
+                        final TextView txtListChild7 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild7.setText(childText);
 
                         //SetData - Drink
                         txtListChild7.setText(basicObject.optString("smoke"));
 
-                        TextView txtListChildHeader7 = (TextView) convertView
+                        TextView txtListChildHeader7 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader7.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -469,7 +469,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout8 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout8 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout8.setHint(childText);
 
                         EditText editText8 = convertView.findViewById(R.id.idlistitemET);
@@ -502,13 +502,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater9.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild9 = (TextView) convertView
+                        final TextView txtListChild9 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild9.setText(childText);
 
                         //SetData - Height
                         txtListChild9.setText(basicObject.optString("height"));
-                        TextView txtListChildHeader9 = (TextView) convertView
+                        TextView txtListChildHeader9 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader9.setText(childText);
 
@@ -546,11 +546,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater10.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild10 = (TextView) convertView
+                        final TextView txtListChild10 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild10.setText(childText);
 
-                        TextView txtListChildHeader10 = (TextView) convertView
+                        TextView txtListChildHeader10 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader10.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -622,11 +622,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
 
@@ -670,13 +670,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
                         //SetData - Caste
                         txtListChild2.setText(basicObject.optString("caste"));
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -714,13 +714,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
                         //SetData - Mother Tounge
                         txtListChild3.setText(basicObject.optString("mother_tounge"));
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -776,13 +776,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
                         //SetData - MobileNo
                             txtListChild.setText(basicObject.optString("mobile_no"));
-                            TextView txtListChildHeader = (TextView) convertView
+                            TextView txtListChildHeader = convertView
                                     .findViewById(R.id.childItemTVheader);
                             txtListChildHeader.setText(childText);
 
@@ -809,7 +809,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_numbertype, null);
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout1 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
@@ -844,7 +844,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout2 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout2 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout2.setHint(childText);
 
                         EditText editText2 = convertView.findViewById(R.id.idlistitemET);
@@ -879,13 +879,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
                         //SetData - PermanentCountry
                         txtListChild3.setText(basicObject.optString("permanent_country"));
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -922,13 +922,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
                         //SetData - PermanentState
                         txtListChild4.setText(basicObject.optString("permanent_state"));
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -964,7 +964,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout5 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout5 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout5.setHint(childText);
 
                         EditText editText5 = convertView.findViewById(R.id.idlistitemET);
@@ -998,7 +998,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item_numbertype, null);
 
-                        TextInputLayout textInputLayout6 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout6 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout6.setHint(childText);
 
                         EditText editText6 = convertView.findViewById(R.id.idlistitemET);
@@ -1031,7 +1031,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater7.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout7 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout7 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout7.setHint(childText);
 
                         EditText editText7 = convertView.findViewById(R.id.idlistitemET);
@@ -1065,13 +1065,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild8 = (TextView) convertView
+                        final TextView txtListChild8 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild8.setText(childText);
 
                         //SetData - CurrentCountry
                         txtListChild8.setText(basicObject.optString("current_country"));
-                        TextView txtListChildHeader8 = (TextView) convertView
+                        TextView txtListChildHeader8 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader8.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -1107,7 +1107,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater9.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild9 = (TextView) convertView
+                        final TextView txtListChild9 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild9.setText(childText);
 
@@ -1115,7 +1115,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         txtListChild9.setText(basicObject.optString("current_state"));
 
-                        TextView txtListChildHeader9 = (TextView) convertView
+                        TextView txtListChildHeader9 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader9.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -1152,7 +1152,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater10.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout10 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout10 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout10.setHint(childText);
 
                         EditText editText10 = convertView.findViewById(R.id.idlistitemET);
@@ -1187,7 +1187,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater11.inflate(R.layout.list_item_numbertype, null);
 
-                        TextInputLayout textInputLayout11 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout11 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout11.setHint(childText);
 
                         EditText editText11 = convertView.findViewById(R.id.idlistitemET);
@@ -1237,7 +1237,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
@@ -1272,7 +1272,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout1 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
@@ -1307,7 +1307,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout2 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout2 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout2.setHint(childText);
 
                         EditText editText2 = convertView.findViewById(R.id.idlistitemET);
@@ -1342,7 +1342,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout3 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout3 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout3.setHint(childText);
 
                         EditText editText3 = convertView.findViewById(R.id.idlistitemET);
@@ -1377,7 +1377,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout4 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout4 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout4.setHint(childText);
 
                         EditText editText4 = convertView.findViewById(R.id.idlistitemET);
@@ -1412,7 +1412,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout5 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout5 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout5.setHint(childText);
 
                         EditText editText5 = convertView.findViewById(R.id.idlistitemET);
@@ -1464,7 +1464,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
@@ -1501,13 +1501,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
                         //SetData - School Year
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -1584,7 +1584,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout2 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout2 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout2.setHint(childText);
 
                         EditText editText2 = convertView.findViewById(R.id.idlistitemET);
@@ -1620,7 +1620,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout3 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout3 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout3.setHint(childText);
 
                         EditText editText3 = convertView.findViewById(R.id.idlistitemET);
@@ -1657,13 +1657,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
                         //SetData - School Year
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -1740,7 +1740,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater5.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout5 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout5 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout5.setHint(childText);
 
                         EditText editText5 = convertView.findViewById(R.id.idlistitemET);
@@ -1776,7 +1776,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater6.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout6 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout6 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout6.setHint(childText);
 
                         EditText editText6 = convertView.findViewById(R.id.idlistitemET);
@@ -1813,11 +1813,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater7.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild7 = (TextView) convertView
+                        final TextView txtListChild7 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild7.setText(childText);
 
-                        TextView txtListChildHeader7 = (TextView) convertView
+                        TextView txtListChildHeader7 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader7.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -1898,7 +1898,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater8.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout8 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout8 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout8.setHint(childText);
 
                         EditText editText8 = convertView.findViewById(R.id.idlistitemET);
@@ -1934,7 +1934,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater9.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout9 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout9 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout9.setHint(childText);
 
                         EditText editText9 = convertView.findViewById(R.id.idlistitemET);
@@ -1970,7 +1970,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater10.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout10 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout10 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout10.setHint(childText);
 
                         EditText editText10 = convertView.findViewById(R.id.idlistitemET);
@@ -2006,7 +2006,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater11.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout11 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout11 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout11.setHint(childText);
 
                         EditText editText11 = convertView.findViewById(R.id.idlistitemET);
@@ -2042,14 +2042,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater12.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild12 = (TextView) convertView
+                        final TextView txtListChild12 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild12.setText(childText);
 
                         //SetData - AnnualIncome
                         txtListChild12.setText(basicObject.optString("annual_income"));
 
-                        TextView txtListChildHeader12 = (TextView) convertView
+                        TextView txtListChildHeader12 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader12.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -2086,7 +2086,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater13.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout13 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout13 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout13.setHint(childText);
 
                         EditText editText13 = convertView.findViewById(R.id.idlistitemET);
@@ -2195,7 +2195,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_numbertype, null);
 
-                        TextInputLayout textInputLayout = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout.setHint(childText);
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
@@ -2237,7 +2237,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_secondtype, null);
 
-                        TextInputLayout textInputLayout1 = (TextInputLayout) convertView.findViewById(R.id.idTextInputLayout);
+                        TextInputLayout textInputLayout1 = convertView.findViewById(R.id.idTextInputLayout);
                         textInputLayout1.setHint(childText);
 
                         EditText editText1 = convertView.findViewById(R.id.idlistitemET);
@@ -2278,7 +2278,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
@@ -2287,7 +2287,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMin_Height()))
                             ExpPartnerProfileModel.getInstance().setMin_Height(partnerJson.optString("prefered_partner_height_min"));
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -2324,7 +2324,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
@@ -2333,7 +2333,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMax_Height()))
                             ExpPartnerProfileModel.getInstance().setMax_Height(partnerJson.optString("prefered_partner_height_max"));
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -2370,7 +2370,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
@@ -2395,7 +2395,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getMarital_Status()))
                             ExpPartnerProfileModel.getInstance().setMarital_Status(builder.toString());
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -2451,14 +2451,14 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
                         //SetData - PreferedPartnerReligion
                         txtListChild.setText(partnerJson.optString("prefered_partner_religion"));
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -2496,7 +2496,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
@@ -2517,7 +2517,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         }
                         txtListChild1.setText(builder);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
                         convertView.setOnClickListener(new View.OnClickListener() {
@@ -2553,11 +2553,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item, null);
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
@@ -2631,7 +2631,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
@@ -2652,7 +2652,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         }
                         txtListChild.setText(builder);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
 
@@ -2791,7 +2791,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.row_subscriber_top, null);
 
-                mProfileCIV = (CircleImageView)convertView.findViewById(R.id.idProfileCIV);
+                mProfileCIV = convertView.findViewById(R.id.idProfileCIV);
                 Glide.with(_context).load(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
                 handleHeaderData(convertView);
 
@@ -2818,7 +2818,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_group, null);
 
-                    TextView lblListHeader3 = (TextView) convertView
+                    TextView lblListHeader3 = convertView
                             .findViewById(R.id.profileGroupTV);
                     lblListHeader3.setTypeface(null, Typeface.NORMAL);
                     if(headerTitle.endsWith("PT")){
@@ -2870,13 +2870,13 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         View view = layoutInflater.inflate(R.layout.slider_dialog_list_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(_context);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -2949,8 +2949,8 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
         View view = layoutInflater.inflate(R.layout.slider_dialog_checkbox_layout, null);
 
-        final ListView listView = (ListView) view.findViewById(R.id.custom_list);
-        Button doneBtn = (Button) view.findViewById(R.id.button_done);
+        final ListView listView = view.findViewById(R.id.custom_list);
+        Button doneBtn = view.findViewById(R.id.button_done);
 
 
         SliderDialogCheckboxLayoutAdapter2 clad1 = new SliderDialogCheckboxLayoutAdapter2(_context, models, sliderCheckList);
@@ -2979,12 +2979,12 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                 for (int i = 0; i < models.size(); i++) {
 
                     parentListView[0] = getViewByPosition(i, listView);
-                    CheckBox checkBox = (CheckBox) parentListView[0].findViewById(R.id.idCheckbox);
-                    TextView textView = (TextView) parentListView[0].findViewById(R.id.idText);
+                    CheckBox checkBox = parentListView[0].findViewById(R.id.idCheckbox);
+                    TextView textView = parentListView[0].findViewById(R.id.idText);
 
                     if (checkBox.isChecked()) {
 
-                        selectedQualification.append(textView.getText().toString() + ", ");
+                        selectedQualification.append(textView.getText().toString()).append(", ");
                     }
 
                 }
@@ -3309,7 +3309,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String Preferred_Country = ExpPartnerProfileModel.getInstance().getPreferred_Country();
 
         String[] Preferred_CasteArr = new String[1];
-        String[] Preferred_CountryArr = new String[1];;
+        String[] Preferred_CountryArr = new String[1];
         Preferred_CasteArr[0] = Preferred_Caste;
         Preferred_CountryArr[0] = Preferred_Country;
 
@@ -3697,18 +3697,18 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
         //INIT SECTION
 
-        TextView mUsrNameTV = (TextView)convertView.findViewById(R.id.idUserNameTV) ;
-        TextView mUsrIdTV = (TextView)convertView.findViewById(R.id.idUserId) ;
-        ProgressBar mProgress = (ProgressBar)convertView.findViewById(R.id.idprogress);
-        TextView mProfilepercTV = (TextView)convertView.findViewById(R.id.idProfilePercTV);
+        TextView mUsrNameTV = convertView.findViewById(R.id.idUserNameTV);
+        TextView mUsrIdTV = convertView.findViewById(R.id.idUserId);
+        ProgressBar mProgress = convertView.findViewById(R.id.idprogress);
+        TextView mProfilepercTV = convertView.findViewById(R.id.idProfilePercTV);
 
-        LinearLayout albumLayout = (LinearLayout)convertView.findViewById(R.id.idAlbumLayout);
-        ImageView mAlbumIV = (ImageView)convertView.findViewById(R.id.idAlbum);
+        LinearLayout albumLayout = convertView.findViewById(R.id.idAlbumLayout);
+        ImageView mAlbumIV = convertView.findViewById(R.id.idAlbum);
 
-        mEmailVerifyTV = (TextView)convertView.findViewById(R.id.idEmailVerify);
-        mMobVerifyTV = (TextView)convertView.findViewById(R.id.idMobVerify);
-        mDocumentsVerifyTV = (TextView)convertView.findViewById(R.id.idDocumentsVerify);
-        mProofVerifyTV = (TextView)convertView.findViewById(R.id.idProofVerify);
+        mEmailVerifyTV = convertView.findViewById(R.id.idEmailVerify);
+        mMobVerifyTV = convertView.findViewById(R.id.idMobVerify);
+        mDocumentsVerifyTV = convertView.findViewById(R.id.idDocumentsVerify);
+        mProofVerifyTV = convertView.findViewById(R.id.idProofVerify);
 
         // DATA PARSING SECTION
 
@@ -3765,11 +3765,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                 int doc_verified = object.optInt("document_verified");
                 int idProof_verified = object.optInt("identity_proof_verified");
 
-                boolean email = email_verified.equalsIgnoreCase("Yes")?true:false;
-                boolean mob = mob_verified == 1?true:false;
+                boolean email = email_verified.equalsIgnoreCase("Yes");
+                boolean mob = mob_verified == 1;
 //                boolean bioData = biodata_verified == 1?true:false;
-                boolean doc = doc_verified == 1?true:false;
-                boolean idProof = idProof_verified == 1?true:false;
+                boolean doc = doc_verified == 1;
+                boolean idProof = idProof_verified == 1;
 
                 setVerificationStatus(email, mob, doc, idProof);
 

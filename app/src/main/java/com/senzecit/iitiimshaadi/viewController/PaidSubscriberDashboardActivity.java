@@ -13,20 +13,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,19 +35,14 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.ChatUserAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
-import com.senzecit.iitiimshaadi.chat.SingleChatPostRequest;
-import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.ChatUserListModel;
-import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.Result;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
@@ -77,7 +66,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -144,41 +132,41 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
 
     public void initView(){
 
-        mButtonLayout = (LinearLayout) findViewById(R.id.idBtnLayout);
+        mButtonLayout = findViewById(R.id.idBtnLayout);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idSwipeRefreshLayout);
-        mAlbumLayout = (LinearLayout)findViewById(R.id.idAlbumLayout);
-        mProgress = (ProgressBar)findViewById(R.id.idprogress);
-        mProfileCIV = (CircleImageView)findViewById(R.id.idProfileCIV);
-        mUsrNameTV = (TextView) findViewById(R.id.idUserNameTV);
-        mUsrIdTV = (TextView) findViewById(R.id.idUserId);
-        mProfilePercTV = (TextView)  findViewById(R.id.idProfilePercTV);
+        mSwipeRefreshLayout = findViewById(R.id.idSwipeRefreshLayout);
+        mAlbumLayout = findViewById(R.id.idAlbumLayout);
+        mProgress = findViewById(R.id.idprogress);
+        mProfileCIV = findViewById(R.id.idProfileCIV);
+        mUsrNameTV = findViewById(R.id.idUserNameTV);
+        mUsrIdTV = findViewById(R.id.idUserId);
+        mProfilePercTV = findViewById(R.id.idProfilePercTV);
 //        mMyProfileTV = (TextView)findViewById(R.id.idMyProfileTV);
 
-        mProfileShowTV = (TextView)findViewById(R.id.idProfileShowTV) ;
-        mShowMessageTV = (TextView)findViewById(R.id.idShowMessageTV);
+        mProfileShowTV = findViewById(R.id.idProfileShowTV);
+        mShowMessageTV = findViewById(R.id.idShowMessageTV);
 //        BUTTON LIST
 
-        mEmailVerifyTV = (TextView)findViewById(R.id.idEmailVerify);
-        mMobVerifyTV = (TextView)findViewById(R.id.idMobVerify);
-        mDocumentsVerifyTV = (TextView)findViewById(R.id.idDocumentsVerify);
-        mProofVerifyTV = (TextView)findViewById(R.id.idProofVerify);
+        mEmailVerifyTV = findViewById(R.id.idEmailVerify);
+        mMobVerifyTV = findViewById(R.id.idMobVerify);
+        mDocumentsVerifyTV = findViewById(R.id.idDocumentsVerify);
+        mProofVerifyTV = findViewById(R.id.idProofVerify);
 
-        mInterestReceivedTV = (TextView)findViewById(R.id.idInterestReceivedTV) ;
-        mChatReceivedTV = (TextView)findViewById(R.id.idChatReceivedTV);
+        mInterestReceivedTV = findViewById(R.id.idInterestReceivedTV);
+        mChatReceivedTV = findViewById(R.id.idChatReceivedTV);
 
-        mAlbumIV = (ImageView) findViewById(R.id.idAlbum);
+        mAlbumIV = findViewById(R.id.idAlbum);
 
         //BOTTOM
-        mFriendsTV = (TextView)findViewById(R.id.idFriendsTV) ;
-        mSearchPartnerTV = (TextView)findViewById(R.id.idSearchPartnerTV) ;
-        mPremServicesTV = (TextView)findViewById(R.id.idPremServicesTV) ;
-        mChatMessageTV = (TextView)findViewById(R.id.idChatMessageTV) ;
-        mSubscriptionTV = (TextView)findViewById(R.id.idSubscriptionTV) ;
-        mCustomFolderTV = (TextView)findViewById(R.id.idCustFolderTV) ;
-        mWalletTV = (TextView)findViewById(R.id.idWalletTV) ;
-        mUploadVideoTV = (TextView)findViewById(R.id.idUploadVideoTV) ;
-        mReferFrndTV = (TextView)findViewById(R.id.idReferFrndTV) ;
+        mFriendsTV = findViewById(R.id.idFriendsTV);
+        mSearchPartnerTV = findViewById(R.id.idSearchPartnerTV);
+        mPremServicesTV = findViewById(R.id.idPremServicesTV);
+        mChatMessageTV = findViewById(R.id.idChatMessageTV);
+        mSubscriptionTV = findViewById(R.id.idSubscriptionTV);
+        mCustomFolderTV = findViewById(R.id.idCustFolderTV);
+        mWalletTV = findViewById(R.id.idWalletTV);
+        mUploadVideoTV = findViewById(R.id.idUploadVideoTV);
+        mReferFrndTV = findViewById(R.id.idReferFrndTV);
 
     }
     public void handleClick(){
@@ -443,7 +431,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
         }
 
         // Load the high-resolution "zoomed-in" image.
-        final ImageView expandedImageView = (ImageView) findViewById(
+        final ImageView expandedImageView = findViewById(
                 R.id.expanded_image);
 //        expandedImageView.setImageResource(imageResId);
 
@@ -682,12 +670,12 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -695,7 +683,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1016,7 +1004,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
                     try {
                         if (response.isSuccessful()) {
 
-                            if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                            if (response.body().getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                                 showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
@@ -1060,7 +1048,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
                     if (response.isSuccessful()) {
                         AddFolderResponse serverResponse = response.body();
                         if(serverResponse.getMessage().getSuccess() != null) {
-                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
+                            if (serverResponse.getMessage().getSuccess().equalsIgnoreCase(msg1)) {
 //                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
 //                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
@@ -1106,7 +1094,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
                     if (response.isSuccessful()) {
                         AddFolderResponse serverResponse = response.body();
                         if(serverResponse.getMessage().getSuccess() != null) {
-                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is verified")) {
+                            if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("OTP is verified")) {
 
                                 dialog.dismiss();
                                 showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );

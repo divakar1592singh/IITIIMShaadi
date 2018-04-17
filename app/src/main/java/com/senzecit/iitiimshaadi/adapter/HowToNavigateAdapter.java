@@ -52,8 +52,8 @@ public class HowToNavigateAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         itemView = layoutInflater.inflate(R.layout.list_row_youtube, null);
-        TextView tvTitle = (TextView)itemView.findViewById(R.id.idVideoTitle);
-        ImageView ivVideoThumb = (ImageView)itemView.findViewById(R.id.idVideoThumb);
+        TextView tvTitle = itemView.findViewById(R.id.idVideoTitle);
+        ImageView ivVideoThumb = itemView.findViewById(R.id.idVideoThumb);
 
         tvTitle.setText(youtubeArrList.get(i).getTitle());
 

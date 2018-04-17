@@ -64,14 +64,14 @@ RequestedFriendFragment.OnRequestedFriendListener{
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Friends");
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mTabLayout = findViewById(R.id.tab);
+        mViewPager = findViewById(R.id.viewPager);
         setupViewPager(mViewPager);
 
         mTabLayout.setupWithViewPager(mViewPager);

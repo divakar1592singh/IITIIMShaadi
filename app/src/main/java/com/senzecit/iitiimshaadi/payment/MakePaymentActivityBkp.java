@@ -88,24 +88,24 @@ public class MakePaymentActivityBkp extends BaseActivity implements View.OnClick
         prefs = AppController.getInstance().getPrefs();
         isPlanPage = getIntent().getExtras().getBoolean(CONSTANTS.PLAN_STATUS);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+        Toolbar toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle(getString(R.string.app_name));
         settings = getSharedPreferences("settings", MODE_PRIVATE);
-        logoutBtn = (TextView) findViewById(R.id.logout_button);
-        email_et = (EditText) findViewById(R.id.email_et);
-        mobile_et = (EditText) findViewById(R.id.mobile_et);
-        amount_et = (EditText) findViewById(R.id.amount_et);
+        logoutBtn = findViewById(R.id.logout_button);
+        email_et = findViewById(R.id.email_et);
+        mobile_et = findViewById(R.id.mobile_et);
+        amount_et = findViewById(R.id.amount_et);
         amount_et.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(7, 2)});
-        email_til = (TextInputLayout) findViewById(R.id.email_til);
-        mobile_til = (TextInputLayout) findViewById(R.id.mobile_til);
-        radioGroup_color_theme = (RadioGroup) findViewById(R.id.radio_grp_color_theme);
-        radio_btn_default = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_default);
-        radio_btn_theme_pink = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_pink);
-        radio_btn_theme_purple = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_purple);
-        radio_btn_theme_green = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_green);
-        radio_btn_theme_grey = (AppCompatRadioButton) findViewById(R.id.radio_btn_theme_grey);
+        email_til = findViewById(R.id.email_til);
+        mobile_til = findViewById(R.id.mobile_til);
+        radioGroup_color_theme = findViewById(R.id.radio_grp_color_theme);
+        radio_btn_default = findViewById(R.id.radio_btn_theme_default);
+        radio_btn_theme_pink = findViewById(R.id.radio_btn_theme_pink);
+        radio_btn_theme_purple = findViewById(R.id.radio_btn_theme_purple);
+        radio_btn_theme_green = findViewById(R.id.radio_btn_theme_green);
+        radio_btn_theme_grey = findViewById(R.id.radio_btn_theme_grey);
 
         if (PayUmoneyFlowManager.isUserLoggedIn(getApplicationContext())) {
             logoutBtn.setVisibility(View.VISIBLE);
@@ -114,14 +114,14 @@ public class MakePaymentActivityBkp extends BaseActivity implements View.OnClick
         }
 
         logoutBtn.setOnClickListener(this);
-        switch_disable_wallet = (SwitchCompat) findViewById(R.id.switch_disable_wallet);
-        switch_disable_netBanks = (SwitchCompat) findViewById(R.id.switch_disable_netbanks);
-        switch_disable_cards = (SwitchCompat) findViewById(R.id.switch_disable_cards);
-        AppCompatRadioButton radio_btn_sandbox = (AppCompatRadioButton) findViewById(R.id.radio_btn_sandbox);
-        AppCompatRadioButton radio_btn_production = (AppCompatRadioButton) findViewById(R.id.radio_btn_production);
-        radioGroup_select_env = (RadioGroup) findViewById(R.id.radio_grp_env);
+        switch_disable_wallet = findViewById(R.id.switch_disable_wallet);
+        switch_disable_netBanks = findViewById(R.id.switch_disable_netbanks);
+        switch_disable_cards = findViewById(R.id.switch_disable_cards);
+        AppCompatRadioButton radio_btn_sandbox = findViewById(R.id.radio_btn_sandbox);
+        AppCompatRadioButton radio_btn_production = findViewById(R.id.radio_btn_production);
+        radioGroup_select_env = findViewById(R.id.radio_grp_env);
 
-        payNowButton = (Button) findViewById(R.id.pay_now_button);
+        payNowButton = findViewById(R.id.pay_now_button);
         payNowButton.setOnClickListener(this);
 
         initListeners();
@@ -636,7 +636,7 @@ public class MakePaymentActivityBkp extends BaseActivity implements View.OnClick
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF4, params.get(PayUmoneyConstants.UDF4)));
         postParamsBuffer.append(concatParams(PayUmoneyConstants.UDF5, params.get(PayUmoneyConstants.UDF5)));
 
-        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1).toString() : postParamsBuffer.toString();
+        String postParams = postParamsBuffer.charAt(postParamsBuffer.length() - 1) == '&' ? postParamsBuffer.substring(0, postParamsBuffer.length() - 1) : postParamsBuffer.toString();
 
         // lets make an api call
         GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();

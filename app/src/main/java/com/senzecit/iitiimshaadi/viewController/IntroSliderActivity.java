@@ -49,10 +49,10 @@ public class IntroSliderActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void init(){
-        vp_slider = (ViewPagerCustomDuration) findViewById(R.id.vp_slider);
-        ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
-        mLogin = (Button) findViewById(R.id.idLoginBtn);
-        mRegistration = (Button) findViewById(R.id.idRegisterBtn);
+        vp_slider = findViewById(R.id.vp_slider);
+        ll_dots = findViewById(R.id.ll_dots);
+        mLogin = findViewById(R.id.idLoginBtn);
+        mRegistration = findViewById(R.id.idRegisterBtn);
         mLogin.setOnClickListener(this);
         mRegistration.setOnClickListener(this);
 
@@ -203,8 +203,8 @@ public class IntroSliderActivity extends AppCompatActivity implements View.OnCli
             layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.intro_slider_item, container, false);
-            TextView textView = (TextView) view.findViewById(R.id.intro_slider_text);
-            textView.setText(image_arraylist.get(position).toString());
+            TextView textView = view.findViewById(R.id.intro_slider_text);
+            textView.setText(image_arraylist.get(position));
             container.addView(view);
             return view;
         }

@@ -53,8 +53,8 @@ public class CustomArrayAdapter extends ArrayAdapter<String>{
                 final View view = mInflater.inflate(mResource, parent, false);
 
 //                countryCodeList = new ArrayList<>();
-                ImageView mCountryFlagIV = (ImageView)view.findViewById(R.id.idCountryFlagIV);
-                TextView mCountryCodeTV = (TextView)view.findViewById(R.id.idCountryCodeTV);
+                ImageView mCountryFlagIV = view.findViewById(R.id.idCountryFlagIV);
+                TextView mCountryCodeTV = view.findViewById(R.id.idCountryCodeTV);
 
 //                mCountryCodeTV.setText(countryCodeModelList.get(position).getDial_code());
                 try {

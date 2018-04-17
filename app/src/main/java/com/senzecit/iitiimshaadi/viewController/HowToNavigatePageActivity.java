@@ -33,7 +33,7 @@ public class HowToNavigatePageActivity extends AppCompatActivity implements View
         setContentView(R.layout.activity_how_to_navigate_page);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-        mYoutubeList = (ListView)findViewById(R.id.idYoutubeList);
+        mYoutubeList = findViewById(R.id.idYoutubeList);
 
         videoArrList = new ArrayList<>();
 
@@ -49,9 +49,9 @@ public class HowToNavigatePageActivity extends AppCompatActivity implements View
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mTitle.setText("How to Navigate");
         mBack.setVisibility(View.VISIBLE);
         mBack.setOnClickListener(HowToNavigatePageActivity.this);

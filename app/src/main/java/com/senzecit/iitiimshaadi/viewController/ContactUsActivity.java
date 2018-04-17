@@ -85,22 +85,22 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void init() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar = findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Contact Us");
 
-        mFullNameET = (EditText) findViewById(R.id.fullNameET);
-        mEmailET = (EditText) findViewById(R.id.emailET);
-        mPhoneET = (EditText) findViewById(R.id.phoneET);
-        mSubjectET = (EditText) findViewById(R.id.subjectET);
-        mMessageET = (EditText) findViewById(R.id.messageET);
-        mVerifyCaptchaET = (EditText) findViewById(R.id.verifyCaptchaET);
+        mFullNameET = findViewById(R.id.fullNameET);
+        mEmailET = findViewById(R.id.emailET);
+        mPhoneET = findViewById(R.id.phoneET);
+        mSubjectET = findViewById(R.id.subjectET);
+        mMessageET = findViewById(R.id.messageET);
+        mVerifyCaptchaET = findViewById(R.id.verifyCaptchaET);
 
-        mRefreshIV = (ImageView) findViewById(R.id.refreshIV);
-        mCaptchaBtn = (Button) findViewById(R.id.captchaBtn);
-        mSendBtn = (Button) findViewById(R.id.sendBtn);
+        mRefreshIV = findViewById(R.id.refreshIV);
+        mCaptchaBtn = findViewById(R.id.captchaBtn);
+        mSendBtn = findViewById(R.id.sendBtn);
     }
 
     public void handleView() {

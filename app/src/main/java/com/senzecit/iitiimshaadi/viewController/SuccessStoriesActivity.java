@@ -55,14 +55,14 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Success Stories");
 
-        vp_slider = (ViewPagerCustomDuration) findViewById(R.id.vp_slider);
-        ll_dots = (LinearLayout) findViewById(R.id.ll_dots);
+        vp_slider = findViewById(R.id.vp_slider);
+        ll_dots = findViewById(R.id.ll_dots);
 
         slider_story_list = new ArrayList<>();
         slider_story_list.clear();
@@ -214,7 +214,7 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
             layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.success_story_slider_item, container, false);
-            TextView textView = (TextView) view.findViewById(R.id.welcome_slider_text);
+            TextView textView = view.findViewById(R.id.welcome_slider_text);
             FrameLayout frameLayoutText = view.findViewById(R.id.idstoryTextFL);
             FrameLayout frameLayoutImage = view.findViewById(R.id.idstoryImageFL);
             if(position==10){
@@ -223,7 +223,7 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
             }else {
                 frameLayoutText.setVisibility(View.VISIBLE);
                 frameLayoutImage.setVisibility(View.GONE);
-                textView.setText(slider_story_list.get(position).toString());
+                textView.setText(slider_story_list.get(position));
             }
             container.addView(view);
             return view;

@@ -87,9 +87,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mProfileIV = (CircleImageView)itemView.findViewById(R.id.profile_image) ;
+            mProfileIV = itemView.findViewById(R.id.profile_image);
 //            mUsernameView = (TextView) itemView.findViewById(R.id.tv_title);
-            mMessageView = (TextView) itemView.findViewById(R.id.message);
+            mMessageView = itemView.findViewById(R.id.message);
         }
 
         public void setProfileUrl(String profileURL) {

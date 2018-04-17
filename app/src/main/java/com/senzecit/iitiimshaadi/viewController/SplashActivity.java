@@ -9,14 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.commons.PreAuthWebRequest;
-import com.senzecit.iitiimshaadi.paypal.PayPalHomeActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -25,7 +21,6 @@ import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.Validation;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
-import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONException;
@@ -86,7 +81,7 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
         prefs.putString(CONSTANTS.LOGGED_MOB, "98765432210");
 */
 
-        mProgressbar = (ProgressBar)findViewById(R.id.indeterminateBar);
+        mProgressbar = findViewById(R.id.indeterminateBar);
     }
 
     @Override

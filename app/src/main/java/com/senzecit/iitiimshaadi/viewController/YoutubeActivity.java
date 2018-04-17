@@ -22,7 +22,7 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_youtube);
 
-        playerView = (YouTubePlayerView) findViewById(R.id.player_view);
+        playerView = findViewById(R.id.player_view);
 
         // initializes the YouTube player view
         playerView.initialize(Config.API_KEY, this);

@@ -63,31 +63,31 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
     }
 
     private void init(){
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar = findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Plans");
 
-        mCountryRadioGroup = (RadioGroup) findViewById(R.id.idCountryGB);
-        mRadioGroup = (RadioGroup) findViewById(R.id.idRadioGroup);
+        mCountryRadioGroup = findViewById(R.id.idCountryGB);
+        mRadioGroup = findViewById(R.id.idRadioGroup);
 
-        mInterNationalRB = (RadioButton)findViewById(R.id.idInterNationalRB);
-        mIndianRB = (RadioButton)findViewById(R.id.idIndianRB);
-        mOneMonthRB = (RadioButton)findViewById(R.id.idOneMonthRB);
-        mSixMonthRB = (RadioButton)findViewById(R.id.idSixMonthRB);
-        mTwelveMonthRB = (RadioButton)findViewById(R.id.idTwelveMonthRB);
-        mLifetimeRB = (RadioButton)findViewById(R.id.idLifetimeRB);
-        mPaymentModeOneRB = (RadioButton)findViewById(R.id.idPaymentModeOneRB);
-        mPaymentModeTwoRB = (RadioButton)findViewById(R.id.idPaymentModeTwoRB);
+        mInterNationalRB = findViewById(R.id.idInterNationalRB);
+        mIndianRB = findViewById(R.id.idIndianRB);
+        mOneMonthRB = findViewById(R.id.idOneMonthRB);
+        mSixMonthRB = findViewById(R.id.idSixMonthRB);
+        mTwelveMonthRB = findViewById(R.id.idTwelveMonthRB);
+        mLifetimeRB = findViewById(R.id.idLifetimeRB);
+        mPaymentModeOneRB = findViewById(R.id.idPaymentModeOneRB);
+        mPaymentModeTwoRB = findViewById(R.id.idPaymentModeTwoRB);
 
-        mSubSignTV = (TextView) findViewById(R.id.idSubSignTV);
-        mTotalSignTV = (TextView) findViewById(R.id.idTotalSignTV);
+        mSubSignTV = findViewById(R.id.idSubSignTV);
+        mTotalSignTV = findViewById(R.id.idTotalSignTV);
 
-        mSubTotalAmountTV = (TextView) findViewById(R.id.idSubTotalAmountTV);
-        mTotalAmountTV = (TextView) findViewById(R.id.idTotalAmountTV);
+        mSubTotalAmountTV = findViewById(R.id.idSubTotalAmountTV);
+        mTotalAmountTV = findViewById(R.id.idTotalAmountTV);
 
-        mPayBtn = (Button)findViewById(R.id.idPayBtn);
+        mPayBtn = findViewById(R.id.idPayBtn);
     }
 
     public void handleView(){
@@ -252,7 +252,6 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
         final TextView mNameTV,mEmailTV,mMobileTV,mSubsAmountTV,mSubsDurationTV,mSubsTypeTV;
 
-        ;
         final Button mCloseBtn;
         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);

@@ -48,7 +48,7 @@ public class CenterLockListener extends RecyclerView.OnScrollListener {
                 }
                 else
                 {
-                    recyclerView.smoothScrollBy(0, (int) (scrollNeeded));
+                    recyclerView.smoothScrollBy(0, scrollNeeded);
 
                 }
                 mAutoSet =true;

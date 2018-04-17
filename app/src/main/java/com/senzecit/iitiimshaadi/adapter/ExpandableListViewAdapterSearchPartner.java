@@ -53,11 +53,11 @@ public class ExpandableListViewAdapterSearchPartner extends BaseExpandableListAd
             convertView = infalInflater.inflate(R.layout.list_seach_partner_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
+        TextView txtListChild = convertView
                 .findViewById(R.id.childItemTV);
         txtListChild.setText(childText);
 
-        TextView txtListChildHeader = (TextView) convertView
+        TextView txtListChildHeader = convertView
                 .findViewById(R.id.childItemTVheader);
         txtListChildHeader.setText(childText);
 
@@ -95,7 +95,7 @@ public class ExpandableListViewAdapterSearchPartner extends BaseExpandableListAd
             convertView = infalInflater.inflate(R.layout.list_search_partner_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
+        TextView lblListHeader = convertView
                 .findViewById(R.id.profileGroupTV);
         lblListHeader.setTypeface(null, Typeface.NORMAL);
         lblListHeader.setText(headerTitle);

@@ -103,7 +103,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         private final TextView txtfooter;
         public FooterViewHolder(View v) {
             super(v);
-            txtfooter = (TextView) v.findViewById(R.id.idTv2);
+            txtfooter = v.findViewById(R.id.idTv2);
         }
     }
 
@@ -371,7 +371,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 List<MyMeta> myMetaList = null;
                 ProgressClass.getProgressInstance().stopProgress();
                 if (response.isSuccessful()) {
-                    if(response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")){
+                    if(response.body().getMessage().getSuccess().equalsIgnoreCase("success")){
 
 //                        removeTab();
                         myMetaList = response.body().getMyMetas();
@@ -412,7 +412,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         final Dialog dialog = new Dialog(mContext);
         dialog.setContentView(R.layout.custom_dialog_list);
 
-        ListView lv = (ListView) dialog.findViewById(R.id.lv);
+        ListView lv = dialog.findViewById(R.id.lv);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, folderList);
         lv.setAdapter(adapter);

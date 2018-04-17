@@ -1,26 +1,5 @@
 package com.senzecit.iitiimshaadi.utils;
 
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.senzecit.iitiimshaadi.api.APIClient;
-import com.senzecit.iitiimshaadi.api.APIInterface;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.city.AllCity;
-import com.senzecit.iitiimshaadi.model.api_response_model.common.city.CitiesAccCountryResponse;
-import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
-import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 /**
  * Created by senzec on 20/2/18.
  */

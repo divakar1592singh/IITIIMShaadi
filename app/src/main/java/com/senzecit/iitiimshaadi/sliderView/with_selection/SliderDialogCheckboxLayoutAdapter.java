@@ -6,13 +6,11 @@ package com.senzecit.iitiimshaadi.sliderView.with_selection;
 
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
@@ -63,12 +61,12 @@ public class SliderDialogCheckboxLayoutAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         View row = null;
         row = View.inflate(mContext, R.layout.slider_dialog_checkbox_row, null);
-        TextView tvContent=(TextView) row.findViewById(R.id.idText);
+        TextView tvContent= row.findViewById(R.id.idText);
         //tvContent.setText(data[position]);
         tvContent.setText(models.get(position).getName());
         //System.out.println("The Text is here like.. == "+tvContent.getText().toString());
 
-        final CheckBox cb = (CheckBox) row
+        final CheckBox cb = row
                 .findViewById(R.id.idCheckbox);
         cb.setOnClickListener(new View.OnClickListener() {
 

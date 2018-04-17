@@ -1,25 +1,21 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.appdatasearch.Feature;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -46,7 +42,7 @@ public class WebActivity extends AppCompatActivity {
 
         initView();
 //        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + "JCB" + "</font>"));
-        jcbWebpage = (WebView) findViewById(R.id.idChevyWebPage);
+        jcbWebpage = findViewById(R.id.idChevyWebPage);
 
         Bundle bundleWeb = getIntent().getExtras();
 
@@ -57,7 +53,7 @@ public class WebActivity extends AppCompatActivity {
         {
             try {
                 //url = getIntent().getExtras().getString("url").toString();
-                url = bundleWeb.getString("url").toString();
+                url = bundleWeb.getString("url");
 
             }catch (NullPointerException npe)
             {
@@ -122,10 +118,10 @@ public class WebActivity extends AppCompatActivity {
 
     private void initView() {
 
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
+        mToolbar= findViewById(R.id.toolbar);
 
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Media Coverage");
         mBack.setOnClickListener(new View.OnClickListener() {

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.ChatUserAdapter;
 
 /**
  * Created by ravi on 23/11/17.

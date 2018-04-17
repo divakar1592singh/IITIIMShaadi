@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import android.database.DataSetObserver;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -26,7 +24,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -60,7 +57,6 @@ import java.util.List;
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -140,8 +136,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
 
     private void init(){
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idRefreshLayout);
-        expListView = (ExpandableListView) findViewById(R.id.expandableLV);
+        mSwipeRefreshLayout = findViewById(R.id.idRefreshLayout);
+        expListView = findViewById(R.id.expandableLV);
     }
     public void handleClick() {
 
@@ -610,7 +606,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 try {
                     if (response.isSuccessful()) {
 
-                        if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (response.body().getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             callWebServiceForSubscribeDashboard();
                             showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
@@ -652,7 +648,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase(msg1)) {
 //                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
                             callWebServiceForSubscribeDashboard();
@@ -949,12 +945,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -962,7 +958,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

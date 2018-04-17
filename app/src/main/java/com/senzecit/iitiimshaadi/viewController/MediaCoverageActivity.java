@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.MediaAdapter;
@@ -45,13 +44,13 @@ public class MediaCoverageActivity extends AppCompatActivity implements View.OnC
         mGridView.setAdapter(adapter);
     }
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Media Coverage");
 
-        mGridView = (GridView) findViewById(R.id.gridView);
+        mGridView = findViewById(R.id.gridView);
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

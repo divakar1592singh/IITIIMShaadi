@@ -86,35 +86,35 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
         mTitle.setText("Settings");
 
-        mGeneralSettingIV = (ImageView) findViewById(R.id.generalSettingIV);
-        mNotificationSettingIV = (ImageView) findViewById(R.id.notificationSttingIV);
-        mDeactiveAccountSettingIV = (ImageView) findViewById(R.id.deactiveAccountIV);
+        mGeneralSettingIV = findViewById(R.id.generalSettingIV);
+        mNotificationSettingIV = findViewById(R.id.notificationSttingIV);
+        mDeactiveAccountSettingIV = findViewById(R.id.deactiveAccountIV);
 
-        mGeneralSettingLL = (LinearLayout) findViewById(R.id.generalSettingLL);
-        mNotificationSettingLL = (LinearLayout) findViewById(R.id.notificationSettingLL);
-        mDeactiveAccountLL = (LinearLayout) findViewById(R.id.deactiveAccountLL);
+        mGeneralSettingLL = findViewById(R.id.generalSettingLL);
+        mNotificationSettingLL = findViewById(R.id.notificationSettingLL);
+        mDeactiveAccountLL = findViewById(R.id.deactiveAccountLL);
 
-        mSendRL = (RelativeLayout) findViewById(R.id.idSendRL);
-        mAddsRL = (RelativeLayout) findViewById(R.id.idAddsRL);
+        mSendRL = findViewById(R.id.idSendRL);
+        mAddsRL = findViewById(R.id.idAddsRL);
 
-        mMemberSendTV = (TextView) findViewById(R.id.idMemberSendTV);
-        mMemberAddsTV = (TextView) findViewById(R.id.idMemberAddsTV);
+        mMemberSendTV = findViewById(R.id.idMemberSendTV);
+        mMemberAddsTV = findViewById(R.id.idMemberAddsTV);
 
-        mNameET = (EditText)findViewById(R.id.nameET) ;
-        mEmailTV = (TextView)findViewById(R.id.accountEmailTV);
-        mUserNameTV = (TextView)findViewById(R.id.userNameET);
-        mPwdET = (EditText)findViewById(R.id.passwordET) ;
-        mConfirmPwdET = (EditText)findViewById(R.id.confirmPasswordET) ;
-        mGeneralSaveBtn = (Button)findViewById(R.id.generalSaveBtn);
+        mNameET = findViewById(R.id.nameET);
+        mEmailTV = findViewById(R.id.accountEmailTV);
+        mUserNameTV = findViewById(R.id.userNameET);
+        mPwdET = findViewById(R.id.passwordET);
+        mConfirmPwdET = findViewById(R.id.confirmPasswordET);
+        mGeneralSaveBtn = findViewById(R.id.generalSaveBtn);
 
-        mDeactivateRG = (RadioGroup)findViewById(R.id.idDeactivateRG);
-        mDeactivateSaveBtn = (Button)findViewById(R.id.deactiveAccountSaveBtn);
+        mDeactivateRG = findViewById(R.id.idDeactivateRG);
+        mDeactivateSaveBtn = findViewById(R.id.deactiveAccountSaveBtn);
 
     }
 
@@ -230,13 +230,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         View view = getLayoutInflater().inflate(R.layout.toast_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //		final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -313,7 +313,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 if (response.isSuccessful()) {
                     GeneralSettingResponse genSettingResponse = response.body();
                     if(genSettingResponse.getMessage().getSuccess() != null) {
-                        if (genSettingResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (genSettingResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
 //                            AlertDialogSingleClick.getInstance().showDialog(LoginActivity.this, "Forgot Password", "An email with new password is sent to your registered email.");
                             Toast.makeText(SettingsActivity.this, "Success", Toast.LENGTH_SHORT).show();
@@ -379,7 +379,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                     public void onClick(DialogInterface dialog, int which) {
 
         int id = mDeactivateRG.getCheckedRadioButtonId();
-        RadioButton rb1 = (RadioButton)findViewById(id);
+        RadioButton rb1 = findViewById(id);
         String reason = rb1.getText().toString();
 //        Toast.makeText(SettingsActivity.this, "Success : "+reason, Toast.LENGTH_SHORT).show();
         callWebServiceForDeactivate(reason);
@@ -410,7 +410,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 if (response.isSuccessful()) {
                     AddFolderResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
+                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
                             logout();
 

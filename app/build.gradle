@@ -88,11 +88,11 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     compile('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') {
-        transitive = true;
+        transitive = true
     }
 
     compile('com.payumoney.sdkui:plug-n-play:1.0.0') {
-        transitive = true;
+        transitive = true
         exclude module: 'payumoney-sdk'
     }
     compile 'com.payumoney.core:payumoney-sdk:7.0.1'

@@ -100,40 +100,40 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
         mTitle.setText("New User Register");
 
-        mProfileCreatedRL = (RelativeLayout)findViewById(R.id.idProfileCreatedFor) ;
-        mGenderRL = (RelativeLayout)findViewById(R.id.idGenderRL) ;
-        mDOBRL = (RelativeLayout)findViewById(R.id.idDobRL) ;
+        mProfileCreatedRL = findViewById(R.id.idProfileCreatedFor);
+        mGenderRL = findViewById(R.id.idGenderRL);
+        mDOBRL = findViewById(R.id.idDobRL);
 
-        mProfileCreatedForTV = (TextView) findViewById(R.id.profileCreateTV);
-        mGenderTV = (TextView) findViewById(R.id.genderTV);
-        mDateOfBirthTV = (TextView) findViewById(R.id.dateOfBirthTV);
+        mProfileCreatedForTV = findViewById(R.id.profileCreateTV);
+        mGenderTV = findViewById(R.id.genderTV);
+        mDateOfBirthTV = findViewById(R.id.dateOfBirthTV);
 
-        mTermCheck = (ImageView) findViewById(R.id.termCheckIV);
-        mTermUnCheck = (ImageView) findViewById(R.id.termUnCheckIV);
-        mUserRegister = (Button) findViewById(R.id.userRegisterBtn);
+        mTermCheck = findViewById(R.id.termCheckIV);
+        mTermUnCheck = findViewById(R.id.termUnCheckIV);
+        mUserRegister = findViewById(R.id.userRegisterBtn);
 
-        mUserNameET = (EditText) findViewById(R.id.userNameET);
-        mEmailET = (EditText) findViewById(R.id.emailAddressET);
-        mFullNameET = (EditText) findViewById(R.id.fullNameET);
-        mPasswordET = (EditText) findViewById(R.id.passwordET);
-        mRePasswordET = (EditText) findViewById(R.id.re_passwordET);
-        mCountryCodeSPN = (Spinner)findViewById(R.id.idCountryCodeSPN);
-        mMobileET = (EditText) findViewById(R.id.mobileNoET);
-        mVerifyCaptchaET = (EditText) findViewById(R.id.verifyCaptchaET);
-        mCaptchaBtn = (Button)findViewById(R.id.captchaBtn);
-        mRefreshIV = (ImageView) findViewById(R.id.idRefreshIV);
-        mTermsCoondition = (TextView)findViewById(R.id.idTermsCondition) ;
+        mUserNameET = findViewById(R.id.userNameET);
+        mEmailET = findViewById(R.id.emailAddressET);
+        mFullNameET = findViewById(R.id.fullNameET);
+        mPasswordET = findViewById(R.id.passwordET);
+        mRePasswordET = findViewById(R.id.re_passwordET);
+        mCountryCodeSPN = findViewById(R.id.idCountryCodeSPN);
+        mMobileET = findViewById(R.id.mobileNoET);
+        mVerifyCaptchaET = findViewById(R.id.verifyCaptchaET);
+        mCaptchaBtn = findViewById(R.id.captchaBtn);
+        mRefreshIV = findViewById(R.id.idRefreshIV);
+        mTermsCoondition = findViewById(R.id.idTermsCondition);
 
-        mDaySPN = (Spinner)findViewById(R.id.idDaySpnr) ;
-        mMonthSPN = (Spinner)findViewById(R.id.idMonthSpnr) ;
-        mYearSPN = (Spinner)findViewById(R.id.idYearSpnr) ;
+        mDaySPN = findViewById(R.id.idDaySpnr);
+        mMonthSPN = findViewById(R.id.idMonthSpnr);
+        mYearSPN = findViewById(R.id.idYearSpnr);
 
-        mUserNameStatus = (TextView)findViewById(R.id.idUsernameStatus);
-        mEmailStatus = (TextView)findViewById(R.id.idEmailStatus);
+        mUserNameStatus = findViewById(R.id.idUsernameStatus);
+        mEmailStatus = findViewById(R.id.idEmailStatus);
 
 
     }
@@ -332,19 +332,15 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 //        String sMonth = monthList.get(posMonth);
         String sYear = mYearSPN.getSelectedItem().toString();
 
-        boolean statusDay = !sDay.equalsIgnoreCase("Day")?true:false;
-        boolean statusMonth = posMonth != 0?true:false;
-        boolean statusYear = !sYear.equalsIgnoreCase("Year")?true:false;
+        boolean statusDay = !sDay.equalsIgnoreCase("Day");
+        boolean statusMonth = posMonth != 0;
+        boolean statusYear = !sYear.equalsIgnoreCase("Year");
 
         if(statusDay == true &&statusMonth == true && statusYear == true ){
 
-            if(NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true){
-//                checkNewUserValidation();
-                return true;
-            }else {
+            //                checkNewUserValidation();
 //                NetworkDialogHelper.getInstance().showDialog(NewUserRegisterActivity.this);
-                return false;
-            }
+            return NetworkClass.getInstance().checkInternet(NewUserRegisterActivity.this) == true;
 
         }else {
 //            AlertDialogSingleClick.getInstance().showDialog(NewUserRegisterActivity.this, "Alert", "Check 'Day/Month/Year' is selected!");
@@ -380,13 +376,13 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         View view = getLayoutInflater().inflate(R.layout.toast_layout, null);
 
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.custom_list);
+        final RecyclerView recyclerView = view.findViewById(R.id.custom_list);
 //    final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        ((Button) view.findViewById(R.id.button_done)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -691,12 +687,12 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -705,7 +701,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -728,7 +724,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
 
                 System.out.println(object);
                 int counter = object.getInt("counter");
-                boolean status = counter == 1 ? true : false;
+                boolean status = counter == 1;
                 if (status == true) {
                     mUserNameStatus.setVisibility(View.VISIBLE);
                     mUserNameStatus.setText("Username Not Available");
@@ -744,7 +740,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
             } else if (methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)) {
 
                 int counter = object.getInt("counter");
-                boolean status = counter == 1 ? true : false;
+                boolean status = counter == 1;
                 if (status == true) {
                     mEmailStatus.setVisibility(View.VISIBLE);
                     mEmailStatus.setText("Email Not Available");

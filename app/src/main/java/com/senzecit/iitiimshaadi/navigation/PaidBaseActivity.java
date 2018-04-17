@@ -52,18 +52,18 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
         drawer = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_paid_base, null);
 
-        FrameLayout activityContainer = (FrameLayout) drawer.findViewById(R.id.activity_content);
+        FrameLayout activityContainer = drawer.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
         //getLayoutInflater().inflate(R.layout.activity_home, activityContainer, true);
         super.setContentView(drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         prefs = new AppPrefs(PaidBaseActivity.this);
 
-        final ToggleButton rightToggle = (ToggleButton)findViewById(R.id.right_menu_toggle);
-        ImageView mChatIV = (ImageView)findViewById(R.id.idChat);
-        ImageView mMyFriendIV = (ImageView)findViewById(R.id.idMyFriends);
-        ImageView mNotificationIV = (ImageView)findViewById(R.id.idNotification);
+        final ToggleButton rightToggle = findViewById(R.id.right_menu_toggle);
+        ImageView mChatIV = findViewById(R.id.idChat);
+        ImageView mMyFriendIV = findViewById(R.id.idMyFriends);
+        ImageView mNotificationIV = findViewById(R.id.idNotification);
 
         mChatIV.setOnClickListener(this);
         mMyFriendIV.setOnClickListener(this);
@@ -71,7 +71,7 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 //        Button btn1 = (Button) findViewById(R.id.idNavHome);
         setSupportActionBar(toolbar);
 
-        frameLayout = (FrameLayout) findViewById(R.id.activity_content);
+        frameLayout = findViewById(R.id.activity_content);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -97,22 +97,22 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
 
 
         // SIDE NAV
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.bringToFront();
         navigationView.requestLayout();
         View headerview = navigationView.getHeaderView(0);
 
-        TextView mAboutBtn = (TextView)headerview.findViewById(R.id.idAboutNav);
-        TextView mProfileBtn = (TextView)headerview.findViewById(R.id.idMyProfilePaidNav);
-        TextView mMediaCovBtn = (TextView)headerview.findViewById(R.id.idMediaCoverageNav);
-        TextView mSuccessStoryBtn = (TextView)headerview.findViewById(R.id.idSuccessStoryNav);
-        TextView mHowToNavBtn = (TextView)headerview.findViewById(R.id.idHowToNav);
-        TextView mPrivacyPolicyBtn = (TextView)headerview.findViewById(R.id.idPrivacyPolicyNav);
-        TextView mContactUsBtn = (TextView)headerview.findViewById(R.id.idContactUsNav);
-        TextView mFaqBtn = (TextView)headerview.findViewById(R.id.idFAQNav);
-        TextView mDisclaimerBtn = (TextView)headerview.findViewById(R.id.idDisclaimerNav);
-        TextView mSetting = (TextView)headerview.findViewById(R.id.idSettingNav);
-        TextView mLogout = (TextView)headerview.findViewById(R.id.idLogoutNav);
+        TextView mAboutBtn = headerview.findViewById(R.id.idAboutNav);
+        TextView mProfileBtn = headerview.findViewById(R.id.idMyProfilePaidNav);
+        TextView mMediaCovBtn = headerview.findViewById(R.id.idMediaCoverageNav);
+        TextView mSuccessStoryBtn = headerview.findViewById(R.id.idSuccessStoryNav);
+        TextView mHowToNavBtn = headerview.findViewById(R.id.idHowToNav);
+        TextView mPrivacyPolicyBtn = headerview.findViewById(R.id.idPrivacyPolicyNav);
+        TextView mContactUsBtn = headerview.findViewById(R.id.idContactUsNav);
+        TextView mFaqBtn = headerview.findViewById(R.id.idFAQNav);
+        TextView mDisclaimerBtn = headerview.findViewById(R.id.idDisclaimerNav);
+        TextView mSetting = headerview.findViewById(R.id.idSettingNav);
+        TextView mLogout = headerview.findViewById(R.id.idLogoutNav);
 
 
         mAboutBtn.setOnClickListener(PaidBaseActivity.this);

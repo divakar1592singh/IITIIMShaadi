@@ -13,7 +13,6 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.SearchResultAdapter;
@@ -21,8 +20,6 @@ import com.senzecit.iitiimshaadi.fragment.SearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 
 import java.util.List;
-
-import io.reactivex.Observable;
 
 public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator, View.OnClickListener {
 
@@ -63,22 +60,22 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     }
 
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
-        mContainerFragLayout = (FrameLayout) findViewById(R.id.search_partner_FL);
-        mContainerResLayout = (FrameLayout) findViewById(R.id.search_result_FL);
+        mContainerFragLayout = findViewById(R.id.search_partner_FL);
+        mContainerResLayout = findViewById(R.id.search_result_FL);
 
-        mSearchResultRecyclerView = (RecyclerView) findViewById(R.id.partnerSearchResulttRV);
+        mSearchResultRecyclerView = findViewById(R.id.partnerSearchResulttRV);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
 
         //
-        mTotalCountTV = (TextView)findViewById(R.id.idTotalCountTV);
-        mMinRecordTV = (TextView)findViewById(R.id.idMinRecord);
-        mMaxRecord = (TextView)findViewById(R.id.idMaxRecord);
-        mEndRecord = (TextView)findViewById(R.id.idEndRecord);
+        mTotalCountTV = findViewById(R.id.idTotalCountTV);
+        mMinRecordTV = findViewById(R.id.idMinRecord);
+        mMaxRecord = findViewById(R.id.idMaxRecord);
+        mEndRecord = findViewById(R.id.idEndRecord);
 
 
         mAgeMin = findViewById(R.id.minAgeTV);

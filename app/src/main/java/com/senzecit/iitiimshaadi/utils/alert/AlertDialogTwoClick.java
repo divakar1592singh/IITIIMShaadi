@@ -40,12 +40,12 @@ public class AlertDialogTwoClick {
             dialog.setContentView(R.layout.alert_dialog_two_click);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-            TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+            TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
             titleTxt.setText(title);
-            TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+            TextView msgTxt = dialog.findViewById(R.id.idMsg);
             msgTxt.setText(msg);
 
-            Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+            Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
             dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -54,7 +54,7 @@ public class AlertDialogTwoClick {
                 }
             });
 
-            Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+            Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
             dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -27,18 +27,18 @@ public class Message {
 
     public int getType() {
         return mType;
-    };
+    }
 
     public String getProfileUrl() {
         return profileUrl;
     }
     public String getMessage() {
         return mMessage;
-    };
+    }
 
     public String getUsername() {
         return mUsername;
-    };
+    }
 
     public String getUserId() {
         return mUserId;

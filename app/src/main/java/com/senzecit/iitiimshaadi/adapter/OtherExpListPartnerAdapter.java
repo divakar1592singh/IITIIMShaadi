@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.model.api_response_model.my_profile.MyProfileResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 
 import java.util.HashMap;
@@ -63,11 +62,11 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
 
@@ -80,11 +79,11 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
 
@@ -96,14 +95,14 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
                         //SetData - PreferedPartnerHeightMin
                         txtListChild2.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMin());
 
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
                         break;
@@ -112,14 +111,14 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater3.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild3 = (TextView) convertView
+                        final TextView txtListChild3 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild3.setText(childText);
 
                         //SetData - PreferedPartnerHeightMax
                         txtListChild3.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerHeightMax());
 
-                        TextView txtListChildHeader3 = (TextView) convertView
+                        TextView txtListChildHeader3 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader3.setText(childText);
 
@@ -129,7 +128,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater4.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild4 = (TextView) convertView
+                        final TextView txtListChild4 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild4.setText(childText);
 
@@ -138,7 +137,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                         String maritalNet = marital1.replace("]", "");
                         txtListChild4.setText(maritalNet);
 
-                        TextView txtListChildHeader4 = (TextView) convertView
+                        TextView txtListChildHeader4 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader4.setText(childText);
                         break;
@@ -152,14 +151,14 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
 
                         //SetData - PreferedPartnerReligion
                         txtListChild.setText(myProfileResponse.getPartnerBasicData().getPreferedPartnerReligion());
 
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
 
@@ -169,7 +168,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater1.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild1 = (TextView) convertView
+                        final TextView txtListChild1 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild1.setText(childText);
 
@@ -178,7 +177,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                         String caste = caste1.replace("]","");
                         txtListChild1.setText(caste);
 
-                        TextView txtListChildHeader1 = (TextView) convertView
+                        TextView txtListChildHeader1 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader1.setText(childText);
 
@@ -187,7 +186,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                         LayoutInflater infalInflater2 = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater2.inflate(R.layout.list_item_non_editable, null);
-                        final TextView txtListChild2 = (TextView) convertView
+                        final TextView txtListChild2 = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild2.setText(childText);
 
@@ -195,7 +194,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                         String country1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerCountry().toString().replace("[", "");
                         String country = country1.replace("]","");
                         txtListChild2.setText(country);
-                        TextView txtListChildHeader2 = (TextView) convertView
+                        TextView txtListChildHeader2 = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader2.setText(childText);
                         break;
@@ -209,14 +208,14 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
 
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
                         //SetData - PreferedPartnerEducation
                         String education1 = myProfileResponse.getPartnerBasicData().getPreferedPartnerEducation().toString().replace("[", "");
                         String education = education1.replace("]","");
                         txtListChild.setText(education);
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         break;
@@ -229,10 +228,10 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
                         LayoutInflater infalInflater = (LayoutInflater) this._context
                                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         convertView = infalInflater.inflate(R.layout.list_item_non_editable, null);
-                        final TextView txtListChild = (TextView) convertView
+                        final TextView txtListChild = convertView
                                 .findViewById(R.id.childItemTV);
                         txtListChild.setText(childText);
-                        TextView txtListChildHeader = (TextView) convertView
+                        TextView txtListChildHeader = convertView
                                 .findViewById(R.id.childItemTVheader);
                         txtListChildHeader.setText(childText);
                         //SetData - ChoiceOfGroom
@@ -276,7 +275,7 @@ public class OtherExpListPartnerAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
+        TextView lblListHeader = convertView
                 .findViewById(R.id.profileGroupTV);
         lblListHeader.setTypeface(null, Typeface.NORMAL);
         lblListHeader.setText(headerTitle);

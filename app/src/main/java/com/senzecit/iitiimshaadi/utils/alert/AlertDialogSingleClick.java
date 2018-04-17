@@ -7,8 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -44,12 +42,12 @@ public class AlertDialogSingleClick {
             dialog.setContentView(R.layout.alert_dialog_single_click);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-            TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+            TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
             titleTxt.setText(title);
-            TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+            TextView msgTxt = dialog.findViewById(R.id.idMsg);
             msgTxt.setText(msg);
 
-            Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+            Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
             dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,7 +56,7 @@ public class AlertDialogSingleClick {
                 }
             });
 
-            Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+            Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
             dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -77,12 +75,12 @@ public class AlertDialogSingleClick {
         dialog.setContentView(R.layout.alert_dialog_single_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +89,7 @@ public class AlertDialogSingleClick {
             }
         });
 
-        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

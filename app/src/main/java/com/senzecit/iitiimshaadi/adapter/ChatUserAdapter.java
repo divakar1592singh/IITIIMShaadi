@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
@@ -19,8 +18,6 @@ import com.senzecit.iitiimshaadi.model.api_response_model.chat_user.Result;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
-import com.senzecit.iitiimshaadi.viewController.ChatMessagesActivity;
-import com.senzecit.iitiimshaadi.viewController.ProfileActivity;
 
 import java.util.List;
 

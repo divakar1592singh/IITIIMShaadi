@@ -1,6 +1,5 @@
 package com.senzecit.iitiimshaadi.viewController;
 
-import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,13 +58,13 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
         chatUserWebApi();
     }
     private void init(){
-        mToolbar= (Toolbar) findViewById(R.id.toolbar);
-        mTitle = (TextView) findViewById(R.id.toolbar_title);
-        mBack = (ImageView) findViewById(R.id.backIV);
+        mToolbar= findViewById(R.id.toolbar);
+        mTitle = findViewById(R.id.toolbar_title);
+        mBack = findViewById(R.id.backIV);
         mBack.setVisibility(View.VISIBLE);
 
         mTitle.setText("Chat History");
-        mRecyclerViewChatUser = (RecyclerView) findViewById(R.id.idChatUserRV);
+        mRecyclerViewChatUser = findViewById(R.id.idChatUserRV);
 
     }
 
