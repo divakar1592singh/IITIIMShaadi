@@ -155,5 +155,9 @@ public interface CONSTANTS {
     String MEDIA_URL_20 = "http://www.rediff.com/getahead/report/specials-now-dating-sites-for-the-highly-educated/20140915.htm";
 
 
+    String SEARCH_BY_ID = "id";
+    String SEARCH_BY_KEYWORD = "keyword";
+    String ADVANCE_SEARCH = "advance";
+
 
 }

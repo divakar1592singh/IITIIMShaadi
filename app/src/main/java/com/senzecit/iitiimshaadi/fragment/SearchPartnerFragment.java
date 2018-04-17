@@ -907,6 +907,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                         try {
                             JSONArray jsonArray = response.getJSONArray("result");
                             List<String> casteList = new ArrayList<>();
+                            if(jsonArray.length() > 0){
+                                casteList.add("Any");
+                            }
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 String country = jsonObject1.getString("group_name");

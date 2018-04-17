@@ -569,8 +569,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("from_user", userId);
-
-            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(this, CONSTANTS.CHAT_USER_COUNT_PATH, jsonObject, CONSTANTS.METHOD_3);
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsingDashboard(this, CONSTANTS.CHAT_USER_COUNT_PATH, jsonObject, CONSTANTS.METHOD_3);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -778,7 +777,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     }
 
     public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
-        {
+    {
 
             if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
                 return apiInterface.idVerification(fileToUpload, filename, token);
@@ -795,7 +794,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             }
 
         }
-
 
     @Override
     public void onBackPressed() {
@@ -960,8 +958,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-                finishActivity(0);
                 dialog.dismiss();
             }
         });

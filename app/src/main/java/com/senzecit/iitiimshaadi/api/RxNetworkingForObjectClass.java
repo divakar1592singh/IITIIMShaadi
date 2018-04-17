@@ -186,6 +186,37 @@ public class RxNetworkingForObjectClass {
 
     }
 
+    public void callWebServiceForJSONParsingDashboard(Activity activity, String relativePath, JSONObject paramClass, String methodName) {
+
+        if(NetworkClass.getInstance().checkInternet(activity) == true){
+
+            AndroidNetworking.post(relativePath)
+                    .addJSONObjectBody(paramClass)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            handler.handle(response, methodName);
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+//                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                            AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error : "+error);
+
+                        }
+                    });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(activity);
+        }
+
+
+    }
+
+
 
     public interface CompletionHandler {
         void handle(JSONObject object, String methodName);

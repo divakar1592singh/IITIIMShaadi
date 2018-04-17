@@ -76,6 +76,7 @@ public class ProgressClass {
 
 
     public void stopProgress(){
+        if(dialog.isShowing())
             dialog.dismiss();
         }
 

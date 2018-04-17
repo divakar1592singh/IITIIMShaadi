@@ -14,19 +14,30 @@ import android.widget.Toast;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
+import com.senzecit.iitiimshaadi.model.commons.PreAuthWebRequest;
 import com.senzecit.iitiimshaadi.paypal.PayPalHomeActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
+import com.senzecit.iitiimshaadi.utils.Validation;
+import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
-public class SplashActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class SplashActivity extends AppCompatActivity implements RxNetworkingForObjectClass.CompletionHandler{
 
     private static final String TAG = "SplashActivity";
     private static final int SPLASH_DISPLAY_TIME = 2000;
+
+    RxNetworkingForObjectClass networkingClass;
+    PreAuthWebRequest request;
     AppPrefs prefs;
     ProgressBar mProgressbar;
 
@@ -37,6 +48,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+        networkingClass = RxNetworkingForObjectClass.getInstance();
+        networkingClass.setCompletionHandler(this);
+        request = new PreAuthWebRequest();
         prefs = AppController.getInstance().getPrefs();
 //        prefs.putString(CONSTANTS.LOGGED_TOKEN, "gffg");
 //
@@ -85,12 +99,14 @@ public class SplashActivity extends AppCompatActivity {
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 ////
 
+/*
 
               Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
 
+*/
 
 
              /*   if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
@@ -101,22 +117,37 @@ public class SplashActivity extends AppCompatActivity {
 
 //***************************
 
-
-
-//                callWebServiceForSignin();
-
             if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
-                navigatyPage();
+                callWebServiceForSignin();
             }else {
                 networkDialog();
             }
+          }
 
-
-            }
+           
         },SPLASH_DISPLAY_TIME);
     }
 
-    public void navigatyPage(){
+    private void callWebServiceForSignin() {
+        String sUsername = prefs.getString(CONSTANTPREF.LOGIN_USERNAME);
+        String sPassword = prefs.getString(CONSTANTPREF.LOGIN_PASSWORD);
+
+        if (Validation.handler().isNotEmpty(SplashActivity.this, sUsername, AppMessage.USERNAME_EMPTY)) {
+            if (Validation.handler().isNotEmpty(SplashActivity.this, sPassword, AppMessage.PASSWORD_EMPTY)) {
+                request.username = sUsername;
+                request.password = sPassword;
+                mProgressbar.setVisibility(View.VISIBLE);
+                RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SplashActivity.this, CONSTANTS.LOGIN_PART_URL, request, CONSTANTS.METHOD_1, false);
+            }
+        }else {
+            navigatePage();
+        }
+
+        
+        
+    }
+
+    public void navigatePage(){
 
         try{
             String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
@@ -154,8 +185,8 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
             startActivity(intent);
             finish();
-        }
 
+        }
     }
 
     public void networkDialog(){
@@ -182,4 +213,56 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        System.out.println(object);
+        mProgressbar.setVisibility(View.INVISIBLE);
+        try {
+
+            if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
+                if(object.getJSONObject("message").getInt("response_code") == 200) {
+
+                    String token = object.getJSONObject("responseData").getString("token");
+                    String userName = object.getJSONObject("responseData").getString("username");
+                    String userId = String.valueOf(object.getJSONObject("responseData").getString("userid"));
+                    String typeOfUser = object.getJSONObject("responseData").getString("type_of_user");
+                    String email = object.getJSONObject("responseData").getString("email");
+                    String mobile = object.getJSONObject("responseData").getString("mobile_no");
+                    String profilePic = object.getJSONObject("responseData").getString("profile_image");
+                    String gender = object.getJSONObject("responseData").getString("gender");
+
+                    prefs.putString(CONSTANTS.LOGGED_TOKEN, token);
+                    prefs.putString(CONSTANTS.LOGGED_USERNAME, userName);
+                    prefs.putString(CONSTANTS.LOGGED_USERID, userId);
+                    prefs.putString(CONSTANTS.LOGGED_USER_TYPE, typeOfUser);
+                    prefs.putString(CONSTANTS.LOGGED_EMAIL, email);
+                    prefs.putString(CONSTANTS.LOGGED_MOB, mobile);
+                    prefs.putString(CONSTANTS.LOGGED_USER_PIC, profilePic);
+                    prefs.putString(CONSTANTS.GENDER_TYPE, gender);
+
+                    if (typeOfUser.equalsIgnoreCase("paid_subscriber_viewer")) {
+                        Navigator.getClassInstance().navigateToActivity(SplashActivity.this, PaidSubscriberDashboardActivity.class);
+                    } else if (typeOfUser.equalsIgnoreCase("subscriber_viewer")) {
+                        Navigator.getClassInstance().navigateToActivity(SplashActivity.this, SubscriberDashboardActivity.class);
+                    } else if (typeOfUser.equalsIgnoreCase("subscriber")) {
+                        Navigator.getClassInstance().navigateToActivity(SplashActivity.this, SubscriberDashboardActivity.class);
+                    }
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.ALERT, AppMessage.USERPWD_INVALID);
+                }
+            }else if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)){
+
+                if(object.getJSONObject("message").getInt("response_code") == 200) {
+                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.INFO, "An email with new password is sent to your registered email.");
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.ALERT, AppMessage.USER_VALID);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

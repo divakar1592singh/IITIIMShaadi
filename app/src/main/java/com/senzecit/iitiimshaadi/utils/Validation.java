@@ -43,6 +43,14 @@ public class Validation {
             return false;
         }
     }
+
+    public boolean isNotEmpty(Activity activity, String val, String errMessage){
+        if(!TextUtils.isEmpty(val)){
+            return true;
+        }else {
+            return false;
+        }
+    }
     // EMAIL
 
 

@@ -32,6 +32,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.Us
 import com.senzecit.iitiimshaadi.model.api_rquest_model.search_partner_subs.PaidSubsAdvanceSearchRequest;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -49,6 +50,7 @@ import retrofit2.Response;
 
 public class PaidSearchPartnerActivity extends AppCompatActivity implements PaidSearchPartnerFragment.PaidSearchPartnerFragmentCommunicator, View.OnClickListener {
 
+    private static final String TAG = "PaidSearchPartner";
     Toolbar mToolbar;
     TextView mTitle;
     ImageView mBack;
@@ -68,6 +70,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     ScrollView mResultScroll;
     Object lastSelectedId = -1;
     Button[] buttons;
+    String selectedPage = "0";
 
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
 
@@ -159,16 +162,25 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     @Override
     public void saveAndSearchPaidPartner() {
 
+        try {
+            mHorizontalLayout.removeAllViews();
+        }catch (NullPointerException npe){
+            Log.e(TAG, " #Err : "+npe, npe);
+        }
+
         String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
 
         if(search_type.equalsIgnoreCase("id")){
             mCurrentSearchBtn.setText("CURRENT SEARCH");
+            mHorizontalLayout.setVisibility(View.INVISIBLE);
             callWebServiceForSubsIDSearch();
         }else if(search_type.equalsIgnoreCase("keyword")){
             mCurrentSearchBtn.setText("CURRENT SEARCH");
+            mHorizontalLayout.setVisibility(View.VISIBLE);
             callWebServiceForSubsKeywordSearch("1");
         }else if(search_type.equalsIgnoreCase("advance")){
             mCurrentSearchBtn.setText("SHOW CURRENT SEARCH");
+            mHorizontalLayout.setVisibility(View.VISIBLE);
             callWebServiceForSubsAdvanceSearch("1");
         }
 
@@ -276,7 +288,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     /** Search By Keyword */
     public void callWebServiceForSubsKeywordSearch(String curPage){
 
-//        String token = "42a6259d9ae09e7fde77c74bbf2a9a48";
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);;
         String keyword = prefs.getString(CONSTANTS.SEARCH_KEYWORD) ;
         String page = curPage ;
@@ -295,7 +306,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                         if(response.body().getUsers().size() > 0){
 
                             int pageCount = response.body().getTotalCount();
-                            setupPageView(pageCount);
+                            setupPageView(pageCount, selectedPage);
 
                             List<User> queryList = response.body().getUsers();
 //                            System.out.print(profileList);
@@ -397,7 +408,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                             if (response.body().getUsers().size() > 0) {
 
                                 int pageCount = response.body().getTotalCount();
-                                setupPageView(pageCount);
+                                setupPageView(pageCount, selectedPage);
 
                                 List<User> queryList = response.body().getUsers();
                                 System.out.print(profileList);
@@ -440,10 +451,16 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
     }
 
-    private void setupPageView(int pages){
+    private void setupPageView(int pages, String selectedPage){
 
+        if(prefs.getString(CONSTANTPREF.PAGE_COUNT).equalsIgnoreCase("1")){
         int val = 0;
-
+        int selectedVal = 0;
+        try {
+            selectedVal = Integer.parseInt(selectedPage);
+        }catch (NumberFormatException nfe){
+            Log.e("Paid Search Partner", "#Errror : "+nfe, nfe);
+        }
         val = pages/10;
         int reminderVal = pages%10;
         if(reminderVal > 0){
@@ -451,17 +468,17 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         }
         Button[] buttons = new Button[val];
         Space[] views = new Space[val];
-        for(int i = 0; i< val; i++){
+        for(int i = 0; i< val; i++) {
             buttons[i] = new Button(PaidSearchPartnerActivity.this);
             buttons[i].setLayoutParams(new LinearLayout.LayoutParams(64, 64));
-            buttons[i].setTag(i+1);
-            buttons[i].setText(""+(i+1));
+            buttons[i].setTag(i + 1);
+            buttons[i].setText("" + (i + 1));
             buttons[i].setTextColor(getResources().getColor(R.color.colorWhite));
             buttons[i].setTextSize(12);
-            if(i == 0){
+            if (i == selectedVal) {
                 buttons[i].setBackgroundResource(R.drawable.round_view_green_border);
 
-            }else {
+            } else {
 
                 buttons[i].setBackgroundResource(R.drawable.round_view_yellow_border);
             }
@@ -478,21 +495,31 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 @Override
                 public void onClick(View v) {
 
-                    for(int i=0; i<mHorizontalLayout.getChildCount(); i++){
-                        if(mHorizontalLayout.getChildAt(i) instanceof Button){
+                    for (int i = 0; i < mHorizontalLayout.getChildCount(); i++) {
+                        if (mHorizontalLayout.getChildAt(i) instanceof Button) {
                             ((Button) mHorizontalLayout.getChildAt(i)).
                                     setBackgroundResource(R.drawable.round_view_yellow_border);
                         }
                     }
 
                     String id = v.getTag().toString();
-                    Button button2 = (Button)v.findViewWithTag(v.getTag());
+                    Button button2 = (Button) v.findViewWithTag(v.getTag());
                     button2.setBackgroundResource(R.drawable.round_view_green_border);
-                    callWebServiceForSubsAdvanceSearch(id);
+                    if (prefs.getString(CONSTANTPREF.SEARCH_TYPE).equalsIgnoreCase(CONSTANTS.SEARCH_BY_ID)) {
+                        callWebServiceForSubsIDSearch();
+                    } else if (prefs.getString(CONSTANTPREF.SEARCH_TYPE).equalsIgnoreCase(CONSTANTS.SEARCH_BY_KEYWORD)) {
+                        callWebServiceForSubsKeywordSearch(id);
+                    } else if (prefs.getString(CONSTANTPREF.SEARCH_TYPE).equalsIgnoreCase(CONSTANTS.ADVANCE_SEARCH)) {
+
+                        callWebServiceForSubsAdvanceSearch(id);
+                    }
 
                 }
             });
+        }
 
+
+            prefs.putString(CONSTANTPREF.PAGE_COUNT, "2");
         }
 
     }

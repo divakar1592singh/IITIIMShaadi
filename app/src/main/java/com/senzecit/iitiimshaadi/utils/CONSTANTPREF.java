@@ -17,5 +17,10 @@ public interface CONSTANTPREF {
 
     String CHAT_USER_COUNT = "chat_user-count";
 
+    String SEARCH_TYPE = "search_type";
+    String PAGE_COUNT = "pages";
+
+
+
 
 }

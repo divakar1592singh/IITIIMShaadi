@@ -19,11 +19,14 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.AllNotificationRespnse;
 import com.senzecit.iitiimshaadi.model.api_response_model.notification.all.GetAllNotificaiton;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertNavigateSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
+import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
+import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
@@ -85,17 +88,17 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-
-
     /** API Integration*/
     public void callServiceForAllNotific(){
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         if(NetworkClass.getInstance().checkInternet(NotificationsActivity.this) == true){
 
+            ProgressClass.getProgressInstance().showDialog(NotificationsActivity.this);
         retrofit2.Call<AllNotificationRespnse> call = apiInterface.allNotificationService(token);
         call.enqueue(new Callback<AllNotificationRespnse>() {
             @Override
             public void onResponse(retrofit2.Call<AllNotificationRespnse> call, Response<AllNotificationRespnse> response) {
+                ProgressClass.getProgressInstance().stopProgress();
                 if(response.isSuccessful()){
                     AllNotificationRespnse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")){
@@ -114,7 +117,9 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void onFailure(retrofit2.Call<AllNotificationRespnse> call, Throwable t) {
-
+                call.cancel();
+                ProgressClass.getProgressInstance().stopProgress();
+                ToastDialogMessage.getInstance().showToast(NotificationsActivity.this, AppMessage.SOME_ERROR_INFO);
             }
         });
 

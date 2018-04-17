@@ -380,7 +380,7 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
         try {
             jsonObject.put("from_user", userId);
 
-            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(this, CONSTANTS.CHAT_USER_COUNT_PATH, jsonObject, CONSTANTS.METHOD_1);
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsingDashboard(this, CONSTANTS.CHAT_USER_COUNT_PATH, jsonObject, CONSTANTS.METHOD_1);
         } catch (JSONException e) {
             e.printStackTrace();
         }

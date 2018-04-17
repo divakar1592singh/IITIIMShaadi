@@ -51,6 +51,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxL
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -114,7 +115,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         view = inflater.inflate(R.layout.fragment_paid_search_partner,container,false);
         mDialogInflator = LayoutInflater.from(view.getContext());
         sliderCheckList = new ArrayList<>();
@@ -455,12 +457,18 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
                     case R.id.idSearchById:
                         checkValidation(1);
+                        prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
+                        prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.SEARCH_BY_ID);
                         break;
                     case R.id.idSearchByKeyword:
                         checkValidation(2);
+                        prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
+                        prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.SEARCH_BY_KEYWORD);
                         break;
                     case R.id.idAdvanceSearch:
+                        prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
                         checkValidation(3);
+                        prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.ADVANCE_SEARCH);
                         break;
 
                 }
@@ -532,8 +540,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         String annual_income = mAnnualIncomeTV.getText().toString() ;
 
         String sPartnerLoc = mPartnerPermanentLocarionTV.getText().toString() ;
-        String sMinHeight = mSelectHeightMinTV.getText().toString() ;
-        String sMaxHeight = mSelectHeightMaxTV.getText().toString() ;
+        String sMinHeight = removeLastChar(mSelectHeightMinTV.getText().toString()) ;
+        String sMaxHeight = removeLastChar(mSelectHeightMaxTV.getText().toString()) ;
 
         try{
         if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
@@ -710,7 +718,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
                     if (checkBox.isChecked()){
 
-                        selectedQualification.append(textView.getText().toString()+", ");
+                        selectedQualification.append(textView.getText().toString()+",");
                     }
 
                 }
@@ -737,7 +745,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             return listView.getChildAt(childIndex);
         }
     }
-
 
     public void showReligion(TextView textView){
 
@@ -1042,6 +1049,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                         try {
                             JSONArray jsonArray = response.getJSONArray("result");
                             List<String> casteList = new ArrayList<>();
+                            if(jsonArray.length() > 0){
+                                casteList.add("Any");
+                            }
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                                 String country = jsonObject1.getString("group_name");
