@@ -103,7 +103,10 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
-    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+//    implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+    compile('com.paypal.sdk:paypal-android-sdk:2.16.0') {
+        exclude group: 'io.card'
+    }
 
 
 }

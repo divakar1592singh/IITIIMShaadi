@@ -51,14 +51,15 @@ import java.math.BigDecimal;
             }
 
 
-            Intent intent = new Intent(this, PaymentActivity.class);
+            Intent intent = new Intent(this, PayPalService.class);
             intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-            startActivity(intent);
+            startService(intent);
 
+            processPayment();
             btnPayNow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    processPayment();
+//                    processPayment();
                 }
             });
 

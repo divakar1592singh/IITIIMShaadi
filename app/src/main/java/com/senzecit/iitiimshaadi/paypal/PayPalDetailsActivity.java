@@ -8,8 +8,11 @@ import android.widget.TextView;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
+import com.senzecit.iitiimshaadi.utils.alert.ToastDialogMessage;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.viewController.SplashActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,8 +73,8 @@ public class PayPalDetailsActivity extends AppCompatActivity implements RxNetwor
                     extDate = getExpDate(6);
                 }else if( sDate.equalsIgnoreCase("12 Month")){
                     extDate = getExpDate(12);
-                }else if( sDate.equalsIgnoreCase("LifeTime")){
-                    extDate = "LifeTime";
+                }else if( sDate.equalsIgnoreCase("Lifetime")){
+                    extDate = "Lifetime";
                 }else {
                     extDate = "";
                 }
@@ -117,7 +120,9 @@ public class PayPalDetailsActivity extends AppCompatActivity implements RxNetwor
     public void handle(JSONObject object, String methodName) {
         try {
             if(object.getInt("responseCode") == 200){
-                AlertDialogSingleClick.getInstance().showDialog(PayPalDetailsActivity.this, "Alert", "Payment Successfull");
+//                AlertDialogSingleClick.getInstance().showDialog(PayPalDetailsActivity.this, "Alert", "Payment Successfull");
+                ToastDialogMessage.getInstance().showToast(PayPalDetailsActivity.this, "Payment Successfull");
+                Navigator.getClassInstance().navigateToActivity(PayPalDetailsActivity.this, SplashActivity.class);
             }
         } catch (JSONException e) {
             e.printStackTrace();

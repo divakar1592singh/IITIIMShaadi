@@ -106,7 +106,7 @@ public class SplashActivity extends AppCompatActivity {
 //                callWebServiceForSignin();
 
             if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
-//                navigatyPage();
+                navigatyPage();
             }else {
                 networkDialog();
             }
