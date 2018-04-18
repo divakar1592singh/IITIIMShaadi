@@ -1,6 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -32,6 +33,7 @@ import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +54,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     Button mCaptchaBtn, mSendBtn;
     ImageView mRefreshIV;
     private GoogleMap mMap;
+    AppPrefs prefs;
 
     /**
      * Helping Method Section
@@ -71,6 +74,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_contact_us);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+        prefs = AppPrefs.getInstance(this);
         init();
         handleView();
         mBack.setOnClickListener(this);
@@ -115,7 +119,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.backIV:
-                ContactUsActivity.this.finish();
+                onBackNavigation();
                 break;
             case R.id.captchaBtn:
 
@@ -290,5 +294,42 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackNavigation();
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+    }
+
 
 }

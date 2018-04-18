@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
@@ -62,7 +63,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         ImageView mSearchpartnerIV;
         TextView mDietTxt, mEmploymentTxt, mCompanyTxt, mHeightTxt, mReligiontxt, mEducationTxt;
-        Button mAddFriendBtn,mMoveTo;
+        Button mAddFriendBtn,mChat;
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -75,7 +76,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             mEducationTxt = itemView.findViewById(R.id.idEducationTV);
 
             mAddFriendBtn = itemView.findViewById(R.id.idAddFriendBtn);
-            mMoveTo = itemView.findViewById(R.id.moveToBtm);
+            mChat = itemView.findViewById(R.id.chatSearchPtnr);
         }
     }
 
@@ -114,12 +115,17 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             }
         });
 //        holder.mPartnerPref.setOnClickListener(this);
-        holder.mMoveTo.setOnClickListener(new View.OnClickListener() {
+        holder.mChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String userId = String.valueOf(queryList.get(position).getUserId());
-                callWebServiceForCustomFolder(UserDefinedKeyword.MOVETO.toString(), userId);
+                String userName = String.valueOf(queryList.get(position).getName1());
+                prefs.putString(CONSTANTS.OTHER_USERID, userId);
+                prefs.putString(CONSTANTS.OTHER_USERNAME, userName);
+
+
+                Navigator.getClassInstance().navigateToActivity(mContext, SocketSingleChatActivity.class);
 
             }
         });

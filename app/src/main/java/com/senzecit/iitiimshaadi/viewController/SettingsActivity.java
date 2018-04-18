@@ -3,6 +3,7 @@ package com.senzecit.iitiimshaadi.viewController;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -173,7 +175,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.backIV:
-                SettingsActivity.this.finish();
+//                SettingsActivity.this.finish();
+                onBackNavigation();
                 break;
             case R.id.idSendRL:
                 showBooleanData(mMemberSendTV);
@@ -465,6 +468,42 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackNavigation();
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
     }
 
 

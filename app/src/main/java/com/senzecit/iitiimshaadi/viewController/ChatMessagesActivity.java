@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -124,26 +125,47 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
-                ChatMessagesActivity.this.finish();
+                onBackNavigation();
                 break;
         }
     }
 
-/*    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(Chat));
-    }*/
-/*
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        Toast.makeText(ChatMessagesActivity.this, "Stop click hua", Toast.LENGTH_LONG).show();
-        ChatMessagesActivity.this.finish();
-    }
+
 
     @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(0, android.R.anim.slide_out_right);
-    }*/
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackNavigation();
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+    }
+
 }

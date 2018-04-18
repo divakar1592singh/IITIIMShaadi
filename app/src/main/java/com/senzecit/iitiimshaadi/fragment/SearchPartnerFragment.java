@@ -195,12 +195,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
                     if (!TextUtils.isEmpty(sMinAge)) {
                         int minimumAge = Integer.parseInt(sMinAge);
-
-                        if (minimumAge <= 20) {
-                            mAgeCautionTV.setVisibility(View.VISIBLE);
-                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
-                        } else {
-                            mAgeCautionTV.setVisibility(View.GONE);
                             if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
                                 int maximumAge = Integer.parseInt(sMaxAge);
                                 if ((maximumAge - minimumAge) <= 5) {
@@ -209,7 +203,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                                     mAgeCautionTV.setVisibility(View.VISIBLE);
                                     mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
                                 }
-                            }
                         }
                     }
 
@@ -259,11 +252,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                     if (!TextUtils.isEmpty(sMinAge)) {
                         int maximumAge = Integer.parseInt(sMaxAge);
 
-                        if (maximumAge <= 20) {
-                            mAgeCautionTV.setVisibility(View.VISIBLE);
-                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
-                        } else {
-                            mAgeCautionTV.setVisibility(View.GONE);
                             if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
                                 int minimumAge = Integer.parseInt(sMinAge);
                                 if ((maximumAge - minimumAge) <= 5) {
@@ -273,7 +261,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                                     mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
                                 }
                             }
-                        }
                     }
 
                 }catch (NumberFormatException nfe){
@@ -435,7 +422,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
         try{
         if(NetworkClass.getInstance().checkInternet(getActivity()) == true) {
-            if (Integer.parseInt(maxage) > 20 && Integer.parseInt(minage) > 20) {
                 if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5) {
 
 
@@ -474,9 +460,6 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 } else {
                     AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_DIFF_5_INFO);
                 }
-            } else {
-                AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Alert", AppMessage.AGE_LIMIT);
-            }
         }else {
             NetworkDialogHelper.getInstance().showDialog(getActivity());
         }
@@ -630,7 +613,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
                     if (checkBox.isChecked()){
 
-                        selectedQualification.append(textView.getText().toString()).append(", ");
+                        selectedQualification.append(textView.getText().toString()).append(",");
                     }
 
                 }

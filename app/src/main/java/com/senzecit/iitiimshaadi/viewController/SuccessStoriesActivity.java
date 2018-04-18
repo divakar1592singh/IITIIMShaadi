@@ -2,6 +2,7 @@ package com.senzecit.iitiimshaadi.viewController;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,9 @@ import android.widget.TextView;
 
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.custom_view_pager.ViewPagerCustomDuration;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -39,6 +43,7 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
 
     Timer swipeTime;
     int current_page=0;
+    AppPrefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,8 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
         getSupportActionBar().hide();
         setContentView(R.layout.activity_success_stories);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        prefs = AppPrefs.getInstance(this);
 
         init();
         mBack.setOnClickListener(this);
@@ -190,7 +197,7 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
-                SuccessStoriesActivity.this.finish();
+                onBackNavigation();
                 break;
         }
     }
@@ -247,6 +254,42 @@ public class SuccessStoriesActivity extends AppCompatActivity implements View.On
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackNavigation();
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
     }
 
 

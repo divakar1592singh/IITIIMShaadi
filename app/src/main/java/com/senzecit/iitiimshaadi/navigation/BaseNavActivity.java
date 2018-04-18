@@ -339,11 +339,6 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
     protected void onStop() {
         super.onStop();
 
-
-        /*if(drawer.isDrawerOpen(headerview)){
-            drawer.closeDrawer(Gravity.RIGHT);
-        }else{
-            super.onBackPressed();
-        }*/
+            finishActivity(0);
     }
 }

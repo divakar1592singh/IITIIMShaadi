@@ -114,6 +114,7 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
 
             if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
                 callWebServiceForSignin();
+//                navigatePage();
             }else {
                 networkDialog();
             }
@@ -131,7 +132,7 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
             if (Validation.handler().isNotEmpty(SplashActivity.this, sPassword, AppMessage.PASSWORD_EMPTY)) {
                 request.username = sUsername;
                 request.password = sPassword;
-                mProgressbar.setVisibility(View.VISIBLE);
+//                mProgressbar.setVisibility(View.VISIBLE);
                 RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SplashActivity.this, CONSTANTS.LOGIN_PART_URL, request, CONSTANTS.METHOD_1, false);
             }
         }else {
@@ -212,7 +213,7 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
     public void handle(JSONObject object, String methodName) {
 
         System.out.println(object);
-        mProgressbar.setVisibility(View.INVISIBLE);
+//        mProgressbar.setVisibility(View.INVISIBLE);
         try {
 
             if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
@@ -259,5 +260,35 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
             e.printStackTrace();
         }
 
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e(TAG, "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
     }
 }

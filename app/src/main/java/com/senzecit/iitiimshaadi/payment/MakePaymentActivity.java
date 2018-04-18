@@ -289,9 +289,6 @@ public class MakePaymentActivity extends BaseActivity {
             if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
                 if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
                     //Success Transaction
-
-
-
                 } else {
                     //Failure Transaction
                 }

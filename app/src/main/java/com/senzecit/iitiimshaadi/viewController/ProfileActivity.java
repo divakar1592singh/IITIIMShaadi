@@ -227,7 +227,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.backIV:
-                ProfileActivity.this.finish();
+                onBackNavigation();
                 break;
             case R.id.toolbar_title:
 //                startActivity(new Intent(ProfileActivity.this,SearchPartnerPaidActivity.class));
@@ -635,6 +635,43 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         } catch (IllegalArgumentException e) {
 //        e.printStackTrace();
     }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackNavigation();
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e(TAG, "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
     }
 
 

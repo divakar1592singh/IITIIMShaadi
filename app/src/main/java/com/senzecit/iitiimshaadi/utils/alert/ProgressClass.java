@@ -52,7 +52,11 @@ public class ProgressClass {
                         .into(progressImage);
 
 
-            dialog.show();
+                if(dialog.isShowing()){
+                    dialog.dismiss();
+                }else {
+                    dialog.show();
+                }
             }catch (IllegalArgumentException e){
                 Log.e(TAG, "#Errro : "+e, e);
             }
@@ -70,7 +74,7 @@ public class ProgressClass {
                 .load(DataHandlingClass.getInstance().getProgressId())
                 .into(progressImage);
 
-        dialog.show();
+            dialog.show();
     }
 
 

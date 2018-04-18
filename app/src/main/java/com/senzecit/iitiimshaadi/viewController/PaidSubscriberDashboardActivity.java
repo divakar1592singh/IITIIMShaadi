@@ -1246,4 +1246,9 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }

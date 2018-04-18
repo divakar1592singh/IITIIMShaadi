@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.database.DataSetObserver;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -24,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -57,6 +60,7 @@ import java.util.List;
 import in.gauriinfotech.commons.Commons;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,8 +140,8 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
 
     private void init(){
-        mSwipeRefreshLayout = findViewById(R.id.idRefreshLayout);
-        expListView = findViewById(R.id.expandableLV);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.idRefreshLayout);
+        expListView = (ExpandableListView) findViewById(R.id.expandableLV);
     }
     public void handleClick() {
 
@@ -334,7 +338,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
                 String otp = mOtpET.getText().toString().trim();
                 if (TextUtils.isEmpty(otp)){
-                     AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP", "OTP is empty");
+                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP", "OTP is empty");
                 }else {
                     callWebServiceForOTPVerification(otp, dialog);
                 }
@@ -576,14 +580,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-        String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        request.token = token;
-        RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, CONSTANTS.SUBS_DASHBOARD_PATH, request, CONSTANTS.METHOD_1, false);
+            String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+            request.token = token;
+            RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, CONSTANTS.SUBS_DASHBOARD_PATH, request, CONSTANTS.METHOD_1, false);
 
-    }else {
-        mSwipeRefreshLayout.setRefreshing(false);
+        }else {
+            mSwipeRefreshLayout.setRefreshing(false);
             networkDialog();
-    }
+        }
 
     }
 
@@ -597,35 +601,35 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                try {
-                    if (response.isSuccessful()) {
+            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+            Call<AddFolderResponse> call = apiInterface.emailVerification(emailVerirequest);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    try {
+                        if (response.isSuccessful()) {
 
-                        if (response.body().getMessage().getSuccess().equalsIgnoreCase("success")) {
+                            if (response.body().getMessage().getSuccess().toString().equalsIgnoreCase("success")) {
 
-                            callWebServiceForSubscribeDashboard();
-                            showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
+                                callWebServiceForSubscribeDashboard();
+                                showAlertMsg("Alert", "Verfication email sended. Check your mail and follow instruction");
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Email Alert", "Verfication email sended. Check your mail and follow instruction");
+                            }
                         }
+                    }catch (NullPointerException npe){
+                        Log.e(TAG, "#Error : "+npe, npe);
+                        showSnackBar();
                     }
-                }catch (NullPointerException npe){
-                    Log.e(TAG, "#Error : "+npe, npe);
-                    showSnackBar();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
@@ -637,42 +641,42 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.resendOTP(token);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                String msg1 = "We have sent you a new OTP. In case, you don’t receive it, please send \\\"Verify\\\" message to our mobile number 07042947312.";
-                if (response.isSuccessful()) {
-                    AddFolderResponse serverResponse = response.body();
-                    if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getSuccess().equalsIgnoreCase(msg1)) {
+            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.resendOTP(token);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    String msg1 = "We have sent you a new OTP. In case, you don’t receive it, please send \\\"Verify\\\" message to our mobile number 07042947312.";
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase(msg1)) {
 //                     if (serverResponse.getMessage().getSuccess().toString().equalsIgnoreCase("OTP is sent on your registered mobile number.")) {
 
-                            callWebServiceForSubscribeDashboard();
+                                callWebServiceForSubscribeDashboard();
 //                            Toast.makeText(SubscriberDashboardActivity.this, "Success", Toast.LENGTH_SHORT).show();
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
-                            showAlertMsg("Info", msg1);
+                                showAlertMsg("Info", msg1);
 
-                        }else {
-                            showAlertMsg("Info", msg1);
+                            }else {
+                                showAlertMsg("Info", msg1);
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", msg1);
+                            }
+                        }else {
+                            Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
@@ -684,40 +688,40 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        Call<AddFolderResponse> call = apiInterface.verifiyOTP(token, otp);
-        call.enqueue(new Callback<AddFolderResponse>() {
-            @Override
-            public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
-                    AddFolderResponse serverResponse = response.body();
-                    if(serverResponse.getMessage().getSuccess() != null) {
-                        if (serverResponse.getMessage().getResponseCode() == 200) {
+            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<AddFolderResponse> call = apiInterface.verifiyOTP(token, otp);
+            call.enqueue(new Callback<AddFolderResponse>() {
+                @Override
+                public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
+                        AddFolderResponse serverResponse = response.body();
+                        if(serverResponse.getMessage().getSuccess() != null) {
+                            if (serverResponse.getMessage().getResponseCode() == 200) {
 
-                            dialog.dismiss();
-                            callWebServiceForSubscribeDashboard();
-                            showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
+                                dialog.dismiss();
+                                callWebServiceForSubscribeDashboard();
+                                showAlertMsg("Alert", serverResponse.getMessage().getSuccess() );
 //                            AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "OTP Alert", serverResponse.getMessage().getSuccess());
 
-                        } else {
-                            ToastDialogMessage.getInstance().showToast(SubscriberDashboardActivity.this, serverResponse.getMessage().getSuccess());
+                            } else {
+                                ToastDialogMessage.getInstance().showToast(SubscriberDashboardActivity.this, serverResponse.getMessage().getSuccess());
 //     Toast.makeText(SubscriberDashboardActivity.this, CONSTANTS.unknown_err, Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
-                        Toast.makeText(SubscriberDashboardActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<AddFolderResponse> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                ProgressClass.getProgressInstance().stopProgress();
-            }
-        });
+                @Override
+                public void onFailure(Call<AddFolderResponse> call, Throwable t) {
+                    call.cancel();
+                    Toast.makeText(SubscriberDashboardActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    ProgressClass.getProgressInstance().stopProgress();
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
@@ -733,39 +737,39 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         if(NetworkClass.getInstance().checkInternet(SubscriberDashboardActivity.this) == true){
 
-        final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData(typeOf, file.getName(), requestBody);
-        RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
+            final RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData(typeOf, file.getName(), requestBody);
+            RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
-        ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
-        apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
-        callUpload = callManipulationMethod(fileToUpload, filename, token);
+            ProgressClass.getProgressInstance().showDialog(SubscriberDashboardActivity.this);
+            apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            callUpload = callManipulationMethod(fileToUpload, filename, token);
 
-        callUpload.enqueue(new Callback<IdVerificationResponse>() {
-            @Override
-            public void onResponse(Call<IdVerificationResponse> call, Response<IdVerificationResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
-                if (response.isSuccessful()) {
+            callUpload.enqueue(new Callback<IdVerificationResponse>() {
+                @Override
+                public void onResponse(Call<IdVerificationResponse> call, Response<IdVerificationResponse> response) {
+                    ProgressClass.getProgressInstance().stopProgress();
+                    if (response.isSuccessful()) {
 
-                    if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
+                        if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
 
-                        dialogID.dismiss();
-                    }
-                    showAlertMsg("Info", response.body().getMessage().getSuccess());
+                            dialogID.dismiss();
+                        }
+                        showAlertMsg("Info", response.body().getMessage().getSuccess());
 //                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "" + response.body().getMessage().getSuccess());
-                } else {
+                    } else {
 
                         showAlertMsg("Alert", CONSTANTS.unknown_err);
 //                    AlertDialogSingleClick.getInstance().showDialog(SubscriberDashboardActivity.this, "Info", "Confuse");
+                    }
                 }
-            }
-            @Override
-            public void onFailure(Call<IdVerificationResponse> call, Throwable t) {
-                call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
-                showAlertMsg("Alert", CONSTANTS.unknown_err);
-           }
-        });
+                @Override
+                public void onFailure(Call<IdVerificationResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    showAlertMsg("Alert", CONSTANTS.unknown_err);
+                }
+            });
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(SubscriberDashboardActivity.this);
@@ -775,21 +779,21 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     public Call<IdVerificationResponse> callManipulationMethod(MultipartBody.Part fileToUpload, RequestBody filename, String token)
     {
 
-            if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
-                return apiInterface.idVerification(fileToUpload, filename, token);
-            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.bioData.toString())){
-                return apiInterface.biodataUpload(fileToUpload, filename, token);
-            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.higher_document.toString())){
-                return apiInterface.highestEduUpload(fileToUpload, filename, token);
-            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.under_graduate.toString())){
-                return apiInterface.underGradCertUpload(fileToUpload, filename, token);
-            }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.post_graduate.toString())){
-                return apiInterface.postGradCertUpload(fileToUpload, filename, token);
-            }else {
-                return null;
-            }
-
+        if(typeOf.equalsIgnoreCase(UserDefinedKeyword.id_proof.toString())){
+            return apiInterface.idVerification(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.bioData.toString())){
+            return apiInterface.biodataUpload(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.higher_document.toString())){
+            return apiInterface.highestEduUpload(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.under_graduate.toString())){
+            return apiInterface.underGradCertUpload(fileToUpload, filename, token);
+        }else if(typeOf.equalsIgnoreCase(UserDefinedKeyword.post_graduate.toString())){
+            return apiInterface.postGradCertUpload(fileToUpload, filename, token);
+        }else {
+            return null;
         }
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -945,12 +949,12 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         dialog.setContentView(R.layout.alert_dialog_two_click);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        TextView titleTxt = dialog.findViewById(R.id.txt_file_path);
+        TextView titleTxt = (TextView) dialog.findViewById(R.id.txt_file_path);
         titleTxt.setText(title);
-        TextView msgTxt = dialog.findViewById(R.id.idMsg);
+        TextView msgTxt = (TextView) dialog.findViewById(R.id.idMsg);
         msgTxt.setText(msg);
 
-        Button dialogBtn_cancel = dialog.findViewById(R.id.btn_cancel);
+        Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
         dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -958,7 +962,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
             }
         });
 
-        Button dialogBtn_okay = dialog.findViewById(R.id.btn_okay);
+        Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
         dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -992,20 +996,20 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
         System.out.println("Handle ------> "+object);
 //        if(mSwipeRefreshLayout.isRefreshing() == true)
-            mSwipeRefreshLayout.setRefreshing(false);
+        mSwipeRefreshLayout.setRefreshing(false);
 
         try {
 
             if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_1)) {
                 if (object.getJSONObject("message").getInt("response_code") == 200) {
 
-                    listAdapter = new ExpListViewSubsAdapter(this, listDataHeader, listDataChild, object);
+                    listAdapter = new ExpListViewSubsAdapter(SubscriberDashboardActivity.this, listDataHeader, listDataChild, object);
                     expListView.setAdapter(listAdapter);
                     listAdapter.notifyDataSetChanged();
 
                     prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
 
-                    callWebServiceForChatUserCount();
+//                    callWebServiceForChatUserCount();
 
                 } else {
                     reTryMethod();
@@ -1042,13 +1046,14 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         /*Intent intent = getIntent();
         finish();
         startActivity(intent);*/
-        Intent intent = getIntent();
+
+
+ /*       Intent intent = getIntent();
         overridePendingTransition(0, 0);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
         overridePendingTransition(0, 0);
-        startActivity(intent);
+        startActivity(intent);*/
     }
-
 
 }

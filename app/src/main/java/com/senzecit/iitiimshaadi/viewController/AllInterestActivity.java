@@ -3,6 +3,7 @@ package com.senzecit.iitiimshaadi.viewController;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -89,6 +91,7 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
+                Navigator.getClassInstance().navigateToActivity(AllInterestActivity.this, PaidSubscriberDashboardActivity.class);
                 break;
         }
     }
@@ -140,12 +143,6 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
-/*    @Override
-    public void onBackPressed() {
-
-    }
-    */
 
     @Override
     protected void onStop() {
@@ -214,6 +211,13 @@ public class AllInterestActivity extends AppCompatActivity implements View.OnCli
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Navigator.getClassInstance().navigateToActivity(AllInterestActivity.this, PaidSubscriberDashboardActivity.class);
     }
 
 

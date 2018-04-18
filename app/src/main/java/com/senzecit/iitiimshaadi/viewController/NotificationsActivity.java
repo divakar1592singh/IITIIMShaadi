@@ -81,7 +81,7 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.backIV:
-                NotificationsActivity.this.finish();
+                Navigator.getClassInstance().navigateToActivity(NotificationsActivity.this, PaidSubscriberDashboardActivity.class);
                 break;
         }
     }
@@ -186,4 +186,10 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
 //        Toast.makeText(ChatMessagesActivity.this, "Stop click hua", Toast.LENGTH_LONG).show();
         NotificationsActivity.this.finish();
     }*/
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Navigator.getClassInstance().navigateToActivity(NotificationsActivity.this, PaidSubscriberDashboardActivity.class);
+    }
 }

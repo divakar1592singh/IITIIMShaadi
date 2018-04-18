@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,8 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.SearchResultAdapter;
 import com.senzecit.iitiimshaadi.fragment.SearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
     SearchPartnerFragment searchPartnerFragment;
+    AppPrefs prefs;
 
     RecyclerView mSearchResultRecyclerView;
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
@@ -45,6 +49,8 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         getSupportActionBar().hide();
+
+        prefs = AppPrefs.getInstance(this);
 
         searchPartnerFragment = new SearchPartnerFragment();
         mFragmentManager = getSupportFragmentManager();
@@ -167,7 +173,6 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
         SearchResultAdapter adapter = new SearchResultAdapter(SearchPartnerActivity.this, queryList);
         mSearchResultRecyclerView.setAdapter(adapter);
-
     }
 
     @Override
@@ -181,9 +186,8 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
                     mContainerResLayout.setVisibility(View.GONE);
 
                 }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
-                    SearchPartnerActivity.this.finish();
+                    onBackNavigation();
                 }
-
                 break;
         }
     }
@@ -197,7 +201,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
             mContainerResLayout.setVisibility(View.GONE);
 
         }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
-            SearchPartnerActivity.this.finish();
+            onBackNavigation();
         }
 
     }
@@ -206,6 +210,37 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     public void finish() {
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
+    }
+
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
     }
 
 

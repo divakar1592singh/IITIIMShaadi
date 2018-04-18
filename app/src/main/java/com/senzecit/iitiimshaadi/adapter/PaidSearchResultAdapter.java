@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
@@ -76,7 +77,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        Button mAddFriendBtn,mMoveTo;
+        Button mAddFriendBtn, mChat, mMoveTo;
         ImageView mSearchPartnerIV;
         TextView mNameTxt, mDietTxt, mAgeTxt, mEmploymentTxt, mCompanyTxt, mHeightTxt, mReligiontxt, mEducationTxt;
 
@@ -95,6 +96,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
             mAddFriendBtn = itemView.findViewById(R.id.idAddFriendBtn);
             mMoveTo = itemView.findViewById(R.id.moveToBtm);
             mSearchPartnerIV = itemView.findViewById(R.id.idSearchpartnerIV);
+
+            mChat = itemView.findViewById(R.id.chatSearchPtnr);
         }
     }
 
@@ -188,6 +191,20 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 });
 
+                ((MyViewHolder)holder).mChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String userId = String.valueOf(userDetail.getUserId());
+                        String userName = String.valueOf(userDetail.getName1());
+                        prefs.putString(CONSTANTS.OTHER_USERID, userId);
+                        prefs.putString(CONSTANTS.OTHER_USERNAME, userName);
+
+                        Navigator.getClassInstance().navigateToActivity(mContext, SocketSingleChatActivity.class);
+
+                    }
+                });
+
             } else if (queryListKeyword != null) {
 
                 try {
@@ -200,7 +217,6 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 ((MyViewHolder)holder).mNameTxt.setText(queryListKeyword.get(position).getName());
                 ((MyViewHolder)holder).mDietTxt.setText(queryListKeyword.get(position).getDiet());
-//            holder.mAgeTxt.setText(queryListKeyword.get(position).getBirthDate());
                 formattedDate(((MyViewHolder)holder).mAgeTxt, queryListKeyword.get(position).getBirthDate());
                 ((MyViewHolder)holder).mEmploymentTxt.setText(queryListKeyword.get(position).getWorkingAs());
                 ((MyViewHolder)holder).mCompanyTxt.setText(queryListKeyword.get(position).getNameOfCompany());
@@ -240,6 +256,20 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 });
 
+                ((MyViewHolder)holder).mChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String userId = String.valueOf(queryListKeyword.get(position).getUserId());
+                        String userName = String.valueOf(queryListKeyword.get(position).getName1());
+                        prefs.putString(CONSTANTS.OTHER_USERID, userId);
+                        prefs.putString(CONSTANTS.OTHER_USERNAME, userName);
+
+
+                        Navigator.getClassInstance().navigateToActivity(mContext, SocketSingleChatActivity.class);
+
+                    }
+                });
 
             } else {
 

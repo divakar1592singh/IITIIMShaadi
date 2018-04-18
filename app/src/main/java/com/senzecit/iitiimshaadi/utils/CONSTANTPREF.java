@@ -19,6 +19,7 @@ public interface CONSTANTPREF {
 
     String SEARCH_TYPE = "search_type";
     String PAGE_COUNT = "pages";
+    String PAGE_SUBS_STATUS = "subs_status";
 
 
 

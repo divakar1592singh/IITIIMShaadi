@@ -1,15 +1,19 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 public class PrivacyActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -18,6 +22,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
     ImageView mBack;
     LinearLayout mPrivacyLayout;
     TextView[] titleText, descText;
+    AppPrefs prefs;
 
     String[] titleArray = {"What information does IITIIMshaadi.com collect from you?",
             "With whom does the site share the collected information",
@@ -56,6 +61,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_privacy);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+        prefs = AppPrefs.getInstance(this);
         init();
         mBack.setOnClickListener(PrivacyActivity.this);
 
@@ -108,7 +114,7 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
 
         switch (view.getId()){
             case R.id.backIV:
-                PrivacyActivity.this.finish();
+                onBackNavigation();
                 break;
         }
     }
@@ -118,4 +124,42 @@ public class PrivacyActivity extends AppCompatActivity implements View.OnClickLi
         super.finish();
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        onBackNavigation();
+    }
+
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+    }
+
+
 }

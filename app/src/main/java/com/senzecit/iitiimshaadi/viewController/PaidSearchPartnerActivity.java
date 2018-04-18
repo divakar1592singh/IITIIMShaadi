@@ -1,6 +1,7 @@
 package com.senzecit.iitiimshaadi.viewController;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -385,9 +386,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String page = curPage;
 
         if(NetworkClass.getInstance().checkInternet(PaidSearchPartnerActivity.this) == true){
-            if (Integer.parseInt(maxage) > 20 && Integer.parseInt(minage) > 20) {
                 if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5) {
-
 
         APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         ProgressClass.getProgressInstance().showDialog(PaidSearchPartnerActivity.this);
@@ -438,9 +437,6 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                 } else {
                     AlertDialogSingleClick.getInstance().showDialog(this, "Alert", AppMessage.AGE_DIFF_5_INFO);
                 }
-            } else {
-                AlertDialogSingleClick.getInstance().showDialog(this, "Alert", AppMessage.AGE_LIMIT);
-            }
         }else {
             NetworkDialogHelper.getInstance().showDialog(PaidSearchPartnerActivity.this);
         }
@@ -559,7 +555,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                     mContainerResLayout.setVisibility(View.GONE);
 
                 }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
-                    PaidSearchPartnerActivity.this.finish();
+                    onBackNavigation();
                 }
 
                 break;
@@ -575,7 +571,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
             mContainerResLayout.setVisibility(View.GONE);
 
         }else if(mContainerFragLayout.getVisibility() == View.VISIBLE) {
-            PaidSearchPartnerActivity.this.finish();
+            onBackNavigation();
         }
 
     }
@@ -615,5 +611,34 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 //        st = st.replaceAll("\\s+","")
     }
 
+    public void onBackNavigation(){
+
+        try{
+            String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+            if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+
+                Intent intent = new Intent(this, PaidSubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else if (userType.equalsIgnoreCase("subscriber")) {
+
+                Intent intent = new Intent(this, SubscriberDashboardActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, IntroSliderWebActivity.class);
+                startActivity(intent);
+            }
+        }catch (NullPointerException npe){
+
+            Log.e("TAG", "#Error : "+npe, npe);
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+    }
 
 }

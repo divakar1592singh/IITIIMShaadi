@@ -258,11 +258,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                     if (!TextUtils.isEmpty(sMinAge)) {
                         int minimumAge = Integer.parseInt(sMinAge);
 
-                        if (minimumAge <= 20) {
-                            mAgeCautionTV.setVisibility(View.VISIBLE);
-                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
-                        } else {
-                            mAgeCautionTV.setVisibility(View.GONE);
                             if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
                                 int maximumAge = Integer.parseInt(sMaxAge);
                                 if ((maximumAge - minimumAge) <= 5) {
@@ -271,7 +266,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                                     mAgeCautionTV.setVisibility(View.VISIBLE);
                                     mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
                                 }
-                            }
                         }
                     }
 
@@ -299,18 +293,12 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-
                 try {
                     String sMinAge = mAgeMinET.getText().toString().trim();
                     String sMaxAge = mAgeMaxET.getText().toString().trim();
 
                     if (!TextUtils.isEmpty(sMinAge)) {
                         int maximumAge = Integer.parseInt(sMaxAge);
-
-                        if (maximumAge <= 20) {
-                            mAgeCautionTV.setVisibility(View.VISIBLE);
-                            mAgeCautionTV.setText(AppMessage.AGE_LIMIT );
-                        } else {
                             mAgeCautionTV.setVisibility(View.GONE);
                             if (!TextUtils.isEmpty(sMinAge) && !TextUtils.isEmpty(sMaxAge)) {
                                 int minimumAge = Integer.parseInt(sMinAge);
@@ -320,7 +308,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                                     mAgeCautionTV.setVisibility(View.VISIBLE);
                                     mAgeCautionTV.setText(AppMessage.AGE_DIFF_5_INFO);
                                 }
-                            }
                         }
                     }
 
@@ -403,10 +390,6 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 }
                 break;
             case R.id.searchPartnerBtn:
-//                communicator.saveAndSearchPaidPartnerByAdvance();
-//                callWebServiceForSubsAdvanceSearch();
-//                callWebServiceForSubsKeywordSearch();
-//                callWebServiceForSubsIDSearch();
                 showPartnerSelection(view);
                 break;
 

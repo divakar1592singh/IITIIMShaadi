@@ -216,13 +216,13 @@
             android:text="Chat Offline"
             android:textAllCaps="false"/>-->
         <Button
-            android:id="@+id/moveToBtm"
+            android:id="@+id/chatSearchPtnr"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/button_searchresult_action_selector"
             android:textColor="@color/colorMaroon"
-            android:text="Move To"
+            android:text="Chat"
             android:textAllCaps="false"/>
     </LinearLayout>
 </LinearLayout>
