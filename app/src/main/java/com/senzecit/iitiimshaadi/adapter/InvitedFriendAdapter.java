@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +17,7 @@ import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.AllInvitedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.UserDetail;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.List;
 
@@ -23,36 +25,38 @@ import java.util.List;
  * Created by ravi on 15/11/17.
  */
 
-public class InvitedFriendAdapter extends RecyclerView.Adapter<InvitedFriendAdapter.MyViewHolder> implements View.OnClickListener{
+public class InvitedFriendAdapter extends RecyclerView.Adapter<InvitedFriendAdapter.MyViewHolder> {
 
 
     Context mContext;
+    AppPrefs prefs;
     List<AllInvitedFriend> allFriendList;
 
     public InvitedFriendAdapter(Context mContext, List<AllInvitedFriend> allFriendList){
 
         this.mContext = mContext;
         this.allFriendList = allFriendList;
+        prefs = AppPrefs.getInstance(mContext);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
+        LinearLayout mSubsLayout, mPaidLayout;
         ImageView mFriendIV;
         TextView mUserIdTV, mUserNameTv, mReligionTv, mEducationTV, mJobLocTv;
-        Button mCancelReqBtn, mShortlistBtn, mViewProfileBtn;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            mFriendIV = itemView.findViewById(R.id.idFriendIV);
+            mSubsLayout = itemView.findViewById(R.id.idSubsLayout);
+            mPaidLayout = itemView.findViewById(R.id.idPaidLayout);
+
+            mFriendIV = itemView.findViewById(R.id.idProfileCIV);
             mUserIdTV = itemView.findViewById(R.id.idUserIDTV);
             mUserNameTv = itemView.findViewById(R.id.idUserNameTV);
             mReligionTv = itemView.findViewById(R.id.idReligionTV);
             mEducationTV = itemView.findViewById(R.id.idEducationTV);
             mJobLocTv = itemView.findViewById(R.id.idJobTv);
-
-            mCancelReqBtn = itemView.findViewById(R.id.idCancelReqBtn);
-            mShortlistBtn = itemView.findViewById(R.id.idShortlistBtn);
-            mViewProfileBtn = itemView.findViewById(R.id.idViewProfileBtn);
 
 
         }
@@ -84,32 +88,20 @@ public class InvitedFriendAdapter extends RecyclerView.Adapter<InvitedFriendAdap
         holder.mEducationTV.setText(setCollege(userDetail));
         holder.mJobLocTv.setText(userDetail.getNameOfCompany());
 
-        holder.mCancelReqBtn.setOnClickListener(this);
+        String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+        if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+            holder.mPaidLayout.setVisibility(View.VISIBLE);
+            holder.mSubsLayout.setVisibility(View.GONE);
+        }else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+            holder.mPaidLayout.setVisibility(View.GONE);
+            holder.mSubsLayout.setVisibility(View.VISIBLE);
+        }
 
     }
 
     @Override
     public int getItemCount() {
         return allFriendList.size();
-    }
-
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()){
-
-            case R.id.idCancelReqBtn:
-
-                break;
-            case R.id.idShortlistBtn:
-
-                break;
-            case R.id.idViewProfileBtn:
-
-                break;
-
-        }
     }
 
 

@@ -14,9 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.adapter.MyFriendsAdapter;
 import com.senzecit.iitiimshaadi.adapter.ShortlistFriendAdapter;
+import com.senzecit.iitiimshaadi.adapter.SubsViewMyFriendAdapter;
+import com.senzecit.iitiimshaadi.adapter.SubsViewShortlistFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.ShortlistedFriendResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -96,7 +100,10 @@ public class ShortlistedFriendFragment extends Fragment {
                         // do whatever
 
                         TextView tvUserID = view.findViewById(R.id.idUserIDTV);
+                        TextView tvUserName = view.findViewById(R.id.idUserNameTV);
+
                         String userID = tvUserID.getText().toString();
+                        String username = tvUserName.getText().toString();
 //                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
 
                         Button btnAddFriend = view.findViewById(R.id.idAddFriendBtn);
@@ -126,6 +133,37 @@ public class ShortlistedFriendFragment extends Fragment {
                                 if (userID.length() > 0) {
                                     prefs.putString(CONSTANTS.OTHER_USERID, userID);
                                     Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
+                            }
+                        });
+
+                        Button mSubsProfileBtn = view.findViewById(R.id.idSubsProfileBtn);
+                        mSubsProfileBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
+                            }
+                        });
+
+                        Button mChat = view.findViewById(R.id.idChatBtn);
+                        mChat.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
+                                    try {
+                                        prefs.putString(CONSTANTS.OTHER_USERNAME, username.split("\\s")[0]);
+                                    }catch (IndexOutOfBoundsException iobe){
+
+                                    }catch (NullPointerException npe){
+
+                                    }
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), SocketSingleChatActivity.class);
                                 }
                             }
                         });
@@ -208,9 +246,10 @@ public class ShortlistedFriendFragment extends Fragment {
 
     public void setDataToAdapter(List<AllShortlistedFriend> allFriendList){
 
-        listener.onFragmentSetShortlistedFriend(allFriendList.size());
-        ShortlistFriendAdapter adapter = new ShortlistFriendAdapter(getActivity(), allFriendList);
-        mRecyclerView.setAdapter(adapter);
+            listener.onFragmentSetShortlistedFriend(allFriendList.size());
+            ShortlistFriendAdapter adapter = new ShortlistFriendAdapter(getActivity(), allFriendList);
+            mRecyclerView.setAdapter(adapter);
+
 
     }
 

@@ -1031,8 +1031,6 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
                 }
             }
 
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -8,9 +8,12 @@
         android:id="@+id/search_partner_FL"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </FrameLayout>
 
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/idResultScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/search_result_FL"
         android:layout_width="match_parent"
@@ -315,13 +318,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/colorDarkYellow"/>
+                <TextView
+                    android:id="@+id/idSearchDescTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Page 1 of "
+                    android:textColor="@color/colorGrey"
+                    android:textSize="16sp"/>
 
                 ### No. of search result found details
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -334,31 +346,36 @@
                         android:layout_height="wrap_content"
                         android:text="1"
                         android:textColor="@color/colorGrey"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=", showing "
                         android:textColor="@color/colorGrey"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/colorGrey"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=" records out of "
                         android:textColor="@color/colorGrey"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/colorGrey"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -368,7 +385,9 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -401,10 +420,10 @@
                     android:layout_height="1dp"
                     android:background="@color/colorGrey"/>
             </LinearLayout>
-                <ScrollView
+                <!--<ScrollView
                     android:id="@+id/idResultScroll"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content">-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -432,10 +451,11 @@
                     </HorizontalScrollView>
 
             </LinearLayout>
-                </ScrollView>
+
             </LinearLayout>
         <!--</ScrollView>-->
     </FrameLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </LinearLayout>

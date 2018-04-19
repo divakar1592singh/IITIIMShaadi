@@ -16,9 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.adapter.MyFriendsAdapter;
 import com.senzecit.iitiimshaadi.adapter.RequestFriendAdapter;
+import com.senzecit.iitiimshaadi.adapter.SubsViewMyFriendAdapter;
+import com.senzecit.iitiimshaadi.adapter.SubsViewReqFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.AllRequestFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.requested_friend.RequestedFriendResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -98,7 +102,10 @@ public class RequestedFriendFragment extends Fragment {
                         // do whatever
 
                         TextView tvUserID = view.findViewById(R.id.idUserIDTV);
+                        TextView tvUserName = view.findViewById(R.id.idUserNameTV);
+
                         String userID = tvUserID.getText().toString();
+                        String username = tvUserName.getText().toString();
 //                        Toast.makeText(getContext(), "Short : "+userID, Toast.LENGTH_SHORT).show();
 
                         LinearLayout layout = view.findViewById(R.id.idProfileLayout);
@@ -143,6 +150,38 @@ public class RequestedFriendFragment extends Fragment {
                             public void onClick(View v) {
 //                                Toast.makeText(getContext(), "Shortlist Friend : "+userID, Toast.LENGTH_SHORT).show();
                                 listener.onFragmentShortListFriend(UserDefinedKeyword.SHORTLIST.toString(), userID);
+                            }
+                        });
+
+
+                        Button mSubsProfileBtn = view.findViewById(R.id.idSubsProfileBtn);
+                        mSubsProfileBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
+                            }
+                        });
+
+                        Button mChat = view.findViewById(R.id.idChatBtn);
+                        mChat.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
+                                    try {
+                                        prefs.putString(CONSTANTS.OTHER_USERNAME, username.split("\\s")[0]);
+                                    }catch (IndexOutOfBoundsException iobe){
+
+                                    }catch (NullPointerException npe){
+
+                                    }
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), SocketSingleChatActivity.class);
+                                }
                             }
                         });
 
@@ -221,10 +260,11 @@ public class RequestedFriendFragment extends Fragment {
 
     public void setDataToAdapter(List<AllRequestFriend> allFriendList){
 
-        listener.onFragmentSetRequestedFriend(allFriendList.size());
+            listener.onFragmentSetRequestedFriend(allFriendList.size());
+            RequestFriendAdapter adapter = new RequestFriendAdapter(getActivity(), allFriendList);
+            mRecyclerView.setAdapter(adapter);
 
-        RequestFriendAdapter adapter = new RequestFriendAdapter(getActivity(), allFriendList);
-        mRecyclerView.setAdapter(adapter);
+
 
     }
 

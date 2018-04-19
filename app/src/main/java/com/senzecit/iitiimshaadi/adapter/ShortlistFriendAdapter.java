@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +17,7 @@ import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.Al
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.UserDetail;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
 import java.util.List;
 
@@ -26,23 +28,29 @@ import java.util.List;
 public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriendAdapter.MyViewHolder> {
 
     Context mContext;
+    AppPrefs prefs;
     List<AllShortlistedFriend> allFriendList;
 
     public ShortlistFriendAdapter(Context mContext, List<AllShortlistedFriend> allFriendList){
 
         this.mContext = mContext;
         this.allFriendList = allFriendList;
+        prefs = AppPrefs.getInstance(mContext);
     }
 
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
+        LinearLayout mSubsLayout, mPaidLayout;
         CircleImageView mCircleIV;
         TextView mUserIdTV, mUserNameTv, mReligionTv, mEducationTV, mJobLocTv;
         Button mAddFriendBtn, mUnShortlistFriendBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+
+            mSubsLayout = itemView.findViewById(R.id.idSubsLayout);
+            mPaidLayout = itemView.findViewById(R.id.idPaidLayout);
 
             mCircleIV = itemView.findViewById(R.id.idProfileCIV);
             mUserIdTV = itemView.findViewById(R.id.idUserIDTV);
@@ -84,6 +92,16 @@ public class ShortlistFriendAdapter extends RecyclerView.Adapter<ShortlistFriend
         holder.mReligionTv.setText(userDetail.getReligion());
         holder.mEducationTV.setText(setCollege(userDetail));
         holder.mJobLocTv.setText(userDetail.getNameOfCompany());
+
+
+        String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
+        if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
+            holder.mPaidLayout.setVisibility(View.VISIBLE);
+            holder.mSubsLayout.setVisibility(View.GONE);
+        }else if (userType.equalsIgnoreCase("subscriber_viewer")) {
+            holder.mPaidLayout.setVisibility(View.GONE);
+            holder.mSubsLayout.setVisibility(View.VISIBLE);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,12 +66,13 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
     PaidSearchResultAdapter adapter;
     Button mCurrentSearchBtn;
     LinearLayout mHorizontalLayout;
-    ScrollView mResultScroll;
+    NestedScrollView mResultScroll;
     Object lastSelectedId = -1;
     Button[] buttons;
     String selectedPage = "0";
 
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
+    TextView tvSearchDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,8 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         mmaritalStatus = findViewById(R.id.maritalStatusTV);
         mIncome = findViewById(R.id.incomeTV);
 
+        tvSearchDesc = (TextView)findViewById(R.id.idSearchDescTv);
+
     }
 
     public void handleView(){
@@ -132,7 +136,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         mTitle.setText("Search Partner");
         mBack.setOnClickListener(this);
 
-        mCurrentSearchBtn.setOnClickListener(new View.OnClickListener() {
+/*        mCurrentSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -147,13 +151,14 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                         mCurrentSearchLayout.setVisibility(View.VISIBLE);
                         mCurrentSearchBtn.setText("HIDE CURRENT SEARCH");
                     }
-
                 }
             }
-        });
+        });*/
 
         layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
+
+        mResultScroll.setNestedScrollingEnabled(false);
 
     }
 
@@ -184,7 +189,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
     }
 
-    private void setPaidSearchedData(List<String> profileList){
+    private void setPaidSearchedData(List<String> profileList, int totalUserCount){
         try {
             mAgeMin.setText(profileList.get(0));
             mAgeMax.setText(profileList.get(1));
@@ -197,6 +202,30 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         }catch (IndexOutOfBoundsException ioe){
             Log.e("TAG", "#Error : "+ioe, ioe);
         }
+
+        try {
+            int pageCount = (totalUserCount/10);
+            int reminder = totalUserCount%10;
+            if(reminder > 0){
+                pageCount = pageCount + 1;
+            }
+            int minCount = 0;
+            int maxCount = 0;
+            if(totalUserCount <10){
+                minCount = totalUserCount;
+            }else {
+                minCount = 10;
+            }
+
+            String s = "Page 1 of "+pageCount+", showing "+minCount+" records out of "+totalUserCount+" total, starting on record 1, ending on "+minCount;
+
+            tvSearchDesc.setText(s);
+        }catch(NullPointerException npe){
+            Log.e(TAG, " #Error : "+npe, npe);
+        }catch(NumberFormatException nfe){
+            Log.e(TAG, " #Error : "+nfe, nfe);
+        }
+
     }
 
     private void setPaidMatchedListID(List<com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.Query> queryList){
@@ -224,7 +253,7 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
 
          mContainerFragLayout.setVisibility(View.GONE);
          mContainerResLayout.setVisibility(View.VISIBLE);
-         mCurrentSearchLayout.setVisibility(View.GONE);
+         mCurrentSearchLayout.setVisibility(View.VISIBLE);
 
      }
 
@@ -235,6 +264,9 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
      LinearLayoutManager layoutManager = (LinearLayoutManager) mSearchResultRecyclerView.getLayoutManager();
      layoutManager.scrollToPositionWithOffset(0, 0);
      mResultScroll.fullScroll(View.FOCUS_UP);
+
+//        int viewHeight = queryList.size() * 200;
+//        mSearchResultRecyclerView.getLayoutParams().height = viewHeight;
     }
 
     /** API Integration */
@@ -407,9 +439,10 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
                                 setupPageView(pageCount, selectedPage);
 
                                 List<User> queryList = response.body().getUsers();
+                                int totalUserCount = queryList.size();
                                 System.out.print(profileList);
 
-                                setPaidSearchedData(profileList);
+                                setPaidSearchedData(profileList, pageCount);
                                 setPaidMatchedListByKeyword(queryList);
 
                             } else {

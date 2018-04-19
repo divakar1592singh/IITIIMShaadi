@@ -103,7 +103,12 @@
                     <!--android:background="@color/colorEditBox"/>-->
                 </LinearLayout>
             </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <LinearLayout
+                android:id="@+id/idPaidLayout"
                 android:padding="7dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -136,6 +141,31 @@
                     android:textSize="14dp"
                     android:textAllCaps="false"/>
             </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/idSubsLayout"
+                    android:padding="7dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+                    <Button
+                        android:id="@+id/idSubsProfileBtn"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="View Profile"
+                        android:textSize="14dp"
+                        android:textAllCaps="false"/>
+                    <Button
+                        android:id="@+id/idChatBtn"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:textSize="14dp"
+                        android:layout_height="match_parent"
+                        android:text="Chat"
+                        android:textAllCaps="false"/>
+                </LinearLayout>
+            </FrameLayout>
 
         </LinearLayout>
 

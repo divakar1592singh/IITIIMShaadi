@@ -7,16 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.AllFriend;
-import com.senzecit.iitiimshaadi.model.api_response_model.friends.my_friends.UserDetail;
-import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.AllShortlistedFriend;
+import com.senzecit.iitiimshaadi.model.api_response_model.friends.shortlisted.UserDetail;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
-import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+import com.senzecit.iitiimshaadi.utils.CircleImageView;
 
 import java.util.List;
 
@@ -24,30 +23,25 @@ import java.util.List;
  * Created by ravi on 15/11/17.
  */
 
-public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyViewHolder> {
+public class SubsViewShortlistFriendAdapter extends RecyclerView.Adapter<SubsViewShortlistFriendAdapter.MyViewHolder> {
 
     Context mContext;
-    AppPrefs prefs;
-    List<AllFriend> allFriendList;
+    List<AllShortlistedFriend> allFriendList;
 
-    public MyFriendsAdapter(Context mContext, List<AllFriend> allFriendList){
+    public SubsViewShortlistFriendAdapter(Context mContext, List<AllShortlistedFriend> allFriendList){
 
         this.mContext = mContext;
         this.allFriendList = allFriendList;
-        prefs = AppPrefs.getInstance(mContext);
     }
 
 
     class MyViewHolder extends RecyclerView.ViewHolder{
 
-        LinearLayout mSubsLayout, mPaidLayout;
         CircleImageView mCircleIV;
         TextView mUserIdTV, mUserNameTv, mReligionTv, mEducationTV, mJobLocTv;
+        Button mProfileBtn, mChatBtn;
         public MyViewHolder(View itemView) {
             super(itemView);
-
-            mSubsLayout = itemView.findViewById(R.id.idSubsLayout);
-            mPaidLayout = itemView.findViewById(R.id.idPaidLayout);
 
             mCircleIV = itemView.findViewById(R.id.idProfileCIV);
             mUserIdTV = itemView.findViewById(R.id.idUserIDTV);
@@ -56,12 +50,17 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
             mEducationTV = itemView.findViewById(R.id.idEducationTV);
             mJobLocTv = itemView.findViewById(R.id.idJobTv);
 
+            mProfileBtn = (Button)itemView.findViewById(R.id.idViewProfileBtn);
+            mChatBtn = (Button)itemView.findViewById(R.id.idChatBtn);
+            itemView.clearFocus();
         }
+
     }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.friends_item_new,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.friends_item_subs_viewer,parent,false);
         return new MyViewHolder(itemView);
     }
 
@@ -84,16 +83,12 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
         holder.mEducationTV.setText(setCollege(userDetail));
         holder.mJobLocTv.setText(userDetail.getNameOfCompany());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
-        if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
-            holder.mPaidLayout.setVisibility(View.VISIBLE);
-            holder.mSubsLayout.setVisibility(View.GONE);
-        }else if (userType.equalsIgnoreCase("subscriber_viewer")) {
-            holder.mPaidLayout.setVisibility(View.GONE);
-            holder.mSubsLayout.setVisibility(View.VISIBLE);
-        }
-
+            }
+        });
 
     }
 
@@ -102,13 +97,15 @@ public class MyFriendsAdapter extends RecyclerView.Adapter<MyFriendsAdapter.MyVi
         return allFriendList.size();
     }
 
+
     public String setCollege(UserDetail userDetail){
 
         if(TextUtils.isEmpty(userDetail.getPostGraduation())){
             return new StringBuilder(userDetail.getGraduation()).append(", ").append(userDetail.getGraduationCollege()).toString();
         }else {
-          return new StringBuilder(userDetail.getPostGraduation()).append(", ").append(userDetail.getPostGraduationCollege()).toString();
+            return new StringBuilder(userDetail.getPostGraduation()).append(", ").append(userDetail.getPostGraduationCollege()).toString();
         }
     }
+
 
 }

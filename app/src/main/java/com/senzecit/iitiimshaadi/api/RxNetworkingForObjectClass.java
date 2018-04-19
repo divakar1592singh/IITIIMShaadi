@@ -7,6 +7,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -62,7 +63,7 @@ public class RxNetworkingForObjectClass {
                     public void onError(ANError error) {
                         ProgressClass.getProgressInstance().stopProgress();
 //                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
-                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error : "+error);
+                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", " "+ AppMessage.SOME_ERROR_INFO);
 
                     }
                 });
@@ -90,7 +91,7 @@ public class RxNetworkingForObjectClass {
 
                     @Override
                     public void onError(ANError error) {
-                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", AppMessage.SOME_ERROR_INFO);
                     }
                 });
 
@@ -117,7 +118,7 @@ public class RxNetworkingForObjectClass {
 
                     @Override
                     public void onError(ANError error) {
-                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", AppMessage.SOME_ERROR_INFO);
                     }
                 });
 
@@ -143,7 +144,7 @@ public class RxNetworkingForObjectClass {
 
                     @Override
                     public void onError(ANError error) {
-                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+                        AlertDialogSingleClick.getInstance().showDialog(context, "Alert", AppMessage.SOME_ERROR_INFO);
                     }
                 });
 
@@ -173,7 +174,7 @@ public class RxNetworkingForObjectClass {
                         public void onError(ANError error) {
                             ProgressClass.getProgressInstance().stopProgress();
 //                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
-                            AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error : "+error);
+                            AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", AppMessage.SOME_ERROR_INFO);
 
                         }
                     });
@@ -203,7 +204,7 @@ public class RxNetworkingForObjectClass {
                         @Override
                         public void onError(ANError error) {
 //                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
-                            AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error : "+error);
+                            AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", AppMessage.SOME_ERROR_INFO);
 
                         }
                     });

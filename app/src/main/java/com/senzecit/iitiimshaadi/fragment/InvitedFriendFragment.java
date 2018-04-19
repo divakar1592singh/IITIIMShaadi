@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.InvitedFriendAdapter;
+import com.senzecit.iitiimshaadi.adapter.SubsViewInvitedcFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.AllInvitedFriend;
 import com.senzecit.iitiimshaadi.model.api_response_model.friends.invited.InvitedFriendResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
@@ -94,8 +96,10 @@ public class InvitedFriendFragment extends Fragment {
                         // do whatever
 
                         TextView tvUserID = view.findViewById(R.id.idUserIDTV);
-                        String userID = tvUserID.getText().toString();
+                        TextView tvUserName = view.findViewById(R.id.idUserNameTV);
 
+                        String userID = tvUserID.getText().toString();
+                        String username = tvUserName.getText().toString();
                         Button mCancelReqBtn = view.findViewById(R.id.idCancelReqBtn);
                         mCancelReqBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -129,18 +133,43 @@ public class InvitedFriendFragment extends Fragment {
                             }
                         });
 
+                        Button mSubsProfileBtn = view.findViewById(R.id.idSubsProfileBtn);
+                        mSubsProfileBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), OtherProfileActivity.class);
+                                }
+                            }
+                        });
+
+                        Button mChat = view.findViewById(R.id.idChatBtn);
+                        mChat.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+//                                Toast.makeText(getContext(), "View Profile : " + userID, Toast.LENGTH_SHORT).show();
+                                if (userID.length() > 0) {
+                                    prefs.putString(CONSTANTS.OTHER_USERID, userID);
+                                    try {
+                                        prefs.putString(CONSTANTS.OTHER_USERNAME, username.split("\\s")[0]);
+                                    }catch (IndexOutOfBoundsException iobe){
+
+                                    }catch (NullPointerException npe){
+
+                                    }
+                                    Navigator.getClassInstance().navigateToActivity(getActivity(), SocketSingleChatActivity.class);
+                                }
+                            }
+                        });
+
+
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
                         // do whatever
-                        //Initialize
 
-//                        ImageView mSelectedIV = (ImageView)view.findViewById(R.id.idSelectionIV) ;
-
-//                        resetData(mSelectedIV);
-//                        Glide.with(getActivity()).load(R.drawable.ic_done).error(R.drawable.ic_transparent).into(mSelectedIV);
-
-//                        Toast.makeText(getContext(), "Long", Toast.LENGTH_SHORT).show();
                     }
                 })
         );
@@ -174,9 +203,6 @@ public class InvitedFriendFragment extends Fragment {
                     InvitedFriendResponse serverResponse = response.body();
                     if(serverResponse.getMessage().getSuccess() != null) {
                         if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
-//                            Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-//                            AlertDialogSingleClick.getInstance().showDialog(getActivity(), "Rename Folder", "Folder rename succesfull.");
-
                             List<AllInvitedFriend> allFriendList = serverResponse.getAllInvitedFriend();
 
                             setDataToAdapter(allFriendList);

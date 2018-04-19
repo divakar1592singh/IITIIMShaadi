@@ -116,18 +116,6 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
 
         try {
-           /* mTotalCountTV.setText(String.valueOf(totalUserCount/10));
-            if(totalUserCount <10){
-                mMinRecordTV.setText(String.valueOf(totalUserCount));
-            }else {
-                mMinRecordTV.setText("10");
-            }
-            mMaxRecord.setText(String.valueOf(totalUserCount));
-            if(totalUserCount <10){
-                mEndRecord.setText(String.valueOf(totalUserCount));
-            }else {
-                mEndRecord.setText("10");
-            }*/
            int pageCount = (totalUserCount/10)+1;
            int minCount = 0;
            int maxCount = 0;
@@ -137,12 +125,6 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
                 minCount = 10;
             }
 
-          /*  if(totalUserCount <10){
-                mEndRecord.setText(String.valueOf(totalUserCount));
-            }else {
-                mEndRecord.setText("10");
-            }
-            */
            String s = "Page 1 of "+pageCount+", showing "+minCount+" records out of "+totalUserCount+" total, starting on record 1, ending on "+minCount;
 
             mTotalCountTV.setText(s);
