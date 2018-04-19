@@ -41,7 +41,6 @@ public class ChatMessagesActivity extends AppCompatActivity implements View.OnCl
     FragmentTransaction mFragmentTransaction;
     RecyclerView mRecyclerViewChatUser;
     AppPrefs prefs;
-    String profileUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/avatar-blonde-girl-lady-office-woman-32e5b3ed5e1360f8-512x512.png";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

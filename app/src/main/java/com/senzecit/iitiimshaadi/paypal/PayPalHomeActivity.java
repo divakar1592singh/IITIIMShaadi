@@ -28,7 +28,9 @@ import java.math.BigDecimal;
   public static final int PAYPAL_REQUEST_CODE = 7171;
   private static PayPalConfiguration config = new PayPalConfiguration()
                 .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
-                .clientId(PayPalConfig.PAYPAL_CLIENT_ID);
+                .clientId(PayPalConfig.PAYPAL_CLIENT_ID)
+                .defaultUserEmail("divakar1592singh@gmail.com")
+          ;
 
         Button btnPayNow;
         EditText edtAmount;

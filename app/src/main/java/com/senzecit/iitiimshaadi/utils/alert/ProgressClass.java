@@ -31,7 +31,7 @@ public class ProgressClass {
         if(progressClass == null) {
             synchronized (ProgressClass.class) {
                 if (progressClass == null) {
-                    progressClass = new ProgressClass();
+                    return progressClass = new ProgressClass();
                 }
             }
         }
@@ -52,11 +52,7 @@ public class ProgressClass {
                         .into(progressImage);
 
 
-                if(dialog.isShowing()){
-                    dialog.dismiss();
-                }else {
                     dialog.show();
-                }
             }catch (IllegalArgumentException e){
                 Log.e(TAG, "#Errro : "+e, e);
             }
@@ -79,8 +75,14 @@ public class ProgressClass {
 
 
     public void stopProgress(){
-        if(dialog.isShowing())
+
             dialog.dismiss();
         }
 
+    public void stopProgressForcely(){
+        if(dialog!=null)
+            dialog.dismiss();
     }
+
+
+}

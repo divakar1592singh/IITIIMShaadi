@@ -1,5 +1,6 @@
 package com.senzecit.iitiimshaadi.viewController;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -521,20 +522,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file[]", file.getName(), requestBody);
         RequestBody filename = RequestBody.create(MediaType.parse("multipart/form-data"), file.getName());
 
-        ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
+//        ProgressClass.getProgressInstance().showDialog(ProfileActivity.this);
+//            showDialogClass(1);
         apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
         Call<AddFolderResponse> callUpload = apiInterface.profileImageUpload(fileToUpload, filename, token);
 
         callUpload.enqueue(new Callback<AddFolderResponse>() {
             @Override
             public void onResponse(Call<AddFolderResponse> call, Response<AddFolderResponse> response) {
-                ProgressClass.getProgressInstance().stopProgress();
+//                ProgressClass.getProgressInstance().stopProgress();
+//                showDialogClass(2);
                 if (response.isSuccessful()) {
                     try {
                         if (response.body().getMessage().getSuccess().equalsIgnoreCase("Your Profile picture has been saved.")) {
 
                             Toast.makeText(ProfileActivity.this, "Image Upload Successful", Toast.LENGTH_LONG).show();
-                            callWebServiceMyProfile();
+                            callWebServiceMyProfileRefresh();
                         } else {
                             Toast.makeText(ProfileActivity.this, "Oops, Something went wrong!", Toast.LENGTH_LONG).show();
                         }
@@ -551,7 +554,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onFailure(Call<AddFolderResponse> call, Throwable t) {
                 call.cancel();
-                ProgressClass.getProgressInstance().stopProgress();
+//                ProgressClass.getProgressInstance().stopProgress();
+//                showDialogClass(2);
                 AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "Alert", "Oops, Something went wrong!");
             }
         });
@@ -561,6 +565,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    public void showDialogClass(int status){
+        Dialog dialog = null;
+        dialog = new Dialog(ProfileActivity.this);
+        if(status == 1) {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(true);
+            dialog.setContentView(R.layout.layout_progress_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            ImageView progressImage = dialog.findViewById(R.id.idPregress);
+            try {
+                Glide.with(ProfileActivity.this)
+                        .load(DataHandlingClass.getInstance().getProgressId())
+                        .into(progressImage);
+
+                dialog.show();
+            } catch (IllegalArgumentException e) {
+                Log.e(TAG, "#Errro : " + e, e);
+            }
+        }else {
+            dialog.dismiss();
+        }
+    }
 
 //    EXTRAS
     public void reTryMethod(){
@@ -611,6 +638,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             mSwipeRefreshLayout.setRefreshing(false);
 
         try {
+            ProgressClass.getProgressInstance().stopProgress();
             System.out.println(object);
             if(object.getJSONObject("message").getInt("response_code") == 200){
 
@@ -634,7 +662,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //            e.printStackTrace();
         } catch (IllegalArgumentException e) {
 //        e.printStackTrace();
-    }
+        }catch (NullPointerException npe){
+
+        }
     }
 
 

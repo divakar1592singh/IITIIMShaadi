@@ -3,6 +3,7 @@ package com.senzecit.iitiimshaadi.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -40,6 +41,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CityModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
@@ -65,6 +67,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -73,7 +76,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PaidSearchPartnerFragment extends Fragment implements View.OnClickListener {
+public class PaidSearchPartnerFragment extends Fragment implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler  {
 
     private static final String TAG = "PaidSearchPartnerFrgmnt";
     View view;
@@ -99,8 +102,8 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             mPartnerPermanentLocarionTV, mSelectHeightMinTV, mSelectHeightMaxTV, mAgeCautionTV;
 
     List<CityModel> cityWithIdList = null;
-
     private List<SliderCheckModel> sliderCheckList;
+    RxNetworkingForObjectClass networkingClass;
 
     public void setPaidSearchPartnerFragmentCommunicator(PaidSearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
@@ -121,14 +124,41 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         mDialogInflator = LayoutInflater.from(view.getContext());
         sliderCheckList = new ArrayList<>();
         cityWithIdList = new ArrayList<>();
+        prefs = AppController.getInstance().getPrefs();
+
+        networkingClass = RxNetworkingForObjectClass.getInstance();
+        networkingClass.setCompletionHandler(this);
+
         return view;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        callWebServiceForRecentSearch();
+    }
+
+    private void callWebServiceForRecentSearch() {
+
+        String userID = prefs.getString(CONSTANTS.LOGGED_USERID);
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("user_id", userID);
+
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(getActivity(), CONSTANTS.RECENT_SEARCH_URL, jsonObject, CONSTANTS.MEDIA_URL_1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        prefs = AppController.getInstance().getPrefs();
 
         init();
         mSearchByIdIV.setOnClickListener(this);
@@ -1073,6 +1103,103 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             return  rawString = s.substring(0, s.length()-1);
         }
         return s;
+    }
+
+    //
+
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        String city = "", caste = "", motherTounge = "", maritalStatus = "", course = "", annualIncome = "", location = "";
+        try {
+
+            if(object.getInt("responseCode") == 200){
+
+                String minage = object.getJSONObject("result").optString("minage");
+                String maxage = object.getJSONObject("result").optString("maxage");
+                String country = object.getJSONObject("result").optString("country");
+                String religion = object.getJSONObject("result").optString("religion");
+                String minHeight = object.getJSONObject("result").optString("min_height");
+                String maxHeight = object.getJSONObject("result").optString("max_height");
+
+                try{
+                    city = convertJsonToString(object.getJSONObject("result").getJSONObject("city"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+             try{
+                  location = convertJsonToString(object.getJSONObject("result").getJSONObject("location"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+                try{
+                    caste = convertJsonToString(object.getJSONObject("result").getJSONObject("caste"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try{
+                    motherTounge = convertJsonToString(object.getJSONObject("result").getJSONObject("mother_tounge"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try{
+                    maritalStatus = convertJsonToString(object.getJSONObject("result").getJSONObject("marital_status"));        } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try{
+                    course = convertJsonToString(object.getJSONObject("result").getJSONObject("course"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try{
+                    annualIncome = convertJsonToString(object.getJSONObject("result").getJSONObject("annual_income"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//
+                mAgeMinET.setText(minage);
+                mAgeMaxET.setText(maxage);
+                mSelectHeightMinTV.setText(minHeight);
+                mSelectHeightMaxTV.setText(maxHeight);
+
+                mPartnerCurrentCountryTV.setText(country);
+                mSelectReligionTV.setText(removeLastChar(religion));
+
+                mPartnerCurrentCityIV.setText(removeLastChar(city));
+                mSelectCastTV.setText(removeLastChar(caste));
+                mSelectMotherToungeTV.setText(removeLastChar(motherTounge));
+                mMaritalStatusTV.setText(removeLastChar(maritalStatus));
+                mEducationOccupationTV.setText(removeLastChar(course));
+                mAnnualIncomeTV.setText(removeLastChar(annualIncome));
+
+                mEducationOccupationTV.setText(removeLastChar(course));
+                mPartnerPermanentLocarionTV.setText(removeLastChar(location));
+
+            }else {
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String convertJsonToString(JSONObject jsonObj) {
+        Iterator<String> iter = jsonObj.keys();
+        StringBuilder stringBuilder = new StringBuilder();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                String value = jsonObj.getString(key);
+
+                stringBuilder.append(value).append(",");
+            } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+        return stringBuilder.toString();
     }
 
 }

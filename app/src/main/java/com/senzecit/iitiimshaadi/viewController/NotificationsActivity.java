@@ -38,8 +38,6 @@ public class NotificationsActivity extends AppCompatActivity implements View.OnC
     TextView mTitle;
     ImageView mBack;
     RecyclerView mRecyclerViewChatUser;
-    String profileUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/avatar-blonde-girl-lady-office-woman-32e5b3ed5e1360f8-512x512.png";
-
     APIInterface apiInterface;
     AppPrefs prefs;
 

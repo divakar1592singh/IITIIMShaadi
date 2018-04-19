@@ -17,14 +17,20 @@ import android.widget.TextView;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.SearchResultAdapter;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.fragment.SearchPartnerFragment;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
+import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
 import java.util.List;
 
-public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator, View.OnClickListener {
+public class SearchPartnerActivity extends AppCompatActivity implements  SearchPartnerFragment.SearchPartnerFragmentCommunicator, View.OnClickListener{
 
     private static final String TAG = "ResultSearcPartner";
     Toolbar mToolbar;
@@ -40,6 +46,7 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
     TextView mAgeMin,mAgeMax,mCountry,mCity,mReligion,mMotherTongue,mmaritalStatus,mIncome;
 
     TextView mTotalCountTV, mMinRecordTV, mMaxRecord, mEndRecord;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,6 +231,5 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
         }
     }
-
 
 }

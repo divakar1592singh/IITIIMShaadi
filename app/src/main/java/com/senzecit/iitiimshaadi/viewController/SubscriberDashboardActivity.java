@@ -1009,7 +1009,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
 
                     prefs.putInt(CONSTANTPREF.CHAT_USER_COUNT, object.optInt("chatUserCount"));
 
-//                    callWebServiceForChatUserCount();
+                    callWebServiceForChatUserCount();
 
                 } else {
                     reTryMethod();

@@ -194,7 +194,8 @@
 
         <activity android:name="com.paypal.android.sdk.payments.PaymentActivity" />
         <activity android:name="com.paypal.android.sdk.payments.LoginActivity" />
-        <activity android:name=".viewController.WebActivity"></activity>
+        <activity android:name=".viewController.WebActivity" />
+        <activity android:name=".viewController.TestActivity"></activity>
     </application>
 
 </manifest>

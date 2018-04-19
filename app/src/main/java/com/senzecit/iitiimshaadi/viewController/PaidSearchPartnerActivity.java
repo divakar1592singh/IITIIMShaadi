@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -136,29 +137,10 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         mTitle.setText("Search Partner");
         mBack.setOnClickListener(this);
 
-/*        mCurrentSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String search_type = prefs.getString(CONSTANTS.SEARCH_TYPE);
-
-                if(search_type.equalsIgnoreCase("advance")) {
-
-                    if (mCurrentSearchLayout.getVisibility() == View.VISIBLE) {
-                        mCurrentSearchLayout.setVisibility(View.GONE);
-                        mCurrentSearchBtn.setText("SHOW CURRENT SEARCH");
-                    } else {
-                        mCurrentSearchLayout.setVisibility(View.VISIBLE);
-                        mCurrentSearchBtn.setText("HIDE CURRENT SEARCH");
-                    }
-                }
-            }
-        });*/
-
         layoutManager = new LinearLayoutManager(this);
         mSearchResultRecyclerView.setLayoutManager(layoutManager);
 
-        mResultScroll.setNestedScrollingEnabled(false);
+        ViewCompat.setNestedScrollingEnabled(mSearchResultRecyclerView, false);
 
     }
 

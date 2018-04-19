@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -40,6 +41,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CityModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.CountryModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
@@ -63,6 +65,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -74,7 +77,7 @@ import retrofit2.Response;
  * Created by ravi on 14/11/17.
  */
 
-public class SearchPartnerFragment extends Fragment implements View.OnClickListener {
+public class SearchPartnerFragment extends Fragment implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler {
 
     private static String TAG = "SearchPartnerFragment";
     View view;
@@ -96,6 +99,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     private List<SliderCheckModel> sliderCheckList;
     TextView mCountryID, mCityID;
     List<CityModel> cityWithIdList = null;
+    RxNetworkingForObjectClass networkingClass;
 
     public void setSearchPartnerFragmentCommunicator(SearchPartnerFragmentCommunicator communicator){
         this.communicator = communicator;
@@ -114,7 +118,16 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         mDialogInflator = LayoutInflater.from(view.getContext());
         sliderCheckList = new ArrayList<>();
 
+        networkingClass = RxNetworkingForObjectClass.getInstance();
+        networkingClass.setCompletionHandler(this);
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        callWebServiceForRecentSearch();
     }
 
     @Override
@@ -328,6 +341,21 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         });
     }
 
+    private void callWebServiceForRecentSearch() {
+
+        String userID = prefs.getString(CONSTANTS.LOGGED_USERID);
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("user_id", userID);
+
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(getActivity(), CONSTANTS.RECENT_SEARCH_URL, jsonObject, CONSTANTS.MEDIA_URL_1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -371,6 +399,76 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 showAnnualIncome(mAnnualIncomeTV);
                 break;
         }
+    }
+
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        String city = "", caste = "", motherTounge = "", maritalStatus = "", course = "", annualIncome = "";
+        try {
+
+            if(object.getInt("responseCode") == 200){
+
+                String minage = object.getJSONObject("result").optString("minage");
+                String maxage = object.getJSONObject("result").optString("maxage");
+                String country = object.getJSONObject("result").optString("country");
+                String religion = object.getJSONObject("result").optString("religion");
+//                String minHeight = object.getJSONObject("result").optString("min_height");
+//                String maxHeight = object.getJSONObject("result").optString("max_height");
+
+                try{
+                city = convertJsonToString(object.getJSONObject("result").getJSONObject("city"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //                String location = convertJsonToString(object.getJSONObject("result").getJSONObject("location"));
+
+                try{
+                caste = convertJsonToString(object.getJSONObject("result").getJSONObject("caste"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try{
+                motherTounge = convertJsonToString(object.getJSONObject("result").getJSONObject("mother_tounge"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try{
+                maritalStatus = convertJsonToString(object.getJSONObject("result").getJSONObject("marital_status"));        } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try{
+                course = convertJsonToString(object.getJSONObject("result").getJSONObject("course"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try{
+                annualIncome = convertJsonToString(object.getJSONObject("result").getJSONObject("annual_income"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mAgeMinET.setText(minage);
+                mAgeMaxET.setText(maxage);
+                mPartnerCurrentCountryTV.setText(country);
+                mSelectReligionTV.setText(removeLastChar(religion));
+
+                mPartnerCurrentCityIV.setText(removeLastChar(city));
+                mSelectCastTV.setText(removeLastChar(caste));
+                mSelectMotherToungeTV.setText(removeLastChar(motherTounge));
+                mMaritalStatusTV.setText(removeLastChar(maritalStatus));
+                mEducationOccupationTV.setText(removeLastChar(course));
+                mAnnualIncomeTV.setText(removeLastChar(annualIncome));
+
+
+            }else {
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public interface SearchPartnerFragmentCommunicator{
@@ -1018,4 +1116,21 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 //        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
 //
 //    }
+
+
+    public String convertJsonToString(JSONObject jsonObj) {
+        Iterator<String> iter = jsonObj.keys();
+        StringBuilder stringBuilder = new StringBuilder();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            try {
+                String value = jsonObj.getString(key);
+
+                stringBuilder.append(value).append(",");
+            } catch (JSONException e) {
+                // Something went wrong!
+            }
+        }
+        return stringBuilder.toString();
+    }
 }

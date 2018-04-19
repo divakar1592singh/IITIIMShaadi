@@ -86,7 +86,7 @@ public class PayPalDetailsActivity extends AppCompatActivity implements RxNetwor
                 jsonObject.put("payment_date", getCurrentDate());
                 jsonObject.put("exp_date", extDate);
 
-            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(PayPalDetailsActivity.this, "http://35.154.217.225:1110/paymentSuccess", jsonObject, CONSTANTS.METHOD_1);
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(PayPalDetailsActivity.this, CONSTANTS.PAYPAL_SUCCESS_URL, jsonObject, CONSTANTS.METHOD_1);
 
             } catch (JSONException e) {
                 e.printStackTrace();
