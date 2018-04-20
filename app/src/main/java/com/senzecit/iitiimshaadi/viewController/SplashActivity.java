@@ -7,12 +7,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.commons.PreAuthWebRequest;
+import com.senzecit.iitiimshaadi.paypal2.PayPalHome2Activity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -92,16 +92,12 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
             public void run() {
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-////
 
-
-/*
 
               Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
-*/
 
 
 
@@ -115,7 +111,7 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
 //***************************
 
             if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
-                callWebServiceForSignin();
+//                callWebServiceForSignin();
             }else {
                 networkDialog();
             }
@@ -133,48 +129,34 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
             if (Validation.handler().isNotEmpty(SplashActivity.this, sPassword, AppMessage.PASSWORD_EMPTY)) {
                 request.username = sUsername;
                 request.password = sPassword;
-//                mProgressbar.setVisibility(View.VISIBLE);
                 RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SplashActivity.this, CONSTANTS.LOGIN_PART_URL, request, CONSTANTS.METHOD_1, false);
+            }else {
+                networkDialog();
             }
         }else {
             navigatePage();
         }
-
-        
-        
     }
 
     public void navigatePage(){
-
         try{
             String userType = prefs.getString(CONSTANTS.LOGGED_USER_TYPE);
             if (userType.equalsIgnoreCase("paid_subscriber_viewer")) {
 
                 Intent intent = new Intent(SplashActivity.this, PaidSubscriberDashboardActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 //                        finish();
             } else if (userType.equalsIgnoreCase("subscriber_viewer")) {
 
                 Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-//                        finish();
             } else if (userType.equalsIgnoreCase("subscriber")) {
 
                 Intent intent = new Intent(SplashActivity.this, SubscriberDashboardActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-//                        finish();
             } else {
                 Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
-
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-//                        finish();
             }
         }catch (NullPointerException npe){
 
@@ -198,7 +180,6 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
                         finishActivity(0);
                         dialog.dismiss();
                     }
-
                 })
                 .show();
     }
@@ -246,13 +227,6 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
                     }
                 }else {
                     AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.ALERT, AppMessage.USERPWD_INVALID);
-                }
-            }else if(methodName.equalsIgnoreCase(CONSTANTS.METHOD_2)){
-
-                if(object.getJSONObject("message").getInt("response_code") == 200) {
-                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.INFO, "An email with new password is sent to your registered email.");
-                }else {
-                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.ALERT, AppMessage.USER_VALID);
                 }
             }
 

@@ -796,7 +796,7 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
     @Override
     protected void onStop() {
         super.onStop();
-//        finish();
+        finish();
     }
 
     @Override

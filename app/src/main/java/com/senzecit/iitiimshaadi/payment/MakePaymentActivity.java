@@ -495,4 +495,9 @@ public class MakePaymentActivity extends BaseActivity {
         editor.commit();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
 }

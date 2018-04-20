@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 
   public class PayPalHomeActivity extends AppCompatActivity {
 
-  private static final String TAG = "PayPalHomeActivity";
+  private static final String TAG = "PayPalHome2Activity";
   public static final int PAYPAL_REQUEST_CODE = 7171;
   private static PayPalConfiguration config = new PayPalConfiguration()
                 .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)

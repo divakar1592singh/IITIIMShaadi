@@ -18,6 +18,7 @@ import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.payment.MakePaymentActivity;
 import com.senzecit.iitiimshaadi.paypal.PayPalHomeActivity;
+import com.senzecit.iitiimshaadi.paypal2.PayPalHome2Activity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
@@ -313,7 +314,7 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
 
     public void transactPayPal(){
             boolean status = true;
-            Intent intent = new Intent(SubscriptionPlanActivity.this, PayPalHomeActivity.class);
+            Intent intent = new Intent(SubscriptionPlanActivity.this, PayPalHome2Activity.class);
             intent.putExtra(CONSTANTS.AMOUNT_PAY, mTotalAmountTV.getText().toString());
             intent.putExtra(CONSTANTS.PLAN_STATUS, status);
             intent.putExtra(CONSTANTS.PLAN_EXP, getDuration());
