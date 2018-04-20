@@ -113,9 +113,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-     /*   View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item_paid,parent,false);
-        return new MyViewHolder(itemView);
-*/
+
         if (viewType == TYPE_ITEM) {
             View itemView = inflater.inflate(R.layout.search_result_item_paid, null);
             return new MyViewHolder(itemView);

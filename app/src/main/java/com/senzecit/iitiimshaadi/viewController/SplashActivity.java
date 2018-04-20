@@ -93,12 +93,12 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
 
 //              Intent intent = new Intent(SplashActivity.this, IntroSliderWebActivity.class);
 
-
+/*
               Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
-
+*/
 
 
 
@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
 //***************************
 
             if(NetworkClass.getInstance().checkInternet(SplashActivity.this) == true){
-//                callWebServiceForSignin();
+                callWebServiceForSignin();
             }else {
                 networkDialog();
             }

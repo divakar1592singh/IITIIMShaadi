@@ -47,7 +47,6 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
     TextView mTotalCountTV, mMinRecordTV, mMaxRecord, mEndRecord;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

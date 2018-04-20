@@ -93,8 +93,6 @@ public class PayPalDetailsActivity extends AppCompatActivity implements RxNetwor
             }
 
         }
-
-
         public String getCurrentDate(){
             Date date = Calendar.getInstance().getTime();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

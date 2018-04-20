@@ -222,4 +222,37 @@ public class RxNetworkingForObjectClass {
         void handle(JSONObject object, String methodName);
     }
 
+    public void callWebServiceForJSONSearchPtnr(Activity activity, String relativePath, JSONObject paramClass, String methodName) {
+
+        if(NetworkClass.getInstance().checkInternet(activity) == true){
+
+            ProgressClass.getProgressInstance().showDialog(activity);
+            AndroidNetworking.post(relativePath)
+                    .addJSONObjectBody(paramClass)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // do anything with response
+                            ProgressClass.getProgressInstance().stopProgress();
+                            handler.handle(response, methodName);
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            ProgressClass.getProgressInstance().stopProgress();
+//                        AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", "Error to Retrive Data. \nPlease, Try Again!");
+//                            AlertDialogSingleClick.getInstance().showDialog(activity, "Alert", AppMessage.SOME_ERROR_INFO);
+
+                        }
+                    });
+
+        }else {
+            NetworkDialogHelper.getInstance().showDialog(activity);
+        }
+
+
+    }
+
 }

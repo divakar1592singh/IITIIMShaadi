@@ -142,13 +142,12 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     private void callWebServiceForRecentSearch() {
 
         String userID = prefs.getString(CONSTANTS.LOGGED_USERID);
-
         JSONObject jsonObject = new JSONObject();
 
         try {
             jsonObject.put("user_id", userID);
 
-            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(getActivity(), CONSTANTS.RECENT_SEARCH_URL, jsonObject, CONSTANTS.MEDIA_URL_1);
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONSearchPtnr(getActivity(), CONSTANTS.RECENT_SEARCH_URL, jsonObject, CONSTANTS.MEDIA_URL_1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -560,10 +559,10 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         if(NetworkClass.getInstance().checkInternet(getActivity()) == true){
             if ((Integer.parseInt(maxage) - Integer.parseInt(minage)) <= 5 ) {
 
-                prefs.putString(CONSTANTS.MIN_AGE, minage);
+        prefs.putString(CONSTANTS.MIN_AGE, minage);
         prefs.putString(CONSTANTS.MAX_AGE, maxage);
-        prefs.putString(CONSTANTS.COUNTRY, country);
-        prefs.putString(CONSTANTS.CITY, city);
+        prefs.putString(CONSTANTS.COUNTRY_ID, country);
+        prefs.putString(CONSTANTS.CITY_ID, city);
         prefs.putString(CONSTANTS.RELIGION, religion);
         prefs.putString(CONSTANTS.CASTE, caste);
         prefs.putString(CONSTANTS.MOTHER_TONGUE, mother_tounge);
@@ -573,6 +572,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         prefs.putString(CONSTANTS.PARTNER_LOC, sPartnerLoc);
         prefs.putString(CONSTANTS.MIN_HEIGHT, sMinHeight);
         prefs.putString(CONSTANTS.MAX_HEIGHT, sMaxHeight);
+
+        prefs.putString(CONSTANTS.COUNTRY, mPartnerCurrentCountryTV.getText().toString());
+        prefs.putString(CONSTANTS.CITY, mPartnerCurrentCityIV.getText().toString());
 
 
         communicator.saveAndSearchPaidPartner();
@@ -1110,20 +1112,31 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     @Override
     public void handle(JSONObject object, String methodName) {
 
-        String city = "", caste = "", motherTounge = "", maritalStatus = "", course = "", annualIncome = "", location = "";
+        String city = "", cityID = "", caste = "", motherTounge = "", maritalStatus = "", course = "", annualIncome = "", location = "";
         try {
 
             if(object.getInt("responseCode") == 200){
 
                 String minage = object.getJSONObject("result").optString("minage");
                 String maxage = object.getJSONObject("result").optString("maxage");
-                String country = object.getJSONObject("result").optString("country");
+                String country = object.getJSONObject("country").optString("name");
+                String countryId = object.getJSONObject("country").optString("old_value");
                 String religion = object.getJSONObject("result").optString("religion");
                 String minHeight = object.getJSONObject("result").optString("min_height");
                 String maxHeight = object.getJSONObject("result").optString("max_height");
 
                 try{
-                    city = convertJsonToString(object.getJSONObject("result").getJSONObject("city"));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    StringBuilder cityIDSB = new StringBuilder();
+                    JSONArray jsonArray = object.getJSONArray("cities");
+                    for(int i = 0; i<jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        stringBuilder.append(jsonObject.optString("name")).append(",");
+                        cityIDSB.append(jsonObject.optString("old_value")).append(",");
+                    }
+                    city =stringBuilder.toString();
+                    cityID = cityIDSB.toString();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1175,6 +1188,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
                 mEducationOccupationTV.setText(removeLastChar(course));
                 mPartnerPermanentLocarionTV.setText(removeLastChar(location));
+
+                mCountryID.setText(countryId);
+                mCityID.setText(cityID);
 
             }else {
 

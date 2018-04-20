@@ -1,35 +1,288 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SampleActivity" >
+    android:background="@color/white"
+    tools:context=".paypal2.PayPalHome2Activity">
 
-    <LinearLayout
-        android:id="@+id/wrapper"
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/idPaySuccessLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:orientation="vertical" >
+        tools:context=".paypal2.PayPalHome2Activity"
+        android:visibility="visible"
+        >
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/idTopLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-        <Button
-            android:id="@+id/buyItBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/idTableData"
+
+        >
+
+        <ImageView
+            android:id="@+id/idSuccessIcon"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/ic_payment_tick"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/idSuccessText"
+            />
+
+            <TextView
+                android:id="@+id/idSuccessText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment Success"
+                android:textSize="@dimen/size_20_dp"
+                android:textColor="#012D8A"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/size_16_dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idSuccessIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/idTableData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTopLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/wrapper"
+        >
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:onClick="onBuyPressed"
-            android:text="Buy a Thing" />
+            android:text="Payment Receipt"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/dimen_16dp"
+
+            android:padding="@dimen/size_4_dp"
+            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1"
+        android:padding="@dimen/dimen_8dp"
+        android:orientation="vertical"
+        >
+        <!--NAME-->
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Biller"
+                android:textSize="@dimen/dimen_16dp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IITIIMShaadi"
+                android:textColor="#607D8B"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                android:background="@drawable/border_shape_grey"
+                />
+        </TableRow>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Txn ID"
+                android:textSize="@dimen/dimen_16dp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#999999"/>
+            <TextView
+                android:id="@+id/idTxnId"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="#607D8B"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                />
+        </LinearLayout>
+        <!--EMAIL-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8_dp"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Expiry"
+                android:textSize="@dimen/dimen_16dp"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:layout_column="0"
+                android:padding="@dimen/size_4_dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#999999"/>
+            <TextView
+                android:id="@+id/idDurationTV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="#607D8B"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                />
+        </LinearLayout>
+        <!--MOBILE-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8_dp"
+            >
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="0"
+                android:textStyle="bold"
+                android:textColor="#999999"
+                android:padding="@dimen/size_4_dp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#999999"/>
+            <TextView
+                android:id="@+id/idAmountTV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="#FF8A80"
+                android:textSize="@dimen/dimen_16dp"
+                android:layout_column="1"
+                android:singleLine="true"
+                android:padding="@dimen/size_4_dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTableData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <Button
+            android:id="@+id/idContinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            android:textColor="@color/white"
+            android:background="#019AE0"
+            android:padding="@dimen/size_4_dp"
+            tools:ignore="OnClick" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text=""
-            android:id="@+id/txtResult" />
-    </LinearLayout>
+            android:id="@+id/txtResult"
+            android:visibility="gone"/>
+    </FrameLayout>
 
-</RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/payNowLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTableData"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        >
+
+    <Button
+            android:id="@+id/buyItBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Continue to PayPal"
+            android:textColor="@color/white"
+            android:background="#019AE0"
+            android:padding="@dimen/size_4_dp"
+            />
+    </FrameLayout>
+
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

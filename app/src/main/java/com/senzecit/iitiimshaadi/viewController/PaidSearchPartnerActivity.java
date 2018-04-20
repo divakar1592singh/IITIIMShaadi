@@ -181,6 +181,8 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
             mMotherTongue.setText(profileList.get(6));
             mmaritalStatus.setText(profileList.get(7));
             mIncome.setText(profileList.get(9));
+
+
         }catch (IndexOutOfBoundsException ioe){
             Log.e("TAG", "#Error : "+ioe, ioe);
         }
@@ -356,9 +358,9 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String minage = prefs.getString(CONSTANTS.MIN_AGE) ;
         String maxage = prefs.getString(CONSTANTS.MAX_AGE) ;
-        String country = prefs.getString(CONSTANTS.COUNTRY) ;
+        String country = prefs.getString(CONSTANTS.COUNTRY_ID) ;
 
-        String city =  removeLastChar(prefs.getString(CONSTANTS.CITY));
+        String city =  removeLastChar(prefs.getString(CONSTANTS.CITY_ID));
         String[] cityArr = new String[1];
         cityArr = city.split(",");
 
@@ -391,8 +393,12 @@ public class PaidSearchPartnerActivity extends AppCompatActivity implements Paid
         String sMinHeight = prefs.getString(CONSTANTS.MIN_HEIGHT);
         String sMaxHeight = prefs.getString(CONSTANTS.MAX_HEIGHT);
 
-        profileList.add(minage);profileList.add(maxage);profileList.add(country);
-        profileList.add(city);profileList.add(religion);profileList.add(caste);
+        String sCountryName = prefs.getString(CONSTANTS.COUNTRY);
+        String sCityName = prefs.getString(CONSTANTS.CITY);
+
+
+        profileList.add(minage);profileList.add(maxage);profileList.add(sCountryName);
+        profileList.add(sCityName);profileList.add(religion);profileList.add(caste);
         profileList.add(mother_tounge);profileList.add(marital_status);
         profileList.add(course);profileList.add(annual_income);
         profileList.add(sPartnerLoc);profileList.add(sMinHeight);profileList.add(sMaxHeight);

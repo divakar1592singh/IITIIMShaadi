@@ -350,7 +350,7 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
         try {
             jsonObject.put("user_id", userID);
 
-            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(getActivity(), CONSTANTS.RECENT_SEARCH_URL, jsonObject, CONSTANTS.MEDIA_URL_1);
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONSearchPtnr(getActivity(), CONSTANTS.RECENT_SEARCH_URL, jsonObject, CONSTANTS.MEDIA_URL_1);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -404,20 +404,32 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
     @Override
     public void handle(JSONObject object, String methodName) {
 
-        String city = "", caste = "", motherTounge = "", maritalStatus = "", course = "", annualIncome = "";
+        String city = "", cityID = "", caste = "", motherTounge = "", maritalStatus = "", course = "", annualIncome = "";
         try {
 
             if(object.getInt("responseCode") == 200){
 
                 String minage = object.getJSONObject("result").optString("minage");
                 String maxage = object.getJSONObject("result").optString("maxage");
-                String country = object.getJSONObject("result").optString("country");
+                String country = object.getJSONObject("country").optString("name");
+                String countryId = object.getJSONObject("country").optString("old_value");
+
                 String religion = object.getJSONObject("result").optString("religion");
-//                String minHeight = object.getJSONObject("result").optString("min_height");
-//                String maxHeight = object.getJSONObject("result").optString("max_height");
 
                 try{
-                city = convertJsonToString(object.getJSONObject("result").getJSONObject("city"));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    StringBuilder cityIDSB = new StringBuilder();
+
+                    JSONArray jsonArray = object.getJSONArray("cities");
+                    for(int i = 0; i<jsonArray.length(); i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        stringBuilder.append(jsonObject.optString("name")).append(",");
+                        cityIDSB.append(jsonObject.optString("old_value")).append(",");
+
+                     }
+                    city =stringBuilder.toString();
+                    cityID = cityIDSB.toString();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -459,6 +471,9 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
                 mMaritalStatusTV.setText(removeLastChar(maritalStatus));
                 mEducationOccupationTV.setText(removeLastChar(course));
                 mAnnualIncomeTV.setText(removeLastChar(annualIncome));
+
+                mCountryID.setText(countryId);
+                mCityID.setText(cityID);
 
 
             }else {

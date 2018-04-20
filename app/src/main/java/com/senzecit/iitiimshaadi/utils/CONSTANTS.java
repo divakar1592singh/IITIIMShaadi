@@ -76,8 +76,11 @@ public interface CONSTANTS {
 
     String MIN_AGE = "min_age";
     String MAX_AGE = "max_age";
+    String COUNTRY_ID = "country_id";
+    String CITY_ID = "city_id";
     String COUNTRY = "country";
     String CITY = "city";
+
     String LOCATIONS = "locations";
     String DETAILS = "details";
     String RELIGION = "religion";
