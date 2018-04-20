@@ -95,12 +95,14 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
 ////
 
 
+/*
 
-        /*      Intent intent = new Intent(SplashActivity.this, TestActivity.class);
+              Intent intent = new Intent(SplashActivity.this, SubscriptionPlanActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
 */
+
 
 
 
@@ -290,3 +292,6 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
         }
     }
 }
+/*
+* https://stackoverflow.com/questions/37545499/paypal-android-sdk-sandbox-integration?rq=1&utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+* */

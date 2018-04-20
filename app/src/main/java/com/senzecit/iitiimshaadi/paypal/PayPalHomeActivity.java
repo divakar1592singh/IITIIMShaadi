@@ -29,7 +29,6 @@ import java.math.BigDecimal;
   private static PayPalConfiguration config = new PayPalConfiguration()
                 .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
                 .clientId(PayPalConfig.PAYPAL_CLIENT_ID)
-                .defaultUserEmail("divakar1592singh@gmail.com")
           ;
 
         Button btnPayNow;
@@ -75,6 +74,7 @@ import java.math.BigDecimal;
             Intent intent = new Intent(this, PaymentActivity.class);
             intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
             intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
+
             startActivityForResult(intent, PAYPAL_REQUEST_CODE);
 
         }
