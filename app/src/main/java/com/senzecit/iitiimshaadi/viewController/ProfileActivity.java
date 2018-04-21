@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.androidnetworking.error.ANError;
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpandableListViewAdapter;
@@ -545,7 +547,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                         Log.e(TAG, "#Error : "+npe, npe);
                     }
 
-//                    callWebServiceForAllAlbum();
                 } else {
 //                    AlertDialogSingleClick.getInstance().showDialog(ProfileActivity.this, "ID", "Confuse");
                 }
@@ -665,6 +666,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }catch (NullPointerException npe){
 
         }
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
     }
 
 

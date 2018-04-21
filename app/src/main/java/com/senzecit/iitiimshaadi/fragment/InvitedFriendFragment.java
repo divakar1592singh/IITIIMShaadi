@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.InvitedFriendAdapter;
-import com.senzecit.iitiimshaadi.adapter.SubsViewInvitedcFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;

@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.customdialog.CustomListAdapterDialog;
@@ -407,6 +408,11 @@ public class QuickRegistrationActivity extends AppCompatActivity implements View
             } catch (JSONException e) {
                 e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
     }
 
     /** Helping Method Section */

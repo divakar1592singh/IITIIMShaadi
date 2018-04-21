@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.androidnetworking.error.ANError;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.commons.PreAuthWebRequest;
@@ -233,6 +234,11 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
 
     }
 

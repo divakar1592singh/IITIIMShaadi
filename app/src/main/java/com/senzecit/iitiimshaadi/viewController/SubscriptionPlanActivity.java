@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.androidnetworking.error.ANError;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
@@ -351,5 +353,10 @@ public class SubscriptionPlanActivity extends AppCompatActivity implements View.
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
     }
 }

@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.ExpListViewSubsAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -836,7 +837,7 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
     }
 
     @Override
-    public void onProfileSubmission(String urlPath, PostAuthWebRequest request, String methodName) {
+    public void onProfileSubmission(String urlPath, Object request, String methodName) {
 
         RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SubscriberDashboardActivity.this, urlPath, request, methodName);
     }
@@ -1034,6 +1035,11 @@ public class SubscriberDashboardActivity extends BaseNavActivity implements ExpL
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
@@ -124,5 +125,10 @@ public class PayPalDetailsActivity extends AppCompatActivity implements RxNetwor
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
     }
 }

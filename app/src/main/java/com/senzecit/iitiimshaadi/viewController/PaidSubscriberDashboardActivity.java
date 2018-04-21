@@ -1247,6 +1247,11 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
     }
 
     @Override
+    public void onServiceError(ANError error, String methodName) {
+
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         finish();

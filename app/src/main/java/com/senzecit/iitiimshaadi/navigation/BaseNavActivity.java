@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -309,6 +311,9 @@ public class BaseNavActivity extends AppCompatActivity implements View.OnClickLi
                                 prefs.remove(CONSTANTPREF.LOGIN_USERNAME);
                                 prefs.remove(CONSTANTPREF.LOGIN_PASSWORD);
                                 prefs.remove(CONSTANTPREF.CHAT_USER_COUNT);
+
+                                ExpOwnProfileModel.getInstance().resetModel();
+                                ExpPartnerProfileModel.getInstance().resetModel();
 
 
                                 Intent intent = new Intent(BaseNavActivity.this, SplashActivity.class);

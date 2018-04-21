@@ -118,5 +118,22 @@ public class ExpPartnerProfileModel {
 
     public String Choice_of_Groom;
 
+    public void resetModel(){
+
+        setMinimum_Age("");
+        setMaximum_Age("");
+        setMin_Height("");
+        setMax_Height("");
+        setMarital_Status("");
+
+        setPreferred_Religion("");
+        setPreferred_Caste("");
+        setPreferred_Country("");
+
+        setPreferred_Education("");
+
+        setChoice_of_Groom("");
+    }
+
 }
 

@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.CustomArrayAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
@@ -791,6 +792,10 @@ public class NewUserRegisterActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
+    }
 
 
     @Override

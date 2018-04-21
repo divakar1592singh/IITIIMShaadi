@@ -42,6 +42,10 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
+import com.senzecit.iitiimshaadi.model.commons.PartnerBasicWebRequest;
+import com.senzecit.iitiimshaadi.model.commons.PartnerEduWebRequest;
+import com.senzecit.iitiimshaadi.model.commons.PartnerGroomWebRequest;
+import com.senzecit.iitiimshaadi.model.commons.PartnerReligiousWebRequest;
 import com.senzecit.iitiimshaadi.model.commons.PostAuthWebRequest;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
 import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
@@ -3269,6 +3273,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 //                if ((Integer.parseInt(Maximum_Age) - Integer.parseInt(Minimum_Age)) <= 5 ) {
                     if ((getHeightInCM(Max_Height) - getHeightInCM(Min_Height)) > 0) {
 
+                    PartnerBasicWebRequest request = new PartnerBasicWebRequest();
                     request.token = token;
                     request.prefered_partner_min_age = Minimum_Age;
                     request.prefered_partner_max_age = Maximum_Age;
@@ -3313,6 +3318,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         Preferred_CasteArr[0] = Preferred_Caste;
         Preferred_CountryArr[0] = Preferred_Country;
 
+        PartnerReligiousWebRequest request = new PartnerReligiousWebRequest();
         request.token = token;
         request.prefered_partner_religion = Preferred_Religion;
         request.prefered_partner_caste = Preferred_Caste;
@@ -3330,6 +3336,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String[] Preferred_EducationArr = new String[1];
         Preferred_EducationArr[0] = Preferred_Education;
 
+        PartnerEduWebRequest request = new PartnerEduWebRequest();
         request.token = token;
         request.prefered_partner_education = Preferred_Education;
 
@@ -3342,6 +3349,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
         String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
 
+        PartnerGroomWebRequest request = new PartnerGroomWebRequest();
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
 
@@ -3877,7 +3885,9 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         void verifiyMob();
         void verifiyDoc();
         void verifiyIDProof();
-        void onProfileSubmission(String urlPath, PostAuthWebRequest request, String methodName);
+        void onProfileSubmission(String urlPath, Object request, String methodName);
+//        void onProfileSubmission(String urlPath, PostAuthWebRequest request, String methodName);
+
         void refreshPage();
 
     }

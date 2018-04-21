@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.senzecit.iitiimshaadi.R;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpOwnProfileModel;
+import com.senzecit.iitiimshaadi.model.exp_listview.ExpPartnerProfileModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -256,6 +258,8 @@ public class PaidBaseActivity extends AppCompatActivity implements View.OnClickL
                                         prefs.remove(CONSTANTPREF.CHAT_USER_COUNT);
 
 
+                                        ExpOwnProfileModel.getInstance().resetModel();
+                                        ExpPartnerProfileModel.getInstance().resetModel();
                                         Intent intent = new Intent(PaidBaseActivity.this, SplashActivity.class);
 
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -486,6 +486,11 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
     }
 
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
+    }
+
     public interface SearchPartnerFragmentCommunicator{
         void saveSearchPartner(List<User> queryList, List<String> profileList, int totalUserCount );
     }

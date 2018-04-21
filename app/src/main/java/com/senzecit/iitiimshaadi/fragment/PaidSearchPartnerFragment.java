@@ -1202,6 +1202,11 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
     }
 
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
+    }
+
     public String convertJsonToString(JSONObject jsonObj) {
         Iterator<String> iter = jsonObj.keys();
         StringBuilder stringBuilder = new StringBuilder();

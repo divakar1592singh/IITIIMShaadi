@@ -450,5 +450,63 @@ public class ExpOwnProfileModel {
 
     public String About_you;
 
+    public void resetModel(){
+
+        setName("");
+        setProfile("");
+        setAge("");
+        setDiet("");
+        setDate_Of_Birth("");
+        setMarital_Status("");
+        setDrink("");
+        setSmoke("");
+
+        setHealth_Issue("");
+        setHeight("");
+        setInterests("");
+
+        setReligion("");
+        setCaste("");
+        setMother_Tongue("");
+
+        setPhone_Number("");
+        setAlternate_Number("");
+        setPermanent_Address("");
+        setPermanent_Country("");
+        setPermanent_State("");
+        setPermanent_City("");
+        setZip_Code_Perm("");
+        setCurrent_Address("");
+        setCurrent_Country("");
+        setCurrent_State("");
+        setCurrent_City("");
+        setZip_Code_Cur("");
+
+        setFather_Name("");
+        setFather_Occupation("");
+        setMother_Name("");
+        setMother_Occupation("");
+        setDetails_Sisters("");
+        setDetails_Brothers("");
+
+        setSchooling("");
+        setSchooling_Year("");
+        setGraduation("");
+        setGraduation_College("");
+        setGraduation_Year("");
+        setPost_Graduation("");
+        setPost_Graduation_College("");
+        setPost_Graduation_Year("");
+        setHighest_Education("");
+        setWorking_With("");
+        setWorking_As("");
+        setWork_Location("");
+        setAnnual_Income("");
+        setLinkdIn_Url("");
+
+        setAbout_you("");
+
+    }
+
 
 }

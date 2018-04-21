@@ -21,22 +21,22 @@ import org.json.JSONObject;
  */
 
 
-public class RxNetworkingForObjectClass {
+public class RxObjectWebService {
 
 //    ------------------SINGLETON
-    private static RxNetworkingForObjectClass instance = null;
+    private static RxObjectWebService instance = null;
     CompletionHandler handler;
 
     public void setCompletionHandler(CompletionHandler handler){
         this.handler = handler;
     }
 
-    private RxNetworkingForObjectClass(){ }
+    private RxObjectWebService(){ }
 
-    public static RxNetworkingForObjectClass getInstance()
+    public static RxObjectWebService getInstance()
     {
         if(instance == null)
-        { instance = new RxNetworkingForObjectClass(); }
+        { instance = new RxObjectWebService(); }
         return instance;
     }
 
@@ -251,7 +251,7 @@ public class RxNetworkingForObjectClass {
 
     public interface CompletionHandler {
         void handle(JSONObject object, String methodName);
-        void onServiceError(ANError error, String methodName);
+        void onServiceError(JSONObject object, String methodName);
 
     }
 

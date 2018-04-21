@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.error.ANError;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -265,6 +266,11 @@ public class PayPalHome2Activity extends Activity implements RxNetworkingForObje
             mPaySuccessLayout.setVisibility(View.GONE);
             mBuyLayout.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
 
     }
 

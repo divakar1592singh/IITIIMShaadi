@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -287,6 +288,11 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
                 AlertDialogSingleClick.getInstance().showDialog(ContactUsActivity.this, "Alert", "Something went wrong!");
             }
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
     }
 
     @Override

@@ -14,10 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.senzecit.iitiimshaadi.R;
-import com.senzecit.iitiimshaadi.adapter.MyFriendsAdapter;
 import com.senzecit.iitiimshaadi.adapter.ShortlistFriendAdapter;
-import com.senzecit.iitiimshaadi.adapter.SubsViewMyFriendAdapter;
-import com.senzecit.iitiimshaadi.adapter.SubsViewShortlistFriendAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
