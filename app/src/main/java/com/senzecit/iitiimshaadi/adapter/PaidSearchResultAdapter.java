@@ -27,7 +27,9 @@ import com.senzecit.iitiimshaadi.model.api_response_model.paid_subscriber.UserDe
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.UserDefinedKeyword;
@@ -141,7 +143,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 try {
                     String userId = String.valueOf(userDetail.getUserId());
                     String partUrl = userDetail.getProfileImage();
-                    Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(((MyViewHolder)holder).mSearchPartnerIV);
+                    String gender = userDetail.getGender();
+                    Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(DataHandlingClass.getInstance().getProfilePicName(gender)).into(((MyViewHolder)holder).mSearchPartnerIV);
                 }catch (NullPointerException npe){
                     Log.e("TAG", " #Error : "+npe, npe);
                 }
@@ -208,7 +211,8 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                 try {
                     String userId = String.valueOf(queryListKeyword.get(position).getUserId());
                     String partUrl = queryListKeyword.get(position).getProfileImage();
-                    Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(R.drawable.profile_img1).into(((MyViewHolder)holder).mSearchPartnerIV);
+                    String gender = queryListKeyword.get(position).getGender();
+                    Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(DataHandlingClass.getInstance().getProfilePicName(gender)).into(((MyViewHolder)holder).mSearchPartnerIV);
                 }catch (NullPointerException npe){
                     Log.e("TAG", " #Error : "+npe, npe);
                 }
@@ -249,6 +253,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                         String userId = String.valueOf(queryListKeyword.get(position).getUserId());
                         if(userId.length()> 0){
                             prefs.putString(CONSTANTS.OTHER_USERID, userId);
+
                             Navigator.getClassInstance().navigateToActivity(mContext, OtherProfileActivity.class);
                         }
                     }
@@ -259,7 +264,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
                     public void onClick(View v) {
 
                         String userId = String.valueOf(queryListKeyword.get(position).getUserId());
-                        String userName = String.valueOf(queryListKeyword.get(position).getName1());
+                        String userName = String.valueOf(queryListKeyword.get(position).getName().split("\\s")[0]);
                         prefs.putString(CONSTANTS.OTHER_USERID, userId);
                         prefs.putString(CONSTANTS.OTHER_USERNAME, userName);
 
@@ -406,7 +411,11 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 //                        setTitle(myMetaList);
 //                        setDropDown(myMetaList);
-                        processMoveTo(typeOf, friend_id, myMetaList);
+                        if(myMetaList.size() > 0) {
+                            processMoveTo(typeOf, friend_id, myMetaList);
+                        }else {
+                            AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", AppMessage.NO_FOLDER_AVAILABILITY);
+                        }
 
                     }else {
                         AlertDialogSingleClick.getInstance().showDialog(mContext, "Search Partner", "Opps");
@@ -445,7 +454,7 @@ public class PaidSearchResultAdapter extends RecyclerView.Adapter<RecyclerView.V
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, folderList);
         lv.setAdapter(adapter);
         dialog.setCancelable(true);
-        dialog.setTitle("ListView");
+        dialog.setTitle("Folder List");
         dialog.show();
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

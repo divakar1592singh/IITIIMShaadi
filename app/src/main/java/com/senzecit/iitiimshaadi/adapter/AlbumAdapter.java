@@ -173,7 +173,7 @@ public class AlbumAdapter extends BaseAdapter {
                             albumList.remove(position);
                             notifyDataSetChanged();
 //                            AlertDialogSingleClick.getInstance().showDialog(context, "Info", "Deleted Successfully");
-                            Toast.makeText(context, "Deletion Successfull", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Deletion Successful", Toast.LENGTH_SHORT).show();
                         } else {
 //                            Toast.makeText(context, "Confuse", Toast.LENGTH_SHORT).show();
                         }

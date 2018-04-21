@@ -289,7 +289,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
           /** CALL API */
             callWebServiceForGenSetting();
             }else {
-                AlertDialogSingleClick.getInstance().showDialog(SettingsActivity.this, "Alert!", "Password didn't match!");
+//                AlertDialogSingleClick.getInstance().showDialog(SettingsActivity.this, "Alert!", "Password didn't match!");
             }
 
     }
@@ -367,7 +367,6 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         return status;
     }
-
 
     /** DEACTIVATE ACCOUNT */
 

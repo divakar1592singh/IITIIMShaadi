@@ -122,7 +122,10 @@ public class SearchPartnerActivity extends AppCompatActivity implements  SearchP
 
 
         try {
-           int pageCount = (totalUserCount/10)+1;
+           int pageCount = (totalUserCount/10);
+           if(totalUserCount%10 > 0){
+               pageCount += 1;
+           }
            int minCount = 0;
            int maxCount = 0;
             if(totalUserCount <10){

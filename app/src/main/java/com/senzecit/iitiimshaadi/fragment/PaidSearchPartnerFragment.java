@@ -100,6 +100,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
     TextView mPartnerCurrentCountryTV, mPartnerCurrentCityIV, mSelectReligionTV, mSelectCastTV,
             mSelectMotherToungeTV, mMaritalStatusTV, mEducationOccupationTV, mAnnualIncomeTV,
             mPartnerPermanentLocarionTV, mSelectHeightMinTV, mSelectHeightMaxTV, mAgeCautionTV;
+    ImageView mSearchByIdActionIV, mSearchByKeywordActionIV;
 
     List<CityModel> cityWithIdList = null;
     private List<SliderCheckModel> sliderCheckList;
@@ -186,6 +187,10 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
         mSearchByIdIV = view.findViewById(R.id.searchProfileIdIV);
         mSerchByKeywordIV = view.findViewById(R.id.searchByKeywordIV);
+
+        mSearchByIdActionIV = view.findViewById(R.id.idSearchByIdIV);
+        mSearchByKeywordActionIV = view.findViewById(R.id.idSearchByKeywordIV);
+
         mAdvanceSearchIV = view.findViewById(R.id.searchAdvanceIV);
         mSearchPartner = view.findViewById(R.id.searchPartnerBtn);
 
@@ -220,11 +225,13 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
         mPartnerPermanentLocarionTV = view.findViewById(R.id.partnerPermanentLocarionTV);
         mSelectHeightMinTV = view.findViewById(R.id.selectHeightMinTV);
         mSelectHeightMaxTV = view.findViewById(R.id.selectHeightMaxTV);
-
         //
         mCountryID  = view.findViewById(R.id.idCountryID);
         mCityID  = view.findViewById(R.id.idCityID);
+        //
 
+        mSearchByIdActionIV.setOnClickListener(this);
+        mSearchByKeywordActionIV.setOnClickListener(this);
 
         mPartnerCurrentCountryTV.addTextChangedListener(new TextWatcher() {
             @Override
@@ -419,7 +426,9 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
                 }
                 break;
             case R.id.searchPartnerBtn:
-                showPartnerSelection(view);
+                prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
+                checkValidation(3);
+                prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.ADVANCE_SEARCH);
                 break;
 
             case R.id.idPartnerCurrentCountry:
@@ -455,6 +464,19 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
             case R.id.idPartnerMaxHeight:
                 showHeight(mSelectHeightMaxTV);
                 break;
+
+            case R.id.idSearchByIdIV:
+                checkValidation(1);
+                prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
+                prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.SEARCH_BY_ID);
+                break;
+
+            case R.id.idSearchByKeywordIV:
+                checkValidation(2);
+                prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
+                prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.SEARCH_BY_KEYWORD);
+                break;
+
         }
     }
 
@@ -467,20 +489,7 @@ public class PaidSearchPartnerFragment extends Fragment implements View.OnClickL
 
                 switch (item.getItemId()){
 
-                    case R.id.idSearchById:
-                        checkValidation(1);
-                        prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
-                        prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.SEARCH_BY_ID);
-                        break;
-                    case R.id.idSearchByKeyword:
-                        checkValidation(2);
-                        prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
-                        prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.SEARCH_BY_KEYWORD);
-                        break;
                     case R.id.idAdvanceSearch:
-                        prefs.putString(CONSTANTPREF.PAGE_COUNT, "1");
-                        checkValidation(3);
-                        prefs.putString(CONSTANTPREF.SEARCH_TYPE, CONSTANTS.ADVANCE_SEARCH);
                         break;
 
                 }

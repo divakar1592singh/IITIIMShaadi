@@ -44,7 +44,7 @@ public class Validation {
         }
     }
 
-    public boolean isNotEmpty(Activity activity, String val, String errMessage){
+    public boolean isNotEmpty(Activity activity, String val){
         return !TextUtils.isEmpty(val);
     }
     // EMAIL

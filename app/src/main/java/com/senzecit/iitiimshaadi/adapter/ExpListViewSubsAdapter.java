@@ -42,6 +42,7 @@ import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.model.api_response_model.common.SliderCheckModel;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
+import com.senzecit.iitiimshaadi.model.commons.OwnBasicWebRequest;
 import com.senzecit.iitiimshaadi.model.commons.PartnerBasicWebRequest;
 import com.senzecit.iitiimshaadi.model.commons.PartnerEduWebRequest;
 import com.senzecit.iitiimshaadi.model.commons.PartnerGroomWebRequest;
@@ -2151,6 +2152,10 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
                         //SetData - AboutMe
                         editText.setText(basicObject.optString("about_me"));
 
+                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAbout_you()))
+                            ExpOwnProfileModel.getInstance().setAbout_you(basicObject.optString("about_me"));
+
+
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAbout_you()))
                             editText.setText(ExpOwnProfileModel.getInstance().getAbout_you());
 
@@ -2715,10 +2720,11 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
 
                         EditText editText = convertView.findViewById(R.id.idlistitemET);
                         editText.setHint("Say something...");
-//                        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
-                        //SetData - ChoiceOfGroom
                         editText.setText(partnerJson.optString("choice_of_partner"));
+
+                        if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getChoice_of_Groom()))
+                            ExpPartnerProfileModel.getInstance().setChoice_of_Groom(partnerJson.optString("choice_of_partner"));
 
                         if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getChoice_of_Groom()))
                             editText.setText(ExpPartnerProfileModel.getInstance().getChoice_of_Groom());
@@ -3119,6 +3125,7 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
         String Height = ExpOwnProfileModel.getInstance().getHeight();
         String Interests = ExpOwnProfileModel.getInstance().getInterests();
 
+        OwnBasicWebRequest request = new OwnBasicWebRequest();
         request.token = token;
         request.name = name;
         request.health_issue = Health;
@@ -3242,13 +3249,17 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     }
     public void saveChangesOfCase_5() {
 
-        String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
+        String About_you = ExpOwnProfileModel.getInstance().getAbout_you().trim();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
 
-        request.token = token;
-        request.about_me = About_you;
+        if(!TextUtils.isEmpty(About_you)) {
+            request.token = token;
+            request.about_me = About_you;
 
-        communicator.onProfileSubmission(CONSTANTS.ABOUT_ME, request, CONSTANTS.METHOD_2);
+            communicator.onProfileSubmission(CONSTANTS.ABOUT_ME, request, CONSTANTS.METHOD_2);
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.BLANK_DATA);
+        }
 
     }
 
@@ -3347,13 +3358,18 @@ public class ExpListViewSubsAdapter extends BaseExpandableListAdapter {
     public void saveChangesOfCasePt_3(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
+        String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom().trim();
 
+        if(!TextUtils.isEmpty(Choice_of_Groom)) {
         PartnerGroomWebRequest request = new PartnerGroomWebRequest();
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
 
         communicator.onProfileSubmission(CONSTANTS.CHOICE_OF_PARTNER_PATH, request, CONSTANTS.METHOD_2);
+
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.BLANK_DATA);
+        }
 
     }
 

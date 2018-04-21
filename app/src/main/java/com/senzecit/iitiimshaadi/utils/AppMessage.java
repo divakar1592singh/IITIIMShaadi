@@ -34,6 +34,10 @@ public interface AppMessage {
     String PASSWORD_EMPTY = "Password can't be empty";
     String AGE_LIMIT = "Age should be more than 20";
     String MAX_AGE_LIMIT = "Max Age should be more than 20";
+    String BLANK_DATA = "You are sending Empty data";
+
+    String NO_FOLDER_AVAILABILITY = "No Folder found. Please create folder in Custom Folder section";
+
 
     String NO_CHAT_USER = "No User is available for chat";
 

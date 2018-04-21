@@ -21,6 +21,8 @@ import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
 import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.DateToAgeResponse;
+import com.senzecit.iitiimshaadi.model.api_response_model.date_to_age.Message;
 import com.senzecit.iitiimshaadi.model.api_response_model.search_partner_subs.User;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.FolderListModelResponse;
 import com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.MyMeta;
@@ -62,13 +64,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         ImageView mSearchpartnerIV;
-        TextView mDietTxt, mEmploymentTxt, mCompanyTxt, mHeightTxt, mReligiontxt, mEducationTxt;
+        TextView mDietTxt, mAgeTxt, mEmploymentTxt, mCompanyTxt, mHeightTxt, mReligiontxt, mEducationTxt;
         Button mAddFriendBtn,mChat;
         public MyViewHolder(View itemView) {
             super(itemView);
 
             mSearchpartnerIV = itemView.findViewById(R.id.idSearchpartnerIV);
             mDietTxt = itemView.findViewById(R.id.idDietTV);
+            mAgeTxt = itemView.findViewById(R.id.idAgeTV);
             mEmploymentTxt = itemView.findViewById(R.id.idEmploymentTV);
             mCompanyTxt = itemView.findViewById(R.id.idCompanyTV);
             mHeightTxt = itemView.findViewById(R.id.idHeightTV);
@@ -90,6 +93,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         holder.mDietTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getDiet()));
+//        holder.mAgeTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getBirthDate()));
+        formattedDate(holder.mAgeTxt, DataHandlingClass.getInstance().checkNullString(queryList.get(position).getBirthDate()));
+
         holder.mEmploymentTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getWorkingAs()));
         holder.mCompanyTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getNameOfCompany()));
         holder.mHeightTxt.setText(DataHandlingClass.getInstance().checkNullString(queryList.get(position).getHeight()));
@@ -100,7 +106,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             String userId = String.valueOf(queryList.get(position).getUserId());
             String partUrl = queryList.get(position).getProfileImage();
             String gender = queryList.get(position).getGender();
-            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(DataHandlingClass.getInstance().getOtherProfile(gender)).into(holder.mSearchpartnerIV);
+            Glide.with(mContext).load(CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + partUrl).error(DataHandlingClass.getInstance().getProfilePicName(gender)).into(holder.mSearchpartnerIV);
         }catch (NullPointerException npe){
             Log.e("TAG", " #Error : "+npe, npe);
         }
@@ -285,5 +291,47 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
 
     }
+
+    public void formattedDate(TextView tv, String _date) {
+
+        try {
+
+            APIInterface apiInterface = APIClient.getClient(CONSTANTS.BASE_URL).create(APIInterface.class);
+            Call<DateToAgeResponse> call = apiInterface.dateToAge(_date);
+//            ProgressClass.getProgressInstance().showDialog(mContext);
+            call.enqueue(new Callback<DateToAgeResponse>() {
+                @Override
+                public void onResponse(Call<DateToAgeResponse> call, Response<DateToAgeResponse> response) {
+                    if (response.isSuccessful()) {
+//                        ProgressClass.getProgressInstance().stopProgress();
+                        Message message = response.body().getMessage();
+                        try {
+                            if (message != null) {
+                                tv.setText(response.body().getAge());
+                            } else {
+                                AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", " Check Religion selected!");
+                            }
+                        } catch (NullPointerException npe) {
+                            Log.e("TAG", "#Error : " + npe, npe);
+                            AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", " Date Format not correct");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DateToAgeResponse> call, Throwable t) {
+                    call.cancel();
+                    ProgressClass.getProgressInstance().stopProgress();
+                    Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } catch (NullPointerException npe) {
+            Log.e("TAG", "#Error : " + npe, npe);
+            AlertDialogSingleClick.getInstance().showDialog(mContext, "Alert", "Religion not seletced");
+        }
+
+    }
+
 
 }

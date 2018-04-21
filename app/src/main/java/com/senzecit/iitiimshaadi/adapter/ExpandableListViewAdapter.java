@@ -51,6 +51,7 @@ import com.senzecit.iitiimshaadi.sliderView.with_list.SliderDialogListLayoutMode
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutAdapter2;
 import com.senzecit.iitiimshaadi.sliderView.with_selection.SliderDialogCheckboxLayoutModel;
 import com.senzecit.iitiimshaadi.utils.AppController;
+import com.senzecit.iitiimshaadi.utils.AppMessage;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.AlertDialogSingleClick;
@@ -2122,6 +2123,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         //SetData - AboutMe
                         editText.setText(basicObject.optString("about_me"));
 
+                        if(TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAbout_you()))
+                            ExpOwnProfileModel.getInstance().setAbout_you(basicObject.optString("about_me"));
+
+
                         if(!TextUtils.isEmpty(ExpOwnProfileModel.getInstance().getAbout_you()))
                             editText.setText(ExpOwnProfileModel.getInstance().getAbout_you());
 
@@ -2511,7 +2516,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         if(serverResponse.getMessage().getSuccess() != null) {
                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            communicator.saveChangesOfCaseI_0();
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
@@ -2564,7 +2569,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         if(serverResponse.getMessage().getSuccess() != null) {
                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 //                            communicator.saveChangesOfCaseI_1();
 
@@ -2636,7 +2641,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         if(serverResponse.getMessage().getSuccess() != null) {
                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 //                            communicator.saveChangesOfCaseI_2();
 
@@ -2695,7 +2700,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         if(serverResponse.getMessage().getSuccess() != null) {
                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 //                            communicator.saveChangesOfCaseI_3();
 
@@ -2771,7 +2776,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         if(serverResponse.getMessage().getSuccess() != null) {
                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 //                            communicator.saveChangesOfCaseI_4();
 
@@ -2799,8 +2804,11 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
     }
     public void saveChangesOfCase_5() {
 
-        String About_you = ExpOwnProfileModel.getInstance().getAbout_you();
+
+        String About_you = ExpOwnProfileModel.getInstance().getAbout_you().trim();
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
+
+        if(!TextUtils.isEmpty(About_you)) {
         AboutMeRequest request = new AboutMeRequest();
         request.token = token;
         request.about_me = About_you;
@@ -2819,7 +2827,7 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                         if(serverResponse.getMessage().getSuccess() != null) {
                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 //                            communicator.saveChangesOfCaseI_5();
 
@@ -2840,8 +2848,14 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 }
             });
 
+
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
+
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.BLANK_DATA);
         }
 
     }

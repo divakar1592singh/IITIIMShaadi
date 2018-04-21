@@ -51,8 +51,20 @@ public class DataHandlingClass {
         }
     }
 
+    public int getProfilePicName(String gender){
+        prefs = AppController.getInstance().getPrefs();
+
+//        String gender = prefs.getString(CONSTANTS.GENDER_TYPE);
+
+        if(gender.equalsIgnoreCase("Male")){
+            return R.drawable.ic_male_default;
+        }else {
+            return R.drawable.ic_female_default;
+        }
+    }
 
 
+/*
     public int getOtherProfile(String gender){
 
         try {
@@ -65,7 +77,7 @@ public class DataHandlingClass {
             Log.e(TAG, "#Error : "+npe, npe);
             return R.drawable.ic_male_default;
         }
-    }
+    }*/
 
     public int getProgressId(){
         return R.drawable.progress4;

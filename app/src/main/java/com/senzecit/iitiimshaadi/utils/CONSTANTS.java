@@ -60,6 +60,8 @@ public interface CONSTANTS {
     String LOGGED_EMAIL = "email";
     String LOGGED_MOB = "mobile";
     String OTHER_USERID = "other_userid";
+    String OTHER_GENDER = "other_gender";
+
     String OTHER_USERNAME = "other_username";
 
 //    Viewer Type
@@ -163,6 +165,8 @@ public interface CONSTANTS {
     String SEARCH_BY_ID = "id";
     String SEARCH_BY_KEYWORD = "keyword";
     String ADVANCE_SEARCH = "advance";
+
+    String GET_DETAILS_URL = "http://35.154.217.225:1110/getUserDetails";
 
 
 }

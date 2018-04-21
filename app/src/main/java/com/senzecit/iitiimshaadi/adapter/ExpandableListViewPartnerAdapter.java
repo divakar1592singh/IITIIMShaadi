@@ -677,6 +677,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                 //SetData - ChoiceOfGroom
                 editText.setText(partnerJson.optString("choice_of_partner"));
 
+                if(TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getChoice_of_Groom()))
+                    ExpPartnerProfileModel.getInstance().setChoice_of_Groom(partnerJson.optString("choice_of_partner"));
+
                 if(!TextUtils.isEmpty(ExpPartnerProfileModel.getInstance().getChoice_of_Groom()))
                     editText.setText(ExpPartnerProfileModel.getInstance().getChoice_of_Groom());
 
@@ -1008,7 +1011,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                                         if (serverResponse.getMessage().getSuccess() != null) {
                                             if (serverResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                                             } else {
@@ -1082,7 +1085,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         if(ptReligionResponse.getMessage().getSuccess() != null) {
                             if (ptReligionResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                             } else {
@@ -1134,7 +1137,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         if(ptrEduResponse.getMessage().getSuccess() != null) {
                             if (ptrEduResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                             } else {
@@ -1162,8 +1165,9 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
     public void saveChangesOfCasePt_3(){
 
         String token = prefs.getString(CONSTANTS.LOGGED_TOKEN);
-        String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom();
+        String Choice_of_Groom = ExpPartnerProfileModel.getInstance().getChoice_of_Groom().trim();
 
+        if(!TextUtils.isEmpty(Choice_of_Groom)) {
         ChoiceOfGroomRequest request = new ChoiceOfGroomRequest();
         request.token = token;
         request.choice_of_partner = Choice_of_Groom;
@@ -1182,7 +1186,7 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
                         if(aboutMeResponse.getMessage().getSuccess() != null) {
                             if (aboutMeResponse.getMessage().getSuccess().equalsIgnoreCase("success")) {
 
-                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successfull");
+                                AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", "Successful");
 //                            Toast.makeText(_context, "Success", Toast.LENGTH_SHORT).show();
 
                             } else {
@@ -1204,6 +1208,11 @@ public class ExpandableListViewPartnerAdapter extends BaseExpandableListAdapter 
 
         }else {
             NetworkDialogHelper.getInstance().showDialog(_context);
+        }
+
+
+        }else {
+            AlertDialogSingleClick.getInstance().showDialog(_context, "Alert", AppMessage.BLANK_DATA);
         }
 
     }

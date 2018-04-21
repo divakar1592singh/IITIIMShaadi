@@ -46,6 +46,7 @@ import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.model.api_response_model.custom_folder.add_folder.AddFolderResponse;
 import com.senzecit.iitiimshaadi.model.api_response_model.subscriber.id_verification.IdVerificationResponse;
 import com.senzecit.iitiimshaadi.model.api_rquest_model.subscriber.email_verification.EmailVerificationRequest;
+import com.senzecit.iitiimshaadi.navigation.BaseNavActivity;
 import com.senzecit.iitiimshaadi.navigation.PaidBaseActivity;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTPREF;
@@ -288,9 +289,13 @@ public class PaidSubscriberDashboardActivity extends PaidBaseActivity implements
                 break;
             }
             case R.id.idChatMessageTV: {
-                //Toast.makeText(PaidSubscriberDashboardActivity.this,"Chat/com.senzecit.iitiimshaadi.model.customFolder.customFolderModel.Message", //Toast.LENGTH_SHORT).show();
+
+                int chatPerc = prefs.getInt(CONSTANTPREF.CHAT_USER_COUNT);
+                if(chatPerc > 0){
                 startActivity(new Intent(PaidSubscriberDashboardActivity.this,ChatMessagesActivity.class));
-//                AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert!", "Working on Chat");
+                }else {
+                    AlertDialogSingleClick.getInstance().showDialog(PaidSubscriberDashboardActivity.this, "Alert", "No Chat user found");
+                }
 
                 break;
             }

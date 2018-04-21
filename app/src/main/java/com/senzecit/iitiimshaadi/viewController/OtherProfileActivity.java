@@ -19,22 +19,28 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.androidnetworking.error.ANError;
 import com.bumptech.glide.Glide;
 import com.senzecit.iitiimshaadi.R;
 import com.senzecit.iitiimshaadi.adapter.OtherExpListAdapter;
 import com.senzecit.iitiimshaadi.adapter.OtherExpListPartnerAdapter;
 import com.senzecit.iitiimshaadi.api.APIClient;
 import com.senzecit.iitiimshaadi.api.APIInterface;
+import com.senzecit.iitiimshaadi.api.RxNetworkingForObjectClass;
 import com.senzecit.iitiimshaadi.chat.SocketSingleChatActivity;
 import com.senzecit.iitiimshaadi.model.api_response_model.other_profile.OtherProfileResponse;
 import com.senzecit.iitiimshaadi.utils.AppController;
 import com.senzecit.iitiimshaadi.utils.CONSTANTS;
 import com.senzecit.iitiimshaadi.utils.CircleImageView;
+import com.senzecit.iitiimshaadi.utils.DataHandlingClass;
 import com.senzecit.iitiimshaadi.utils.Navigator;
 import com.senzecit.iitiimshaadi.utils.NetworkClass;
 import com.senzecit.iitiimshaadi.utils.alert.NetworkDialogHelper;
 import com.senzecit.iitiimshaadi.utils.alert.ProgressClass;
 import com.senzecit.iitiimshaadi.utils.preferences.AppPrefs;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +50,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class OtherProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class OtherProfileActivity extends AppCompatActivity implements View.OnClickListener, RxNetworkingForObjectClass.CompletionHandler{
 
     private static final String TAG = "OtherProfileActivity";
     Toolbar mToolbar;
@@ -64,6 +70,9 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
     TextView mUsrNameTV, mUsrIdTV;
 
     Dialog dialog;
+    RxNetworkingForObjectClass networkingClass;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +81,8 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         prefs = AppController.getInstance().getPrefs();
-
+        networkingClass = RxNetworkingForObjectClass.getInstance();
+        networkingClass.setCompletionHandler(this);
 
         init();
         mScrollView.smoothScrollTo(0,0);
@@ -85,7 +95,18 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
 //        mTitle.setOnClickListener(this);
 
         String userId = prefs.getString(CONSTANTS.OTHER_USERID);
-        callWebServiceForOtherProfile(userId);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("user_id", userId);
+
+            RxNetworkingForObjectClass.getInstance().callWebServiceForJSONParsing(this, CONSTANTS.GET_DETAILS_URL, jsonObject, CONSTANTS.METHOD_1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
 
 
     }
@@ -150,9 +171,9 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
             String profileUri = CONSTANTS.IMAGE_AVATAR_URL + userId + "/" + profileResponse.getBasicData().getProfileImage();
             String userName = profileResponse.getBasicData().getName();
 
-            if (!TextUtils.isEmpty(profileUri)) {
-                Glide.with(OtherProfileActivity.this).load(profileUri).error(R.drawable.profile_img1).into(mProfileCIV);
-            }
+            /*if (!TextUtils.isEmpty(profileUri)) {
+                Glide.with(OtherProfileActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName()).into(mProfileCIV);
+            }*/
 
             String[] usernameAr = userName.split("\\s");
 //            mTitle.setText(new StringBuilder("").append(usernameAr[0]));
@@ -427,4 +448,33 @@ public class OtherProfileActivity extends AppCompatActivity implements View.OnCl
         overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 
+    @Override
+    public void handle(JSONObject object, String methodName) {
+
+        try {
+            if(object.getInt("responseCode") == 200){
+
+
+                String userId = prefs.getString(CONSTANTS.OTHER_USERID);
+                String profileUri = CONSTANTS.IMAGE_AVATAR_URL+userId+"/"+object.getJSONArray("result").getJSONObject(0).optString("profile_image");
+                String gender = object.getJSONArray("result").getJSONObject(0).optString("gender");
+                if (!TextUtils.isEmpty(profileUri)) {
+                    Glide.with(OtherProfileActivity.this).load(profileUri).error(DataHandlingClass.getInstance().getProfilePicName(gender)).into(mProfileCIV);
+                }
+
+
+                callWebServiceForOtherProfile(userId);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    @Override
+    public void onServiceError(ANError error, String methodName) {
+
+    }
 }

@@ -422,9 +422,14 @@ public class SearchPartnerFragment extends Fragment implements View.OnClickListe
 
                     JSONArray jsonArray = object.getJSONArray("cities");
                     for(int i = 0; i<jsonArray.length(); i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        stringBuilder.append(jsonObject.optString("name")).append(",");
-                        cityIDSB.append(jsonObject.optString("old_value")).append(",");
+                        if(object.getJSONArray("cities").getString(i).equalsIgnoreCase("Any")){
+                            stringBuilder.append(object.getJSONArray("cities").getString(i)).append(",");
+                            cityIDSB.append(object.getJSONArray("cities").getString(i)).append(",");
+                        }else {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            stringBuilder.append(jsonObject.optString("name")).append(",");
+                            cityIDSB.append(jsonObject.optString("old_value")).append(",");
+                        }
 
                      }
                     city =stringBuilder.toString();

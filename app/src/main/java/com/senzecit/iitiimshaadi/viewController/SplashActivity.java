@@ -126,13 +126,13 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
         String sUsername = prefs.getString(CONSTANTPREF.LOGIN_USERNAME);
         String sPassword = prefs.getString(CONSTANTPREF.LOGIN_PASSWORD);
 
-        if (Validation.handler().isNotEmpty(SplashActivity.this, sUsername, AppMessage.USERNAME_EMPTY)) {
-            if (Validation.handler().isNotEmpty(SplashActivity.this, sPassword, AppMessage.PASSWORD_EMPTY)) {
+        if (Validation.handler().isNotEmpty(SplashActivity.this, sUsername)) {
+            if (Validation.handler().isNotEmpty(SplashActivity.this, sPassword)) {
                 request.username = sUsername;
                 request.password = sPassword;
                 RxNetworkingForObjectClass.getInstance().callWebServiceForRxNetworking(SplashActivity.this, CONSTANTS.LOGIN_PART_URL, request, CONSTANTS.METHOD_1, false);
             }else {
-                networkDialog();
+                navigatePage();
             }
         }else {
             navigatePage();
@@ -227,7 +227,8 @@ public class SplashActivity extends AppCompatActivity implements RxNetworkingFor
                         Navigator.getClassInstance().navigateToActivity(SplashActivity.this, SubscriberDashboardActivity.class);
                     }
                 }else {
-                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.ALERT, AppMessage.USERPWD_INVALID);
+                    navigatePage();
+//                    AlertDialogSingleClick.getInstance().showDialog(SplashActivity.this, AppMessage.ALERT, AppMessage.USERPWD_INVALID);
                 }
             }
 
