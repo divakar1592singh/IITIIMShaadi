@@ -31,10 +31,16 @@ public class AlertDialogSingleClick {
         {
             alertClass = new AlertDialogSingleClick();
         }
-        return alertClass;
+//        return alertClass = new AlertDialogSingleClick();
+        return alertClass ;
+
     }
 
     public void showDialog(Activity activity, String title, String msg){
+
+        if (dialog != null && dialog.isShowing()) {
+            return;
+        }
 
             dialog = new Dialog(activity);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -69,6 +75,11 @@ public class AlertDialogSingleClick {
         }
 
     public void showDialog(Context activity, String title, String msg){
+
+        if (dialog != null && dialog.isShowing()) {
+            return;
+        }
+
         dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -101,12 +112,12 @@ public class AlertDialogSingleClick {
         dialog.show();
     }
 
-    public void closeDialog(){
-        try {
+    public void dismiss() {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
-        }catch (NullPointerException npe){
-            Log.e("TAG", "#Error : "+npe, npe);
         }
     }
+
+
 
     }
